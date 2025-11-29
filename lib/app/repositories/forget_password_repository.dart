@@ -1,0 +1,31 @@
+import 'package:dio/dio.dart';
+import 'package:new_evmoto_driver/main.dart';
+
+class ForgetPasswordRepository {
+  Future<void> resetPassword({
+    String? phone,
+    String? password,
+    String? code,
+    int? language,
+  }) async {
+    try {
+      var url = "$baseUrl/account/base/driver/resetPassword";
+
+      var formData = FormData.fromMap({
+        "phone": phone,
+        "password": password,
+        "code": code,
+        "language": language,
+      });
+
+      var dio = Dio();
+      var response = await dio.post(url, data: formData);
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+}
