@@ -40,6 +40,7 @@ dependencies:
   cached_network_image: ^3.4.1
   carousel_slider: ^5.1.1
   dots_indicator: ^4.0.1
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   get_cli: ^1.9.1

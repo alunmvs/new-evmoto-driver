@@ -5,6 +5,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 
 import '../controllers/onboarding_introduction_controller.dart';
 
@@ -78,7 +79,9 @@ class OnboardingIntroductionView
                       height: 46,
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.offAndToNamed(Routes.LOGIN);
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               controller.themeColorServices.primaryBlue.value,

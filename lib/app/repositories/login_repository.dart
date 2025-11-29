@@ -5,7 +5,7 @@ class LoginRepository {
   Future<String> loginByMobileNumber({
     String? phone,
     String? password,
-    int? type,
+    int? language,
   }) async {
     try {
       var url = "$baseUrl/account/base/driver/driverLogin";
@@ -13,11 +13,16 @@ class LoginRepository {
       var formData = FormData.fromMap({
         "phone": phone,
         "password": password,
-        "type": type,
+        "language": language,
       });
 
       var dio = Dio();
       var response = await dio.post(url, data: formData);
+
+      if (response.data['code'] != 200) {
+        print(response.data);
+        throw response.data['msg'];
+      }
 
       return response.data['data']['token'];
     } on DioException catch (e) {
