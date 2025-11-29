@@ -1,0 +1,24 @@
+import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+
+import '../controllers/splash_screen_controller.dart';
+
+class SplashScreenView extends GetView<SplashScreenController> {
+  const SplashScreenView({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => Scaffold(
+        body: controller.isFetch.value
+            ? null
+            : const Center(
+                child: Text(
+                  'SplashScreenView is working',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+      ),
+    );
+  }
+}

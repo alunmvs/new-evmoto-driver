@@ -36,6 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.7.2
   google_fonts: ^6.3.2
+  dio: ^5.9.0
+  cached_network_image: ^3.4.1
+  carousel_slider: ^5.1.1
+  dots_indicator: ^4.0.1
 
 dev_dependencies:
   get_cli: ^1.9.1
