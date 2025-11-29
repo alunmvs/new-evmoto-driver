@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:new_evmoto_driver/app/data/system_image_model.dart';
 import 'package:new_evmoto_driver/main.dart';

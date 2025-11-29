@@ -1,0 +1,27 @@
+import 'package:dio/dio.dart';
+import 'package:new_evmoto_driver/main.dart';
+
+class LoginRepository {
+  Future<String> loginByMobileNumber({
+    String? phone,
+    String? password,
+    int? type,
+  }) async {
+    try {
+      var url = "$baseUrl/account/base/driver/driverLogin";
+
+      var formData = FormData.fromMap({
+        "phone": phone,
+        "password": password,
+        "type": type,
+      });
+
+      var dio = Dio();
+      var response = await dio.post(url, data: formData);
+
+      return response.data['data']['token'];
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+}
