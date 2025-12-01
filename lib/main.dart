@@ -17,6 +17,12 @@ void main() {
       title: "Application",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+      builder: (context, child) {
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: child!,
+        );
+      },
     ),
   );
 }
