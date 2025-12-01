@@ -61,6 +61,25 @@ class LoginView extends GetView<LoginController> {
                 ],
               ),
               SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.TERMS_AND_CONDITIONS);
+                    },
+                    child: Text("Terms and Conditions"),
+                  ),
+                  SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.PRIVACY_POLICY);
+                    },
+                    child: Text("Privacy Policy"),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
