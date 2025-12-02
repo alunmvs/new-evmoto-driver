@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:new_evmoto_driver/app/data/open_city_model.dart';
 import 'package:new_evmoto_driver/app/data/province_cities_model.dart';
+import 'package:new_evmoto_driver/app/data/registered_driver_model.dart';
 import 'package:new_evmoto_driver/main.dart';
 
 class RegisterRepository {
@@ -28,7 +30,32 @@ class RegisterRepository {
     }
   }
 
-  Future<void> registerDriver({
+  Future<List<OpenCity>> getAllOpenCityList({int? language}) async {
+    try {
+      var url = "$baseUrl/app/base/openCity/queryOpenCity";
+
+      var formData = FormData.fromMap({"language": language});
+
+      var dio = Dio();
+      var response = await dio.post(url, data: formData);
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      var results = <OpenCity>[];
+
+      for (var data in response.data['data']) {
+        results.add(OpenCity.fromJson(data));
+      }
+
+      return results;
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<RegisteredDriver?> registerDriver({
     String? phone,
     String? password,
     String? code,
@@ -50,6 +77,7 @@ class RegisterRepository {
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
+      return RegisteredDriver.fromJson(response.data['data']);
     } on DioException catch (e) {
       rethrow;
     }
@@ -63,12 +91,12 @@ class RegisterRepository {
     int? sex,
     int? language,
     String? driverContactAddress,
-    int? type,
+    String? type,
     String? uid,
     String? password,
     String? headImgUrl,
     String? phone,
-    String? placeOfEmployment,
+    int? placeOfEmployment,
     String? driverContactAddress_,
     String? driveCardImgUrl,
     String? name,
@@ -77,6 +105,25 @@ class RegisterRepository {
       var url = "$baseUrl/driver/base/driver/updateDriver";
 
       var formData = FormData.fromMap({
+        "idCardImgUrl1": idCardImgUrl1,
+        "idCardImgUrl2": idCardImgUrl2,
+        "getDriverLicenseDate": getDriverLicenseDate,
+        "idCard": idCard,
+        "sex": sex,
+        "language": language,
+        "driverContactAddress": driverContactAddress,
+        "type": type,
+        "uid": uid,
+        "password": password,
+        "headImgUrl": headImgUrl,
+        "phone": phone,
+        "placeOfEmployment": placeOfEmployment,
+        "driverContactAddress_": driverContactAddress_,
+        "driveCardImgUrl": driveCardImgUrl,
+        "name": name,
+      });
+
+      print({
         "idCardImgUrl1": idCardImgUrl1,
         "idCardImgUrl2": idCardImgUrl2,
         "getDriverLicenseDate": getDriverLicenseDate,

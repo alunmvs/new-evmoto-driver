@@ -47,6 +47,7 @@ class ForgetPasswordController extends GetxController {
   }
 
   Future<void> onTapSendOTP() async {
+    forgetPasswordFormKey.currentState!.save();
     if (mobileNumber.value == "") {
       Get.showSnackbar(
         GetSnackBar(
