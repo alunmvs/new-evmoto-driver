@@ -6,12 +6,18 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/login_verification_otp/bindings/login_verification_otp_binding.dart';
+import '../modules/login_verification_otp/views/login_verification_otp_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
 import '../modules/privacy_policy/views/privacy_policy_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
+import '../modules/register_form/bindings/register_form_binding.dart';
+import '../modules/register_form/views/register_form_view.dart';
+import '../modules/register_verification_otp/bindings/register_verification_otp_binding.dart';
+import '../modules/register_verification_otp/views/register_verification_otp_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/terms_and_conditions/bindings/terms_and_conditions_binding.dart';
@@ -64,6 +70,21 @@ class AppPages {
       name: _Paths.PRIVACY_POLICY,
       page: () => const PrivacyPolicyView(),
       binding: PrivacyPolicyBinding(),
+    ),
+    GetPage(
+      name: _Paths.LOGIN_VERIFICATION_OTP,
+      page: () => const LoginVerificationOtpView(),
+      binding: LoginVerificationOtpBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER_VERIFICATION_OTP,
+      page: () => const RegisterVerificationOtpView(),
+      binding: RegisterVerificationOtpBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER_FORM,
+      page: () => const RegisterFormView(),
+      binding: RegisterFormBinding(),
     ),
   ];
 }

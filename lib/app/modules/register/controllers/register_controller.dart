@@ -9,6 +9,7 @@ import 'package:new_evmoto_driver/app/data/registered_driver_model.dart';
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/register_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/upload_image_repository.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -24,8 +25,16 @@ class RegisterController extends GetxController {
     required this.uploadImageRepository,
   });
 
+  final formGroup = FormGroup({
+    "mobile_phone": FormControl<String>(
+      validators: <Validator>[Validators.required],
+    ),
+  });
+
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+
+  final mobilePhone = "".obs;
 
   final status = "fill_register_account".obs;
 
@@ -196,95 +205,13 @@ class RegisterController extends GetxController {
   }
 
   Future<void> onTapNext() async {
-    switch (status.value) {
-      case "fill_register_account":
-        registerAccountFormGroup.markAllAsTouched();
-        if (registerAccountFormGroup.valid) {
-          try {
-            await otpRepository.checkOTP(
-              phone: registerAccountFormGroup.control("mobile_number").value,
-              code: registerAccountFormGroup.control("verification_code").value,
-              language: 2,
-            );
-            registeredDriver.value = (await registerRepository.registerDriver(
-              phone: registerAccountFormGroup.control("mobile_number").value,
-              code: registerAccountFormGroup.control("verification_code").value,
-              password: registerAccountFormGroup.control("password").value,
-              language: 2,
-            ))!;
-            status.value = "fill_personal_information";
-          } catch (e) {
-            Get.showSnackbar(
-              GetSnackBar(
-                message: e.toString(),
-                duration: Duration(seconds: 2),
-              ),
-            );
-          }
-        }
-        break;
-      case "fill_personal_information":
-        personalInformationFormGroup.markAllAsTouched();
+    formGroup.markAllAsTouched();
 
-        var isServiceModeSelected =
-            personalInformationFormGroup
-                    .control("service_mode_motorcycle")
-                    .value ==
-                true ||
-            personalInformationFormGroup
-                    .control("service_mode_city_express_delivery")
-                    .value ==
-                true;
-
-        if (personalInformationFormGroup.valid &&
-            isServiceModeSelected &&
-            idCardImgUrl1.value != "" &&
-            driveCardImgUrl.value != "" &&
-            headImgUrl.value != "") {
-          try {
-            await registerRepository.updateDriver(
-              driveCardImgUrl: driveCardImgUrl.value,
-              getDriverLicenseDate: personalInformationFormGroup
-                  .control("driving_experience")
-                  .value,
-              headImgUrl: headImgUrl.value,
-              idCard: personalInformationFormGroup.control("id_card").value,
-              idCardImgUrl1: idCardImgUrl1.value,
-              idCardImgUrl2: idCardImgUrl2.value,
-              sex: personalInformationFormGroup.control("gender_id").value,
-              language: 2,
-              name: personalInformationFormGroup.control("name").value,
-              password: md5
-                  .convert(
-                    utf8.encode(
-                      registerAccountFormGroup.control("password").value,
-                    ),
-                  )
-                  .toString(),
-              placeOfEmployment: personalInformationFormGroup
-                  .control("place_of_employment")
-                  .value,
-              phone: registerAccountFormGroup.control("mobile_number").value,
-              uid: registeredDriver.value.id.toString(),
-              type: generateTypeFromServiceMode(),
-              driverContactAddress: generateDriverContactAddress(),
-              driverContactAddress_: generateDriverContactAddress_(),
-            );
-            status.value = "summary";
-          } catch (e) {
-            Get.showSnackbar(
-              GetSnackBar(
-                message: e.toString(),
-                duration: Duration(seconds: 2),
-              ),
-            );
-          }
-        }
-        break;
-      case "summary":
-        break;
-      default:
-        break;
+    if (formGroup.valid) {
+      Get.toNamed(
+        Routes.REGISTER_VERIFICATION_OTP,
+        arguments: {"mobile_phone": formGroup.control("mobile_phone").value},
+      );
     }
   }
 

@@ -11,6 +11,9 @@ abstract class Routes {
   static const REGISTER = _Paths.REGISTER;
   static const TERMS_AND_CONDITIONS = _Paths.TERMS_AND_CONDITIONS;
   static const PRIVACY_POLICY = _Paths.PRIVACY_POLICY;
+  static const LOGIN_VERIFICATION_OTP = _Paths.LOGIN_VERIFICATION_OTP;
+  static const REGISTER_VERIFICATION_OTP = _Paths.REGISTER_VERIFICATION_OTP;
+  static const REGISTER_FORM = _Paths.REGISTER_FORM;
 }
 
 abstract class _Paths {
@@ -23,4 +26,7 @@ abstract class _Paths {
   static const REGISTER = '/register';
   static const TERMS_AND_CONDITIONS = '/terms-and-conditions';
   static const PRIVACY_POLICY = '/privacy-policy';
+  static const LOGIN_VERIFICATION_OTP = '/login-verification-otp';
+  static const REGISTER_VERIFICATION_OTP = '/register-verification-otp';
+  static const REGISTER_FORM = '/register-form';
 }

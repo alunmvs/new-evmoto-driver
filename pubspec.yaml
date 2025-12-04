@@ -47,6 +47,8 @@ dependencies:
   reactive_forms: ^18.2.0
   web_socket_channel: ^3.0.3
   flutter_svg: ^2.2.3
+  pinput: ^6.0.1
+  slide_countdown: ^2.0.2
 
 dev_dependencies:
   get_cli: ^1.9.1

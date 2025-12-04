@@ -36,5 +36,7 @@ class ThemeColorServices extends GetxService {
   final overlayDark200 = Color(0XFF000000).obs;
   // new
   final textColor = Color(0XFF272727).obs;
-  final secondaryTextColor = Color(0XFF272727).obs;
+  final secondaryTextColor = Color(0XFF4D4D4D).obs;
+  final thirdTextColor = Color(0XFF7D7D7D).obs;
+  final forthTextColor = Color(0XFF7D7D7D).obs;
 }

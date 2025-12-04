@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:new_evmoto_driver/app/widgets/dashed_line.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/register_controller.dart';
@@ -15,400 +15,296 @@ class RegisterView extends GetView<RegisterController> {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          title: const Text('RegisterView'),
-          centerTitle: true,
           backgroundColor:
               controller.themeColorServices.neutralsColorGrey0.value,
           surfaceTintColor:
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
         backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            LinearProgressIndicator(
-              value: controller.status.value == "fill_register_account"
-                  ? 0
-                  : controller.status.value == "fill_personal_information"
-                  ? 0.5
-                  : 1,
-            ),
-            if (controller.status.value == "fill_register_account") ...[
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ReactiveForm(
-                      formGroup: controller.registerAccountFormGroup,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 16),
-                          Text("Mobile Phone Number"),
-                          ReactiveTextField(
-                            formControlName: 'mobile_number',
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(),
-                          ),
-                          SizedBox(height: 8),
-                          Text("Verification Code"),
-                          ReactiveTextField(
-                            formControlName: 'verification_code',
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              suffixIcon: GestureDetector(
-                                onTap: () async {
-                                  if (controller
-                                          .otpProtectionTimerSeconds
-                                          .value ==
-                                      0) {
-                                    await controller.onTapSendOTP();
-                                  }
-                                },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    if (controller
-                                            .otpProtectionTimerSeconds
-                                            .value ==
-                                        0) ...[
-                                      Text("Kirim Kode OTP"),
-                                    ],
-                                    if (controller
-                                            .otpProtectionTimerSeconds
-                                            .value !=
-                                        0) ...[
-                                      Text(
-                                        controller
-                                            .otpProtectionTimerSeconds
-                                            .value
-                                            .toString(),
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Text("Password"),
-                          ReactiveTextField(
-                            formControlName: 'password',
-                            obscureText: controller.isPasswordHide.value,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 16),
+                SvgPicture.asset(
+                  "assets/logos/logo_evmoto.svg",
+                  width: 95.46,
+                  height: 29.56,
                 ),
-              ),
-            ],
-            if (controller.status.value == "fill_personal_information") ...[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: SingleChildScrollView(
-                    child: ReactiveForm(
-                      formGroup: controller.personalInformationFormGroup,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 16),
-                          Text("ID Photo"),
-                          GestureDetector(
-                            onTap: () async {
-                              await controller.onTapUploadIdPhoto();
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.red,
-                              child: AspectRatio(
-                                aspectRatio: 16 / 9,
-                                child: Column(
-                                  children: [
-                                    if (controller.idCardImgUrl1.value ==
-                                        "") ...[
-                                      Expanded(child: Placeholder()),
-                                    ],
-                                    if (controller.idCardImgUrl1.value !=
-                                        "") ...[
-                                      Expanded(
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              controller.idCardImgUrl1.value,
-                                          fit: BoxFit.cover,
-                                          width: MediaQuery.of(
-                                            context,
-                                          ).size.width,
-                                        ),
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Text("ID Number"),
-                          ReactiveTextField(
-                            formControlName: 'id_card',
-                            keyboardType: TextInputType.number,
-                          ),
-                          Text("Name"),
-                          ReactiveTextField(formControlName: 'name'),
-                          Text("Gender"),
-                          ReactiveDropdownField<int>(
-                            formControlName: 'gender_id',
-                            items: [
-                              DropdownMenuItem(
-                                value: 2,
-                                child: Text("Perempuan"),
-                              ),
-                              DropdownMenuItem(
-                                value: 1,
-                                child: Text("Laki-laki"),
-                              ),
-                            ],
-                          ),
-                          Text("Residence Province"),
-                          ReactiveDropdownField<int>(
-                            formControlName: 'residence_province_id',
-                            onChanged: (control) {
-                              controller.refreshCityList(
-                                provinceId: control.value!,
-                              );
-                            },
-                            items: [
-                              for (var province
-                                  in controller.provinceCitiesList) ...[
-                                DropdownMenuItem(
-                                  value: province.id,
-                                  child: Text(province.name ?? "-"),
-                                ),
-                              ],
-                            ],
-                          ),
-                          Text("Residence City"),
-                          ReactiveDropdownField<int>(
-                            formControlName: 'residence_city_id',
-                            items: [
-                              for (var city in controller.citiesList) ...[
-                                DropdownMenuItem(
-                                  value: city.id,
-                                  child: Text(city.name ?? "-"),
-                                ),
-                              ],
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          DashedLine(),
-                          SizedBox(height: 16),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Driver's License"),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        await controller
-                                            .onTapUploadDriverLicense();
-                                      },
-                                      child: Container(
-                                        width: MediaQuery.of(
-                                          context,
-                                        ).size.width,
-                                        color: Colors.transparent,
-                                        child: AspectRatio(
-                                          aspectRatio: 16 / 9,
-                                          child: Column(
-                                            children: [
-                                              if (controller
-                                                      .driveCardImgUrl
-                                                      .value ==
-                                                  "") ...[
-                                                Expanded(child: Placeholder()),
-                                              ],
-                                              if (controller
-                                                      .driveCardImgUrl
-                                                      .value !=
-                                                  "") ...[
-                                                Expanded(
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: controller
-                                                        .driveCardImgUrl
-                                                        .value,
-                                                    fit: BoxFit.cover,
-                                                    width: MediaQuery.of(
-                                                      context,
-                                                    ).size.width,
-                                                  ),
-                                                ),
-                                              ],
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Avatar"),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        await controller.onTapUploadAvatar();
-                                      },
-                                      child: Container(
-                                        width: MediaQuery.of(
-                                          context,
-                                        ).size.width,
-                                        color: Colors.transparent,
-                                        child: AspectRatio(
-                                          aspectRatio: 3 / 4,
-                                          child: Column(
-                                            children: [
-                                              if (controller.headImgUrl.value ==
-                                                  "") ...[
-                                                Expanded(child: Placeholder()),
-                                              ],
-                                              if (controller.headImgUrl.value !=
-                                                  "") ...[
-                                                Expanded(
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: controller
-                                                        .headImgUrl
-                                                        .value,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ],
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text("Driving Experience"),
-                          ReactiveTextField(
-                            readOnly: true,
-                            formControlName: 'driving_experience',
-                            onTap: (value) async {
-                              DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
-                              );
-                              if (pickedDate != null) {
-                                controller.personalInformationFormGroup
-                                    .control('driving_experience')
-                                    .value = DateFormat(
-                                  'yyyy-MM-dd',
-                                ).format(pickedDate);
-                              }
-                            },
-                          ),
-                          Text("Service Mode"),
-                          ReactiveCheckboxListTile(
-                            formControlName: 'service_mode_motorcycle',
-                            title: Text("Motorcycle"),
-                            controlAffinity: ListTileControlAffinity.leading,
-                            contentPadding: EdgeInsets.all(0),
-                          ),
-                          ReactiveCheckboxListTile(
-                            formControlName:
-                                'service_mode_city_express_delivery',
-                            title: Text("City Express Delivery"),
-                            controlAffinity: ListTileControlAffinity.leading,
-                            contentPadding: EdgeInsets.all(0),
-                          ),
-                          Text("Place of Employment"),
-                          ReactiveDropdownField<int>(
-                            formControlName: 'place_of_employment',
-                            items: [
-                              for (var openCity in controller.openCityList) ...[
-                                DropdownMenuItem(
-                                  value: openCity.id,
-                                  child: Text(openCity.name ?? "-"),
-                                ),
-                              ],
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-            if (controller.status.value == "summary") ...[
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 16),
                         Text(
-                          "Data Submitted Successfully",
-                          textAlign: TextAlign.center,
+                          "Registrasi Driver Baru",
+                          style: controller
+                              .typographyServices
+                              .headingSmallBold
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .textColor
+                                    .value,
+                              ),
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "Thankyou for choosing to join the EVMOTO family. The staff will contact you within 2 hours to confirm the relevant information. Please keep the phone open. Thanks for your support and understanding!",
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          child: Text("Confirmation"),
+                          "Lengkapi data Anda untuk melanjutkan.",
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .secondaryTextColor
+                                    .value,
+                              ),
                         ),
                       ],
                     ),
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
-        bottomNavigationBar:
-            controller.isFetch.value || controller.status.value == "summary"
-            ? null
-            : BottomAppBar(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        await controller.onTapPrevious();
-                      },
-                      child: Text("Back"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        await controller.onTapNext();
-                      },
-                      child: Text("Next"),
+                    SvgPicture.asset(
+                      "assets/images/img_progress_register_1_of_3.svg",
+                      width: 72,
+                      height: 72,
                     ),
                   ],
                 ),
-              ),
+                SizedBox(height: 16),
+                Text(
+                  "Nomor Handphone",
+                  style: controller.typographyServices.bodyLargeRegular.value
+                      .copyWith(
+                        color:
+                            controller.themeColorServices.thirdTextColor.value,
+                      ),
+                ),
+                SizedBox(height: 4),
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 7),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey200
+                              .value,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/icons/icon_flag_id_square.png",
+                            width: 20,
+                            height: 13,
+                          ),
+                          SizedBox(width: 6),
+                          Text(
+                            "+62",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .textColor
+                                      .value,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: ReactiveForm(
+                        formGroup: controller.formGroup,
+                        child: ReactiveTextField(
+                          formControlName: 'mobile_phone',
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value,
+                          cursorErrorColor:
+                              controller.themeColorServices.primaryBlue.value,
+                          keyboardType: TextInputType.number,
+                          onChanged: (control) {
+                            controller.mobilePhone.value =
+                                control.value as String;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 12,
+                            ),
+                            hintText: '812345678xxxx',
+                            hintStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey500
+                                      .value,
+                                ),
+                            errorStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .primaryBlue
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          showErrors: (control) => false,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16 * 2),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 46,
+                  child: ElevatedButton(
+                    onPressed: controller.mobilePhone.value != ""
+                        ? () {
+                            controller.onTapNext();
+                          }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          controller.themeColorServices.primaryBlue.value,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: Text(
+                      "Lanjutkan",
+                      style: controller.typographyServices.bodyLargeBold.value
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+                RichText(
+                  textAlign: TextAlign.start,
+                  text: TextSpan(
+                    text: "Dengan Mendaftar / Masuk, kamu menyetujui ",
+                    style: controller
+                        .typographyServices
+                        .captionLargeRegular
+                        .value
+                        .copyWith(
+                          color: controller.themeColorServices.textColor.value,
+                        ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "Syarat Ketentuan",
+                        style: controller
+                            .typographyServices
+                            .captionLargeRegular
+                            .value
+                            .copyWith(
+                              color:
+                                  controller.themeColorServices.textColor.value,
+                            ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Get.toNamed(Routes.TERMS_AND_CONDITIONS);
+                          },
+                      ),
+                      TextSpan(
+                        text: " & ",
+                        style: controller
+                            .typographyServices
+                            .captionLargeRegular
+                            .value
+                            .copyWith(
+                              color:
+                                  controller.themeColorServices.textColor.value,
+                            ),
+                      ),
+                      TextSpan(
+                        text: "Kebijakan Privasi",
+                        style: controller
+                            .typographyServices
+                            .captionLargeRegular
+                            .value
+                            .copyWith(
+                              color:
+                                  controller.themeColorServices.textColor.value,
+                            ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Get.toNamed(Routes.PRIVACY_POLICY);
+                          },
+                      ),
+                      TextSpan(
+                        text: " berlaku",
+                        style: controller
+                            .typographyServices
+                            .captionLargeRegular
+                            .value
+                            .copyWith(
+                              color:
+                                  controller.themeColorServices.textColor.value,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
