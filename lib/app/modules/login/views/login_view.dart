@@ -231,34 +231,83 @@ class LoginView extends GetView<LoginController> {
                                               .primaryBlue
                                               .value,
                                           decoration: InputDecoration(
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                  horizontal: 12,
+                                                  vertical: 12,
+                                                ),
+                                            hintText: '812345678xxxx',
+                                            hintStyle: controller
+                                                .typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey500
+                                                      .value,
+                                                ),
+                                            errorStyle: controller
+                                                .typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .sematicColorRed500
+                                                      .value,
+                                                ),
+                                            focusedErrorBorder:
+                                                OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: BorderSide(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .sematicColorRed500
+                                                        .value,
+                                                  ),
+                                                ),
                                             errorBorder: OutlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8),
+                                              borderSide: BorderSide(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .sematicColorRed500
+                                                    .value,
+                                              ),
                                             ),
-                                            errorStyle: TextStyle(
-                                              height: 0,
-                                              fontSize: 0,
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey400
+                                                    .value,
+                                              ),
                                               borderRadius:
                                                   BorderRadius.circular(8),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
                                               borderSide: BorderSide(
-                                                width: 2,
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey400
+                                                    .value,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
                                                 color: controller
                                                     .themeColorServices
                                                     .primaryBlue
                                                     .value,
                                               ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
                                             ),
-                                            focusedErrorBorder:
-                                                OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
                                             prefixIcon: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
@@ -284,12 +333,6 @@ class LoginView extends GetView<LoginController> {
                                           },
 
                                           validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty ||
-                                                value == "" ||
-                                                value.isBlank!) {
-                                              return '';
-                                            }
                                             return null;
                                           },
                                         ),

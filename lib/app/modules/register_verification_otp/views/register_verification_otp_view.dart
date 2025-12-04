@@ -101,6 +101,16 @@ class RegisterVerificationOtpView
                       SizedBox(height: 8),
                       Pinput(
                         defaultPinTheme: PinTheme(
+                          textStyle: controller
+                              .typographyServices
+                              .headingMediumBold
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .primaryBlue
+                                    .value,
+                              ),
                           width: MediaQuery.of(context).size.width * (83 / 375),
                           height: 47,
                           decoration: BoxDecoration(

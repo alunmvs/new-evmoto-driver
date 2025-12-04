@@ -193,6 +193,15 @@ class RegisterView extends GetView<RegisterController> {
                               ),
                               borderRadius: BorderRadius.circular(8),
                             ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: controller
@@ -216,7 +225,7 @@ class RegisterView extends GetView<RegisterController> {
                   child: ElevatedButton(
                     onPressed: controller.mobilePhone.value != ""
                         ? () {
-                            controller.onTapNext();
+                            controller.onTapSubmit();
                           }
                         : null,
                     style: ElevatedButton.styleFrom(

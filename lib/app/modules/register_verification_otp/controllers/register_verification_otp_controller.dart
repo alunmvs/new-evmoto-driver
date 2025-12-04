@@ -80,7 +80,10 @@ class RegisterVerificationOtpController extends GetxController {
 
       Get.toNamed(
         Routes.REGISTER_FORM,
-        arguments: {"uid": registeredDriver.value.id},
+        arguments: {
+          "uid": registeredDriver.value.id.toString(),
+          "mobile_phone": mobilePhone.value,
+        },
       );
     } catch (e) {
       Get.showSnackbar(

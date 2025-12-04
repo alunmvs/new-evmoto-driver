@@ -39,4 +39,7 @@ class ThemeColorServices extends GetxService {
   final secondaryTextColor = Color(0XFF4D4D4D).obs;
   final thirdTextColor = Color(0XFF7D7D7D).obs;
   final forthTextColor = Color(0XFF7D7D7D).obs;
+  final imageUploadMenuBackgroundColor = Color(0XFFEDEDED).obs;
+  final imageUploadVerticalDividerColor = Color(0XFFB3B3B3).obs;
+  final redColor = Color(0XFFE11C0B).obs;
 }

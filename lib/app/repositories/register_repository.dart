@@ -123,25 +123,6 @@ class RegisterRepository {
         "name": name,
       });
 
-      print({
-        "idCardImgUrl1": idCardImgUrl1,
-        "idCardImgUrl2": idCardImgUrl2,
-        "getDriverLicenseDate": getDriverLicenseDate,
-        "idCard": idCard,
-        "sex": sex,
-        "language": language,
-        "driverContactAddress": driverContactAddress,
-        "type": type,
-        "uid": uid,
-        "password": password,
-        "headImgUrl": headImgUrl,
-        "phone": phone,
-        "placeOfEmployment": placeOfEmployment,
-        "driverContactAddress_": driverContactAddress_,
-        "driveCardImgUrl": driveCardImgUrl,
-        "name": name,
-      });
-
       var dio = Dio();
       var response = await dio.post(url, data: formData);
 

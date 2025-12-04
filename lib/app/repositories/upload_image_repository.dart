@@ -14,8 +14,6 @@ class UploadImageRepository {
       var dio = Dio();
       var response = await dio.post(url, data: formData);
 
-      print(response.data);
-
       return response.data["url"];
     } on DioException catch (e) {
       rethrow;

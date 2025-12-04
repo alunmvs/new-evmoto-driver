@@ -49,6 +49,7 @@ dependencies:
   flutter_svg: ^2.2.3
   pinput: ^6.0.1
   slide_countdown: ^2.0.2
+  crypto: ^3.0.7
 
 dev_dependencies:
   get_cli: ^1.9.1

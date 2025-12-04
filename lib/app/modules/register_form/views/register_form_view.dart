@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/register_form_controller.dart';
 
@@ -8,15 +12,1717 @@ class RegisterFormView extends GetView<RegisterFormController> {
   const RegisterFormView({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('RegisterFormView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'RegisterFormView is working',
-          style: TextStyle(fontSize: 20),
+    return Obx(
+      () => Scaffold(
+        appBar: AppBar(
+          backgroundColor:
+              controller.themeColorServices.neutralsColorGrey0.value,
+          surfaceTintColor:
+              controller.themeColorServices.neutralsColorGrey0.value,
+        ),
+        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
+        body: controller.isFetch.value
+            ? Center(
+                child: SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: CircularProgressIndicator(
+                    color: controller.themeColorServices.primaryBlue.value,
+                  ),
+                ),
+              )
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: ReactiveForm(
+                    formGroup: controller.formGroup,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 16),
+                        SvgPicture.asset(
+                          "assets/logos/logo_evmoto.svg",
+                          width: 95.46,
+                          height: 29.56,
+                        ),
+                        SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Data Informasi Personal",
+                                  style: controller
+                                      .typographyServices
+                                      .headingSmallBold
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .textColor
+                                            .value,
+                                      ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  "Lengkapi data Anda untuk melanjutkan.",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .secondaryTextColor
+                                            .value,
+                                      ),
+                                ),
+                              ],
+                            ),
+                            SvgPicture.asset(
+                              "assets/images/img_progress_register_2_of_3.svg",
+                              width: 72,
+                              height: 72,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Foto ID KTP",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        if (controller.idPhotoUrl.value == "") ...[
+                          AspectRatio(
+                            aspectRatio: 342 / 215,
+                            child: GestureDetector(
+                              onTap: () async {
+                                await controller.onTapUploadIdPhoto();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border.all(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey400
+                                        .value,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    "assets/icons/icon_image_upload.svg",
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                        if (controller.idPhotoUrl.value != "") ...[
+                          AspectRatio(
+                            aspectRatio: 342 / 215,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: CachedNetworkImage(
+                                      imageUrl: controller.idPhotoUrl.value,
+                                      width: MediaQuery.of(context).size.width,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: controller
+                                            .themeColorServices
+                                            .imageUploadMenuBackgroundColor
+                                            .value,
+                                      ),
+                                      child: IntrinsicHeight(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                await controller
+                                                    .onTapUploadIdPhoto();
+                                              },
+                                              child: Text(
+                                                "Ganti Foto",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodyLargeRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .textColor
+                                                          .value,
+                                                    ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 8),
+                                            VerticalDivider(
+                                              width: 0,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .imageUploadVerticalDividerColor
+                                                  .value,
+                                            ),
+                                            SizedBox(width: 8),
+                                            GestureDetector(
+                                              onTap: () {
+                                                controller.idPhotoUrl.value =
+                                                    "";
+                                              },
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/icons/icon_delete.svg",
+                                                    width: 16,
+                                                    height: 16,
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .redColor
+                                                        .value,
+                                                  ),
+                                                  SizedBox(width: 5),
+                                                  Text(
+                                                    "Hapus",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodyLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .redColor
+                                                              .value,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Nama Lengkap",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        ReactiveTextField(
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value,
+                          cursorErrorColor:
+                              controller.themeColorServices.primaryBlue.value,
+                          formControlName: 'full_name',
+                          validationMessages: {
+                            ValidationMessage.required: (error) =>
+                                'Wajib diisi',
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 0,
+                              vertical: 12,
+                            ),
+                            prefix: SizedBox(width: 12),
+                            suffix: SizedBox(width: 12),
+                            hintText: 'Masukkan nama lengkap',
+                            hintStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey400
+                                      .value,
+                                ),
+                            errorStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .primaryBlue
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Jenis Kelamin",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        ReactiveDropdownField(
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .textColor
+                                    .value,
+                              ),
+                          dropdownColor: controller
+                              .themeColorServices
+                              .neutralsColorGrey0
+                              .value,
+                          validationMessages: {
+                            ValidationMessage.required: (error) =>
+                                'Wajib diisi',
+                          },
+                          items: [
+                            DropdownMenuItem(
+                              value: 1,
+                              child: Text(
+                                "Laki-laki",
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value,
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 2,
+                              child: Text(
+                                "Perempuan",
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value,
+                              ),
+                            ),
+                          ],
+                          formControlName: 'gender_id',
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 0,
+                              vertical: 12,
+                            ),
+                            prefix: SizedBox(width: 12),
+                            suffix: SizedBox(width: 12),
+                            hintText: 'Pilih jenis kelamin',
+                            hintStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey400
+                                      .value,
+                                ),
+                            errorStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .primaryBlue
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Tempat Tinggal",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        IntrinsicHeight(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: ReactiveDropdownField(
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .textColor
+                                            .value,
+                                      ),
+                                  dropdownColor: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey0
+                                      .value,
+                                  onChanged: (control) {
+                                    controller.refreshCityList(
+                                      provinceId: control.value!,
+                                    );
+                                  },
+                                  validationMessages: {
+                                    ValidationMessage.required: (error) =>
+                                        'Wajib diisi',
+                                  },
+                                  items: [
+                                    for (var province
+                                        in controller.provinceCitiesList) ...[
+                                      DropdownMenuItem(
+                                        value: province.id,
+                                        child: Text(
+                                          province.name ?? "-",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ],
+                                  formControlName: 'domicile_province',
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 0,
+                                      vertical: 12,
+                                    ),
+                                    prefix: SizedBox(width: 12),
+                                    suffix: SizedBox(width: 12),
+                                    hintText: 'Pilih provinsi',
+                                    hintStyle: controller
+                                        .typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey400
+                                              .value,
+                                        ),
+                                    errorStyle: controller
+                                        .typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorRed500
+                                              .value,
+                                        ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .sematicColorRed500
+                                            .value,
+                                      ),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .sematicColorRed500
+                                            .value,
+                                      ),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: ReactiveDropdownField(
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .textColor
+                                            .value,
+                                      ),
+                                  dropdownColor: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey0
+                                      .value,
+                                  validationMessages: {
+                                    ValidationMessage.required: (error) =>
+                                        'Wajib diisi',
+                                  },
+                                  items: [
+                                    for (var city in controller.citiesList) ...[
+                                      DropdownMenuItem(
+                                        value: city.id,
+                                        child: Text(
+                                          city.name ?? "-",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ],
+                                  formControlName: 'domicile_city',
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 0,
+                                      vertical: 12,
+                                    ),
+                                    prefix: SizedBox(width: 12),
+                                    suffix: SizedBox(width: 12),
+                                    hintText: 'Pilih kota',
+                                    hintStyle: controller
+                                        .typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey400
+                                              .value,
+                                        ),
+                                    errorStyle: controller
+                                        .typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorRed500
+                                              .value,
+                                        ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .sematicColorRed500
+                                            .value,
+                                      ),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      borderSide: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .sematicColorRed500
+                                            .value,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "No. KTP",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        ReactiveTextField(
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value,
+                          cursorErrorColor:
+                              controller.themeColorServices.primaryBlue.value,
+                          formControlName: 'identity_number',
+                          keyboardType: TextInputType.number,
+                          validationMessages: {
+                            ValidationMessage.required: (error) =>
+                                'Wajib diisi',
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 0,
+                              vertical: 12,
+                            ),
+                            prefix: SizedBox(width: 12),
+                            suffix: SizedBox(width: 12),
+                            hintText: 'misalnya 102303040303',
+                            hintStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey400
+                                      .value,
+                                ),
+                            errorStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .primaryBlue
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Pengalaman Berkendara Sejak",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        ReactiveTextField(
+                          readOnly: true,
+                          formControlName: 'driving_experience',
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value,
+                          cursorErrorColor:
+                              controller.themeColorServices.primaryBlue.value,
+                          validationMessages: {
+                            ValidationMessage.required: (error) =>
+                                'Wajib diisi',
+                          },
+                          onTap: (value) async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime.now(),
+                              builder: (context, child) {
+                                return Theme(
+                                  data: Theme.of(context).copyWith(
+                                    datePickerTheme: DatePickerThemeData(
+                                      headerForegroundColor: controller
+                                          .themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
+                                      headerBackgroundColor: controller
+                                          .themeColorServices
+                                          .primaryBlue
+                                          .value,
+                                      headerHeadlineStyle: controller
+                                          .typographyServices
+                                          .headingMediumBold
+                                          .value
+                                          .copyWith(
+                                            color: controller
+                                                .themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                      weekdayStyle: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(
+                                            color: controller
+                                                .themeColorServices
+                                                .thirdTextColor
+                                                .value,
+                                          ),
+                                      dayStyle: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(
+                                            color: controller
+                                                .themeColorServices
+                                                .textColor
+                                                .value,
+                                          ),
+                                      yearStyle: controller
+                                          .typographyServices
+                                          .bodyLargeRegular
+                                          .value
+                                          .copyWith(
+                                            color: controller
+                                                .themeColorServices
+                                                .textColor
+                                                .value,
+                                          ),
+                                    ),
+                                    colorScheme: ColorScheme.light(
+                                      primary: controller
+                                          .themeColorServices
+                                          .primaryBlue
+                                          .value,
+                                      onPrimary: controller
+                                          .themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
+                                      onSurface: controller
+                                          .themeColorServices
+                                          .textColor
+                                          .value,
+                                    ),
+                                    textButtonTheme: TextButtonThemeData(
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                                  child: child!,
+                                );
+                              },
+                            );
+                            if (pickedDate != null) {
+                              controller.formGroup
+                                  .control('driving_experience')
+                                  .value = DateFormat(
+                                'yyyy-MM-dd',
+                              ).format(pickedDate);
+                            }
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 0,
+                              vertical: 12,
+                            ),
+                            prefix: SizedBox(width: 12),
+                            suffix: SizedBox(width: 12),
+                            hintText: 'misalnya 2025-11-29',
+                            hintStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey400
+                                      .value,
+                                ),
+                            errorStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .primaryBlue
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Foto SIM",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        if (controller.drivingLicensePhotoUrl.value == "") ...[
+                          AspectRatio(
+                            aspectRatio: 342 / 215,
+                            child: GestureDetector(
+                              onTap: () async {
+                                await controller.onTapUploadDriverLicense();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border.all(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey400
+                                        .value,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    "assets/icons/icon_image_upload.svg",
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                        if (controller.drivingLicensePhotoUrl.value != "") ...[
+                          AspectRatio(
+                            aspectRatio: 342 / 215,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: CachedNetworkImage(
+                                      imageUrl: controller
+                                          .drivingLicensePhotoUrl
+                                          .value,
+                                      width: MediaQuery.of(context).size.width,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: controller
+                                            .themeColorServices
+                                            .imageUploadMenuBackgroundColor
+                                            .value,
+                                      ),
+                                      child: IntrinsicHeight(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                await controller
+                                                    .onTapUploadDriverLicense();
+                                              },
+                                              child: Text(
+                                                "Ganti Foto",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodyLargeRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .textColor
+                                                          .value,
+                                                    ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 8),
+                                            VerticalDivider(
+                                              width: 0,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .imageUploadVerticalDividerColor
+                                                  .value,
+                                            ),
+                                            SizedBox(width: 8),
+                                            GestureDetector(
+                                              onTap: () {
+                                                controller
+                                                        .drivingLicensePhotoUrl
+                                                        .value =
+                                                    "";
+                                              },
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/icons/icon_delete.svg",
+                                                    width: 16,
+                                                    height: 16,
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .redColor
+                                                        .value,
+                                                  ),
+                                                  SizedBox(width: 5),
+                                                  Text(
+                                                    "Hapus",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodyLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .redColor
+                                                              .value,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Layanan",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        ReactiveCheckboxListTile(
+                          formControlName: 'service_type_motorcycle',
+                          title: Text(
+                            "Motorcycle",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value,
+                          ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          contentPadding: EdgeInsets.all(0),
+                          checkColor: controller
+                              .themeColorServices
+                              .neutralsColorGrey0
+                              .value,
+                          side: BorderSide(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey400
+                                .value,
+                          ),
+                          activeColor:
+                              controller.themeColorServices.primaryBlue.value,
+                        ),
+                        ReactiveCheckboxListTile(
+                          formControlName: 'service_type_city_express_delivery',
+                          title: Text(
+                            "City Express Delivery",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value,
+                          ),
+                          side: BorderSide(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey400
+                                .value,
+                          ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          contentPadding: EdgeInsets.all(0),
+                          checkColor: controller
+                              .themeColorServices
+                              .neutralsColorGrey0
+                              .value,
+                          activeColor:
+                              controller.themeColorServices.primaryBlue.value,
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Lokasi Layanan",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        ReactiveDropdownField(
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .textColor
+                                    .value,
+                              ),
+                          dropdownColor: controller
+                              .themeColorServices
+                              .neutralsColorGrey0
+                              .value,
+                          validationMessages: {
+                            ValidationMessage.required: (error) =>
+                                'Wajib diisi',
+                          },
+                          items: [
+                            for (var openCity in controller.openCityList) ...[
+                              DropdownMenuItem(
+                                value: openCity.id,
+                                child: Text(
+                                  openCity.name ?? "-",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value,
+                                ),
+                              ),
+                            ],
+                          ],
+                          formControlName: 'place_of_employment_id',
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 0,
+                              vertical: 12,
+                            ),
+                            prefix: SizedBox(width: 12),
+                            suffix: SizedBox(width: 12),
+                            hintText: 'Pilih lokasi layanan',
+                            hintStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey400
+                                      .value,
+                                ),
+                            errorStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .primaryBlue
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Foto Avatar",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        if (controller.avatarPhotoUrl.value == "") ...[
+                          AspectRatio(
+                            aspectRatio: 342 / 88,
+                            child: GestureDetector(
+                              onTap: () async {
+                                await controller.onTapUploadAvatar();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border.all(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey400
+                                        .value,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    "assets/icons/icon_image_upload.svg",
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                        if (controller.avatarPhotoUrl.value != "") ...[
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: AspectRatio(
+                                    aspectRatio: 86 / 108,
+                                    child: CachedNetworkImage(
+                                      imageUrl: controller.avatarPhotoUrl.value,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                flex: 9,
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await controller.onTapUploadAvatar();
+                                        },
+                                        child: Text(
+                                          "Ganti Foto",
+                                          style: controller
+                                              .typographyServices
+                                              .bodyLargeRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .textColor
+                                                    .value,
+                                              ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      VerticalDivider(
+                                        width: 0,
+                                        color: controller
+                                            .themeColorServices
+                                            .imageUploadVerticalDividerColor
+                                            .value,
+                                      ),
+                                      SizedBox(width: 8),
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller.avatarPhotoUrl.value = "";
+                                        },
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_delete.svg",
+                                              width: 16,
+                                              height: 16,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .redColor
+                                                  .value,
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "Hapus",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .redColor
+                                                        .value,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                        SizedBox(height: 16),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+        bottomNavigationBar: BottomAppBar(
+          height: 78,
+          shadowColor: controller.themeColorServices.overlayDark100.value
+              .withValues(alpha: 0.1),
+          color: controller.themeColorServices.neutralsColorGrey0.value,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 46,
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await controller.onTapSubmit();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        controller.themeColorServices.primaryBlue.value,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    "Lanjutkan",
+                    style: controller.typographyServices.bodyLargeBold.value
+                        .copyWith(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -16,6 +16,8 @@ import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/register_form/bindings/register_form_binding.dart';
 import '../modules/register_form/views/register_form_view.dart';
+import '../modules/register_form_completed/bindings/register_form_completed_binding.dart';
+import '../modules/register_form_completed/views/register_form_completed_view.dart';
 import '../modules/register_verification_otp/bindings/register_verification_otp_binding.dart';
 import '../modules/register_verification_otp/views/register_verification_otp_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
@@ -85,6 +87,11 @@ class AppPages {
       name: _Paths.REGISTER_FORM,
       page: () => const RegisterFormView(),
       binding: RegisterFormBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER_FORM_COMPLETED,
+      page: () => const RegisterFormCompletedView(),
+      binding: RegisterFormCompletedBinding(),
     ),
   ];
 }
