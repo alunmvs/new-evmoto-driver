@@ -26,7 +26,7 @@ void main() {
 
   runApp(
     GetMaterialApp(
-      title: "Application",
+      title: "Evmoto Driver",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       theme: ThemeData(
