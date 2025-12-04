@@ -457,19 +457,28 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               horizontal: 0,
                               vertical: 12,
                             ),
-                            prefix: SizedBox(width: 12),
                             suffix: SizedBox(width: 12),
-                            hintText: 'Pilih jenis kelamin',
-                            hintStyle: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(
-                                  color: controller
-                                      .themeColorServices
-                                      .neutralsColorGrey400
-                                      .value,
+                            prefix: SizedBox(width: 12),
+                            label: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(width: 12),
+                                Text(
+                                  'Pilih jenis kelamin',
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                      ),
                                 ),
+                              ],
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             errorStyle: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -615,17 +624,28 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                     ),
                                     prefix: SizedBox(width: 12),
                                     suffix: SizedBox(width: 12),
-                                    hintText: 'Pilih provinsi',
-                                    hintStyle: controller
-                                        .typographyServices
-                                        .bodySmallRegular
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .neutralsColorGrey400
-                                              .value,
+
+                                    label: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(width: 12),
+                                        Text(
+                                          'Pilih provinsi',
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey400
+                                                    .value,
+                                              ),
                                         ),
+                                      ],
+                                    ),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
                                     errorStyle: controller
                                         .typographyServices
                                         .bodySmallRegular
@@ -729,17 +749,28 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                     ),
                                     prefix: SizedBox(width: 12),
                                     suffix: SizedBox(width: 12),
-                                    hintText: 'Pilih kota',
-                                    hintStyle: controller
-                                        .typographyServices
-                                        .bodySmallRegular
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .neutralsColorGrey400
-                                              .value,
+
+                                    label: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(width: 12),
+                                        Text(
+                                          'Pilih kota',
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey400
+                                                    .value,
+                                              ),
                                         ),
+                                      ],
+                                    ),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
                                     errorStyle: controller
                                         .typographyServices
                                         .bodySmallRegular
@@ -1465,17 +1496,27 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ),
                             prefix: SizedBox(width: 12),
                             suffix: SizedBox(width: 12),
-                            hintText: 'Pilih lokasi layanan',
-                            hintStyle: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(
-                                  color: controller
-                                      .themeColorServices
-                                      .neutralsColorGrey400
-                                      .value,
+
+                            label: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(width: 12),
+                                Text(
+                                  'Pilih lokasi layanan',
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                      ),
                                 ),
+                              ],
+                            ),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             errorStyle: controller
                                 .typographyServices
                                 .bodySmallRegular
