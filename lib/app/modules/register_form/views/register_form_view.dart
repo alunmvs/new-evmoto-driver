@@ -1398,30 +1398,6 @@ class RegisterFormView extends GetView<RegisterFormController> {
                           activeColor:
                               controller.themeColorServices.primaryBlue.value,
                         ),
-                        ReactiveCheckboxListTile(
-                          formControlName: 'service_type_city_express_delivery',
-                          title: Text(
-                            "City Express Delivery",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value,
-                          ),
-                          side: BorderSide(
-                            color: controller
-                                .themeColorServices
-                                .neutralsColorGrey400
-                                .value,
-                          ),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          contentPadding: EdgeInsets.all(0),
-                          checkColor: controller
-                              .themeColorServices
-                              .neutralsColorGrey0
-                              .value,
-                          activeColor:
-                              controller.themeColorServices.primaryBlue.value,
-                        ),
                         SizedBox(height: 16),
                         Row(
                           children: [
