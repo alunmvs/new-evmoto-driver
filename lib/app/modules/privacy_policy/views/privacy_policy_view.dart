@@ -11,7 +11,18 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        appBar: AppBar(title: const Text('Privacy Policy'), centerTitle: true),
+        appBar: AppBar(
+          title: Text(
+            "Kebijakan Privasi",
+            style: controller.typographyServices.bodyLargeBold.value,
+          ),
+          centerTitle: false,
+          backgroundColor:
+              controller.themeColorServices.neutralsColorGrey0.value,
+          surfaceTintColor:
+              controller.themeColorServices.neutralsColorGrey0.value,
+        ),
+        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
         body: controller.isFetch.value
             ? Center(child: CircularProgressIndicator())
             : Html(data: controller.agreement.value.content),

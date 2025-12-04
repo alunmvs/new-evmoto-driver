@@ -12,9 +12,17 @@ class TermsAndConditionsView extends GetView<TermsAndConditionsController> {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          title: const Text('Terms and Conditions'),
-          centerTitle: true,
+          title: Text(
+            "Syarat Ketentuan",
+            style: controller.typographyServices.bodyLargeBold.value,
+          ),
+          centerTitle: false,
+          backgroundColor:
+              controller.themeColorServices.neutralsColorGrey0.value,
+          surfaceTintColor:
+              controller.themeColorServices.neutralsColorGrey0.value,
         ),
+        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
         body: controller.isFetch.value
             ? Center(child: CircularProgressIndicator())
             : Html(data: controller.agreement.value.content),
