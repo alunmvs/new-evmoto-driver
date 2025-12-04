@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ThemeColorServices extends GetxService {
-  final primaryBlue = Color(0XFF0060C6).obs;
+  final primaryBlue = Color(0XFF0573EA).obs;
   final sematicColorRed500 = Color(0XFFA32A21).obs;
   final sematicColorRed400 = Color(0XFFF44336).obs;
   final sematicColorGreen100 = Color(0XFFCAEDDB).obs;
@@ -34,4 +34,7 @@ class ThemeColorServices extends GetxService {
   final neutralsColorSlate800 = Color(0XFF1A1F28).obs;
   final overlayDark100 = Color(0XFF000000).obs;
   final overlayDark200 = Color(0XFF000000).obs;
+  // new
+  final textColor = Color(0XFF272727).obs;
+  final secondaryTextColor = Color(0XFF272727).obs;
 }
