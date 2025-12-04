@@ -110,7 +110,7 @@ class LoginView extends GetView<LoginController> {
                                                 text: "Syarat Ketentuan",
                                                 style: controller
                                                     .typographyServices
-                                                    .captionLargeRegular
+                                                    .captionLargeBold
                                                     .value
                                                     .copyWith(
                                                       color: Colors.white,
@@ -137,7 +137,7 @@ class LoginView extends GetView<LoginController> {
                                                 text: "Kebijakan Privasi",
                                                 style: controller
                                                     .typographyServices
-                                                    .captionLargeRegular
+                                                    .captionLargeBold
                                                     .value
                                                     .copyWith(
                                                       color: Colors.white,
@@ -417,7 +417,7 @@ class LoginView extends GetView<LoginController> {
                                                 text: "Hubungi CS",
                                                 style: controller
                                                     .typographyServices
-                                                    .bodySmallRegular
+                                                    .bodySmallBold
                                                     .value
                                                     .copyWith(
                                                       color: controller

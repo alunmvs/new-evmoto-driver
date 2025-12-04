@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/registered_driver_model.dart';
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
@@ -88,9 +89,16 @@ class RegisterVerificationOtpController extends GetxController {
     } catch (e) {
       Get.showSnackbar(
         GetSnackBar(
-          message: e.toString(),
           duration: Duration(seconds: 2),
           backgroundColor: themeColorServices.sematicColorRed400.value,
+          snackPosition: SnackPosition.TOP,
+          snackStyle: SnackStyle.GROUNDED,
+          messageText: Text(
+            e.toString(),
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
+          ),
         ),
       );
     }

@@ -259,7 +259,7 @@ class RegisterView extends GetView<RegisterController> {
                         text: "Syarat Ketentuan",
                         style: controller
                             .typographyServices
-                            .captionLargeRegular
+                            .captionLargeBold
                             .value
                             .copyWith(
                               color:
@@ -285,7 +285,7 @@ class RegisterView extends GetView<RegisterController> {
                         text: "Kebijakan Privasi",
                         style: controller
                             .typographyServices
-                            .captionLargeRegular
+                            .captionLargeBold
                             .value
                             .copyWith(
                               color:
