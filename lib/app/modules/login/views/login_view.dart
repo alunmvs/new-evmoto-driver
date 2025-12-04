@@ -396,6 +396,55 @@ class LoginView extends GetView<LoginController> {
                                             ),
                                           ),
                                         ),
+                                        SizedBox(height: 16),
+                                        RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
+                                            text:
+                                                "Nomor telepon bermasalah? Silahkan \n",
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey500
+                                                      .value,
+                                                ),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: "Hubungi CS",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey500
+                                                          .value,
+                                                    ),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {},
+                                              ),
+                                              TextSpan(
+                                                text: " Kami",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey500
+                                                          .value,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
