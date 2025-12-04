@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/repositories/login_repository.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 
 class LoginController extends GetxController {
   final LoginRepository loginRepository;
@@ -41,14 +40,12 @@ class LoginController extends GetxController {
 
   Future<void> onTapSubmit() async {
     try {
-      // var token = await loginRepository.loginByMobileNumber(
-      //   phone: formGroup.control("mobile_number").value,
-      //   password: formGroup.control("password").value,
-      //   language: 2,
-      // );
-
-      // var storage = FlutterSecureStorage();
-      // await storage.write(key: "token", value: token);
+      Get.toNamed(
+        Routes.LOGIN_VERIFICATION_OTP,
+        arguments: {
+          "mobile_phone": "62${mobileNumberTextEditingController.text}",
+        },
+      );
     } catch (e) {
       Get.showSnackbar(
         GetSnackBar(message: e.toString(), duration: Duration(seconds: 2)),

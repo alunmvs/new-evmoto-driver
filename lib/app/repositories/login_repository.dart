@@ -20,7 +20,6 @@ class LoginRepository {
       var response = await dio.post(url, data: formData);
 
       if (response.data['code'] != 200) {
-        print(response.data);
         throw response.data['msg'];
       }
 
