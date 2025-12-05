@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import '../controllers/home_controller.dart';
 import 'package:intl/intl.dart';
@@ -764,70 +765,47 @@ class HomeView extends GetView<HomeController> {
                                               for (var orderInService
                                                   in controller
                                                       .orderInServiceList) ...[
-                                                Container(
-                                                  padding: EdgeInsets.all(16),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .neutralsColorGrey200
-                                                          .value,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          16,
-                                                        ),
-                                                  ),
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            orderInService
-                                                                        .type ==
-                                                                    1
-                                                                ? "Motorcycle"
-                                                                : "-",
-                                                            style: controller
-                                                                .typographyServices
-                                                                .bodyLargeRegular
-                                                                .value
-                                                                .copyWith(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .textColor
-                                                                      .value,
-                                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Get.toNamed(
+                                                      Routes.ORDER_DETAIL,
+                                                      arguments: {
+                                                        "order_id":
+                                                            orderInService.id,
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(16),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.transparent,
+                                                      border: Border.all(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey200
+                                                            .value,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            16,
                                                           ),
-                                                          Container(
-                                                            padding:
-                                                                EdgeInsets.symmetric(
-                                                                  horizontal: 8,
-                                                                  vertical: 4,
-                                                                ),
-                                                            decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    9999,
-                                                                  ),
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .scheduleArrivalPlaceBackgroundColor
-                                                                  .value,
-                                                            ),
-                                                            child: Text(
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
                                                               orderInService
-                                                                  .state
-                                                                  .toString(),
+                                                                          .type ==
+                                                                      1
+                                                                  ? "Motorcycle"
+                                                                  : "-",
                                                               style: controller
                                                                   .typographyServices
-                                                                  .captionLargeRegular
+                                                                  .bodyLargeRegular
                                                                   .value
                                                                   .copyWith(
                                                                     fontWeight:
@@ -839,148 +817,185 @@ class HomeView extends GetView<HomeController> {
                                                                         .value,
                                                                   ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 16),
-                                                      Divider(
-                                                        height: 0,
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .neutralsColorGrey200
-                                                            .value,
-                                                      ),
-                                                      SizedBox(height: 16),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            "assets/icons/icon_clock.svg",
-                                                            width: 16,
-                                                            height: 16,
-                                                          ),
-                                                          SizedBox(width: 6),
-                                                          Text(
-                                                            orderInService.time
-                                                                .toString(),
-                                                            style: controller
-                                                                .typographyServices
-                                                                .bodyLargeRegular
-                                                                .value
-                                                                .copyWith(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .textColor
-                                                                      .value,
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            "assets/icons/icon_location.svg",
-                                                            width: 16,
-                                                            height: 16,
-                                                          ),
-                                                          SizedBox(width: 6),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  "Dijemput",
-                                                                  style: controller
-                                                                      .typographyServices
-                                                                      .bodySmallRegular
-                                                                      .value
-                                                                      .copyWith(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .imageUploadVerticalDividerColor
-                                                                            .value,
-                                                                      ),
-                                                                ),
-                                                                Text(
-                                                                  orderInService
-                                                                          .startAddress ??
-                                                                      "-",
-                                                                  style: controller
-                                                                      .typographyServices
-                                                                      .bodyLargeRegular
-                                                                      .value
-                                                                      .copyWith(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .textColor
-                                                                            .value,
-                                                                      ),
-                                                                ),
-                                                              ],
+                                                            Container(
+                                                              padding:
+                                                                  EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        8,
+                                                                    vertical: 4,
+                                                                  ),
+                                                              decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                      9999,
+                                                                    ),
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .scheduleArrivalPlaceBackgroundColor
+                                                                    .value,
+                                                              ),
+                                                              child: Text(
+                                                                orderInService
+                                                                    .state
+                                                                    .toString(),
+                                                                style: controller
+                                                                    .typographyServices
+                                                                    .captionLargeRegular
+                                                                    .value
+                                                                    .copyWith(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      color: controller
+                                                                          .themeColorServices
+                                                                          .textColor
+                                                                          .value,
+                                                                    ),
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            "assets/icons/icon_pin_location.svg",
-                                                            width: 16,
-                                                            height: 16,
-                                                          ),
-                                                          SizedBox(width: 6),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  "Lokasi Tujuan",
-                                                                  style: controller
-                                                                      .typographyServices
-                                                                      .bodySmallRegular
-                                                                      .value
-                                                                      .copyWith(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .imageUploadVerticalDividerColor
-                                                                            .value,
-                                                                      ),
-                                                                ),
-                                                                Text(
-                                                                  orderInService
-                                                                          .endAddress ??
-                                                                      "-",
-                                                                  style: controller
-                                                                      .typographyServices
-                                                                      .bodyLargeRegular
-                                                                      .value
-                                                                      .copyWith(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .textColor
-                                                                            .value,
-                                                                      ),
-                                                                ),
-                                                              ],
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 16),
+                                                        Divider(
+                                                          height: 0,
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey200
+                                                              .value,
+                                                        ),
+                                                        SizedBox(height: 16),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_clock.svg",
+                                                              width: 16,
+                                                              height: 16,
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                            SizedBox(width: 6),
+                                                            Text(
+                                                              orderInService
+                                                                  .time
+                                                                  .toString(),
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .bodyLargeRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .textColor
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 8),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_location.svg",
+                                                              width: 16,
+                                                              height: 16,
+                                                            ),
+                                                            SizedBox(width: 6),
+                                                            Expanded(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "Dijemput",
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodySmallRegular
+                                                                        .value
+                                                                        .copyWith(
+                                                                          color: controller
+                                                                              .themeColorServices
+                                                                              .imageUploadVerticalDividerColor
+                                                                              .value,
+                                                                        ),
+                                                                  ),
+                                                                  Text(
+                                                                    orderInService
+                                                                            .startAddress ??
+                                                                        "-",
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodyLargeRegular
+                                                                        .value
+                                                                        .copyWith(
+                                                                          color: controller
+                                                                              .themeColorServices
+                                                                              .textColor
+                                                                              .value,
+                                                                        ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 8),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_pin_location.svg",
+                                                              width: 16,
+                                                              height: 16,
+                                                            ),
+                                                            SizedBox(width: 6),
+                                                            Expanded(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "Lokasi Tujuan",
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodySmallRegular
+                                                                        .value
+                                                                        .copyWith(
+                                                                          color: controller
+                                                                              .themeColorServices
+                                                                              .imageUploadVerticalDividerColor
+                                                                              .value,
+                                                                        ),
+                                                                  ),
+                                                                  Text(
+                                                                    orderInService
+                                                                            .endAddress ??
+                                                                        "-",
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodyLargeRegular
+                                                                        .value
+                                                                        .copyWith(
+                                                                          color: controller
+                                                                              .themeColorServices
+                                                                              .textColor
+                                                                              .value,
+                                                                        ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(height: 16),
@@ -1035,70 +1050,47 @@ class HomeView extends GetView<HomeController> {
                                               for (var orderToBeServed
                                                   in controller
                                                       .orderToBeServedList) ...[
-                                                Container(
-                                                  padding: EdgeInsets.all(16),
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .neutralsColorGrey200
-                                                          .value,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          16,
-                                                        ),
-                                                  ),
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            orderToBeServed
-                                                                        .type ==
-                                                                    1
-                                                                ? "Motorcycle"
-                                                                : "-",
-                                                            style: controller
-                                                                .typographyServices
-                                                                .bodyLargeRegular
-                                                                .value
-                                                                .copyWith(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .textColor
-                                                                      .value,
-                                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Get.toNamed(
+                                                      Routes.ORDER_DETAIL,
+                                                      arguments: {
+                                                        "order_id":
+                                                            orderToBeServed.id,
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(16),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.transparent,
+                                                      border: Border.all(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey200
+                                                            .value,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            16,
                                                           ),
-                                                          Container(
-                                                            padding:
-                                                                EdgeInsets.symmetric(
-                                                                  horizontal: 8,
-                                                                  vertical: 4,
-                                                                ),
-                                                            decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    9999,
-                                                                  ),
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .scheduleArrivalPlaceBackgroundColor
-                                                                  .value,
-                                                            ),
-                                                            child: Text(
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
                                                               orderToBeServed
-                                                                  .state
-                                                                  .toString(),
+                                                                          .type ==
+                                                                      1
+                                                                  ? "Motorcycle"
+                                                                  : "-",
                                                               style: controller
                                                                   .typographyServices
-                                                                  .captionLargeRegular
+                                                                  .bodyLargeRegular
                                                                   .value
                                                                   .copyWith(
                                                                     fontWeight:
@@ -1110,148 +1102,185 @@ class HomeView extends GetView<HomeController> {
                                                                         .value,
                                                                   ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 16),
-                                                      Divider(
-                                                        height: 0,
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .neutralsColorGrey200
-                                                            .value,
-                                                      ),
-                                                      SizedBox(height: 16),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            "assets/icons/icon_clock.svg",
-                                                            width: 16,
-                                                            height: 16,
-                                                          ),
-                                                          SizedBox(width: 6),
-                                                          Text(
-                                                            orderToBeServed.time
-                                                                .toString(),
-                                                            style: controller
-                                                                .typographyServices
-                                                                .bodyLargeRegular
-                                                                .value
-                                                                .copyWith(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .textColor
-                                                                      .value,
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            "assets/icons/icon_location.svg",
-                                                            width: 16,
-                                                            height: 16,
-                                                          ),
-                                                          SizedBox(width: 6),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  "Dijemput",
-                                                                  style: controller
-                                                                      .typographyServices
-                                                                      .bodySmallRegular
-                                                                      .value
-                                                                      .copyWith(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .imageUploadVerticalDividerColor
-                                                                            .value,
-                                                                      ),
-                                                                ),
-                                                                Text(
-                                                                  orderToBeServed
-                                                                          .startAddress ??
-                                                                      "-",
-                                                                  style: controller
-                                                                      .typographyServices
-                                                                      .bodyLargeRegular
-                                                                      .value
-                                                                      .copyWith(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .textColor
-                                                                            .value,
-                                                                      ),
-                                                                ),
-                                                              ],
+                                                            Container(
+                                                              padding:
+                                                                  EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        8,
+                                                                    vertical: 4,
+                                                                  ),
+                                                              decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                      9999,
+                                                                    ),
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .scheduleArrivalPlaceBackgroundColor
+                                                                    .value,
+                                                              ),
+                                                              child: Text(
+                                                                orderToBeServed
+                                                                    .state
+                                                                    .toString(),
+                                                                style: controller
+                                                                    .typographyServices
+                                                                    .captionLargeRegular
+                                                                    .value
+                                                                    .copyWith(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      color: controller
+                                                                          .themeColorServices
+                                                                          .textColor
+                                                                          .value,
+                                                                    ),
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            "assets/icons/icon_pin_location.svg",
-                                                            width: 16,
-                                                            height: 16,
-                                                          ),
-                                                          SizedBox(width: 6),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  "Lokasi Tujuan",
-                                                                  style: controller
-                                                                      .typographyServices
-                                                                      .bodySmallRegular
-                                                                      .value
-                                                                      .copyWith(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .imageUploadVerticalDividerColor
-                                                                            .value,
-                                                                      ),
-                                                                ),
-                                                                Text(
-                                                                  orderToBeServed
-                                                                          .endAddress ??
-                                                                      "-",
-                                                                  style: controller
-                                                                      .typographyServices
-                                                                      .bodyLargeRegular
-                                                                      .value
-                                                                      .copyWith(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .textColor
-                                                                            .value,
-                                                                      ),
-                                                                ),
-                                                              ],
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 16),
+                                                        Divider(
+                                                          height: 0,
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey200
+                                                              .value,
+                                                        ),
+                                                        SizedBox(height: 16),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_clock.svg",
+                                                              width: 16,
+                                                              height: 16,
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                            SizedBox(width: 6),
+                                                            Text(
+                                                              orderToBeServed
+                                                                  .time
+                                                                  .toString(),
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .bodyLargeRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .textColor
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 8),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_location.svg",
+                                                              width: 16,
+                                                              height: 16,
+                                                            ),
+                                                            SizedBox(width: 6),
+                                                            Expanded(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "Dijemput",
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodySmallRegular
+                                                                        .value
+                                                                        .copyWith(
+                                                                          color: controller
+                                                                              .themeColorServices
+                                                                              .imageUploadVerticalDividerColor
+                                                                              .value,
+                                                                        ),
+                                                                  ),
+                                                                  Text(
+                                                                    orderToBeServed
+                                                                            .startAddress ??
+                                                                        "-",
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodyLargeRegular
+                                                                        .value
+                                                                        .copyWith(
+                                                                          color: controller
+                                                                              .themeColorServices
+                                                                              .textColor
+                                                                              .value,
+                                                                        ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 8),
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            SvgPicture.asset(
+                                                              "assets/icons/icon_pin_location.svg",
+                                                              width: 16,
+                                                              height: 16,
+                                                            ),
+                                                            SizedBox(width: 6),
+                                                            Expanded(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "Lokasi Tujuan",
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodySmallRegular
+                                                                        .value
+                                                                        .copyWith(
+                                                                          color: controller
+                                                                              .themeColorServices
+                                                                              .imageUploadVerticalDividerColor
+                                                                              .value,
+                                                                        ),
+                                                                  ),
+                                                                  Text(
+                                                                    orderToBeServed
+                                                                            .endAddress ??
+                                                                        "-",
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodyLargeRegular
+                                                                        .value
+                                                                        .copyWith(
+                                                                          color: controller
+                                                                              .themeColorServices
+                                                                              .textColor
+                                                                              .value,
+                                                                        ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(height: 16),
