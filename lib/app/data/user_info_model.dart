@@ -8,12 +8,12 @@ class UserInfo {
   String? brand;
   String? carColor;
   int? orderNum;
-  int? score;
-  int? balance;
-  int? activityMoney;
-  int? laveActivityMoney;
-  int? businessMoney;
-  int? laveBusinessMoney;
+  double? score;
+  double? balance;
+  double? activityMoney;
+  double? laveActivityMoney;
+  double? businessMoney;
+  double? laveBusinessMoney;
   String? taxiAptitudeCard;
   String? networkCarlssueDate;
   String? company;

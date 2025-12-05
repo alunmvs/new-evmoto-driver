@@ -3,7 +3,7 @@ class VehicleStatistics {
   String? brand;
   int? dayNum;
   int? mouthNum;
-  int? score;
+  double? score;
   int? activity;
   int? work;
 

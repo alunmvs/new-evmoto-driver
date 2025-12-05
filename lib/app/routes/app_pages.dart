@@ -10,6 +10,8 @@ import '../modules/login_verification_otp/bindings/login_verification_otp_bindin
 import '../modules/login_verification_otp/views/login_verification_otp_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
+import '../modules/order_detail/bindings/order_detail_binding.dart';
+import '../modules/order_detail/views/order_detail_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
 import '../modules/privacy_policy/views/privacy_policy_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -92,6 +94,11 @@ class AppPages {
       name: _Paths.REGISTER_FORM_COMPLETED,
       page: () => const RegisterFormCompletedView(),
       binding: RegisterFormCompletedBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_DETAIL,
+      page: () => const OrderDetailView(),
+      binding: OrderDetailBinding(),
     ),
   ];
 }

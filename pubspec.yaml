@@ -45,11 +45,15 @@ dependencies:
   image_picker: ^1.2.1
   intl: ^0.20.2
   reactive_forms: ^18.2.0
-  web_socket_channel: ^3.0.3
   flutter_svg: ^2.2.3
   pinput: ^6.0.1
   slide_countdown: ^2.0.2
   crypto: ^3.0.7
+  animated_toggle_switch: ^0.8.5
+  pull_to_refresh_flutter3: ^2.0.2
+  device_info_plus: ^12.3.0
+  package_info_plus: ^8.3.1
+  geolocator: ^14.0.2
 
 dev_dependencies:
   get_cli: ^1.9.1

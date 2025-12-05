@@ -68,12 +68,14 @@ class LoginVerificationOtpController extends GetxController {
     try {
       var token = await loginRepository.loginByMobileNumber(
         phone: mobilePhone.value,
-        password: "123456789",
+        password: "1234567899",
         language: 2,
       );
 
       var storage = FlutterSecureStorage();
       await storage.write(key: "token", value: token);
+
+      Get.offAllNamed(Routes.HOME);
     } catch (e) {
       Get.offAllNamed(Routes.LOGIN);
 

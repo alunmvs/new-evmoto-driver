@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:new_evmoto_driver/app/data/order_model.dart';
 import 'package:new_evmoto_driver/main.dart';
 
@@ -19,8 +20,20 @@ class OrderRepository {
         "pageNum": pageNum,
       });
 
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
       var dio = Dio();
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
@@ -33,6 +46,43 @@ class OrderRepository {
       }
 
       return orderList;
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> grabOrder({
+    required int orderType,
+    required String orderId,
+    required int language,
+  }) async {
+    try {
+      var url = "$baseUrl/businessProcess/api/order/grabOrder";
+
+      var formData = FormData.fromMap({
+        "language": language,
+        "orderType": orderType,
+        "orderId": orderId,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = Dio();
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
     } on DioException catch (e) {
       rethrow;
     }
