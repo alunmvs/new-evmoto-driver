@@ -21,4 +21,38 @@ class UserRepository {
       rethrow;
     }
   }
+
+  Future<void> startWork({required int language, required int type}) async {
+    try {
+      var url = "$baseUrl/driver/api/driver/work";
+
+      var formData = FormData.fromMap({"language": language, "type": type});
+
+      var dio = Dio();
+      var response = await dio.post(url, data: formData);
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> stopWork({required int language}) async {
+    try {
+      var url = "$baseUrl/driver/api/driver/work";
+
+      var formData = FormData.fromMap({"language": language});
+
+      var dio = Dio();
+      var response = await dio.post(url, data: formData);
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
 }
