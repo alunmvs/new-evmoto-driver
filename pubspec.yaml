@@ -54,6 +54,8 @@ dependencies:
   device_info_plus: ^12.3.0
   package_info_plus: ^8.3.1
   geolocator: ^14.0.2
+  google_maps_flutter: ^2.14.0
+  action_slider: ^0.7.0
 
 dev_dependencies:
   get_cli: ^1.9.1
