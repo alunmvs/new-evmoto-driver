@@ -12,6 +12,8 @@ import '../modules/onboarding_introduction/bindings/onboarding_introduction_bind
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
 import '../modules/order_detail/bindings/order_detail_binding.dart';
 import '../modules/order_detail/views/order_detail_view.dart';
+import '../modules/order_payment_confirmation/bindings/order_payment_confirmation_binding.dart';
+import '../modules/order_payment_confirmation/views/order_payment_confirmation_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
 import '../modules/privacy_policy/views/privacy_policy_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -99,6 +101,11 @@ class AppPages {
       name: _Paths.ORDER_DETAIL,
       page: () => const OrderDetailView(),
       binding: OrderDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_PAYMENT_CONFIRMATION,
+      page: () => const OrderPaymentConfirmationView(),
+      binding: OrderPaymentConfirmationBinding(),
     ),
   ];
 }

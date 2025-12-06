@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -296,12 +297,29 @@ class HomeController extends GetxController {
   }
 
   Future<void> onSwitchStatusWork() async {
-    if (vehicleStatistics.value.work == 2) {
-      await userRepository.startWork(language: 2, type: 1);
-      workStatus.value = 1;
-    } else {
-      await userRepository.stopWork(language: 2);
-      workStatus.value = 2;
+    try {
+      if (vehicleStatistics.value.work == 2) {
+        await userRepository.startWork(language: 2, type: 1);
+        workStatus.value = 1;
+      } else {
+        await userRepository.stopWork(language: 2);
+        workStatus.value = 2;
+      }
+    } catch (e) {
+      Get.showSnackbar(
+        GetSnackBar(
+          duration: Duration(seconds: 2),
+          backgroundColor: themeColorServices.sematicColorRed400.value,
+          snackPosition: SnackPosition.TOP,
+          snackStyle: SnackStyle.GROUNDED,
+          messageText: Text(
+            e.toString(),
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
+          ),
+        ),
+      );
     }
 
     await getVehicleStatistics();

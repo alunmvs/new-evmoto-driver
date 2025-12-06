@@ -772,6 +772,8 @@ class HomeView extends GetView<HomeController> {
                                                       arguments: {
                                                         "order_id":
                                                             orderInService.id,
+                                                        "order_type":
+                                                            orderInService.type,
                                                       },
                                                     );
                                                   },
@@ -1057,6 +1059,9 @@ class HomeView extends GetView<HomeController> {
                                                       arguments: {
                                                         "order_id":
                                                             orderToBeServed.id,
+                                                        "order_type":
+                                                            orderToBeServed
+                                                                .type,
                                                       },
                                                     );
                                                   },
