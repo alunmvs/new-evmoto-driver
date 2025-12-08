@@ -335,7 +335,10 @@ class HomeController extends GetxController {
       language: 2,
     );
 
-    Get.toNamed(Routes.ORDER_DETAIL, arguments: {"order_id": order.id});
+    Get.toNamed(
+      Routes.ORDER_DETAIL,
+      arguments: {"order_id": order.id, "order_type": order.type},
+    );
     orderGrabbingHallRefreshController.requestRefresh();
     orderToBeServedRefreshController.requestRefresh();
   }
