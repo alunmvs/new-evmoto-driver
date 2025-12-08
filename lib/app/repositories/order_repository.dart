@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
-import 'package:new_evmoto_driver/app/data/order_detail_model.dart';
-import 'package:new_evmoto_driver/app/data/order_model.dart';
-import 'package:new_evmoto_driver/app/data/order_payment_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/main.dart';
 
@@ -168,18 +168,6 @@ class OrderRepository {
         options: Options(headers: headers),
       );
 
-      print(token);
-
-      print({
-        "orderType": orderType,
-        "orderId": orderId,
-        "lon": lon,
-        "lat": lat,
-        "state": state,
-        "language": language,
-      });
-      print(response.data);
-
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
@@ -275,6 +263,43 @@ class OrderRepository {
   }) async {
     try {
       var url = "$baseUrl/businessProcess/api/order/completeOrder";
+
+      var formData = FormData.fromMap({
+        "orderType": orderType,
+        "orderId": orderId,
+        "language": language,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> cancelOrder({
+    required int orderType,
+    required String orderId,
+    required int language,
+  }) async {
+    try {
+      var url = "$baseUrl/cancelOrder/api/cancel/addCancle_driver";
 
       var formData = FormData.fromMap({
         "orderType": orderType,

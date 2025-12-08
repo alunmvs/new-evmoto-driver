@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_evmoto_driver/app/data/registered_driver_model.dart';
+import 'package:new_evmoto_driver/app/data/models/registered_driver_model.dart';
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/register_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';

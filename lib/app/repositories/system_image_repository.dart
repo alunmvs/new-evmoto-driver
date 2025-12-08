@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData;
-import 'package:new_evmoto_driver/app/data/system_image_model.dart';
+import 'package:new_evmoto_driver/app/data/models/system_image_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/main.dart';
 

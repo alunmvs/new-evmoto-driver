@@ -888,7 +888,9 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    await controller.onTapCancelOrder();
+                                  },
                                   child: Text(
                                     "Batalkan",
                                     style: controller

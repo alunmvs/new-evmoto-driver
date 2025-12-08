@@ -1,3 +1,4 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -113,7 +114,13 @@ class OrderPaymentConfirmationView
                             ),
                             SizedBox(height: 4),
                             Text(
-                              "Rp 16.000",
+                              NumberFormat.currency(
+                                locale: 'id_ID',
+                                symbol: 'Rp ',
+                                decimalDigits: 0,
+                              ).format(
+                                controller.orderPayment.value.orderMoney,
+                              ),
                               style: controller
                                   .typographyServices
                                   .headingLargeBold
@@ -498,6 +505,16 @@ class OrderPaymentConfirmationView
                                               .bodySmallRegular
                                               .value,
                                           textAlign: TextAlign.right,
+                                          onChanged: (control) {
+                                            print(control.value);
+                                          },
+                                          inputFormatters: [
+                                            CurrencyTextInputFormatter.currency(
+                                              locale: 'id_ID',
+                                              symbol: '',
+                                              decimalDigits: 0,
+                                            ),
+                                          ],
                                           decoration: InputDecoration(
                                             hintText: 'Please enter...',
                                             hintStyle: controller

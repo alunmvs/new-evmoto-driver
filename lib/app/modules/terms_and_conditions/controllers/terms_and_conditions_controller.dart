@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:new_evmoto_driver/app/data/agreement_model.dart';
+import 'package:new_evmoto_driver/app/data/models/agreement_model.dart';
 import 'package:new_evmoto_driver/app/repositories/agreement_repository.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';

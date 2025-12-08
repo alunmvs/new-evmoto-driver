@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:new_evmoto_driver/app/data/order_detail_model.dart';
-import 'package:new_evmoto_driver/app/data/order_payment_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';

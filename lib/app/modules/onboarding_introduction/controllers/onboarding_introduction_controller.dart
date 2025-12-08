@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:new_evmoto_driver/app/data/system_image_model.dart';
+import 'package:new_evmoto_driver/app/data/models/system_image_model.dart';
 import 'package:new_evmoto_driver/app/repositories/system_image_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';

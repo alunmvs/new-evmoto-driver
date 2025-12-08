@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData;
-import 'package:new_evmoto_driver/app/data/open_city_model.dart';
-import 'package:new_evmoto_driver/app/data/province_cities_model.dart';
-import 'package:new_evmoto_driver/app/data/registered_driver_model.dart';
+import 'package:new_evmoto_driver/app/data/models/open_city_model.dart';
+import 'package:new_evmoto_driver/app/data/models/province_cities_model.dart';
+import 'package:new_evmoto_driver/app/data/models/registered_driver_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/main.dart';
 
