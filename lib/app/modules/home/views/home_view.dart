@@ -126,6 +126,10 @@ class HomeView extends GetView<HomeController> {
                                 .neutralsColorGrey0
                                 .value,
                             borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: Color(0XFFECECEC),
+                              width: 4,
+                            ),
                           ),
                           child: Column(
                             children: [
@@ -229,7 +233,7 @@ class HomeView extends GetView<HomeController> {
                                               textAlign: TextAlign.center,
                                             ),
                                             Text(
-                                              "Order\nToday",
+                                              "Pesanan\nHari Ini",
                                               style: controller
                                                   .typographyServices
                                                   .captionLargeRegular
@@ -263,7 +267,7 @@ class HomeView extends GetView<HomeController> {
                                               controller
                                                   .vehicleStatistics
                                                   .value
-                                                  .dayNum
+                                                  .mouthNum
                                                   .toString(),
                                               style: controller
                                                   .typographyServices
@@ -278,7 +282,7 @@ class HomeView extends GetView<HomeController> {
                                               textAlign: TextAlign.center,
                                             ),
                                             Text(
-                                              "Order\nThis Month",
+                                              "Pesanan\nBulan Ini",
                                               style: controller
                                                   .typographyServices
                                                   .captionLargeRegular
@@ -312,8 +316,8 @@ class HomeView extends GetView<HomeController> {
                                               controller
                                                   .vehicleStatistics
                                                   .value
-                                                  .dayNum
-                                                  .toString(),
+                                                  .score!
+                                                  .toStringAsFixed(1),
                                               style: controller
                                                   .typographyServices
                                                   .bodyLargeBold
@@ -327,7 +331,58 @@ class HomeView extends GetView<HomeController> {
                                               textAlign: TextAlign.center,
                                             ),
                                             Text(
-                                              "My Rating",
+                                              "Rating\nSaya",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .textColor
+                                                        .value,
+                                                  ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Center(
+                                        child: SizedBox(
+                                          height: 19,
+                                          child: VerticalDivider(
+                                            color: controller
+                                                .themeColorServices
+                                                .neutralsColorGrey200
+                                                .value,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              controller
+                                                  .vehicleStatistics
+                                                  .value
+                                                  .activity
+                                                  .toString(),
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeBold
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .textColor
+                                                        .value,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                  ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            Text(
+                                              "Aktivitas\nSaya",
                                               style: controller
                                                   .typographyServices
                                                   .captionLargeRegular
@@ -349,37 +404,137 @@ class HomeView extends GetView<HomeController> {
                               ),
                               SizedBox(height: 16),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/icon_arrow_up_right.svg",
-                                        width: 18,
-                                        height: 18,
+                                      Container(
+                                        width: 32,
+                                        height: 32,
+                                        decoration: BoxDecoration(
+                                          color: controller
+                                              .themeColorServices
+                                              .sematicColorBlue100
+                                              .value,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_wallet.svg",
+                                              width: 16,
+                                              height: 16,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Saldo Kamu",
+                                            style: controller
+                                                .typographyServices
+                                                .captionSmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey500
+                                                      .value,
+                                                ),
+                                          ),
+                                          SizedBox(height: 2),
+                                          Text(
+                                            NumberFormat.currency(
+                                              locale: 'id_ID',
+                                              symbol: 'Rp ',
+                                              decimalDigits: 0,
+                                            ).format(
+                                              controller.userInfo.value.balance,
+                                            ),
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallBold
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey800
+                                                      .value,
+                                                ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    "My Activities",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallRegular
-                                        .value,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    controller.vehicleStatistics.value.activity
-                                        .toString(),
-                                    style: controller
-                                        .typographyServices
-                                        .bodyLargeBold
-                                        .value,
+                                  Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_add_circle.svg",
+                                            width: 18,
+                                            height: 18,
+                                          ),
+                                          SizedBox(height: 4),
+                                          Text(
+                                            "Isi Ulang",
+                                            style: controller
+                                                .typographyServices
+                                                .captionLargeRegular
+                                                .value,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(width: 14),
+                                      Column(
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_withdraw.svg",
+                                            width: 19,
+                                            height: 19,
+                                          ),
+                                          SizedBox(height: 4),
+                                          Text(
+                                            "Tarik Dana",
+                                            style: controller
+                                                .typographyServices
+                                                .captionLargeRegular
+                                                .value,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(width: 14),
+                                      Column(
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_others.svg",
+                                            width: 18,
+                                            height: 18,
+                                          ),
+                                          SizedBox(height: 4),
+                                          Text(
+                                            "Lainnya",
+                                            style: controller
+                                                .typographyServices
+                                                .captionLargeRegular
+                                                .value,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -418,18 +573,20 @@ class HomeView extends GetView<HomeController> {
                                     .bodySmallBold
                                     .value,
                                 isScrollable: true,
+                                controller: controller.tabController,
                                 tabAlignment: TabAlignment.start,
                                 overlayColor: WidgetStateProperty.all(
                                   Colors.transparent,
                                 ),
                                 tabs: [
-                                  Tab(text: 'Order Grabbing Hall'),
-                                  Tab(text: 'In Service'),
-                                  Tab(text: 'To be Served'),
+                                  Tab(text: 'Menerima Pesanan'),
+                                  Tab(text: 'Dalam Layanan'),
+                                  Tab(text: 'Menunggu'),
                                 ],
                               ),
                               Expanded(
                                 child: TabBarView(
+                                  controller: controller.tabController,
                                   children: [
                                     SmartRefresher(
                                       header: MaterialClassicHeader(
@@ -472,6 +629,34 @@ class HomeView extends GetView<HomeController> {
                                           child: Column(
                                             children: [
                                               SizedBox(height: 16),
+                                              if (controller
+                                                  .orderGrabbingHallList
+                                                  .isEmpty) ...[
+                                                SizedBox(height: 16 * 3),
+                                                SvgPicture.asset(
+                                                  "assets/images/img_history_activity_not_found.svg",
+                                                  height: 80,
+                                                  width: 80,
+                                                ),
+                                                SizedBox(height: 16),
+                                                Text(
+                                                  "Belum Ada Pesanan",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodyLargeBold
+                                                      .value,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  "Tidak ada pesanan pada bagian Menerima Pesanan",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallRegular
+                                                      .value,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ],
                                               for (var orderGrabbingHall
                                                   in controller
                                                       .orderGrabbingHallList) ...[
@@ -528,14 +713,17 @@ class HomeView extends GetView<HomeController> {
                                                                     9999,
                                                                   ),
                                                               color: controller
-                                                                  .themeColorServices
-                                                                  .scheduleArrivalPlaceBackgroundColor
-                                                                  .value,
+                                                                  .getBackgroundColorOrderState(
+                                                                    state: orderGrabbingHall
+                                                                        .state!,
+                                                                  ),
                                                             ),
                                                             child: Text(
-                                                              orderGrabbingHall
-                                                                  .state
-                                                                  .toString(),
+                                                              controller.getStringOrderState(
+                                                                state:
+                                                                    orderGrabbingHall
+                                                                        .state!,
+                                                              ),
                                                               style: controller
                                                                   .typographyServices
                                                                   .captionLargeRegular
@@ -694,19 +882,50 @@ class HomeView extends GetView<HomeController> {
                                                       ),
                                                       SizedBox(height: 16),
                                                       Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
                                                         children: [
-                                                          ElevatedButton(
-                                                            onPressed: () async {
-                                                              await controller
-                                                                  .onTapGrabDialog(
-                                                                    order:
-                                                                        orderGrabbingHall,
-                                                                  );
-                                                            },
-                                                            child: Text("Grab"),
+                                                          Expanded(
+                                                            child: SizedBox(
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                    context,
+                                                                  ).size.width,
+                                                              height: 46,
+                                                              child: ElevatedButton(
+                                                                onPressed: () async {
+                                                                  await controller
+                                                                      .onTapGrabDialog(
+                                                                        order:
+                                                                            orderGrabbingHall,
+                                                                      );
+                                                                },
+                                                                style: ElevatedButton.styleFrom(
+                                                                  backgroundColor:
+                                                                      controller
+                                                                          .themeColorServices
+                                                                          .primaryBlue
+                                                                          .value,
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                          16,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                                child: Text(
+                                                                  "Grab",
+                                                                  style: controller
+                                                                      .typographyServices
+                                                                      .bodyLargeBold
+                                                                      .value
+                                                                      .copyWith(
+                                                                        color: controller
+                                                                            .themeColorServices
+                                                                            .neutralsColorGrey0
+                                                                            .value,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -762,6 +981,34 @@ class HomeView extends GetView<HomeController> {
                                           child: Column(
                                             children: [
                                               SizedBox(height: 16),
+                                              if (controller
+                                                  .orderInServiceList
+                                                  .isEmpty) ...[
+                                                SizedBox(height: 16 * 3),
+                                                SvgPicture.asset(
+                                                  "assets/images/img_history_activity_not_found.svg",
+                                                  height: 80,
+                                                  width: 80,
+                                                ),
+                                                SizedBox(height: 16),
+                                                Text(
+                                                  "Belum Ada Pesanan",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodyLargeBold
+                                                      .value,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  "Tidak ada pesanan pada bagian Dalam Layanan",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallRegular
+                                                      .value,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ],
                                               for (var orderInService
                                                   in controller
                                                       .orderInServiceList) ...[
@@ -832,14 +1079,17 @@ class HomeView extends GetView<HomeController> {
                                                                       9999,
                                                                     ),
                                                                 color: controller
-                                                                    .themeColorServices
-                                                                    .scheduleArrivalPlaceBackgroundColor
-                                                                    .value,
+                                                                    .getBackgroundColorOrderState(
+                                                                      state: orderInService
+                                                                          .state!,
+                                                                    ),
                                                               ),
                                                               child: Text(
-                                                                orderInService
-                                                                    .state
-                                                                    .toString(),
+                                                                controller.getStringOrderState(
+                                                                  state:
+                                                                      orderInService
+                                                                          .state!,
+                                                                ),
                                                                 style: controller
                                                                     .typographyServices
                                                                     .captionLargeRegular
@@ -1049,6 +1299,34 @@ class HomeView extends GetView<HomeController> {
                                           child: Column(
                                             children: [
                                               SizedBox(height: 16),
+                                              if (controller
+                                                  .orderToBeServedList
+                                                  .isEmpty) ...[
+                                                SizedBox(height: 16 * 3),
+                                                SvgPicture.asset(
+                                                  "assets/images/img_history_activity_not_found.svg",
+                                                  height: 80,
+                                                  width: 80,
+                                                ),
+                                                SizedBox(height: 16),
+                                                Text(
+                                                  "Belum Ada Pesanan",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodyLargeBold
+                                                      .value,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  "Tidak ada pesanan pada bagian Menunggu",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallRegular
+                                                      .value,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ],
                                               for (var orderToBeServed
                                                   in controller
                                                       .orderToBeServedList) ...[
@@ -1120,14 +1398,17 @@ class HomeView extends GetView<HomeController> {
                                                                       9999,
                                                                     ),
                                                                 color: controller
-                                                                    .themeColorServices
-                                                                    .scheduleArrivalPlaceBackgroundColor
-                                                                    .value,
+                                                                    .getBackgroundColorOrderState(
+                                                                      state: orderToBeServed
+                                                                          .state!,
+                                                                    ),
                                                               ),
                                                               child: Text(
-                                                                orderToBeServed
-                                                                    .state
-                                                                    .toString(),
+                                                                controller.getStringOrderState(
+                                                                  state:
+                                                                      orderToBeServed
+                                                                          .state!,
+                                                                ),
                                                                 style: controller
                                                                     .typographyServices
                                                                     .captionLargeRegular

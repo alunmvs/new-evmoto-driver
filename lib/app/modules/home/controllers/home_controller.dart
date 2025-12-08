@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/data/consts/order_state_const.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_driver/app/data/models/vehicle_statistics_model.dart';
@@ -19,7 +20,8 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   final VehicleRepository vehicleRepository;
   final OrderRepository orderRepository;
   final UserRepository userRepository;
@@ -35,6 +37,8 @@ class HomeController extends GetxController {
 
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
+
+  late TabController tabController;
 
   final orderGrabbingHallRefreshController = RefreshController();
   final orderGrabbingHallList = <Order>[].obs;
@@ -62,6 +66,7 @@ class HomeController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
+    tabController = TabController(length: 3, vsync: this);
     await requestLocation();
     await initSocket();
     await refreshAll();
@@ -329,17 +334,78 @@ class HomeController extends GetxController {
   }
 
   Future<void> onTapGrabDialog({required Order order}) async {
-    await orderRepository.grabOrder(
-      orderType: order.type!,
-      orderId: order.id.toString(),
-      language: 2,
-    );
+    try {
+      await orderRepository.grabOrder(
+        orderType: order.type!,
+        orderId: order.id.toString(),
+        language: 2,
+      );
 
-    Get.toNamed(
-      Routes.ORDER_DETAIL,
-      arguments: {"order_id": order.id, "order_type": order.type},
-    );
-    orderGrabbingHallRefreshController.requestRefresh();
-    orderToBeServedRefreshController.requestRefresh();
+      Get.toNamed(
+        Routes.ORDER_DETAIL,
+        arguments: {"order_id": order.id, "order_type": order.type},
+      );
+    } catch (e) {
+      Get.showSnackbar(
+        GetSnackBar(
+          duration: Duration(seconds: 2),
+          backgroundColor: themeColorServices.sematicColorRed400.value,
+          snackPosition: SnackPosition.TOP,
+          snackStyle: SnackStyle.GROUNDED,
+          messageText: Text(
+            e.toString(),
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
+          ),
+        ),
+      );
+    }
+    await orderGrabbingHallRefreshController.requestRefresh();
+    await orderToBeServedRefreshController.requestRefresh();
+  }
+
+  String getStringOrderState({required int state}) {
+    switch (state) {
+      case OrderState.WAITING_LIST:
+        return 'Daftar Tunggu';
+      case OrderState.TO_BE_STARTED:
+        return 'Dimulai';
+      case OrderState.SCHEDULED_ARRIVAL_PLACE:
+        return 'Tempat Kedatangan';
+      case OrderState.WAIT_FOR_PASSENGERS_TO_BOARD:
+        return 'Tunggu Penumpang untuk Naik';
+      case OrderState.SERVING:
+        return 'Sedang Berlangsung';
+      case OrderState.COMPLETION_SERVICE:
+        return 'Layanan Penyelesaian';
+      case OrderState.TO_BE_PAID:
+        return 'Akan Dibayarkan';
+      case OrderState.TO_BE_EVALUATED:
+        return 'Akan Dievaluasi';
+      case OrderState.COMPLETED:
+        return 'Selesai';
+      case OrderState.CANCELLED:
+        return 'Dibatalkan';
+      case OrderState.BEING_REASSIGNED:
+        return 'Dialihkan';
+      case OrderState.CANCEL_PENDING_PAYMENT:
+        return 'Batalkan Pembayaran yang Pending';
+      default:
+        return '-';
+    }
+  }
+
+  Color getBackgroundColorOrderState({required int state}) {
+    switch (state) {
+      case OrderState.WAITING_LIST:
+        return Color(0XFFFFA3A3);
+      case OrderState.TO_BE_STARTED:
+        return Color(0XFFD7EAFF);
+      case OrderState.SCHEDULED_ARRIVAL_PLACE:
+        return Color(0XFFD7EAFF);
+      default:
+        return Color(0XFFFFA3A3);
+    }
   }
 }

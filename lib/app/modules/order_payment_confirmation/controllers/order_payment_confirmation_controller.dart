@@ -1,9 +1,11 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class OrderPaymentConfirmationController extends GetxController {
@@ -19,10 +21,14 @@ class OrderPaymentConfirmationController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
 
+  final refreshController = RefreshController();
+
   final orderId = "".obs;
   final orderType = 0.obs;
   final orderDetail = OrderDetail().obs;
   final orderPayment = OrderPayment().obs;
+
+  final subcharge = 0.obs;
 
   final isInformationShow = false.obs;
 
@@ -49,6 +55,11 @@ class OrderPaymentConfirmationController extends GetxController {
     super.onClose();
   }
 
+  Future<void> refreshAll() async {
+    await getOrderDetail();
+    await getOrderPayment();
+  }
+
   Future<void> getOrderDetail() async {
     orderDetail.value = await orderRepository.getOrderDetail(
       orderType: orderType.value,
@@ -66,20 +77,61 @@ class OrderPaymentConfirmationController extends GetxController {
     );
   }
 
-  Future<void> confirmOrderPayment() async {
-    await orderRepository.confirmOrderPayment(
-      orderType: orderType.value,
-      orderId: orderId.value,
-      language: 2,
-      payManner: orderDetail.value.payManner!,
-    );
-  }
-
   Future<void> confirmCashReceived() async {
     await orderRepository.confirmCashReceived(
       orderType: orderType.value,
       orderId: orderId.value,
       language: 2,
     );
+  }
+
+  Future<void> onTapConfirmPayment() async {
+    await orderRepository.confirmOrderPayment(
+      orderType: orderType.value,
+      orderId: orderId.value,
+      language: 2,
+      payManner: orderDetail.value.payManner!,
+      additionalCharge: formGroup.control("additional_charge").value == null
+          ? 0
+          : int.tryParse(
+                  formGroup
+                      .control("additional_charge")
+                      .value
+                      .toString()
+                      .replaceAll("Rp", "")
+                      .replaceAll(".", ""),
+                ) ??
+                0,
+      surchargeDescription: formGroup.control("surcharge_description").value,
+    );
+
+    await refreshAll();
+  }
+
+  Future<void> onTapConfirmCashReceived() async {
+    try {
+      await orderRepository.confirmCashReceived(
+        orderType: orderType.value,
+        orderId: orderId.value,
+        language: 2,
+      );
+
+      await refreshAll();
+    } catch (e) {
+      Get.showSnackbar(
+        GetSnackBar(
+          duration: Duration(seconds: 2),
+          backgroundColor: themeColorServices.sematicColorRed400.value,
+          snackPosition: SnackPosition.TOP,
+          snackStyle: SnackStyle.GROUNDED,
+          messageText: Text(
+            e.toString(),
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

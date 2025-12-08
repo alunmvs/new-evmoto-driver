@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
@@ -823,16 +824,113 @@ class OrderDetailController extends GetxController {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text("Tutup"),
+                            child: SizedBox(
+                              height: 46,
+                              width: Get.width,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(
+                                    color: themeColorServices
+                                        .neutralsColorGrey300
+                                        .value,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  Get.close(1);
+                                },
+                                child: Text(
+                                  "Tutup",
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(
+                                        color: themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                      ),
+                                ),
+                              ),
                             ),
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: Text("Batalkan"),
+                            child: SizedBox(
+                              width: Get.width,
+                              height: 46,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  try {
+                                    await orderRepository.cancelOrder(
+                                      orderType: orderType.value,
+                                      orderId: orderId.value,
+                                      language: 2,
+                                    );
+                                    Get.close(1);
+                                    Get.back();
+                                    Get.find<HomeController>().refreshAll();
+                                    Get.showSnackbar(
+                                      GetSnackBar(
+                                        duration: Duration(seconds: 2),
+                                        backgroundColor: themeColorServices
+                                            .sematicColorGreen400
+                                            .value,
+                                        snackPosition: SnackPosition.TOP,
+                                        snackStyle: SnackStyle.GROUNDED,
+                                        messageText: Text(
+                                          "Berhasil membatalkan pesanan",
+                                          style: typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: themeColorServices
+                                                    .neutralsColorGrey0
+                                                    .value,
+                                              ),
+                                        ),
+                                      ),
+                                    );
+                                  } catch (e) {
+                                    Get.showSnackbar(
+                                      GetSnackBar(
+                                        duration: Duration(seconds: 2),
+                                        backgroundColor: themeColorServices
+                                            .sematicColorRed400
+                                            .value,
+                                        snackPosition: SnackPosition.TOP,
+                                        snackStyle: SnackStyle.GROUNDED,
+                                        messageText: Text(
+                                          e.toString(),
+                                          style: typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: themeColorServices
+                                                    .neutralsColorGrey0
+                                                    .value,
+                                              ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      themeColorServices.redColor.value,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Batalkan",
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(
+                                        color: themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
+                                ),
+                              ),
                             ),
                           ),
                         ],

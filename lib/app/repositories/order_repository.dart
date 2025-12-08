@@ -123,6 +123,8 @@ class OrderRepository {
         options: Options(headers: headers),
       );
 
+      print(response.data);
+
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
@@ -222,6 +224,8 @@ class OrderRepository {
     required String orderId,
     required int language,
     required int payManner,
+    int? additionalCharge,
+    String? surchargeDescription,
   }) async {
     try {
       var url = "$baseUrl/businessProcess/api/order/confirmFees";
@@ -231,6 +235,8 @@ class OrderRepository {
         "orderId": orderId,
         "payManner": payManner,
         "language": language,
+        "additionalCharge": additionalCharge,
+        "surchargeDescription": surchargeDescription,
       });
 
       var storage = FlutterSecureStorage();
@@ -303,7 +309,7 @@ class OrderRepository {
 
       var formData = FormData.fromMap({
         "orderType": orderType,
-        "orderId": orderId,
+        "id": orderId,
         "language": language,
       });
 

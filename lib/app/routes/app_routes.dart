@@ -17,6 +17,7 @@ abstract class Routes {
   static const REGISTER_FORM_COMPLETED = _Paths.REGISTER_FORM_COMPLETED;
   static const ORDER_DETAIL = _Paths.ORDER_DETAIL;
   static const ORDER_PAYMENT_CONFIRMATION = _Paths.ORDER_PAYMENT_CONFIRMATION;
+  static const ORDER_PAYMENT_DETAIL = _Paths.ORDER_PAYMENT_DETAIL;
 }
 
 abstract class _Paths {
@@ -35,4 +36,5 @@ abstract class _Paths {
   static const REGISTER_FORM_COMPLETED = '/register-form-completed';
   static const ORDER_DETAIL = '/order-detail';
   static const ORDER_PAYMENT_CONFIRMATION = '/order-payment-confirmation';
+  static const ORDER_PAYMENT_DETAIL = '/order-payment-detail';
 }
