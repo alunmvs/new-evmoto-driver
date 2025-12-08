@@ -57,38 +57,44 @@ class OrderDetailView extends GetView<OrderDetailController> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: controller
-                                      .themeColorServices
-                                      .neutralsColorGrey0
-                                      .value,
-                                  borderRadius: BorderRadius.circular(9999),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: controller
-                                          .themeColorServices
-                                          .overlayDark200
-                                          .value
-                                          .withValues(alpha: 0.3),
-                                      blurRadius: 32,
-                                      spreadRadius: -6,
-                                      offset: Offset(0, -1),
-                                    ),
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                      "assets/icons/icon_arrow_left.svg",
-                                      width: 22,
-                                      height: 22,
-                                    ),
-                                  ],
+                              GestureDetector(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                    borderRadius: BorderRadius.circular(9999),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: controller
+                                            .themeColorServices
+                                            .overlayDark200
+                                            .value
+                                            .withValues(alpha: 0.3),
+                                        blurRadius: 32,
+                                        spreadRadius: -6,
+                                        offset: Offset(0, -1),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/icon_arrow_left.svg",
+                                        width: 22,
+                                        height: 22,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 14),

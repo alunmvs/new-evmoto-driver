@@ -343,23 +343,25 @@ class OrderDetailController extends GetxController {
           double.parse(currentLongitude.value),
         ),
         icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
-          'assets/icons/icon_order_scooter.png',
+          orderDetail.value.state == 2 || orderDetail.value.state == 3
+              ? 'assets/icons/icon_order_my_location.png'
+              : 'assets/icons/icon_order_scooter.png',
           Size(53, 53),
         ),
       );
       upsertMarker(markerId: markerId, newMarker: newMarker);
+
+      updatePolyline(
+        LatLng(
+          double.parse(currentLatitude.value),
+          double.parse(currentLongitude.value),
+        ),
+      );
+
+      try {
+        await checkDriverOffRoute();
+      } catch (e) {}
     });
-
-    updatePolyline(
-      LatLng(
-        double.parse(currentLatitude.value),
-        double.parse(currentLongitude.value),
-      ),
-    );
-
-    try {
-      await checkDriverOffRoute();
-    } catch (e) {}
   }
 
   void upsertMarker({required Marker newMarker, required MarkerId markerId}) {
