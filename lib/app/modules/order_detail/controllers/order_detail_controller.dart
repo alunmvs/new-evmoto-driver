@@ -13,6 +13,7 @@ import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailController extends GetxController {
   final OrderRepository orderRepository;
@@ -79,7 +80,9 @@ class OrderDetailController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-    googleMapController.dispose();
+    try {
+      googleMapController.dispose();
+    } catch (e) {}
     try {
       driverCurrentLocationTimer?.cancel();
     } catch (e) {}
@@ -372,74 +375,7 @@ class OrderDetailController extends GetxController {
 
   Future<void> setupSchedulerDriverRefocusMapBound() async {
     refocusMapBoundsTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
-      if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
-        LatLngBounds bounds;
-
-        var originLatitude = double.parse(currentLatitude.value);
-        var originLongitude = double.parse(currentLongitude.value);
-        var destinationLatitude = this.orderDetail.value.startLat!;
-        var destinationLongitude = this.orderDetail.value.startLon!;
-
-        if (originLatitude > destinationLatitude &&
-            originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, destinationLongitude),
-            northeast: LatLng(originLatitude, originLongitude),
-          );
-        } else if (originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, destinationLongitude),
-            northeast: LatLng(destinationLatitude, originLongitude),
-          );
-        } else if (originLatitude > destinationLatitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, originLongitude),
-            northeast: LatLng(originLatitude, destinationLongitude),
-          );
-        } else {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, originLongitude),
-            northeast: LatLng(destinationLatitude, destinationLongitude),
-          );
-        }
-
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, 200),
-        );
-      } else {
-        LatLngBounds bounds;
-
-        var originLatitude = double.parse(currentLatitude.value);
-        var originLongitude = double.parse(currentLongitude.value);
-        var destinationLatitude = this.orderDetail.value.endLat!;
-        var destinationLongitude = this.orderDetail.value.endLon!;
-
-        if (originLatitude > destinationLatitude &&
-            originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, destinationLongitude),
-            northeast: LatLng(originLatitude, originLongitude),
-          );
-        } else if (originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, destinationLongitude),
-            northeast: LatLng(destinationLatitude, originLongitude),
-          );
-        } else if (originLatitude > destinationLatitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, originLongitude),
-            northeast: LatLng(originLatitude, destinationLongitude),
-          );
-        } else {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, originLongitude),
-            northeast: LatLng(destinationLatitude, destinationLongitude),
-          );
-        }
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, 200),
-        );
-      }
+      await onTapRefocus();
     });
   }
 
@@ -754,5 +690,110 @@ class OrderDetailController extends GetxController {
       Routes.ORDER_PAYMENT_CONFIRMATION,
       arguments: {"order_id": orderId.value, "order_type": orderType.value},
     );
+  }
+
+  Future<void> onTapRefocus() async {
+    if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
+      LatLngBounds bounds;
+
+      var originLatitude = double.parse(currentLatitude.value);
+      var originLongitude = double.parse(currentLongitude.value);
+      var destinationLatitude = this.orderDetail.value.startLat!;
+      var destinationLongitude = this.orderDetail.value.startLon!;
+
+      if (originLatitude > destinationLatitude &&
+          originLongitude > destinationLongitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(destinationLatitude, destinationLongitude),
+          northeast: LatLng(originLatitude, originLongitude),
+        );
+      } else if (originLongitude > destinationLongitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(originLatitude, destinationLongitude),
+          northeast: LatLng(destinationLatitude, originLongitude),
+        );
+      } else if (originLatitude > destinationLatitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(destinationLatitude, originLongitude),
+          northeast: LatLng(originLatitude, destinationLongitude),
+        );
+      } else {
+        bounds = LatLngBounds(
+          southwest: LatLng(originLatitude, originLongitude),
+          northeast: LatLng(destinationLatitude, destinationLongitude),
+        );
+      }
+
+      await googleMapController.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, 200),
+      );
+    } else {
+      LatLngBounds bounds;
+
+      var originLatitude = double.parse(currentLatitude.value);
+      var originLongitude = double.parse(currentLongitude.value);
+      var destinationLatitude = this.orderDetail.value.endLat!;
+      var destinationLongitude = this.orderDetail.value.endLon!;
+
+      if (originLatitude > destinationLatitude &&
+          originLongitude > destinationLongitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(destinationLatitude, destinationLongitude),
+          northeast: LatLng(originLatitude, originLongitude),
+        );
+      } else if (originLongitude > destinationLongitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(originLatitude, destinationLongitude),
+          northeast: LatLng(destinationLatitude, originLongitude),
+        );
+      } else if (originLatitude > destinationLatitude) {
+        bounds = LatLngBounds(
+          southwest: LatLng(destinationLatitude, originLongitude),
+          northeast: LatLng(originLatitude, destinationLongitude),
+        );
+      } else {
+        bounds = LatLngBounds(
+          southwest: LatLng(originLatitude, originLongitude),
+          northeast: LatLng(destinationLatitude, destinationLongitude),
+        );
+      }
+      await googleMapController.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, 200),
+      );
+    }
+  }
+
+  Future<void> onTapOpenGoogleMaps() async {
+    if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
+      final Uri googleMapsUrl = Uri.parse(
+        'https://www.google.com/maps/search/?api=1&query=${orderDetail.value.startLat},${orderDetail.value.startLon}',
+      );
+
+      if (await canLaunchUrl(googleMapsUrl)) {
+        await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
+      } else {
+        throw 'Could not open Google Maps.';
+      }
+    } else {
+      final Uri googleMapsUrl = Uri.parse(
+        'https://www.google.com/maps/search/?api=1&query=${orderDetail.value.endLat},${orderDetail.value.endLon}',
+      );
+
+      if (await canLaunchUrl(googleMapsUrl)) {
+        await launchUrl(googleMapsUrl, mode: LaunchMode.externalApplication);
+      } else {
+        throw 'Could not open Google Maps.';
+      }
+    }
+  }
+
+  Future<void> onTapCallEmergency() async {
+    var phoneNumber = '110';
+    var launchUri = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(launchUri)) {
+      await launchUrl(launchUri, mode: LaunchMode.platformDefault);
+    } else {
+      throw 'Could not launch $phoneNumber';
+    }
   }
 }

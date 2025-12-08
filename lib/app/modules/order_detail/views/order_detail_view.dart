@@ -428,96 +428,111 @@ class OrderDetailView extends GetView<OrderDetailController> {
                             children: [
                               Column(
                                 children: [
-                                  Container(
-                                    width: 34,
-                                    height: 34,
-                                    decoration: BoxDecoration(
-                                      color: controller
-                                          .themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
-                                      border: Border.all(
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await controller.onTapOpenGoogleMaps();
+                                    },
+                                    child: Container(
+                                      width: 34,
+                                      height: 34,
+                                      decoration: BoxDecoration(
                                         color: controller
                                             .themeColorServices
-                                            .neutralsColorGrey300
+                                            .neutralsColorGrey0
                                             .value,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/icons/icon_navigation.svg",
-                                          width: 21.15,
-                                          height: 21.15,
+                                        border: Border.all(
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey300
+                                              .value,
                                         ),
-                                      ],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_navigation.svg",
+                                            width: 21.15,
+                                            height: 21.15,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   SizedBox(height: 8),
-                                  Container(
-                                    width: 34,
-                                    height: 34,
-                                    decoration: BoxDecoration(
-                                      color: controller
-                                          .themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
-                                      border: Border.all(
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await controller.onTapRefocus();
+                                    },
+                                    child: Container(
+                                      width: 34,
+                                      height: 34,
+                                      decoration: BoxDecoration(
                                         color: controller
                                             .themeColorServices
-                                            .neutralsColorGrey300
+                                            .neutralsColorGrey0
                                             .value,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/icons/icon_gps.svg",
-                                          width: 21.15,
-                                          height: 21.15,
+                                        border: Border.all(
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey300
+                                              .value,
                                         ),
-                                      ],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_gps.svg",
+                                            width: 21.15,
+                                            height: 21.15,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                               Column(
                                 children: [
-                                  Container(
-                                    width: 34,
-                                    height: 34,
-                                    decoration: BoxDecoration(
-                                      color: controller
-                                          .themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
-                                      border: Border.all(
-                                        color: Color(0XFFFB958C),
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          "assets/icons/icon_emergency.png",
-                                          width: 17,
-                                          height: 17,
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await controller.onTapCallEmergency();
+                                    },
+                                    child: Container(
+                                      width: 34,
+                                      height: 34,
+                                      decoration: BoxDecoration(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                        border: Border.all(
+                                          color: Color(0XFFFB958C),
                                         ),
-                                      ],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            "assets/icons/icon_emergency.png",
+                                            width: 17,
+                                            height: 17,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
