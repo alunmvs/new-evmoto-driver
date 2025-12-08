@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -32,6 +31,27 @@ class BitmapDescriptorHelper {
     final image = rasterPicture.toImageSync(width, height);
     final bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
 
-    return BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
+    return BitmapDescriptor.bytes(bytes.buffer.asUint8List());
+  }
+
+  static Future<BitmapDescriptor> getBitmapDescriptorFromPngAsset(
+    String assetName, [
+    Size size = const Size(48, 48),
+  ]) async {
+    final byteData = await rootBundle.load(assetName);
+    final bytes = byteData.buffer.asUint8List();
+
+    final codec = await ui.instantiateImageCodec(
+      bytes,
+      targetWidth: size.width.toInt(),
+      targetHeight: size.height.toInt(),
+    );
+
+    final frame = await codec.getNextFrame();
+    final resizedBytes = (await frame.image.toByteData(
+      format: ui.ImageByteFormat.png,
+    ))!.buffer.asUint8List();
+
+    return BitmapDescriptor.bytes(resizedBytes);
   }
 }

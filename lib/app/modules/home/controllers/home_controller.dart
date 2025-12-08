@@ -78,6 +78,7 @@ class HomeController extends GetxController {
   Future<void> onClose() async {
     super.onClose();
     await socket.close();
+    schedulerDataSocketTimer.cancel();
   }
 
   Future<void> requestLocation() async {
@@ -118,7 +119,9 @@ class HomeController extends GetxController {
     var deviceId = await getDeviceId();
     var appVersion = await getVersion();
 
-    Timer.periodic(Duration(seconds: 5), (timer) async {
+    schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
+      timer,
+    ) async {
       var locationSettings = LocationSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 100,
