@@ -33,7 +33,7 @@ class OrderPaymentConfirmationView
                   : "Menunggu Pembayaran (Cash)",
               style: controller.typographyServices.bodyLargeBold.value,
             ),
-            centerTitle: false,
+            centerTitle: true,
             backgroundColor: controller.orderDetail.value.state != 5
                 ? controller.themeColorServices.neutralsColorGrey0.value
                 : Color(0XFFF7F7F7),

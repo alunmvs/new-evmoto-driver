@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 
+import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
+import '../modules/deposit_balance/views/deposit_balance_view.dart';
+import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
+import '../modules/deposit_balance_payment_webview/views/deposit_balance_payment_webview_view.dart';
 import '../modules/forget_password/bindings/forget_password_binding.dart';
 import '../modules/forget_password/views/forget_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -113,6 +117,16 @@ class AppPages {
       name: _Paths.ORDER_PAYMENT_DETAIL,
       page: () => const OrderPaymentDetailView(),
       binding: OrderPaymentDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.DEPOSIT_BALANCE,
+      page: () => const DepositBalanceView(),
+      binding: DepositBalanceBinding(),
+    ),
+    GetPage(
+      name: _Paths.DEPOSIT_BALANCE_PAYMENT_WEBVIEW,
+      page: () => const DepositBalancePaymentWebviewView(),
+      binding: DepositBalancePaymentWebviewBinding(),
     ),
   ];
 }

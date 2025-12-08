@@ -17,7 +17,7 @@ class OrderPaymentDetailView extends GetView<OrderPaymentDetailController> {
           "Detail Pembayaran",
           style: controller.typographyServices.bodyLargeBold.value,
         ),
-        centerTitle: false,
+        centerTitle: true,
         backgroundColor: Color(0XFFF7F7F7),
         surfaceTintColor: Color(0XFFF7F7F7),
         leading: Row(

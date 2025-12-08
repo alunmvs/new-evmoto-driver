@@ -15,7 +15,7 @@ class RegisterRepository {
 
       var formData = FormData.fromMap({"language": language});
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
       if (response.data['code'] != 200) {
@@ -40,7 +40,7 @@ class RegisterRepository {
 
       var formData = FormData.fromMap({"language": language});
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
       if (response.data['code'] != 200) {
@@ -75,7 +75,7 @@ class RegisterRepository {
         "language": language,
       });
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
       if (response.data['code'] != 200) {
@@ -127,7 +127,7 @@ class RegisterRepository {
         "name": name,
       });
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
       if (response.data['code'] != 200) {

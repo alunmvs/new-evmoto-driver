@@ -119,7 +119,7 @@ class HomeView extends GetView<HomeController> {
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Container(
                           width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(16),
+
                           decoration: BoxDecoration(
                             color: controller
                                 .themeColorServices
@@ -133,78 +133,77 @@ class HomeView extends GetView<HomeController> {
                           ),
                           child: Column(
                             children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 35 / 2,
-                                    backgroundImage: CachedNetworkImageProvider(
-                                      controller.userInfo.value.avatar!,
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 35 / 2,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                            controller.userInfo.value.avatar!,
+                                          ),
                                     ),
-                                  ),
-                                  SizedBox(width: 16),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          controller.userInfo.value.name ?? "-",
-                                          style: controller
-                                              .typographyServices
-                                              .bodyLargeBold
-                                              .value,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        Text(
-                                          "${controller.userInfo.value.licensePlate} | ${controller.userInfo.value.brand}",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeBold
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
+                                    SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            controller.userInfo.value.name ??
+                                                "-",
+                                            style: controller
+                                                .typographyServices
+                                                .bodyLargeBold
+                                                .value,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          Text(
+                                            "${controller.userInfo.value.licensePlate} | ${controller.userInfo.value.brand}",
+                                            style: controller
+                                                .typographyServices
+                                                .captionLargeBold
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .thirdTextColor
+                                                      .value,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 16),
-                                  Text(
-                                    DateFormat(
-                                      'MM/dd\nEEEE',
-                                    ).format(DateTime.now()),
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .textColor
-                                              .value,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ],
+                                    SizedBox(width: 16),
+                                    Text(
+                                      DateFormat(
+                                        'MM/dd\nEEEE',
+                                      ).format(DateTime.now()),
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallBold
+                                          .value
+                                          .copyWith(
+                                            color: controller
+                                                .themeColorServices
+                                                .textColor
+                                                .value,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SizedBox(height: 16),
+
                               Container(
                                 padding: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: controller
-                                        .themeColorServices
-                                        .neutralsColorGrey200
-                                        .value,
-                                  ),
-                                  borderRadius: BorderRadius.circular(16),
+                                  color: Color(0XFFF5F5F5),
                                 ),
                                 child: IntrinsicHeight(
                                   child: Row(
@@ -402,141 +401,158 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 16),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 32,
-                                        height: 32,
-                                        decoration: BoxDecoration(
-                                          color: controller
-                                              .themeColorServices
-                                              .sematicColorBlue100
-                                              .value,
-                                          borderRadius: BorderRadius.circular(
-                                            8,
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: 32,
+                                          height: 32,
+                                          decoration: BoxDecoration(
+                                            color: controller
+                                                .themeColorServices
+                                                .sematicColorBlue100
+                                                .value,
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_wallet.svg",
+                                                width: 16,
+                                                height: 16,
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                        SizedBox(width: 8),
+                                        Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            SvgPicture.asset(
-                                              "assets/icons/icon_wallet.svg",
-                                              width: 16,
-                                              height: 16,
+                                            Text(
+                                              "Saldo Kamu",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionSmallRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey500
+                                                        .value,
+                                                  ),
+                                            ),
+                                            SizedBox(height: 2),
+                                            Text(
+                                              NumberFormat.currency(
+                                                locale: 'id_ID',
+                                                symbol: 'Rp ',
+                                                decimalDigits: 0,
+                                              ).format(
+                                                controller
+                                                    .userInfo
+                                                    .value
+                                                    .balance,
+                                              ),
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodySmallBold
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .neutralsColorGrey800
+                                                        .value,
+                                                  ),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Saldo Kamu",
-                                            style: controller
-                                                .typographyServices
-                                                .captionSmallRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey500
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            await Get.toNamed(
+                                              Routes.DEPOSIT_BALANCE,
+                                            );
+
+                                            await controller.refreshAll();
+                                          },
+                                          child: Container(
+                                            color: Colors.transparent,
+                                            child: Column(
+                                              children: [
+                                                SvgPicture.asset(
+                                                  "assets/icons/icon_add_circle.svg",
+                                                  width: 18,
+                                                  height: 18,
+                                                ),
+                                                SizedBox(height: 4),
+                                                Text(
+                                                  "Isi Ulang",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .captionLargeRegular
                                                       .value,
                                                 ),
-                                          ),
-                                          SizedBox(height: 2),
-                                          Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: 'Rp ',
-                                              decimalDigits: 0,
-                                            ).format(
-                                              controller.userInfo.value.balance,
+                                              ],
                                             ),
-                                            style: controller
-                                                .typographyServices
-                                                .bodySmallBold
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey800
-                                                      .value,
-                                                ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_add_circle.svg",
-                                            width: 18,
-                                            height: 18,
-                                          ),
-                                          SizedBox(height: 4),
-                                          Text(
-                                            "Isi Ulang",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(width: 14),
-                                      Column(
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_withdraw.svg",
-                                            width: 19,
-                                            height: 19,
-                                          ),
-                                          SizedBox(height: 4),
-                                          Text(
-                                            "Tarik Dana",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(width: 14),
-                                      Column(
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_others.svg",
-                                            width: 18,
-                                            height: 18,
-                                          ),
-                                          SizedBox(height: 4),
-                                          Text(
-                                            "Lainnya",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        ),
+                                        SizedBox(width: 14),
+                                        Column(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_withdraw.svg",
+                                              width: 19,
+                                              height: 19,
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              "Tarik Dana",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(width: 14),
+                                        Column(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_others.svg",
+                                              width: 18,
+                                              height: 18,
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              "Lainnya",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),

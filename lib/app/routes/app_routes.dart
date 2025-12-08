@@ -18,6 +18,9 @@ abstract class Routes {
   static const ORDER_DETAIL = _Paths.ORDER_DETAIL;
   static const ORDER_PAYMENT_CONFIRMATION = _Paths.ORDER_PAYMENT_CONFIRMATION;
   static const ORDER_PAYMENT_DETAIL = _Paths.ORDER_PAYMENT_DETAIL;
+  static const DEPOSIT_BALANCE = _Paths.DEPOSIT_BALANCE;
+  static const DEPOSIT_BALANCE_PAYMENT_WEBVIEW =
+      _Paths.DEPOSIT_BALANCE_PAYMENT_WEBVIEW;
 }
 
 abstract class _Paths {
@@ -37,4 +40,7 @@ abstract class _Paths {
   static const ORDER_DETAIL = '/order-detail';
   static const ORDER_PAYMENT_CONFIRMATION = '/order-payment-confirmation';
   static const ORDER_PAYMENT_DETAIL = '/order-payment-detail';
+  static const DEPOSIT_BALANCE = '/deposit-balance';
+  static const DEPOSIT_BALANCE_PAYMENT_WEBVIEW =
+      '/deposit-balance-payment-webview';
 }

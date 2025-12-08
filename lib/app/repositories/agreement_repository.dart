@@ -21,7 +21,7 @@ class AgreementRepository {
         "type": type,
       });
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
       return Agreement.fromJson(response.data['data']);

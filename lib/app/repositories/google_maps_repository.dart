@@ -16,7 +16,7 @@ class GoogleMapsRepository {
     try {
       var url = "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.get(
         url,
         queryParameters: {
@@ -47,7 +47,7 @@ class GoogleMapsRepository {
     try {
       var url = "https://maps.googleapis.com/maps/api/geocode/json";
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.get(
         url,
         queryParameters: {
@@ -79,7 +79,7 @@ class GoogleMapsRepository {
     try {
       var url = "https://maps.googleapis.com/maps/api/directions/json";
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.get(
         url,
         queryParameters: {

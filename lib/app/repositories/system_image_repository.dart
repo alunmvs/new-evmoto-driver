@@ -21,7 +21,7 @@ class SystemImageRepository {
         "type": type,
       });
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
       var result = <SystemImage>[];

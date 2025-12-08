@@ -22,7 +22,7 @@ class ForgetPasswordRepository {
         "language": language,
       });
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
       if (response.data['code'] != 200) {

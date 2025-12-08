@@ -16,7 +16,7 @@ class OtpRepository {
         "type": type,
       });
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
       if (response.data['code'] != 200) {
@@ -37,7 +37,7 @@ class OtpRepository {
         "code": code,
       });
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(url, data: formData);
 
       if (response.data['code'] != 200) {

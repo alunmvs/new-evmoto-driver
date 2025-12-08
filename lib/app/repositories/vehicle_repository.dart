@@ -24,7 +24,7 @@ class VehicleRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,

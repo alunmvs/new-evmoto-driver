@@ -13,10 +13,12 @@ class ApiServices extends GetxService {
       InterceptorsWrapper(
         onResponse: (response, handler) async {
           if (response.data != null) {
-            if (response.data['code'] == 600) {
-              var storage = FlutterSecureStorage();
-              await storage.deleteAll();
-              Get.offAllNamed(Routes.LOGIN);
+            if (response.data is Map<String, dynamic>) {
+              if (response.data['code'] == 600) {
+                var storage = FlutterSecureStorage();
+                await storage.deleteAll();
+                Get.offAllNamed(Routes.LOGIN);
+              }
             }
           }
 
