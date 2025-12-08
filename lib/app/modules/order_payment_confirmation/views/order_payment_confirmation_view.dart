@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -22,7 +23,9 @@ class OrderPaymentConfirmationView
           if (controller.orderDetail.value.state == 5) {
             Get.back();
           } else {
-            Get.offAllNamed(Routes.HOME);
+            Get.back();
+            Get.back();
+            Get.find<HomeController>().refreshAll();
           }
         },
         child: Scaffold(
@@ -49,7 +52,9 @@ class OrderPaymentConfirmationView
                     if (controller.orderDetail.value.state == 5) {
                       Get.back();
                     } else {
-                      Get.offAllNamed(Routes.HOME);
+                      Get.back();
+                      Get.back();
+                      Get.find<HomeController>().refreshAll();
                     }
                   },
                   child: Container(
@@ -1045,7 +1050,7 @@ class OrderPaymentConfirmationView
           bottomNavigationBar: controller.isFetch.value
               ? null
               : (controller.orderDetail.value.state != 5 &&
-                    controller.orderDetail.value.state != 7)
+                    controller.orderDetail.value.state != 8)
               ? null
               : BottomAppBar(
                   height: 78,

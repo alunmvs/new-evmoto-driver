@@ -217,6 +217,10 @@ class OrderDetailController extends GetxController {
   Future<void> setupGoogleMapOriginToDestination() async {
     polylines.clear();
 
+    markers.value = markers
+        .where((m) => m.markerId != MarkerId('appointment_origin'))
+        .toSet();
+
     var markerId = MarkerId("origin");
     var newMarker = Marker(
       markerId: MarkerId("origin"),
