@@ -81,8 +81,8 @@ class OnboardingIntroductionView
                         height: 46,
                         width: MediaQuery.of(context).size.width,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Get.offAndToNamed(Routes.LOGIN);
+                          onPressed: () async {
+                            await controller.onTapNext();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:

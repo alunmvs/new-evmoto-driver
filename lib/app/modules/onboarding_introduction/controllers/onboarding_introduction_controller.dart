@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/system_image_model.dart';
 import 'package:new_evmoto_driver/app/repositories/system_image_repository.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingIntroductionController extends GetxController {
   final SystemImageRepository systemImageRepository;
@@ -41,5 +43,11 @@ class OnboardingIntroductionController extends GetxController {
       language: 2,
       type: 2,
     );
+  }
+
+  Future<void> onTapNext() async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('is_onboarding_introduction_shown', true);
+    Get.offAndToNamed(Routes.LOGIN);
   }
 }
