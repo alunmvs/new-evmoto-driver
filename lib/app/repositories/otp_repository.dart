@@ -1,7 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' hide FormData;
+import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/main.dart';
 
 class OtpRepository {
+  final apiServices = Get.find<ApiServices>();
+
   Future<void> requestOTP({String? phone, int? language, int? type}) async {
     try {
       var url = "$baseUrl/account/base/driver/queryCaptcha";

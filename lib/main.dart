@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 
@@ -26,6 +27,7 @@ Future<void> main() async {
 
   Get.put(ThemeColorServices(), permanent: true);
   Get.put(TypographyServices(), permanent: true);
+  Get.put(ApiServices(), permanent: true);
 
   runApp(
     GetMaterialApp(

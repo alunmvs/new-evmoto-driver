@@ -1,7 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' hide FormData;
+import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/main.dart';
 
 class ForgetPasswordRepository {
+  final apiServices = Get.find<ApiServices>();
+
   Future<void> resetPassword({
     String? phone,
     String? password,

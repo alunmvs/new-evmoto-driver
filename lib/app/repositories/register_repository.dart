@@ -1,10 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/open_city_model.dart';
 import 'package:new_evmoto_driver/app/data/province_cities_model.dart';
 import 'package:new_evmoto_driver/app/data/registered_driver_model.dart';
+import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/main.dart';
 
 class RegisterRepository {
+  final apiServices = Get.find<ApiServices>();
+
   Future<List<ProvinceCities>> getAllProvinceCitiesList({int? language}) async {
     try {
       var url = "$baseUrl/app/base/driver/queryAllCity";

@@ -1,9 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/vehicle_statistics_model.dart';
+import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/main.dart';
 
 class VehicleRepository {
+  final apiServices = Get.find<ApiServices>();
+
   Future<VehicleStatistics> getVehicleStatisticsDetail({
     required int language,
   }) async {

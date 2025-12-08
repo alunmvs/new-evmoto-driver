@@ -1,11 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/order_model.dart';
 import 'package:new_evmoto_driver/app/data/order_payment_model.dart';
+import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/main.dart';
 
 class OrderRepository {
+  final apiServices = Get.find<ApiServices>();
+
   Future<List<Order>> getOrderList({
     required int size,
     required int language,
@@ -30,7 +34,7 @@ class OrderRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -75,7 +79,7 @@ class OrderRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -112,7 +116,7 @@ class OrderRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -157,7 +161,7 @@ class OrderRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -208,7 +212,7 @@ class OrderRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -249,7 +253,7 @@ class OrderRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
@@ -286,7 +290,7 @@ class OrderRepository {
         'Authorization': "Bearer $token",
       };
 
-      var dio = Dio();
+      var dio = apiServices.dio;
       var response = await dio.post(
         url,
         data: formData,
