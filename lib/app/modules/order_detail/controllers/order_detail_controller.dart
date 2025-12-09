@@ -174,7 +174,7 @@ class OrderDetailController extends GetxController {
       Polyline(
         polylineId: PolylineId("route"),
         points: polylineCoordinates,
-        color: themeColorServices.sematicColorBlue200.value,
+        color: Color(0XFF37C086),
         width: 6,
       ),
     );
@@ -281,7 +281,7 @@ class OrderDetailController extends GetxController {
       Polyline(
         polylineId: PolylineId("route"),
         points: polylineCoordinates,
-        color: themeColorServices.sematicColorBlue200.value,
+        color: Color(0XFF37C086),
         width: 6,
       ),
     );
@@ -447,7 +447,7 @@ class OrderDetailController extends GetxController {
           Polyline(
             polylineId: PolylineId("route"),
             points: polylineCoordinates,
-            color: themeColorServices.sematicColorBlue200.value,
+            color: Color(0XFF37C086),
             width: 6,
           ),
         );
@@ -538,7 +538,7 @@ class OrderDetailController extends GetxController {
           Polyline(
             polylineId: PolylineId("route"),
             points: polylineCoordinates,
-            color: themeColorServices.sematicColorBlue200.value,
+            color: Color(0XFF37C086),
             width: 6,
           ),
         );
