@@ -569,27 +569,56 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     await controller
                                         .updateStateStartOrderTrip();
                                     actionController.success();
+                                    actionController.reset();
                                   },
                                   toggleMargin: EdgeInsetsGeometry.all(0),
+                                  outerBackgroundBuilder:
+                                      (context, state, child) {
+                                        return Container(
+                                          color: Colors.transparent,
+                                        );
+                                      },
                                   foregroundBuilder: (context, state, child) {
                                     return AnimatedContainer(
                                       duration: Duration(milliseconds: 500),
                                       padding: const EdgeInsets.all(8.0),
-                                      child: CircleAvatar(
-                                        backgroundColor: state.position >= 0.5
-                                            ? Color(0XFF2579D4)
-                                            : controller
+                                      child:
+                                          state.sliderMode == SliderMode.loading
+                                          ? CircleAvatar(
+                                              backgroundColor: controller
                                                   .themeColorServices
                                                   .primaryBlue
                                                   .value,
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_arrow_slide_right.svg",
-                                            width: 24.5,
-                                            height: 24.5,
-                                          ),
-                                        ),
-                                      ),
+                                              child: Center(
+                                                child: SizedBox(
+                                                  width: 24.5,
+                                                  height: 24.5,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey0
+                                                            .value,
+                                                      ),
+                                                ),
+                                              ),
+                                            )
+                                          : CircleAvatar(
+                                              backgroundColor:
+                                                  state.position >= 0.5
+                                                  ? Color(0XFF2579D4)
+                                                  : controller
+                                                        .themeColorServices
+                                                        .primaryBlue
+                                                        .value,
+                                              child: Center(
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/icon_arrow_slide_right.svg",
+                                                  width: 24.5,
+                                                  height: 24.5,
+                                                ),
+                                              ),
+                                            ),
                                     );
                                   },
                                   backgroundBuilder: (context, state, child) {
@@ -650,27 +679,56 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     actionController.loading();
                                     await controller.updateStateArrivedOrigin();
                                     actionController.success();
+                                    actionController.reset();
                                   },
                                   toggleMargin: EdgeInsetsGeometry.all(0),
+                                  outerBackgroundBuilder:
+                                      (context, state, child) {
+                                        return Container(
+                                          color: Colors.transparent,
+                                        );
+                                      },
                                   foregroundBuilder: (context, state, child) {
                                     return AnimatedContainer(
                                       duration: Duration(milliseconds: 500),
                                       padding: const EdgeInsets.all(8.0),
-                                      child: CircleAvatar(
-                                        backgroundColor: state.position >= 0.5
-                                            ? Color(0XFF2579D4)
-                                            : controller
+                                      child:
+                                          state.sliderMode == SliderMode.loading
+                                          ? CircleAvatar(
+                                              backgroundColor: controller
                                                   .themeColorServices
                                                   .primaryBlue
                                                   .value,
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_arrow_slide_right.svg",
-                                            width: 24.5,
-                                            height: 24.5,
-                                          ),
-                                        ),
-                                      ),
+                                              child: Center(
+                                                child: SizedBox(
+                                                  width: 24.5,
+                                                  height: 24.5,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey0
+                                                            .value,
+                                                      ),
+                                                ),
+                                              ),
+                                            )
+                                          : CircleAvatar(
+                                              backgroundColor:
+                                                  state.position >= 0.5
+                                                  ? Color(0XFF2579D4)
+                                                  : controller
+                                                        .themeColorServices
+                                                        .primaryBlue
+                                                        .value,
+                                              child: Center(
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/icon_arrow_slide_right.svg",
+                                                  width: 24.5,
+                                                  height: 24.5,
+                                                ),
+                                              ),
+                                            ),
                                     );
                                   },
                                   backgroundBuilder: (context, state, child) {
@@ -731,27 +789,56 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     actionController.loading();
                                     await controller.updateStateOnProgress();
                                     actionController.success();
+                                    actionController.reset();
                                   },
                                   toggleMargin: EdgeInsetsGeometry.all(0),
+                                  outerBackgroundBuilder:
+                                      (context, state, child) {
+                                        return Container(
+                                          color: Colors.transparent,
+                                        );
+                                      },
                                   foregroundBuilder: (context, state, child) {
                                     return AnimatedContainer(
                                       duration: Duration(milliseconds: 500),
                                       padding: const EdgeInsets.all(8.0),
-                                      child: CircleAvatar(
-                                        backgroundColor: state.position >= 0.5
-                                            ? Color(0XFF2579D4)
-                                            : controller
+                                      child:
+                                          state.sliderMode == SliderMode.loading
+                                          ? CircleAvatar(
+                                              backgroundColor: controller
                                                   .themeColorServices
                                                   .primaryBlue
                                                   .value,
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_arrow_slide_right.svg",
-                                            width: 24.5,
-                                            height: 24.5,
-                                          ),
-                                        ),
-                                      ),
+                                              child: Center(
+                                                child: SizedBox(
+                                                  width: 24.5,
+                                                  height: 24.5,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey0
+                                                            .value,
+                                                      ),
+                                                ),
+                                              ),
+                                            )
+                                          : CircleAvatar(
+                                              backgroundColor:
+                                                  state.position >= 0.5
+                                                  ? Color(0XFF2579D4)
+                                                  : controller
+                                                        .themeColorServices
+                                                        .primaryBlue
+                                                        .value,
+                                              child: Center(
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/icon_arrow_slide_right.svg",
+                                                  width: 24.5,
+                                                  height: 24.5,
+                                                ),
+                                              ),
+                                            ),
                                     );
                                   },
                                   backgroundBuilder: (context, state, child) {
@@ -813,27 +900,56 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     await controller
                                         .updateStateArrivedAtDestination();
                                     actionController.success();
+                                    actionController.reset();
                                   },
                                   toggleMargin: EdgeInsetsGeometry.all(0),
+                                  outerBackgroundBuilder:
+                                      (context, state, child) {
+                                        return Container(
+                                          color: Colors.transparent,
+                                        );
+                                      },
                                   foregroundBuilder: (context, state, child) {
                                     return AnimatedContainer(
                                       duration: Duration(milliseconds: 500),
                                       padding: const EdgeInsets.all(8.0),
-                                      child: CircleAvatar(
-                                        backgroundColor: state.position >= 0.5
-                                            ? Color(0XFF2579D4)
-                                            : controller
+                                      child:
+                                          state.sliderMode == SliderMode.loading
+                                          ? CircleAvatar(
+                                              backgroundColor: controller
                                                   .themeColorServices
                                                   .primaryBlue
                                                   .value,
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_arrow_slide_right.svg",
-                                            width: 24.5,
-                                            height: 24.5,
-                                          ),
-                                        ),
-                                      ),
+                                              child: Center(
+                                                child: SizedBox(
+                                                  width: 24.5,
+                                                  height: 24.5,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey0
+                                                            .value,
+                                                      ),
+                                                ),
+                                              ),
+                                            )
+                                          : CircleAvatar(
+                                              backgroundColor:
+                                                  state.position >= 0.5
+                                                  ? Color(0XFF2579D4)
+                                                  : controller
+                                                        .themeColorServices
+                                                        .primaryBlue
+                                                        .value,
+                                              child: Center(
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/icon_arrow_slide_right.svg",
+                                                  width: 24.5,
+                                                  height: 24.5,
+                                                ),
+                                              ),
+                                            ),
                                     );
                                   },
                                   backgroundBuilder: (context, state, child) {
