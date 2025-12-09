@@ -28,6 +28,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        manifestPlaceholders["JPUSH_PKGNAME"] = "com.driver.evmototrip"
+        manifestPlaceholders["JPUSH_APPKEY"] = "a9c733989e650330102962d5"
+        manifestPlaceholders["JPUSH_CHANNEL"] = "developer-default"
     }
 
     buildTypes {

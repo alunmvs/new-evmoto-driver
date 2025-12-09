@@ -565,8 +565,10 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                   height: 60,
                                   boxShadow: [],
                                   action: (actionController) async {
+                                    actionController.loading();
                                     await controller
                                         .updateStateStartOrderTrip();
+                                    actionController.success();
                                   },
                                   toggleMargin: EdgeInsetsGeometry.all(0),
                                   foregroundBuilder: (context, state, child) {
@@ -645,7 +647,9 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                   height: 60,
                                   boxShadow: [],
                                   action: (actionController) async {
+                                    actionController.loading();
                                     await controller.updateStateArrivedOrigin();
+                                    actionController.success();
                                   },
                                   toggleMargin: EdgeInsetsGeometry.all(0),
                                   foregroundBuilder: (context, state, child) {
@@ -724,7 +728,9 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                   height: 60,
                                   boxShadow: [],
                                   action: (actionController) async {
+                                    actionController.loading();
                                     await controller.updateStateOnProgress();
+                                    actionController.success();
                                   },
                                   toggleMargin: EdgeInsetsGeometry.all(0),
                                   foregroundBuilder: (context, state, child) {
@@ -803,8 +809,10 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                   height: 60,
                                   boxShadow: [],
                                   action: (actionController) async {
+                                    actionController.loading();
                                     await controller
                                         .updateStateArrivedAtDestination();
+                                    actionController.success();
                                   },
                                   toggleMargin: EdgeInsetsGeometry.all(0),
                                   foregroundBuilder: (context, state, child) {

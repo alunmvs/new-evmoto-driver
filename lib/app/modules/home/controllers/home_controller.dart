@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/consts/order_state_const.dart';
@@ -15,6 +13,8 @@ import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/vehicle_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/push_notification_services.dart';
+import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -34,6 +34,8 @@ class HomeController extends GetxController
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final pushNotificationServices = Get.find<PushNotificationServices>();
+  final socketServices = Get.find<SocketServices>();
 
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
@@ -68,9 +70,8 @@ class HomeController extends GetxController
     isFetch.value = true;
     tabController = TabController(length: 3, vsync: this);
     await requestLocation();
-    await initSocket();
     await refreshAll();
-    await schedulerDataSocket();
+    await socketServices.setupWebsocket();
     isFetch.value = false;
   }
 
@@ -84,6 +85,7 @@ class HomeController extends GetxController
     super.onClose();
     await socket.close();
     schedulerDataSocketTimer.cancel();
+    await socketServices.closeWebsocket();
   }
 
   Future<void> requestLocation() async {
@@ -115,67 +117,6 @@ class HomeController extends GetxController
   Future<String> getVersion() async {
     var packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
-  }
-
-  Future<void> schedulerDataSocket() async {
-    var storage = FlutterSecureStorage();
-    var token = await storage.read(key: 'token');
-
-    var deviceId = await getDeviceId();
-    var appVersion = await getVersion();
-
-    schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
-      timer,
-    ) async {
-      var locationSettings = LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 100,
-      );
-
-      var position = await Geolocator.getCurrentPosition(
-        locationSettings: locationSettings,
-      );
-
-      var dataUser = {
-        "code": 200,
-        "data": {
-          "device": deviceId,
-          "token": token,
-          "type": 2,
-          "userId": userInfo.value,
-          "version": appVersion,
-        },
-        "method": "PING",
-        "msg": "SUCCESS",
-      };
-      var dataLocation = {
-        "code": 200,
-        "data": {
-          "altitude": position.altitude,
-          "computeAzimuth": 0.0,
-          "driverId": userInfo.value.id,
-          "lat": position.latitude,
-          "lon": position.longitude,
-          "orderId": "",
-          "orderType": "",
-        },
-        "method": "LOCATION",
-        "msg": "SUCCESS",
-      };
-
-      socket.write(jsonEncode(dataUser));
-      socket.write(jsonEncode(dataLocation));
-    });
-  }
-
-  Future<void> initSocket() async {
-    socket = await Socket.connect("api-dev.evmotoapp.com", 8888);
-
-    socket.listen((data) {
-      print(data);
-      print(utf8.decode(data));
-      print('Received: ${String.fromCharCodes(data)}');
-    });
   }
 
   Future<void> refreshAll() async {
