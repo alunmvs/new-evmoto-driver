@@ -31,8 +31,6 @@ class SplashScreenController extends GetxController {
       } else {
         Get.offAndToNamed(Routes.HOME);
       }
-
-      Get.offAndToNamed(Routes.ONBOARDING_INTRODUCTION);
     });
   }
 
