@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
@@ -116,7 +117,22 @@ class OrderPaymentConfirmationController extends GetxController {
         language: 2,
       );
 
-      await refreshAll();
+      Get.offAllNamed(Routes.HOME);
+
+      Get.showSnackbar(
+        GetSnackBar(
+          duration: Duration(seconds: 2),
+          backgroundColor: themeColorServices.sematicColorGreen400.value,
+          snackPosition: SnackPosition.TOP,
+          snackStyle: SnackStyle.GROUNDED,
+          messageText: Text(
+            "Pesanan berhasil diselesaikan",
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
+          ),
+        ),
+      );
     } catch (e) {
       Get.showSnackbar(
         GetSnackBar(
