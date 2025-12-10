@@ -1,11 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -117,37 +120,33 @@ class OrderPaymentConfirmationController extends GetxController {
         language: 2,
       );
 
-      Get.offAllNamed(Routes.HOME);
+      Get.back();
+      Get.back();
+      Get.find<HomeController>().refreshAll();
 
-      Get.showSnackbar(
-        GetSnackBar(
-          duration: Duration(seconds: 2),
-          backgroundColor: themeColorServices.sematicColorGreen400.value,
-          snackPosition: SnackPosition.TOP,
-          snackStyle: SnackStyle.GROUNDED,
-          messageText: Text(
-            "Pesanan berhasil diselesaikan",
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorGreen400.value,
+        content: Text(
+          "Pesanan berhasil diselesaikan",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
           ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } catch (e) {
-      Get.showSnackbar(
-        GetSnackBar(
-          duration: Duration(seconds: 2),
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          snackPosition: SnackPosition.TOP,
-          snackStyle: SnackStyle.GROUNDED,
-          messageText: Text(
-            e.toString(),
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
           ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
   }
 }

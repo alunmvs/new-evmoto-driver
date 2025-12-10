@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import '../controllers/home_controller.dart';
 import 'package:intl/intl.dart';
@@ -594,6 +595,55 @@ class HomeView extends GetView<HomeController> {
                                 overlayColor: WidgetStateProperty.all(
                                   Colors.transparent,
                                 ),
+                                onTap: (value) async {
+                                  switch (value) {
+                                    case 0:
+                                      await Future.wait([
+                                        controller.getUserInfoDetail(),
+                                        controller.getVehicleStatistics(),
+                                        controller.getOrderGrabbingHallList(),
+                                      ]);
+
+                                      controller.workStatus.value =
+                                          controller
+                                              .vehicleStatistics
+                                              .value
+                                              .work ??
+                                          2;
+                                      break;
+                                    case 1:
+                                      await Future.wait([
+                                        controller.getUserInfoDetail(),
+                                        controller.getVehicleStatistics(),
+
+                                        controller.getOrderInServiceList(),
+                                      ]);
+
+                                      controller.workStatus.value =
+                                          controller
+                                              .vehicleStatistics
+                                              .value
+                                              .work ??
+                                          2;
+                                      break;
+                                    case 2:
+                                      await Future.wait([
+                                        controller.getUserInfoDetail(),
+                                        controller.getVehicleStatistics(),
+                                        controller.getOrderToBeServedList(),
+                                      ]);
+
+                                      controller.workStatus.value =
+                                          controller
+                                              .vehicleStatistics
+                                              .value
+                                              .work ??
+                                          2;
+                                      break;
+                                    default:
+                                      break;
+                                  }
+                                },
                                 tabs: [
                                   Tab(text: 'Menerima Pesanan'),
                                   Tab(text: 'Dalam Layanan'),

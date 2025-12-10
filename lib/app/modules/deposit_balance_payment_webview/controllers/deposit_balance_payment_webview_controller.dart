@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/repositories/payment_repository.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/main.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DepositBalancePaymentWebviewController extends GetxController {
@@ -26,28 +27,27 @@ class DepositBalancePaymentWebviewController extends GetxController {
       NavigationDelegate(
         onNavigationRequest: (request) async {
           var uri = Uri.parse(request.url);
-          await paymentRepository.redirectUrlDepositBalance(
-            orderId: uri.queryParameters['order_id'].toString(),
-            statusCode: uri.queryParameters['status_code'].toString(),
-            transactionStatus: uri.queryParameters['transaction_status']
-                .toString(),
-          );
+          try {
+            await paymentRepository.redirectUrlDepositBalance(
+              orderId: uri.queryParameters['order_id'].toString(),
+              statusCode: uri.queryParameters['status_code'].toString(),
+              transactionStatus: uri.queryParameters['transaction_status']
+                  .toString(),
+            );
+          } catch (e) {}
           Get.back();
           Get.back();
-          Get.showSnackbar(
-            GetSnackBar(
-              duration: Duration(seconds: 2),
-              backgroundColor: themeColorServices.sematicColorGreen400.value,
-              snackPosition: SnackPosition.TOP,
-              snackStyle: SnackStyle.GROUNDED,
-              messageText: Text(
-                "Saldo berhasil ditambah",
-                style: typographyServices.bodySmallRegular.value.copyWith(
-                  color: themeColorServices.neutralsColorGrey0.value,
-                ),
+          final SnackBar snackBar = SnackBar(
+            behavior: SnackBarBehavior.fixed,
+            backgroundColor: themeColorServices.sematicColorGreen400.value,
+            content: Text(
+              "Saldo berhasil ditambah",
+              style: typographyServices.bodySmallRegular.value.copyWith(
+                color: themeColorServices.neutralsColorGrey0.value,
               ),
             ),
           );
+          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
           return NavigationDecision.prevent;
         },
       ),
@@ -64,5 +64,103 @@ class DepositBalancePaymentWebviewController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> showDialogBackButton() async {
+    Get.dialog(
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Apakah Anda yakin ingin membatalkan transaksi isi ulang saldo?",
+                        style: typographyServices.bodyLargeBold.value,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 46,
+                              width: Get.width,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(
+                                    color: themeColorServices
+                                        .neutralsColorGrey300
+                                        .value,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  Get.close(1);
+                                },
+                                child: Text(
+                                  "Tutup",
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(
+                                        color: themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Expanded(
+                            child: SizedBox(
+                              width: Get.width,
+                              height: 46,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  Get.close(1);
+                                  Get.back();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      themeColorServices.redColor.value,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Batalkan",
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(
+                                        color: themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -13,6 +13,9 @@ import 'app/routes/app_pages.dart';
 
 final baseUrl = "http://api-dev.evmotoapp.com:8500";
 
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -38,6 +41,7 @@ Future<void> main() async {
       title: "Evmoto Driver",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+      scaffoldMessengerKey: rootScaffoldMessengerKey,
       theme: ThemeData(
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: Get.find<ThemeColorServices>().primaryBlue.value,

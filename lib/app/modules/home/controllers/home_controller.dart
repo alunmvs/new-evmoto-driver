@@ -23,8 +23,10 @@ import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
+import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
 class HomeController extends GetxController
@@ -262,20 +264,17 @@ class HomeController extends GetxController
         workStatus.value = 2;
       }
     } catch (e) {
-      Get.showSnackbar(
-        GetSnackBar(
-          duration: Duration(seconds: 2),
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          snackPosition: SnackPosition.TOP,
-          snackStyle: SnackStyle.GROUNDED,
-          messageText: Text(
-            e.toString(),
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
           ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
 
     await getVehicleStatistics();
@@ -294,20 +293,17 @@ class HomeController extends GetxController
         arguments: {"order_id": order.id, "order_type": order.type},
       );
     } catch (e) {
-      Get.showSnackbar(
-        GetSnackBar(
-          duration: Duration(seconds: 2),
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          snackPosition: SnackPosition.TOP,
-          snackStyle: SnackStyle.GROUNDED,
-          messageText: Text(
-            e.toString(),
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
           ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
     await orderGrabbingHallRefreshController.requestRefresh();
     await orderToBeServedRefreshController.requestRefresh();
@@ -360,395 +356,443 @@ class HomeController extends GetxController
   Future<void> showDialogOrderConfirmation({
     required SocketOrderStatusData socketOrderStatusData,
   }) async {
-    var orderData = await orderRepository.getOrderDetail(
-      orderType: socketOrderStatusData.orderType!,
-      orderId: socketOrderStatusData.orderId.toString(),
-      language: 2,
-    );
+    var prefs = await SharedPreferences.getInstance();
+    var isDialogShow =
+        prefs.getBool(
+          'dialog_order_confirmation_${socketOrderStatusData.orderId}',
+        ) ??
+        false;
 
-    var initialCameraPosition = CameraPosition(
-      target: LatLng(orderData.startLat!, orderData.startLon!),
-      zoom: 18,
-    ).obs;
+    if (isDialogShow == false) {
+      await prefs.setBool(
+        'dialog_order_confirmation_${socketOrderStatusData.orderId}',
+        true,
+      );
 
-    var markers = <Marker>{}.obs;
-    var newMarkers = Marker(
-      markerId: MarkerId("pinpoint"),
-      position: LatLng(orderData.startLat!, orderData.startLon!),
-    );
-    markers.add(newMarkers);
+      var orderData = await orderRepository.getOrderDetail(
+        orderType: socketOrderStatusData.orderType!,
+        orderId: socketOrderStatusData.orderId.toString(),
+        language: 2,
+      );
 
-    late GoogleMapController googleMapController;
+      var initialCameraPosition = CameraPosition(
+        target: LatLng(orderData.startLat!, orderData.startLon!),
+        zoom: 18,
+      ).obs;
 
-    final durationAccept = 0.obs;
-    durationAccept.value = socketOrderStatusData.time ?? 0;
+      var markers = <Marker>{}.obs;
+      var newMarkers = Marker(
+        markerId: MarkerId("pinpoint"),
+        position: LatLng(orderData.startLat!, orderData.startLon!),
+      );
+      markers.add(newMarkers);
 
-    late Timer timerDuration;
-    timerDuration = Timer.periodic(Duration(seconds: 1), (timer) {
-      durationAccept.value -= 1;
-      if (durationAccept.value == 0) {
-        timerDuration.cancel();
-      }
-    });
+      late GoogleMapController googleMapController;
 
-    Get.dialog(
-      Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Material(
-                color: themeColorServices.neutralsColorGrey0.value,
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 16,
-                      ),
-                      decoration: BoxDecoration(
-                        color: themeColorServices.primaryBlue.value,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Order EVMoto Motor",
-                                style: typographyServices.bodyLargeBold.value
-                                    .copyWith(
-                                      color: themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
-                                    ),
-                              ),
-                              Text(
-                                "${formatDouble(orderData.startMileage!)} km",
-                                style: typographyServices.bodySmallRegular.value
-                                    .copyWith(
-                                      color: themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
-                                    ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+      final durationAccept = 0.obs;
+      durationAccept.value = socketOrderStatusData.time ?? 0;
+
+      late Timer timerDuration;
+      timerDuration = Timer.periodic(Duration(seconds: 1), (timer) {
+        durationAccept.value -= 1;
+        if (durationAccept.value == 0) {
+          timerDuration.cancel();
+          Get.close(1);
+        }
+      });
+
+      await Get.dialog(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Material(
+                  color: themeColorServices.neutralsColorGrey0.value,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: themeColorServices.primaryBlue.value,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SvgPicture.asset(
-                                  "assets/icons/icon_close.svg",
-                                  width: 12,
-                                  height: 12,
+                                Text(
+                                  "Order EVMoto Motor",
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(
+                                        color: themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
+                                ),
+                                Text(
+                                  "${formatDouble(orderData.startMileage!)} km",
+                                  style: typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(
+                                        color: themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/icon_clock.svg",
-                                width: 16,
-                                height: 16,
-                              ),
-                              SizedBox(width: 6),
-                              Text(
-                                orderData.travelTime ?? "-",
-                                style: typographyServices.bodyLargeRegular.value
-                                    .copyWith(
-                                      color: themeColorServices.textColor.value,
-                                    ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/icon_location.svg",
-                                width: 16,
-                                height: 16,
-                              ),
-                              SizedBox(width: 6),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Dijemput",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .imageUploadVerticalDividerColor
-                                                .value,
-                                          ),
-                                    ),
-                                    Text(
-                                      orderData.startAddress ?? "-",
-                                      style: typographyServices
-                                          .bodyLargeRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .textColor
-                                                .value,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/icon_pin_location.svg",
-                                width: 16,
-                                height: 16,
-                              ),
-                              SizedBox(width: 6),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Lokasi Tujuan",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .imageUploadVerticalDividerColor
-                                                .value,
-                                          ),
-                                    ),
-                                    Text(
-                                      orderData.endAddress ?? "-",
-                                      style: typographyServices
-                                          .bodyLargeRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .textColor
-                                                .value,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: AspectRatio(
-                              aspectRatio: 298 / 75,
-                              child: GoogleMap(
-                                mapType: MapType.normal,
-                                zoomControlsEnabled: false,
-                                tiltGesturesEnabled: false,
-                                zoomGesturesEnabled: false,
-                                rotateGesturesEnabled: false,
-                                scrollGesturesEnabled: false,
-                                initialCameraPosition:
-                                    initialCameraPosition.value,
-                                onMapCreated:
-                                    (GoogleMapController googleMapController) {
-                                      googleMapController = googleMapController;
-                                    },
-                                markers: markers,
+                            SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_close.svg",
+                                    width: 12,
+                                    height: 12,
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      width: Get.width,
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: themeColorServices.neutralsColorGrey0.value,
-                        boxShadow: [
-                          BoxShadow(
-                            color: themeColorServices.overlayDark200.value
-                                .withValues(alpha: 0.05),
-                            blurRadius: 10,
-                            spreadRadius: 0,
-                            offset: Offset(0, -4),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          ActionSlider.custom(
-                            height: 60,
-                            boxShadow: [],
-                            action: (actionController) async {
-                              actionController.loading();
-                              await Future.delayed(Duration(seconds: 5));
-                              actionController.success();
-                              actionController.reset();
-                            },
-                            toggleMargin: EdgeInsetsGeometry.all(0),
-                            outerBackgroundBuilder: (context, state, child) {
-                              return Container(color: Colors.transparent);
-                            },
-                            foregroundBuilder: (context, state, child) {
-                              return AnimatedContainer(
-                                duration: Duration(milliseconds: 500),
-                                padding: const EdgeInsets.all(8.0),
-                                child: state.sliderMode == SliderMode.loading
-                                    ? CircleAvatar(
-                                        backgroundColor: themeColorServices
-                                            .primaryBlue
-                                            .value,
-                                        child: Center(
-                                          child: SizedBox(
-                                            width: 24.5,
-                                            height: 24.5,
-                                            child: CircularProgressIndicator(
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/icon_clock.svg",
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                SizedBox(width: 6),
+                                Text(
+                                  orderData.travelTime ?? "-",
+                                  style: typographyServices
+                                      .bodyLargeRegular
+                                      .value
+                                      .copyWith(
+                                        color:
+                                            themeColorServices.textColor.value,
+                                      ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/icon_location.svg",
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                SizedBox(width: 6),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Dijemput",
+                                        style: typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(
                                               color: themeColorServices
-                                                  .neutralsColorGrey0
+                                                  .imageUploadVerticalDividerColor
                                                   .value,
+                                            ),
+                                      ),
+                                      Text(
+                                        orderData.startAddress ?? "-",
+                                        style: typographyServices
+                                            .bodyLargeRegular
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .textColor
+                                                  .value,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/icon_pin_location.svg",
+                                  width: 16,
+                                  height: 16,
+                                ),
+                                SizedBox(width: 6),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Lokasi Tujuan",
+                                        style: typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .imageUploadVerticalDividerColor
+                                                  .value,
+                                            ),
+                                      ),
+                                      Text(
+                                        orderData.endAddress ?? "-",
+                                        style: typographyServices
+                                            .bodyLargeRegular
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .textColor
+                                                  .value,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: AspectRatio(
+                                aspectRatio: 298 / 75,
+                                child: GoogleMap(
+                                  mapType: MapType.normal,
+                                  zoomControlsEnabled: false,
+                                  tiltGesturesEnabled: false,
+                                  zoomGesturesEnabled: false,
+                                  rotateGesturesEnabled: false,
+                                  scrollGesturesEnabled: false,
+                                  initialCameraPosition:
+                                      initialCameraPosition.value,
+                                  onMapCreated:
+                                      (
+                                        GoogleMapController googleMapController,
+                                      ) {
+                                        googleMapController =
+                                            googleMapController;
+                                      },
+                                  markers: markers,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: Get.width,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: themeColorServices.neutralsColorGrey0.value,
+                          boxShadow: [
+                            BoxShadow(
+                              color: themeColorServices.overlayDark200.value
+                                  .withValues(alpha: 0.05),
+                              blurRadius: 10,
+                              spreadRadius: 0,
+                              offset: Offset(0, -4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            ActionSlider.custom(
+                              height: 60,
+                              boxShadow: [],
+                              action: (actionController) async {
+                                actionController.loading();
+                                Get.close(1);
+                                try {
+                                  await orderRepository.grabOrder(
+                                    orderType: socketOrderStatusData.orderType!,
+                                    orderId: socketOrderStatusData.orderId
+                                        .toString(),
+                                    language: 2,
+                                  );
+                                } catch (e) {}
+                                Get.toNamed(
+                                  Routes.ORDER_DETAIL,
+                                  arguments: {
+                                    "order_id": socketOrderStatusData.orderId,
+                                    "order_type":
+                                        socketOrderStatusData.orderType,
+                                  },
+                                );
+                                refreshAll();
+                                actionController.success();
+                                actionController.reset();
+                              },
+                              toggleMargin: EdgeInsetsGeometry.all(0),
+                              outerBackgroundBuilder: (context, state, child) {
+                                return Container(color: Colors.transparent);
+                              },
+                              foregroundBuilder: (context, state, child) {
+                                return AnimatedContainer(
+                                  duration: Duration(milliseconds: 500),
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: state.sliderMode == SliderMode.loading
+                                      ? CircleAvatar(
+                                          backgroundColor: themeColorServices
+                                              .primaryBlue
+                                              .value,
+                                          child: Center(
+                                            child: SizedBox(
+                                              width: 24.5,
+                                              height: 24.5,
+                                              child: CircularProgressIndicator(
+                                                color: themeColorServices
+                                                    .neutralsColorGrey0
+                                                    .value,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : CircleAvatar(
+                                          backgroundColor: state.position >= 0.5
+                                              ? Color(0XFF2579D4)
+                                              : themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_arrow_slide_right.svg",
+                                              width: 24.5,
+                                              height: 24.5,
                                             ),
                                           ),
                                         ),
-                                      )
-                                    : CircleAvatar(
-                                        backgroundColor: state.position >= 0.5
-                                            ? Color(0XFF2579D4)
-                                            : themeColorServices
-                                                  .primaryBlue
-                                                  .value,
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            "assets/icons/icon_arrow_slide_right.svg",
-                                            width: 24.5,
-                                            height: 24.5,
-                                          ),
-                                        ),
-                                      ),
-                              );
-                            },
-                            backgroundBuilder: (context, state, child) {
-                              if (state.sliderMode == SliderMode.loading) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFF2F8AEC),
-                                    borderRadius: BorderRadius.circular(9999),
-                                  ),
                                 );
-                              }
+                              },
+                              backgroundBuilder: (context, state, child) {
+                                if (state.sliderMode == SliderMode.loading) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Color(0XFF2F8AEC),
+                                      borderRadius: BorderRadius.circular(9999),
+                                    ),
+                                  );
+                                }
 
-                              return AnimatedContainer(
-                                duration: Duration(milliseconds: 500),
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: state.position >= 0.5
-                                      ? Color(0XFF2F8AEC)
-                                      : Color(0XFFF1F1F1),
-                                  borderRadius: BorderRadius.circular(9999),
-                                  border: Border.all(
+                                return AnimatedContainer(
+                                  duration: Duration(milliseconds: 500),
+                                  height: 60,
+                                  decoration: BoxDecoration(
                                     color: state.position >= 0.5
-                                        ? Color(0XFF0573EA)
-                                        : themeColorServices
-                                              .neutralsColorGrey300
-                                              .value,
-                                    width: state.position >= 0.5 ? 5 : 1,
+                                        ? Color(0XFF2F8AEC)
+                                        : Color(0XFFF1F1F1),
+                                    borderRadius: BorderRadius.circular(9999),
+                                    border: Border.all(
+                                      color: state.position >= 0.5
+                                          ? Color(0XFF0573EA)
+                                          : themeColorServices
+                                                .neutralsColorGrey300
+                                                .value,
+                                      width: state.position >= 0.5 ? 5 : 1,
+                                    ),
                                   ),
-                                ),
-                                padding: EdgeInsets.only(right: 16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    if (state.position < 0.5) ...[
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Swipe untuk mendapatkan orderan",
-                                            style: typographyServices
-                                                .bodyLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: themeColorServices
-                                                      .neutralsColorGrey400
-                                                      .value,
-                                                ),
-                                          ),
-                                          Obx(
-                                            () => Text(
-                                              "(${durationAccept.value}s)",
+                                  padding: EdgeInsets.only(right: 16),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      if (state.position < 0.5) ...[
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Swipe untuk mendapatkan orderan",
                                               style: typographyServices
-                                                  .bodyLargeBold
+                                                  .bodyLargeRegular
                                                   .value
                                                   .copyWith(
                                                     color: themeColorServices
-                                                        .primaryBlue
+                                                        .neutralsColorGrey400
                                                         .value,
                                                   ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
+                                            Obx(
+                                              () => Text(
+                                                "(${durationAccept.value}s)",
+                                                style: typographyServices
+                                                    .bodyLargeBold
+                                                    .value
+                                                    .copyWith(
+                                                      color: themeColorServices
+                                                          .primaryBlue
+                                                          .value,
+                                                    ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                      if (state.position >= 0.5) ...[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Orderan sudah diambil",
+                                              style: typographyServices
+                                                  .bodyLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: Colors.white,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ],
-                                    if (state.position >= 0.5) ...[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Orderan sudah diambil",
-                                            style: typographyServices
-                                                .bodyLargeRegular
-                                                .value
-                                                .copyWith(color: Colors.white),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+
+      try {
+        timerDuration.cancel();
+      } catch (e) {}
+    }
   }
 }

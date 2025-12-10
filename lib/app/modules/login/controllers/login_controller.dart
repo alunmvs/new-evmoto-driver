@@ -4,6 +4,7 @@ import 'package:new_evmoto_driver/app/repositories/login_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/main.dart';
 
 class LoginController extends GetxController {
   final LoginRepository loginRepository;
@@ -47,9 +48,17 @@ class LoginController extends GetxController {
         },
       );
     } catch (e) {
-      Get.showSnackbar(
-        GetSnackBar(message: e.toString(), duration: Duration(seconds: 2)),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
   }
 }

@@ -11,6 +11,7 @@ import 'package:new_evmoto_driver/app/repositories/upload_image_repository.dart'
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class RegisterFormController extends GetxController {
@@ -211,20 +212,17 @@ class RegisterFormController extends GetxController {
         idPhotoUrl.value == "" ||
         drivingLicensePhotoUrl.value == "" ||
         avatarPhotoUrl.value == "") {
-      Get.showSnackbar(
-        GetSnackBar(
-          duration: Duration(seconds: 2),
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          snackPosition: SnackPosition.TOP,
-          snackStyle: SnackStyle.GROUNDED,
-          messageText: Text(
-            "Harap lengkapi data yang dibutuhkan",
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          "Harap lengkapi data yang dibutuhkan",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
           ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       return;
     }
 
@@ -249,20 +247,17 @@ class RegisterFormController extends GetxController {
       );
       Get.offAllNamed(Routes.REGISTER_FORM_COMPLETED);
     } catch (e) {
-      Get.showSnackbar(
-        GetSnackBar(
-          duration: Duration(seconds: 2),
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          snackPosition: SnackPosition.TOP,
-          snackStyle: SnackStyle.GROUNDED,
-          messageText: Text(
-            e.toString(),
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
           ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
   }
 }

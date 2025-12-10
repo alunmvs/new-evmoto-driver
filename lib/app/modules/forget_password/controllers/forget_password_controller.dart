@@ -6,6 +6,7 @@ import 'package:new_evmoto_driver/app/repositories/forget_password_repository.da
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/main.dart';
 
 class ForgetPasswordController extends GetxController {
   final OtpRepository otpRepository;
@@ -49,12 +50,17 @@ class ForgetPasswordController extends GetxController {
   Future<void> onTapSendOTP() async {
     forgetPasswordFormKey.currentState!.save();
     if (mobileNumber.value == "") {
-      Get.showSnackbar(
-        GetSnackBar(
-          message: "Nomor HP wajib diisi",
-          duration: Duration(seconds: 2),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          "Nomor HP wajib diisi",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       return;
     }
 
@@ -73,24 +79,34 @@ class ForgetPasswordController extends GetxController {
       }
     });
 
-    Get.showSnackbar(
-      GetSnackBar(
-        message: "OTP telah terkirim".toString(),
-        duration: Duration(seconds: 2),
+    final SnackBar snackBar = SnackBar(
+      behavior: SnackBarBehavior.fixed,
+      backgroundColor: themeColorServices.sematicColorRed400.value,
+      content: Text(
+        "OTP telah terkirim",
+        style: typographyServices.bodySmallRegular.value.copyWith(
+          color: themeColorServices.neutralsColorGrey0.value,
+        ),
       ),
     );
+    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
   }
 
   Future<void> onTapConfirm() async {
     forgetPasswordFormKey.currentState!.save();
 
     if (mobileNumber.value == "") {
-      Get.showSnackbar(
-        GetSnackBar(
-          message: "Nomor HP wajib diisi",
-          duration: Duration(seconds: 2),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          "Nomor HP wajib diisi",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       return;
     }
 
@@ -99,22 +115,32 @@ class ForgetPasswordController extends GetxController {
     print(newPassword.value);
 
     if (otpCode.value == "") {
-      Get.showSnackbar(
-        GetSnackBar(
-          message: "Kode OTP wajib diisi",
-          duration: Duration(seconds: 2),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          "Kode OTP wajib diisi",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       return;
     }
 
     if (newPassword.value == "") {
-      Get.showSnackbar(
-        GetSnackBar(
-          message: "Kata sandi wajib diisi",
-          duration: Duration(seconds: 2),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          "Kata sandi wajib diisi",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       return;
     }
 
@@ -128,16 +154,29 @@ class ForgetPasswordController extends GetxController {
 
       Get.back();
 
-      Get.showSnackbar(
-        GetSnackBar(
-          message: "Kata sandi berhasil di reset",
-          duration: Duration(seconds: 2),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorGreen400.value,
+        content: Text(
+          "Kata sandi berhasil di reset",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
         ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } catch (e) {
-      Get.showSnackbar(
-        GetSnackBar(message: e.toString(), duration: Duration(seconds: 2)),
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
       );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
   }
 }

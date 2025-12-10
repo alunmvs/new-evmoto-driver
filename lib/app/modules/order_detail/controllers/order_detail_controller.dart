@@ -14,6 +14,7 @@ import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_driver/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailController extends GetxController {
@@ -209,8 +210,16 @@ class OrderDetailController extends GetxController {
       );
     }
 
+    final basePadding = Get.width * 0.1;
+    double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
+        .abs();
+    double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
+        .abs();
+    double areaFactor = (latDiff + lngDiff) * 80000;
+    var dynamicPadding = (basePadding + areaFactor).clamp(60, 250);
+
     await googleMapController.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, 200),
+      CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
     );
   }
 
@@ -225,8 +234,8 @@ class OrderDetailController extends GetxController {
     var newMarker = Marker(
       markerId: MarkerId("origin"),
       position: LatLng(
-        double.parse(currentLatitude.value),
-        double.parse(currentLongitude.value),
+        orderDetail.value.startLat!,
+        orderDetail.value.startLon!,
       ),
       icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
         'assets/icons/icon_order_origin.png',
@@ -482,8 +491,16 @@ class OrderDetailController extends GetxController {
           );
         }
 
+        final basePadding = Get.width * 0.1;
+        double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
+            .abs();
+        double lngDiff =
+            (bounds.northeast.longitude - bounds.southwest.longitude).abs();
+        double areaFactor = (latDiff + lngDiff) * 80000;
+        var dynamicPadding = (basePadding + areaFactor).clamp(60, 250);
+
         await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, 200),
+          CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
         );
       }
 
@@ -498,22 +515,22 @@ class OrderDetailController extends GetxController {
             double.parse(currentLongitude.value),
           ),
           icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
-            'assets/icons/icon_order_my_location.png',
+            'assets/icons/icon_order_scooter.png',
             Size(53, 53),
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
 
-        markerId = MarkerId("appointment_origin");
+        markerId = MarkerId("destination");
         newMarker = Marker(
           markerId: markerId,
           position: LatLng(
-            orderDetail.value.startLat!,
-            orderDetail.value.startLon!,
+            orderDetail.value.endLat!,
+            orderDetail.value.endLon!,
           ),
           icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
-            'assets/icons/icon_order_appointment_point.png',
-            Size(46, 46),
+            'assets/icons/icon_order_destination.png',
+            Size(29, 29),
           ),
         );
         upsertMarker(markerId: markerId, newMarker: newMarker);
@@ -573,8 +590,16 @@ class OrderDetailController extends GetxController {
           );
         }
 
+        final basePadding = Get.width * 0.1;
+        double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
+            .abs();
+        double lngDiff =
+            (bounds.northeast.longitude - bounds.southwest.longitude).abs();
+        double areaFactor = (latDiff + lngDiff) * 80000;
+        var dynamicPadding = (basePadding + areaFactor).clamp(60, 250);
+
         await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, 200),
+          CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
         );
       }
     }
@@ -731,8 +756,16 @@ class OrderDetailController extends GetxController {
         );
       }
 
+      final basePadding = Get.width * 0.1;
+      double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
+          .abs();
+      double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
+          .abs();
+      double areaFactor = (latDiff + lngDiff) * 80000;
+      var dynamicPadding = (basePadding + areaFactor).clamp(60, 250);
+
       await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, 200),
+        CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
       );
     } else {
       LatLngBounds bounds;
@@ -764,8 +797,16 @@ class OrderDetailController extends GetxController {
           northeast: LatLng(destinationLatitude, destinationLongitude),
         );
       }
+      final basePadding = Get.width * 0.1;
+      double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
+          .abs();
+      double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
+          .abs();
+      double areaFactor = (latDiff + lngDiff) * 80000;
+      var dynamicPadding = (basePadding + areaFactor).clamp(60, 250);
+
       await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, 200),
+        CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
       );
     }
   }
@@ -815,6 +856,7 @@ class OrderDetailController extends GetxController {
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Material(
+                color: themeColorServices.neutralsColorGrey0.value,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -875,49 +917,46 @@ class OrderDetailController extends GetxController {
                                     Get.close(1);
                                     Get.back();
                                     Get.find<HomeController>().refreshAll();
-                                    Get.showSnackbar(
-                                      GetSnackBar(
-                                        duration: Duration(seconds: 2),
-                                        backgroundColor: themeColorServices
-                                            .sematicColorGreen400
-                                            .value,
-                                        snackPosition: SnackPosition.TOP,
-                                        snackStyle: SnackStyle.GROUNDED,
-                                        messageText: Text(
-                                          "Berhasil membatalkan pesanan",
-                                          style: typographyServices
-                                              .bodySmallRegular
-                                              .value
-                                              .copyWith(
-                                                color: themeColorServices
-                                                    .neutralsColorGrey0
-                                                    .value,
-                                              ),
-                                        ),
+
+                                    final SnackBar snackBar = SnackBar(
+                                      behavior: SnackBarBehavior.fixed,
+                                      backgroundColor: themeColorServices
+                                          .sematicColorGreen400
+                                          .value,
+                                      content: Text(
+                                        "Berhasil membatalkan pesanan",
+                                        style: typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .neutralsColorGrey0
+                                                  .value,
+                                            ),
                                       ),
                                     );
+                                    rootScaffoldMessengerKey.currentState
+                                        ?.showSnackBar(snackBar);
                                   } catch (e) {
-                                    Get.showSnackbar(
-                                      GetSnackBar(
-                                        duration: Duration(seconds: 2),
-                                        backgroundColor: themeColorServices
-                                            .sematicColorRed400
-                                            .value,
-                                        snackPosition: SnackPosition.TOP,
-                                        snackStyle: SnackStyle.GROUNDED,
-                                        messageText: Text(
-                                          e.toString(),
-                                          style: typographyServices
-                                              .bodySmallRegular
-                                              .value
-                                              .copyWith(
-                                                color: themeColorServices
-                                                    .neutralsColorGrey0
-                                                    .value,
-                                              ),
-                                        ),
+                                    final SnackBar snackBar = SnackBar(
+                                      behavior: SnackBarBehavior.fixed,
+                                      backgroundColor: themeColorServices
+                                          .sematicColorRed400
+                                          .value,
+                                      content: Text(
+                                        e.toString(),
+                                        style: typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .neutralsColorGrey0
+                                                  .value,
+                                            ),
                                       ),
                                     );
+                                    rootScaffoldMessengerKey.currentState
+                                        ?.showSnackBar(snackBar);
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
