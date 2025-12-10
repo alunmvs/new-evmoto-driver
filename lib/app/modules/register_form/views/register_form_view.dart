@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
@@ -883,6 +884,9 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ValidationMessage.maxLength: (error) =>
                                 'NIK harus terdiri dari 16 digit angka',
                           },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
                           decoration: InputDecoration(
                             counterText: '',
                             contentPadding: EdgeInsets.symmetric(
@@ -891,7 +895,7 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ),
                             prefix: SizedBox(width: 12),
                             suffix: SizedBox(width: 12),
-                            hintText: 'misalnya 102303040303',
+                            hintText: 'Misalnya 102303040303',
                             hintStyle: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -1106,7 +1110,7 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ),
                             prefix: SizedBox(width: 12),
                             suffix: SizedBox(width: 12),
-                            hintText: 'misalnya 2025-11-29',
+                            hintText: 'Misalnya 2025-11-29',
                             hintStyle: controller
                                 .typographyServices
                                 .bodySmallRegular
