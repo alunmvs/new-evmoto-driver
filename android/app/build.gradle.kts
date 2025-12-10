@@ -1,15 +1,20 @@
+import java.util.Properties
+
+val localProps = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(localFile.inputStream())
+    }
+}
+
+val mapsApiKey: String = localProps.getProperty("MAPS_API_KEY") ?: ""
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
-
-val localProps = java.util.Properties().apply {
-    load(rootProject.file("local.properties").inputStream())
-}
-
-val mapsApiKey = localProps.getProperty("MAPS_API_KEY") ?: ""
 
 android {
     namespace = "com.driver.evmototrip"
