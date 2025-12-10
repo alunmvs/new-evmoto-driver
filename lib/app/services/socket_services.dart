@@ -6,6 +6,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/utils/socket_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -23,9 +24,27 @@ class SocketServices extends GetxService {
     socket = await Socket.connect("api-dev.evmotoapp.com", 8888);
 
     socket.listen(
-      (data) {
+      (data) async {
         var dataJson = convertBytesToJson(bytes: data);
         print(dataJson);
+
+        var method = dataJson['method'] ?? "";
+
+        switch (method) {
+          case 'OK':
+            break;
+          case 'ORDER_STATUS':
+            var socketOrderStatusData = SocketOrderStatusData.fromJson(
+              dataJson['data'],
+            );
+            var homeController = Get.find<HomeController>();
+            await homeController.showDialogOrderConfirmation(
+              socketOrderStatusData: socketOrderStatusData,
+            );
+            break;
+          default:
+            break;
+        }
       },
       onError: (error) {
         print('Error: $error');
@@ -97,8 +116,10 @@ class SocketServices extends GetxService {
       "msg": "SUCCESS",
     };
 
-    socket.write(jsonEncode(dataUser));
-    socket.write(jsonEncode(dataLocation));
+    socket.add(convertJsonToPacket(dataUser));
+    socket.add(convertJsonToPacket(dataLocation));
+
+    await socket.flush();
   }
 
   Future<String> getDeviceId() async {

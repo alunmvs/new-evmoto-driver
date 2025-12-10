@@ -9,7 +9,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_driver/app/data/consts/order_state_const.dart';
+import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
+import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_driver/app/data/models/vehicle_statistics_model.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
@@ -20,8 +22,10 @@ import 'package:new_evmoto_driver/app/services/push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/common_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -353,13 +357,39 @@ class HomeController extends GetxController
     }
   }
 
-  Future<void> showDialogOrderConfirmation() async {
+  Future<void> showDialogOrderConfirmation({
+    required SocketOrderStatusData socketOrderStatusData,
+  }) async {
+    var orderData = await orderRepository.getOrderDetail(
+      orderType: socketOrderStatusData.orderType!,
+      orderId: socketOrderStatusData.orderId.toString(),
+      language: 2,
+    );
+
     var initialCameraPosition = CameraPosition(
-      target: LatLng(37.42796133580664, -122.085749655962),
-      zoom: 14.4746,
+      target: LatLng(orderData.startLat!, orderData.startLon!),
+      zoom: 18,
     ).obs;
+
     var markers = <Marker>{}.obs;
+    var newMarkers = Marker(
+      markerId: MarkerId("pinpoint"),
+      position: LatLng(orderData.startLat!, orderData.startLon!),
+    );
+    markers.add(newMarkers);
+
     late GoogleMapController googleMapController;
+
+    final durationAccept = 0.obs;
+    durationAccept.value = socketOrderStatusData.time ?? 0;
+
+    late Timer timerDuration;
+    timerDuration = Timer.periodic(Duration(seconds: 1), (timer) {
+      durationAccept.value -= 1;
+      if (durationAccept.value == 0) {
+        timerDuration.cancel();
+      }
+    });
 
     Get.dialog(
       Column(
@@ -397,7 +427,7 @@ class HomeController extends GetxController
                                     ),
                               ),
                               Text(
-                                "0.7 Km",
+                                "${formatDouble(orderData.startMileage!)} km",
                                 style: typographyServices.bodySmallRegular.value
                                     .copyWith(
                                       color: themeColorServices
@@ -439,7 +469,7 @@ class HomeController extends GetxController
                               ),
                               SizedBox(width: 6),
                               Text(
-                                "2025-12-03 16:34:02",
+                                orderData.travelTime ?? "-",
                                 style: typographyServices.bodyLargeRegular.value
                                     .copyWith(
                                       color: themeColorServices.textColor.value,
@@ -473,7 +503,7 @@ class HomeController extends GetxController
                                           ),
                                     ),
                                     Text(
-                                      "Jl. Wijaya I No.67, RT.6/RW.4, Petogogan, Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12160",
+                                      orderData.startAddress ?? "-",
                                       style: typographyServices
                                           .bodyLargeRegular
                                           .value
@@ -514,7 +544,7 @@ class HomeController extends GetxController
                                           ),
                                     ),
                                     Text(
-                                      "Wisma PMI",
+                                      orderData.endAddress ?? "-",
                                       style: typographyServices
                                           .bodyLargeRegular
                                           .value
@@ -671,16 +701,18 @@ class HomeController extends GetxController
                                                       .value,
                                                 ),
                                           ),
-                                          Text(
-                                            "(65s)",
-                                            style: typographyServices
-                                                .bodyLargeBold
-                                                .value
-                                                .copyWith(
-                                                  color: themeColorServices
-                                                      .primaryBlue
-                                                      .value,
-                                                ),
+                                          Obx(
+                                            () => Text(
+                                              "(${durationAccept.value}s)",
+                                              style: typographyServices
+                                                  .bodyLargeBold
+                                                  .value
+                                                  .copyWith(
+                                                    color: themeColorServices
+                                                        .primaryBlue
+                                                        .value,
+                                                  ),
+                                            ),
                                           ),
                                         ],
                                       ),
