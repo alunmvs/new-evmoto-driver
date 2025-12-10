@@ -5,6 +5,12 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val localProps = java.util.Properties().apply {
+    load(rootProject.file("local.properties").inputStream())
+}
+
+val mapsApiKey = localProps.getProperty("MAPS_API_KEY") ?: ""
+
 android {
     namespace = "com.driver.evmototrip"
     compileSdk = flutter.compileSdkVersion
@@ -32,6 +38,7 @@ android {
         manifestPlaceholders["JPUSH_PKGNAME"] = "com.driver.evmototrip"
         manifestPlaceholders["JPUSH_APPKEY"] = "a9c733989e650330102962d5"
         manifestPlaceholders["JPUSH_CHANNEL"] = "developer-default"
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
     }
 
     buildTypes {
