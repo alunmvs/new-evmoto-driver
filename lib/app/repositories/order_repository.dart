@@ -57,6 +57,53 @@ class OrderRepository {
     }
   }
 
+  Future<List<Order>> getHistoryOrderList({
+    required int size,
+    required int language,
+    required int state,
+    required int pageNum,
+  }) async {
+    try {
+      var url = "$baseUrl/orderServer/api/order/queryMyAllOrder";
+
+      var formData = FormData.fromMap({
+        "language": language,
+        "size": size,
+        "state": state,
+        "pageNum": pageNum,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      var orderList = <Order>[];
+
+      for (var order in response.data['data']) {
+        orderList.add(Order.fromJson(order));
+      }
+
+      return orderList;
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> grabOrder({
     required int orderType,
     required String orderId,
