@@ -874,11 +874,17 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               controller.themeColorServices.primaryBlue.value,
                           formControlName: 'identity_number',
                           keyboardType: TextInputType.number,
+                          maxLength: 16,
                           validationMessages: {
                             ValidationMessage.required: (error) =>
                                 'Wajib diisi',
+                            ValidationMessage.minLength: (error) =>
+                                'NIK harus terdiri dari 16 digit angka',
+                            ValidationMessage.maxLength: (error) =>
+                                'NIK harus terdiri dari 16 digit angka',
                           },
                           decoration: InputDecoration(
+                            counterText: '',
                             contentPadding: EdgeInsets.symmetric(
                               horizontal: 0,
                               vertical: 12,

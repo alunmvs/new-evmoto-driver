@@ -11,6 +11,7 @@ import 'package:new_evmoto_driver/app/repositories/upload_image_repository.dart'
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/common_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -38,7 +39,11 @@ class RegisterFormController extends GetxController {
       validators: <Validator>[Validators.required],
     ),
     "identity_number": FormControl<String>(
-      validators: <Validator>[Validators.required],
+      validators: <Validator>[
+        Validators.required,
+        Validators.minLength(16),
+        Validators.maxLength(16),
+      ],
     ),
     "driving_experience": FormControl<String>(
       validators: <Validator>[Validators.required],
@@ -119,7 +124,9 @@ class RegisterFormController extends GetxController {
     );
 
     if (image != null) {
+      showLoadingDialog();
       idPhotoUrl.value = await uploadImageRepository.uploadImage(file: image);
+      Get.close(1);
     }
   }
 
@@ -133,9 +140,11 @@ class RegisterFormController extends GetxController {
     );
 
     if (image != null) {
+      showLoadingDialog();
       drivingLicensePhotoUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
+      Get.close(1);
     }
   }
 
@@ -149,9 +158,11 @@ class RegisterFormController extends GetxController {
     );
 
     if (image != null) {
+      showLoadingDialog();
       avatarPhotoUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
+      Get.close(1);
     }
   }
 
