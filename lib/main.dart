@@ -1,17 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
+import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 
 import 'app/routes/app_pages.dart';
-
-final baseUrl = "http://api-dev.evmotoapp.com:8500";
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -29,12 +29,14 @@ Future<void> main() async {
   );
 
   await dotenv.load(fileName: ".env");
+  await Firebase.initializeApp();
 
   Get.put(ThemeColorServices(), permanent: true);
   Get.put(TypographyServices(), permanent: true);
   Get.put(ApiServices(), permanent: true);
   Get.put(PushNotificationServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);
+  Get.put(FirebaseRemoteConfigServices(), permanent: true);
 
   runApp(
     GetMaterialApp(

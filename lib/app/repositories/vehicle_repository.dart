@@ -3,16 +3,18 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/vehicle_statistics_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
-import 'package:new_evmoto_driver/main.dart';
+import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 
 class VehicleRepository {
   final apiServices = Get.find<ApiServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   Future<VehicleStatistics> getVehicleStatisticsDetail({
     required int language,
   }) async {
     try {
-      var url = "$baseUrl/driver/api/driver/queryHomeData";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/driver/queryHomeData";
 
       var formData = FormData.fromMap({"language": language});
 

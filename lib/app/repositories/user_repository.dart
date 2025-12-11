@@ -3,14 +3,16 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
-import 'package:new_evmoto_driver/main.dart';
+import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 
 class UserRepository {
   final apiServices = Get.find<ApiServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   Future<UserInfo> getUserInfoDetail({required int language}) async {
     try {
-      var url = "$baseUrl/driver/api/driver/queryInfo";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/driver/queryInfo";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -41,7 +43,8 @@ class UserRepository {
 
   Future<void> startWork({required int language, required int type}) async {
     try {
-      var url = "$baseUrl/driver/api/driver/work";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/driver/work";
 
       var formData = FormData.fromMap({"language": language, "type": type});
 
@@ -70,7 +73,8 @@ class UserRepository {
 
   Future<void> stopWork({required int language}) async {
     try {
-      var url = "$baseUrl/driver/api/driver/work";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/driver/work";
 
       var formData = FormData.fromMap({"language": language});
 

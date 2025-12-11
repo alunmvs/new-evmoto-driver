@@ -3,14 +3,16 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/bank_account_model.dart';
 import 'package:new_evmoto_driver/app/data/models/bank_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
-import 'package:new_evmoto_driver/main.dart';
+import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 
 class BankAccountRepository {
   final apiServices = Get.find<ApiServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   Future<List<Bank>> getBankList({int? language}) async {
     try {
-      var url = "$baseUrl/driver/base/withdrawal/getBankList";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/base/withdrawal/getBankList";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -38,7 +40,8 @@ class BankAccountRepository {
     int? pageNum,
   }) async {
     try {
-      var url = "$baseUrl/driver/api/bankCard/queryBankCard";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/queryBankCard";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -72,7 +75,8 @@ class BankAccountRepository {
     int? language,
   }) async {
     try {
-      var url = "$baseUrl/driver/api/bankCard/saveBankCard";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/saveBankCard";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -95,7 +99,8 @@ class BankAccountRepository {
 
   Future<void> deleteBankAccountById({int? id, int? language}) async {
     try {
-      var url = "$baseUrl/driver/api/bankCard/updateBankCard";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/updateBankCard";
 
       var formData = FormData.fromMap({"language": language, "id": id});
 

@@ -5,10 +5,11 @@ import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
-import 'package:new_evmoto_driver/main.dart';
+import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 
 class OrderRepository {
   final apiServices = Get.find<ApiServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   Future<List<Order>> getOrderList({
     required int size,
@@ -17,7 +18,8 @@ class OrderRepository {
     required int pageNum,
   }) async {
     try {
-      var url = "$baseUrl/orderServer/api/order/queryOrderList";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/orderServer/api/order/queryOrderList";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -64,7 +66,8 @@ class OrderRepository {
     required int pageNum,
   }) async {
     try {
-      var url = "$baseUrl/orderServer/api/order/queryMyAllOrder";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/orderServer/api/order/queryMyAllOrder";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -110,7 +113,8 @@ class OrderRepository {
     required int language,
   }) async {
     try {
-      var url = "$baseUrl/businessProcess/api/order/grabOrder";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/businessProcess/api/order/grabOrder";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -147,7 +151,8 @@ class OrderRepository {
     required int language,
   }) async {
     try {
-      var url = "$baseUrl/orderServer/api/order/queryOrderInfo_driver";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/orderServer/api/order/queryOrderInfo_driver";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -191,7 +196,8 @@ class OrderRepository {
     required int state,
   }) async {
     try {
-      var url = "$baseUrl/businessProcess/api/order/process";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/businessProcess/api/order/process";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -232,7 +238,8 @@ class OrderRepository {
     required int payManner,
   }) async {
     try {
-      var url = "$baseUrl/businessProcess/api/order/queryMoneyInfo";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/businessProcess/api/order/queryMoneyInfo";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -275,7 +282,8 @@ class OrderRepository {
     String? surchargeDescription,
   }) async {
     try {
-      var url = "$baseUrl/businessProcess/api/order/confirmFees";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/businessProcess/api/order/confirmFees";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -315,7 +323,8 @@ class OrderRepository {
     required int language,
   }) async {
     try {
-      var url = "$baseUrl/businessProcess/api/order/completeOrder";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/businessProcess/api/order/completeOrder";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -352,7 +361,8 @@ class OrderRepository {
     required int language,
   }) async {
     try {
-      var url = "$baseUrl/cancelOrder/api/cancel/addCancle_driver";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/cancelOrder/api/cancel/addCancle_driver";
 
       var formData = FormData.fromMap({
         "orderType": orderType,

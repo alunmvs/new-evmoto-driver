@@ -3,10 +3,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/deposit_balance_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
-import 'package:new_evmoto_driver/main.dart';
+import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 
 class PaymentRepository {
   final apiServices = Get.find<ApiServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   Future<DepositBalance> depositBalance({
     required int language,
@@ -15,7 +16,8 @@ class PaymentRepository {
     required int type,
   }) async {
     try {
-      var url = "$baseUrl/payment/api/user/depositBalance";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/api/user/depositBalance";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -55,7 +57,8 @@ class PaymentRepository {
     required String orderId,
   }) async {
     try {
-      var url = "$baseUrl/payment/base/wxCancelUserBalance";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/base/wxCancelUserBalance";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

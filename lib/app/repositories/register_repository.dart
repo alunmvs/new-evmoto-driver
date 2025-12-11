@@ -4,14 +4,16 @@ import 'package:new_evmoto_driver/app/data/models/open_city_model.dart';
 import 'package:new_evmoto_driver/app/data/models/province_cities_model.dart';
 import 'package:new_evmoto_driver/app/data/models/registered_driver_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
-import 'package:new_evmoto_driver/main.dart';
+import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 
 class RegisterRepository {
   final apiServices = Get.find<ApiServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   Future<List<ProvinceCities>> getAllProvinceCitiesList({int? language}) async {
     try {
-      var url = "$baseUrl/app/base/driver/queryAllCity";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/app/base/driver/queryAllCity";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -36,7 +38,8 @@ class RegisterRepository {
 
   Future<List<OpenCity>> getAllOpenCityList({int? language}) async {
     try {
-      var url = "$baseUrl/app/base/openCity/queryOpenCity";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/app/base/openCity/queryOpenCity";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -66,7 +69,8 @@ class RegisterRepository {
     int? language,
   }) async {
     try {
-      var url = "$baseUrl/account/base/driver/registeredDriver_";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/account/base/driver/registeredDriver_";
 
       var formData = FormData.fromMap({
         "phone": phone,
@@ -106,7 +110,8 @@ class RegisterRepository {
     String? name,
   }) async {
     try {
-      var url = "$baseUrl/driver/base/driver/updateDriver";
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/base/driver/updateDriver";
 
       var formData = FormData.fromMap({
         "idCardImgUrl1": idCardImgUrl1,
