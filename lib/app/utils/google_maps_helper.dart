@@ -30,7 +30,7 @@ Map<String, dynamic> getClosestPointIndex(
 double getDistanceFromRoute(LatLng driver, List<LatLng> routePoints) {
   var lineString = turf.LineString(
     coordinates: [
-      for (var p in routePoints) turf.Position(p.latitude, p.longitude),
+      for (var p in routePoints) turf.Position(p.longitude, p.latitude),
     ],
   );
 
