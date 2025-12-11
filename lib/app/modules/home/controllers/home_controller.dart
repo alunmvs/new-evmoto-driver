@@ -583,11 +583,11 @@ class HomeController extends GetxController
                                 aspectRatio: 298 / 75,
                                 child: GoogleMap(
                                   mapType: MapType.normal,
-                                  zoomControlsEnabled: false,
-                                  tiltGesturesEnabled: false,
-                                  zoomGesturesEnabled: false,
-                                  rotateGesturesEnabled: false,
-                                  scrollGesturesEnabled: false,
+                                  zoomControlsEnabled: true,
+                                  tiltGesturesEnabled: true,
+                                  zoomGesturesEnabled: true,
+                                  rotateGesturesEnabled: true,
+                                  scrollGesturesEnabled: true,
                                   initialCameraPosition:
                                       initialCameraPosition.value,
                                   onMapCreated:
