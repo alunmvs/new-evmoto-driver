@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
-import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import '../controllers/home_controller.dart';
 import 'package:intl/intl.dart';
@@ -1079,8 +1078,8 @@ class HomeView extends GetView<HomeController> {
                                                   in controller
                                                       .orderInServiceList) ...[
                                                 GestureDetector(
-                                                  onTap: () {
-                                                    Get.toNamed(
+                                                  onTap: () async {
+                                                    await Get.toNamed(
                                                       Routes.ORDER_DETAIL,
                                                       arguments: {
                                                         "order_id":
@@ -1089,6 +1088,8 @@ class HomeView extends GetView<HomeController> {
                                                             orderInService.type,
                                                       },
                                                     );
+                                                    await controller
+                                                        .refreshAll();
                                                   },
                                                   child: Container(
                                                     padding: EdgeInsets.all(16),
@@ -1397,8 +1398,8 @@ class HomeView extends GetView<HomeController> {
                                                   in controller
                                                       .orderToBeServedList) ...[
                                                 GestureDetector(
-                                                  onTap: () {
-                                                    Get.toNamed(
+                                                  onTap: () async {
+                                                    await Get.toNamed(
                                                       Routes.ORDER_DETAIL,
                                                       arguments: {
                                                         "order_id":
@@ -1408,6 +1409,9 @@ class HomeView extends GetView<HomeController> {
                                                                 .type,
                                                       },
                                                     );
+
+                                                    await controller
+                                                        .refreshAll();
                                                   },
                                                   child: Container(
                                                     padding: EdgeInsets.all(16),
