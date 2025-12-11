@@ -67,10 +67,6 @@ class HomeController extends GetxController
   final isSeeMoreOrderToBeServed = true.obs;
 
   final workStatus = 2.obs;
-
-  late Socket socket;
-  late Timer schedulerDataSocketTimer;
-
   final isFetch = false.obs;
 
   @override
@@ -92,8 +88,6 @@ class HomeController extends GetxController
   @override
   Future<void> onClose() async {
     super.onClose();
-    await socket.close();
-    schedulerDataSocketTimer.cancel();
     await socketServices.closeWebsocket();
   }
 

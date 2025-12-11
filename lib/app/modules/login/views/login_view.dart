@@ -319,7 +319,6 @@ class LoginView extends GetView<LoginController> {
                                                 borderRadius:
                                                     BorderRadius.circular(8),
                                               ),
-
                                               prefixIcon: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
