@@ -30,7 +30,7 @@ class OrderDetailController extends GetxController {
   final typographyServices = Get.find<TypographyServices>();
 
   final initialCameraPosition = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(106.822745, -6.1744651),
     zoom: 14.4746,
   ).obs;
   late GoogleMapController googleMapController;
@@ -51,6 +51,8 @@ class OrderDetailController extends GetxController {
   late Timer? driverCurrentLocationTimer;
   late Timer? refocusMapBoundsTimer;
 
+  final isSchedulerDriverCurrentLocationIsProcess = false.obs;
+
   final isFetch = false.obs;
 
   @override
@@ -67,11 +69,16 @@ class OrderDetailController extends GetxController {
       await setupGoogleMapsPickUpCustomer();
     }
 
-    if (orderDetail.value.state == 4 || orderDetail.value.state == 5) {
+    if (orderDetail.value.state == 4 ||
+        orderDetail.value.state == 5 ||
+        orderDetail.value.state == 6) {
       await setupGoogleMapOriginToDestination();
     }
 
-    await Future.wait([setupSchedulerDriverCurrentLocation()]);
+    await Future.wait([
+      setupSchedulerDriverCurrentLocation(),
+      setupSchedulerDriverRefocusMapBound(),
+    ]);
   }
 
   @override
@@ -91,6 +98,34 @@ class OrderDetailController extends GetxController {
     try {
       refocusMapBoundsTimer?.cancel();
     } catch (e) {}
+  }
+
+  Future<void> refreshAll() async {
+    markers.clear();
+    polylines.clear();
+    polylinesCoordinate.clear();
+    driverCurrentLocationTimer?.cancel();
+    driverCurrentLocationTimer = null;
+    refocusMapBoundsTimer?.cancel();
+    refocusMapBoundsTimer = null;
+
+    await requestLocation();
+    await getOrderDetail();
+
+    if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
+      await setupGoogleMapsPickUpCustomer();
+    }
+
+    if (orderDetail.value.state == 4 ||
+        orderDetail.value.state == 5 ||
+        orderDetail.value.state == 6) {
+      await setupGoogleMapOriginToDestination();
+    }
+
+    await Future.wait([
+      setupSchedulerDriverCurrentLocation(),
+      setupSchedulerDriverRefocusMapBound(),
+    ]);
   }
 
   Future<void> requestLocation() async {
@@ -283,6 +318,7 @@ class OrderDetailController extends GetxController {
     var polylineCoordinates = result
         .map((p) => LatLng(p.latitude, p.longitude))
         .toList();
+    polylinesCoordinate.value = polylineCoordinates;
 
     polylines.clear();
     isFetch.value = true;
@@ -336,44 +372,48 @@ class OrderDetailController extends GetxController {
     driverCurrentLocationTimer = Timer.periodic(Duration(seconds: 3), (
       timer,
     ) async {
-      var locationSettings = LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 100,
-      );
+      if (isSchedulerDriverCurrentLocationIsProcess.value == false) {
+        isSchedulerDriverCurrentLocationIsProcess.value = true;
+        var locationSettings = LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 100,
+        );
 
-      var position = await Geolocator.getCurrentPosition(
-        locationSettings: locationSettings,
-      );
+        var position = await Geolocator.getCurrentPosition(
+          locationSettings: locationSettings,
+        );
 
-      currentLatitude.value = position.latitude.toString();
-      currentLongitude.value = position.longitude.toString();
+        currentLatitude.value = position.latitude.toString();
+        currentLongitude.value = position.longitude.toString();
 
-      var markerId = MarkerId("driver_current_location");
-      var newMarker = Marker(
-        markerId: markerId,
-        position: LatLng(
-          double.parse(currentLatitude.value),
-          double.parse(currentLongitude.value),
-        ),
-        icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
-          orderDetail.value.state == 2 || orderDetail.value.state == 3
-              ? 'assets/icons/icon_order_my_location.png'
-              : 'assets/icons/icon_order_scooter.png',
-          Size(53, 53),
-        ),
-      );
-      upsertMarker(markerId: markerId, newMarker: newMarker);
+        var markerId = MarkerId("driver_current_location");
+        var newMarker = Marker(
+          markerId: markerId,
+          position: LatLng(
+            double.parse(currentLatitude.value),
+            double.parse(currentLongitude.value),
+          ),
+          icon: await BitmapDescriptorHelper.getBitmapDescriptorFromPngAsset(
+            orderDetail.value.state == 2 || orderDetail.value.state == 3
+                ? 'assets/icons/icon_order_my_location.png'
+                : 'assets/icons/icon_order_scooter.png',
+            Size(53, 53),
+          ),
+        );
+        upsertMarker(markerId: markerId, newMarker: newMarker);
 
-      updatePolyline(
-        LatLng(
-          double.parse(currentLatitude.value),
-          double.parse(currentLongitude.value),
-        ),
-      );
+        updatePolyline(
+          LatLng(
+            double.parse(currentLatitude.value),
+            double.parse(currentLongitude.value),
+          ),
+        );
 
-      try {
-        await checkDriverOffRoute();
-      } catch (e) {}
+        try {
+          await checkDriverOffRoute();
+        } catch (e) {}
+        isSchedulerDriverCurrentLocationIsProcess.value = false;
+      }
     });
   }
 
@@ -402,6 +442,7 @@ class OrderDetailController extends GetxController {
     );
 
     var routePoint = polylinesCoordinate;
+
     var distanceFromRoute = getDistanceFromRoute(driverPosition, routePoint);
 
     if (distanceFromRoute > 50) {
@@ -504,7 +545,9 @@ class OrderDetailController extends GetxController {
         );
       }
 
-      if (orderDetail.value.state == 5) {
+      if (orderDetail.value.state == 4 ||
+          orderDetail.value.state == 5 ||
+          orderDetail.value.state == 6) {
         polylines.clear();
 
         var markerId = MarkerId("driver_current_location");
@@ -628,90 +671,50 @@ class OrderDetailController extends GetxController {
   }
 
   Future<void> updateStateStartOrderTrip() async {
-    var locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-
-    var position = await Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
-    );
-
     await orderRepository.setOrderState(
       orderType: orderType.value,
       orderId: orderId.value,
-      lat: position.latitude.toString(),
-      lon: position.longitude.toString(),
+      lat: currentLatitude.value,
+      lon: currentLongitude.value,
       language: 2,
       state: 3,
     );
 
-    await getOrderDetail();
-
-    await setupGoogleMapsPickUpCustomer();
+    await refreshAll();
   }
 
   Future<void> updateStateArrivedOrigin() async {
-    var locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-
-    var position = await Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
-    );
-
     await orderRepository.setOrderState(
       orderType: orderType.value,
       orderId: orderId.value,
-      lat: position.latitude.toString(),
-      lon: position.longitude.toString(),
+      lat: currentLatitude.value,
+      lon: currentLongitude.value,
       language: 2,
       state: 4,
     );
 
-    await getOrderDetail();
-    await setupGoogleMapOriginToDestination();
+    await refreshAll();
   }
 
   Future<void> updateStateOnProgress() async {
-    var locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-
-    var position = await Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
-    );
-
     await orderRepository.setOrderState(
       orderType: orderType.value,
       orderId: orderId.value,
-      lat: position.latitude.toString(),
-      lon: position.longitude.toString(),
+      lat: currentLatitude.value,
+      lon: currentLongitude.value,
       language: 2,
       state: 5,
     );
 
-    await getOrderDetail();
-    await setupGoogleMapOriginToDestination();
+    await refreshAll();
   }
 
   Future<void> updateStateArrivedAtDestination() async {
-    var locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-
-    var position = await Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
-    );
-
     await orderRepository.setOrderState(
       orderType: orderType.value,
       orderId: orderId.value,
-      lat: position.latitude.toString(),
-      lon: position.longitude.toString(),
+      lat: currentLatitude.value,
+      lon: currentLongitude.value,
       language: 2,
       state: 6,
     );
