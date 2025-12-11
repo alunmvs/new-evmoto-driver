@@ -17,6 +17,8 @@ class LoginController extends GetxController {
   final loginRegisterFormKey = GlobalKey<FormState>();
   final mobileNumberTextEditingController = TextEditingController();
 
+  final mobilePhone = "".obs;
+
   final isFormValid = false.obs;
 
   @override
@@ -36,7 +38,9 @@ class LoginController extends GetxController {
   }
 
   void validateForm() {
-    isFormValid.value = loginRegisterFormKey.currentState!.validate();
+    isFormValid.value =
+        loginRegisterFormKey.currentState!.validate() &&
+        mobilePhone.value != "";
   }
 
   Future<void> onTapSubmit() async {
