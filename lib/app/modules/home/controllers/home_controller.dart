@@ -443,19 +443,27 @@ class HomeController extends GetxController
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/icons/icon_close.svg",
-                                    width: 12,
-                                    height: 12,
-                                  ),
-                                ],
+                            GestureDetector(
+                              onTap: () {
+                                Get.close(1);
+                              },
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/icons/icon_close.svg",
+                                      width: 12,
+                                      height: 12,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
