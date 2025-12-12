@@ -54,9 +54,15 @@ Future<void> main() async {
         ),
       ),
       builder: (context, child) {
-        return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: child!,
+        return SafeArea(
+          top: false,
+          bottom: true,
+          left: false,
+          right: false,
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: child!,
+          ),
         );
       },
     ),

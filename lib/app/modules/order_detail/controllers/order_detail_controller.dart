@@ -30,8 +30,8 @@ class OrderDetailController extends GetxController {
   final typographyServices = Get.find<TypographyServices>();
 
   final initialCameraPosition = CameraPosition(
-    target: LatLng(106.822745, -6.1744651),
-    zoom: 14.4746,
+    target: LatLng(-6.1744651, 106.822745),
+    zoom: 14,
   ).obs;
   late GoogleMapController googleMapController;
 

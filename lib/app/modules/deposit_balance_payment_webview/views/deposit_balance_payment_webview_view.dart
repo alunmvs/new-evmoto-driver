@@ -14,8 +14,11 @@ class DepositBalancePaymentWebviewView
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
-        await controller.showDialogBackButton();
+        if (didPop == false) {
+          await controller.showDialogBackButton();
+        }
       },
+
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,

@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
@@ -87,40 +88,47 @@ class RegisterView extends GetView<RegisterController> {
                 ),
                 SizedBox(height: 4),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 7),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey200
-                              .value,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 7),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 7,
                         ),
-                      ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            "assets/icons/icon_flag_id_square.png",
-                            width: 20,
-                            height: 13,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey200
+                                .value,
                           ),
-                          SizedBox(width: 6),
-                          Text(
-                            "+62",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(
-                                  color: controller
-                                      .themeColorServices
-                                      .textColor
-                                      .value,
-                                ),
-                          ),
-                        ],
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              "assets/icons/icon_flag_id_square.png",
+                              width: 20,
+                              height: 13,
+                            ),
+                            SizedBox(width: 6),
+                            Text(
+                              "+62",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .textColor
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(width: 10),
@@ -136,11 +144,25 @@ class RegisterView extends GetView<RegisterController> {
                           cursorErrorColor:
                               controller.themeColorServices.primaryBlue.value,
                           keyboardType: TextInputType.number,
+                          maxLength: 25,
                           onChanged: (control) {
                             controller.mobilePhone.value =
                                 control.value as String;
+
+                            controller.isFormValid.value =
+                                controller.formGroup.valid;
+                            controller.formGroup.markAllAsTouched();
+                          },
+                          validationMessages: {
+                            ValidationMessage.required: (error) =>
+                                'Wajib diisi',
+                            ValidationMessage.minLength: (error) =>
+                                'Minimal nomor handphone 8 angka',
+                            ValidationMessage.pattern: (error) =>
+                                'Harus diawali dengan angka 8',
                           },
                           decoration: InputDecoration(
+                            counterText: '',
                             contentPadding: EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 12,
@@ -212,7 +234,9 @@ class RegisterView extends GetView<RegisterController> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          showErrors: (control) => false,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
                         ),
                       ),
                     ),
@@ -223,7 +247,7 @@ class RegisterView extends GetView<RegisterController> {
                   width: MediaQuery.of(context).size.width,
                   height: 46,
                   child: ElevatedButton(
-                    onPressed: controller.mobilePhone.value != ""
+                    onPressed: controller.isFormValid.value
                         ? () {
                             controller.onTapSubmit();
                           }

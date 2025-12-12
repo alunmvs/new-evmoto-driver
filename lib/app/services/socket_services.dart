@@ -17,7 +17,7 @@ import 'package:new_evmoto_driver/app/utils/socket_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class SocketServices extends GetxService {
+class SocketServices extends GetxService with WidgetsBindingObserver {
   late Socket socket;
   late Timer schedulerDataSocketTimer;
 
@@ -27,6 +27,16 @@ class SocketServices extends GetxService {
   @override
   Future<void> onInit() async {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      setupWebsocket();
+    } else if (state == AppLifecycleState.paused) {
+      socket.close();
+    }
   }
 
   Future<void> setupWebsocket() async {
@@ -93,6 +103,7 @@ class SocketServices extends GetxService {
   }
 
   Future<void> closeWebsocket() async {
+    WidgetsBinding.instance.removeObserver(this);
     await socket.close();
   }
 

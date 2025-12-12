@@ -67,7 +67,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
   }
 
   Future<void> showDialogBackButton() async {
-    Get.dialog(
+    await Get.dialog(
       Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -128,7 +128,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
                               width: Get.width,
                               height: 46,
                               child: ElevatedButton(
-                                onPressed: () async {
+                                onPressed: () {
                                   Get.close(1);
                                   Get.back();
                                 },

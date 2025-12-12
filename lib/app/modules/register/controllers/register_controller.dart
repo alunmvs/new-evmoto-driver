@@ -20,11 +20,16 @@ class RegisterController extends GetxController {
 
   final formGroup = FormGroup({
     "mobile_phone": FormControl<String>(
-      validators: <Validator>[Validators.required],
+      validators: <Validator>[
+        Validators.required,
+        Validators.pattern(r'^8.*'),
+        Validators.minLength(8),
+      ],
     ),
   });
 
   final mobilePhone = "".obs;
+  final isFormValid = false.obs;
 
   @override
   Future<void> onInit() async {
