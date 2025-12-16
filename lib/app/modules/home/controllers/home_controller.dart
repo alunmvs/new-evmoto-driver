@@ -719,38 +719,51 @@ class HomeController extends GetxController
                                   ),
                                   padding: EdgeInsets.only(right: 16),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       if (state.position < 0.5) ...[
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              "Swipe untuk mendapatkan orderan",
-                                              style: typographyServices
-                                                  .bodyLargeRegular
-                                                  .value
-                                                  .copyWith(
-                                                    color: themeColorServices
-                                                        .neutralsColorGrey400
-                                                        .value,
+                                            SizedBox(width: 55),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Swipe untuk mendapatkan orderan",
+                                                    style: typographyServices
+                                                        .bodyLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: themeColorServices
+                                                              .neutralsColorGrey400
+                                                              .value,
+                                                        ),
                                                   ),
-                                            ),
-                                            Obx(
-                                              () => Text(
-                                                "(${durationAccept.value}s)",
-                                                style: typographyServices
-                                                    .bodyLargeBold
-                                                    .value
-                                                    .copyWith(
-                                                      color: themeColorServices
-                                                          .primaryBlue
-                                                          .value,
+                                                  Obx(
+                                                    () => Text(
+                                                      "(${durationAccept.value}s)",
+                                                      style: typographyServices
+                                                          .bodyLargeBold
+                                                          .value
+                                                          .copyWith(
+                                                            color:
+                                                                themeColorServices
+                                                                    .primaryBlue
+                                                                    .value,
+                                                          ),
                                                     ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],

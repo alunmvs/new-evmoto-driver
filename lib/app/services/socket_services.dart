@@ -19,10 +19,12 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 class SocketServices extends GetxService with WidgetsBindingObserver {
   late Socket socket;
-  late Timer schedulerDataSocketTimer;
+  late Timer? schedulerDataSocketTimer;
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+
+  final isSocketClose = true.obs;
 
   @override
   Future<void> onInit() async {
@@ -41,6 +43,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
   Future<void> setupWebsocket() async {
     socket = await Socket.connect("api-dev.evmotoapp.com", 8888);
+    isSocketClose.value = false;
 
     socket.listen(
       (data) async {
@@ -91,10 +94,12 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
       },
       onError: (error) {
         print('Error: $error');
+        isSocketClose.value = true;
         socket.destroy();
       },
       onDone: () {
         print('Server closed connection');
+        isSocketClose.value = true;
         socket.destroy();
       },
     );
@@ -118,52 +123,54 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
   }
 
   Future<void> sendHeartBeat() async {
-    var storage = FlutterSecureStorage();
-    var token = await storage.read(key: 'token');
+    if (isSocketClose.value == false) {
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
 
-    var deviceId = await getDeviceId();
-    var appVersion = await getVersion();
+      var deviceId = await getDeviceId();
+      var appVersion = await getVersion();
 
-    var locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
+      var locationSettings = LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 100,
+      );
 
-    var position = await Geolocator.getCurrentPosition(
-      locationSettings: locationSettings,
-    );
+      var position = await Geolocator.getCurrentPosition(
+        locationSettings: locationSettings,
+      );
 
-    var dataUser = {
-      "code": 200,
-      "data": {
-        "device": deviceId,
-        "token": token,
-        "type": 2,
-        "userId": Get.find<HomeController>().userInfo.value.id,
-        "version": appVersion,
-      },
-      "method": "PING",
-      "msg": "SUCCESS",
-    };
-    var dataLocation = {
-      "code": 200,
-      "data": {
-        "altitude": position.altitude,
-        "computeAzimuth": 0.0,
-        "driverId": Get.find<HomeController>().userInfo.value.id,
-        "lat": position.latitude,
-        "lon": position.longitude,
-        "orderId": "",
-        "orderType": "",
-      },
-      "method": "LOCATION",
-      "msg": "SUCCESS",
-    };
+      var dataUser = {
+        "code": 200,
+        "data": {
+          "device": deviceId,
+          "token": token,
+          "type": 2,
+          "userId": Get.find<HomeController>().userInfo.value.id,
+          "version": appVersion,
+        },
+        "method": "PING",
+        "msg": "SUCCESS",
+      };
+      var dataLocation = {
+        "code": 200,
+        "data": {
+          "altitude": position.altitude,
+          "computeAzimuth": 0.0,
+          "driverId": Get.find<HomeController>().userInfo.value.id,
+          "lat": position.latitude,
+          "lon": position.longitude,
+          "orderId": "",
+          "orderType": "",
+        },
+        "method": "LOCATION",
+        "msg": "SUCCESS",
+      };
 
-    socket.add(convertJsonToPacket(dataUser));
-    socket.add(convertJsonToPacket(dataLocation));
+      socket.add(convertJsonToPacket(dataUser));
+      socket.add(convertJsonToPacket(dataLocation));
 
-    await socket.flush();
+      await socket.flush();
+    }
   }
 
   Future<String> getDeviceId() async {
