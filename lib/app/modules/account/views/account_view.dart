@@ -201,7 +201,7 @@ class AccountView extends GetView<AccountController> {
                                         "Evaluasi Saya",
                                         style: controller
                                             .typographyServices
-                                            .bodyLargeRegular
+                                            .bodySmallBold
                                             .value,
                                       ),
                                     ),
@@ -262,7 +262,7 @@ class AccountView extends GetView<AccountController> {
                                         "Berikan Masukan",
                                         style: controller
                                             .typographyServices
-                                            .bodyLargeRegular
+                                            .bodySmallBold
                                             .value,
                                       ),
                                     ),
@@ -329,7 +329,7 @@ class AccountView extends GetView<AccountController> {
                                         "Pilih Jenis Layanan",
                                         style: controller
                                             .typographyServices
-                                            .bodyLargeRegular
+                                            .bodySmallBold
                                             .value,
                                       ),
                                     ),
@@ -390,7 +390,7 @@ class AccountView extends GetView<AccountController> {
                                         "Ubah Kendaraan",
                                         style: controller
                                             .typographyServices
-                                            .bodyLargeRegular
+                                            .bodySmallBold
                                             .value,
                                       ),
                                     ),
@@ -451,7 +451,7 @@ class AccountView extends GetView<AccountController> {
                                         "Ubah Nomor Telepon",
                                         style: controller
                                             .typographyServices
-                                            .bodyLargeRegular
+                                            .bodySmallBold
                                             .value,
                                       ),
                                     ),
@@ -518,7 +518,7 @@ class AccountView extends GetView<AccountController> {
                                         "Rekomendasi Kepada Teman",
                                         style: controller
                                             .typographyServices
-                                            .bodyLargeRegular
+                                            .bodySmallBold
                                             .value,
                                       ),
                                     ),
@@ -579,7 +579,7 @@ class AccountView extends GetView<AccountController> {
                                         "Hubungi Customer Service",
                                         style: controller
                                             .typographyServices
-                                            .bodyLargeRegular
+                                            .bodySmallBold
                                             .value,
                                       ),
                                     ),
@@ -640,7 +640,7 @@ class AccountView extends GetView<AccountController> {
                                         "Pengaturan Lainnya",
                                         style: controller
                                             .typographyServices
-                                            .bodyLargeRegular
+                                            .bodySmallBold
                                             .value,
                                       ),
                                     ),
@@ -711,7 +711,7 @@ class AccountView extends GetView<AccountController> {
                                           "Keluar",
                                           style: controller
                                               .typographyServices
-                                              .bodyLargeRegular
+                                              .bodySmallBold
                                               .value,
                                         ),
                                       ),
