@@ -9,7 +9,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_driver/app/data/consts/order_state_const.dart';
-import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
@@ -27,7 +26,6 @@ import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:slide_countdown/slide_countdown.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -67,6 +65,7 @@ class HomeController extends GetxController
   final isSeeMoreOrderToBeServed = true.obs;
 
   final workStatus = 2.obs;
+  final selectedIndex = 0.obs;
   final isFetch = false.obs;
 
   @override

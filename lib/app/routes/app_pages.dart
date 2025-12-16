@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/account/bindings/account_binding.dart';
+import '../modules/account/views/account_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
@@ -44,7 +46,7 @@ class AppPages {
     GetPage(
       name: _Paths.HOME,
       page: () => const HomeView(),
-      binding: HomeBinding(),
+      bindings: [HomeBinding(), AccountBinding()],
     ),
     GetPage(
       name: _Paths.SPLASH_SCREEN,
@@ -120,6 +122,11 @@ class AppPages {
       name: _Paths.DEPOSIT_BALANCE_PAYMENT_WEBVIEW,
       page: () => const DepositBalancePaymentWebviewView(),
       binding: DepositBalancePaymentWebviewBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT,
+      page: () => const AccountView(),
+      binding: AccountBinding(),
     ),
   ];
 }

@@ -774,37 +774,41 @@ class OrderPaymentConfirmationView
                                     height: 20,
                                   ),
                                   SizedBox(width: 4),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Lokasi Tujuan",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(color: Color(0XFFB3B3B3)),
-                                      ),
-                                      SizedBox(height: 2),
-                                      Text(
-                                        controller
-                                                .orderDetail
-                                                .value
-                                                .endAddress ??
-                                            "-",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: controller
-                                                  .themeColorServices
-                                                  .textColor
-                                                  .value,
-                                            ),
-                                      ),
-                                    ],
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Lokasi Tujuan",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: Color(0XFFB3B3B3),
+                                              ),
+                                        ),
+                                        SizedBox(height: 2),
+                                        Text(
+                                          controller
+                                                  .orderDetail
+                                                  .value
+                                                  .endAddress ??
+                                              "-",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .textColor
+                                                    .value,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
