@@ -7,6 +7,7 @@ import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/main.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 
 class AccountController extends GetxController {
@@ -16,11 +17,16 @@ class AccountController extends GetxController {
 
   final homeController = Get.find<HomeController>();
 
+  final packageVersion = "".obs;
+
   final isFetch = false.obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    isFetch.value = true;
+    await getPackageInfo();
+    isFetch.value = false;
   }
 
   @override
@@ -31,6 +37,11 @@ class AccountController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> getPackageInfo() async {
+    var packageInfo = await PackageInfo.fromPlatform();
+    packageVersion.value = packageInfo.version;
   }
 
   Future<void> onTapShareAppLink() async {
