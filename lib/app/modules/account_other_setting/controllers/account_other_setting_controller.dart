@@ -9,6 +9,7 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AccountOtherSettingController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -98,5 +99,15 @@ class AccountOtherSettingController extends GetxController {
       ),
     );
     rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+  }
+
+  Future<void> onTapUpdateVersion() async {
+    var url = Uri.parse(
+      "https://play.google.com/store/apps/details?id=com.driver.evmototrip",
+    );
+
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw 'Unable launch url update app version';
+    }
   }
 }

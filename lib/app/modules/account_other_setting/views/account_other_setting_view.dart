@@ -321,7 +321,9 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                         child: Divider(height: 0, color: Color(0XFFE8E8E8)),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async {
+                          await controller.onTapUpdateVersion();
+                        },
                         child: Container(
                           color: Colors.transparent,
                           padding: EdgeInsets.all(16),
