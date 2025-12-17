@@ -38,6 +38,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
       setupWebsocket();
     } else if (state == AppLifecycleState.paused) {
       socket.close();
+      isSocketClose.value = true;
     }
   }
 
@@ -110,6 +111,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
   Future<void> closeWebsocket() async {
     WidgetsBinding.instance.removeObserver(this);
     await socket.close();
+    isSocketClose.value = true;
   }
 
   Future<void> schedulerDataSocket() async {
@@ -169,7 +171,9 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
       socket.add(convertJsonToPacket(dataUser));
       socket.add(convertJsonToPacket(dataLocation));
 
-      await socket.flush();
+      if (isSocketClose.value == false) {
+        await socket.flush();
+      }
     }
   }
 
