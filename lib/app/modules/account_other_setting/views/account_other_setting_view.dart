@@ -42,7 +42,9 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(Routes.ACCOUNT_USER_GUIDE);
+                        },
                         child: Container(
                           color: Colors.transparent,
                           padding: EdgeInsets.all(16),
@@ -98,7 +100,11 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                         child: Divider(height: 0, color: Color(0XFFE8E8E8)),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(
+                            Routes.ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES,
+                          );
+                        },
                         child: Container(
                           color: Colors.transparent,
                           padding: EdgeInsets.all(16),
@@ -154,7 +160,9 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                         child: Divider(height: 0, color: Color(0XFFE8E8E8)),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(Routes.ACCOUNT_ABOUT_US);
+                        },
                         child: Container(
                           color: Colors.transparent,
                           padding: EdgeInsets.all(16),

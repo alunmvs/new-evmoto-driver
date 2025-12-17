@@ -3,17 +3,18 @@ import 'package:flutter_html/flutter_html.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/privacy_policy_controller.dart';
+import '../controllers/account_legal_terms_and_platform_rules_controller.dart';
 
-class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
-  const PrivacyPolicyView({super.key});
+class AccountLegalTermsAndPlatformRulesView
+    extends GetView<AccountLegalTermsAndPlatformRulesController> {
+  const AccountLegalTermsAndPlatformRulesView({super.key});
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Kebijakan Privasi",
+            "Ketentuan Hukum & Aturan Aplikasi",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,

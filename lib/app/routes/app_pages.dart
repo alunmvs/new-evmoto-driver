@@ -2,10 +2,14 @@ import 'package:get/get.dart';
 
 import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
+import '../modules/account_about_us/bindings/account_about_us_binding.dart';
+import '../modules/account_about_us/views/account_about_us_view.dart';
 import '../modules/account_feedback/bindings/account_feedback_binding.dart';
 import '../modules/account_feedback/views/account_feedback_view.dart';
 import '../modules/account_language/bindings/account_language_binding.dart';
 import '../modules/account_language/views/account_language_view.dart';
+import '../modules/account_legal_terms_and_platform_rules/bindings/account_legal_terms_and_platform_rules_binding.dart';
+import '../modules/account_legal_terms_and_platform_rules/views/account_legal_terms_and_platform_rules_view.dart';
 import '../modules/account_my_evaluation/bindings/account_my_evaluation_binding.dart';
 import '../modules/account_my_evaluation/views/account_my_evaluation_view.dart';
 import '../modules/account_other_setting/bindings/account_other_setting_binding.dart';
@@ -16,6 +20,8 @@ import '../modules/account_update_mobile_phone/bindings/account_update_mobile_ph
 import '../modules/account_update_mobile_phone/views/account_update_mobile_phone_view.dart';
 import '../modules/account_update_mobile_phone_verification_otp/bindings/account_update_mobile_phone_verification_otp_binding.dart';
 import '../modules/account_update_mobile_phone_verification_otp/views/account_update_mobile_phone_verification_otp_view.dart';
+import '../modules/account_user_guide/bindings/account_user_guide_binding.dart';
+import '../modules/account_user_guide/views/account_user_guide_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
@@ -176,6 +182,21 @@ class AppPages {
       name: _Paths.ACCOUNT_LANGUAGE,
       page: () => const AccountLanguageView(),
       binding: AccountLanguageBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_USER_GUIDE,
+      page: () => const AccountUserGuideView(),
+      binding: AccountUserGuideBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES,
+      page: () => const AccountLegalTermsAndPlatformRulesView(),
+      binding: AccountLegalTermsAndPlatformRulesBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_ABOUT_US,
+      page: () => const AccountAboutUsView(),
+      binding: AccountAboutUsBinding(),
     ),
   ];
 }
