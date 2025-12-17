@@ -14,7 +14,7 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Kembali",
+            "Evaluasi Saya",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -159,6 +159,44 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 8),
+                            if (controller
+                                .getRatingAndReviewListByIndex(
+                                  index: controller.selectedIndex.value,
+                                )
+                                .isEmpty) ...[
+                              Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 16 * 3),
+                                    SizedBox(
+                                      height: 80,
+                                      width: 80,
+                                      child: Placeholder(),
+                                    ),
+                                    SizedBox(height: 16),
+                                    Text(
+                                      "Belum ada evaluasi",
+                                      style: controller
+                                          .typographyServices
+                                          .bodyLargeBold
+                                          .value,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      "Tidak ada evaluasi pada bagian ini",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                             for (var ratingAndReviewData
                                 in controller.getRatingAndReviewListByIndex(
                                   index: controller.selectedIndex.value,
