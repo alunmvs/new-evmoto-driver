@@ -242,56 +242,61 @@ class AccountView extends GetView<AccountController> {
                                   color: Color(0XFFE8E8E8),
                                 ),
                               ),
-                              Container(
-                                padding: EdgeInsets.all(16),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_account_alert.svg",
-                                            width: 18.33,
-                                            height: 16.1,
-                                          ),
-                                        ],
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.ACCOUNT_FEEDBACK);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(16),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_account_alert.svg",
+                                              width: 18.33,
+                                              height: 16.1,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 16),
-                                    Expanded(
-                                      child: Text(
-                                        "Berikan Masukan",
-                                        style: controller
-                                            .typographyServices
-                                            .bodySmallBold
-                                            .value,
+                                      SizedBox(width: 16),
+                                      Expanded(
+                                        child: Text(
+                                          "Berikan Masukan",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallBold
+                                              .value,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 16),
-                                    SizedBox(
-                                      width: 19,
-                                      height: 19,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_arrow_right.svg",
-                                            width: 4.75,
-                                            height: 9.5,
-                                          ),
-                                        ],
+                                      SizedBox(width: 16),
+                                      SizedBox(
+                                        width: 19,
+                                        height: 19,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_arrow_right.svg",
+                                              width: 4.75,
+                                              height: 9.5,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],

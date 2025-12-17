@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
+import '../modules/account_feedback/bindings/account_feedback_binding.dart';
+import '../modules/account_feedback/views/account_feedback_view.dart';
 import '../modules/account_my_evaluation/bindings/account_my_evaluation_binding.dart';
 import '../modules/account_my_evaluation/views/account_my_evaluation_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
@@ -134,6 +136,11 @@ class AppPages {
       name: _Paths.ACCOUNT_MY_EVALUATION,
       page: () => const AccountMyEvaluationView(),
       binding: AccountMyEvaluationBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_FEEDBACK,
+      page: () => const AccountFeedbackView(),
+      binding: AccountFeedbackBinding(),
     ),
   ];
 }
