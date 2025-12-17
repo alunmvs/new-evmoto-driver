@@ -23,6 +23,7 @@ abstract class Routes {
   static const ACCOUNT = _Paths.ACCOUNT;
   static const ACCOUNT_MY_EVALUATION = _Paths.ACCOUNT_MY_EVALUATION;
   static const ACCOUNT_FEEDBACK = _Paths.ACCOUNT_FEEDBACK;
+  static const ACCOUNT_SERVICE = _Paths.ACCOUNT_SERVICE;
 }
 
 abstract class _Paths {
@@ -47,4 +48,5 @@ abstract class _Paths {
   static const ACCOUNT = '/account';
   static const ACCOUNT_MY_EVALUATION = '/account-my-evaluation';
   static const ACCOUNT_FEEDBACK = '/account-feedback';
+  static const ACCOUNT_SERVICE = '/account-service';
 }

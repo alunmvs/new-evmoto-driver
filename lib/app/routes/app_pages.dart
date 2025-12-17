@@ -6,6 +6,8 @@ import '../modules/account_feedback/bindings/account_feedback_binding.dart';
 import '../modules/account_feedback/views/account_feedback_view.dart';
 import '../modules/account_my_evaluation/bindings/account_my_evaluation_binding.dart';
 import '../modules/account_my_evaluation/views/account_my_evaluation_view.dart';
+import '../modules/account_service/bindings/account_service_binding.dart';
+import '../modules/account_service/views/account_service_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
@@ -141,6 +143,11 @@ class AppPages {
       name: _Paths.ACCOUNT_FEEDBACK,
       page: () => const AccountFeedbackView(),
       binding: AccountFeedbackBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_SERVICE,
+      page: () => const AccountServiceView(),
+      binding: AccountServiceBinding(),
     ),
   ];
 }
