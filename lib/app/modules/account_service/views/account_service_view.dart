@@ -40,7 +40,7 @@ class AccountServiceView extends GetView<AccountServiceController> {
                     children: [
                       SizedBox(height: 16),
                       Text(
-                        "Pilih Layanan",
+                        "Pilih Jenis Layanan",
                         style:
                             controller.typographyServices.bodySmallBold.value,
                       ),

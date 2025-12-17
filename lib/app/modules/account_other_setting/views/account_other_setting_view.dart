@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 
 import '../controllers/account_other_setting_controller.dart';
 
@@ -379,7 +380,9 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                         child: Divider(height: 0, color: Color(0XFFE8E8E8)),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(Routes.ACCOUNT_LANGUAGE);
+                        },
                         child: Container(
                           color: Colors.transparent,
                           padding: EdgeInsets.all(16),

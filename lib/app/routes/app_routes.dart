@@ -28,6 +28,7 @@ abstract class Routes {
   static const ACCOUNT_UPDATE_MOBILE_PHONE_VERIFICATION_OTP =
       _Paths.ACCOUNT_UPDATE_MOBILE_PHONE_VERIFICATION_OTP;
   static const ACCOUNT_OTHER_SETTING = _Paths.ACCOUNT_OTHER_SETTING;
+  static const ACCOUNT_LANGUAGE = _Paths.ACCOUNT_LANGUAGE;
 }
 
 abstract class _Paths {
@@ -57,4 +58,5 @@ abstract class _Paths {
   static const ACCOUNT_UPDATE_MOBILE_PHONE_VERIFICATION_OTP =
       '/account-update-mobile-phone-verification-otp';
   static const ACCOUNT_OTHER_SETTING = '/account-other-setting';
+  static const ACCOUNT_LANGUAGE = '/account-language';
 }

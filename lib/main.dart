@@ -8,6 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
@@ -46,6 +47,7 @@ Future<void> main() async {
 
   Get.put(ThemeColorServices(), permanent: true);
   Get.put(TypographyServices(), permanent: true);
+  Get.put(LanguageServices(), permanent: true);
   Get.put(ApiServices(), permanent: true);
   Get.put(PushNotificationServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);

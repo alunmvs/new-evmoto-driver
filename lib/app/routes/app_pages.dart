@@ -4,6 +4,8 @@ import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
 import '../modules/account_feedback/bindings/account_feedback_binding.dart';
 import '../modules/account_feedback/views/account_feedback_view.dart';
+import '../modules/account_language/bindings/account_language_binding.dart';
+import '../modules/account_language/views/account_language_view.dart';
 import '../modules/account_my_evaluation/bindings/account_my_evaluation_binding.dart';
 import '../modules/account_my_evaluation/views/account_my_evaluation_view.dart';
 import '../modules/account_other_setting/bindings/account_other_setting_binding.dart';
@@ -169,6 +171,11 @@ class AppPages {
       name: _Paths.ACCOUNT_OTHER_SETTING,
       page: () => const AccountOtherSettingView(),
       binding: AccountOtherSettingBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_LANGUAGE,
+      page: () => const AccountLanguageView(),
+      binding: AccountLanguageBinding(),
     ),
   ];
 }
