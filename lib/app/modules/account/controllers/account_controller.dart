@@ -7,6 +7,7 @@ import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/main.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AccountController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -30,6 +31,16 @@ class AccountController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> onTapShareAppLink() async {
+    var shareParams = ShareParams(
+      uri: Uri.parse(
+        "https://play.google.com/store/apps/details?id=com.driver.evmototrip",
+      ),
+    );
+
+    await SharePlus.instance.share(shareParams);
   }
 
   Future<void> onTapLogout() async {
