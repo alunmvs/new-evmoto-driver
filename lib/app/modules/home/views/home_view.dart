@@ -515,40 +515,52 @@ class HomeView extends GetView<HomeController> {
                                             ),
                                           ),
                                           SizedBox(width: 14),
-                                          Column(
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/icons/icon_withdraw.svg",
-                                                width: 19,
-                                                height: 19,
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: Container(
+                                              color: Colors.transparent,
+                                              child: Column(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/icons/icon_withdraw.svg",
+                                                    width: 19,
+                                                    height: 19,
+                                                  ),
+                                                  SizedBox(height: 4),
+                                                  Text(
+                                                    "Tarik Dana",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .captionLargeRegular
+                                                        .value,
+                                                  ),
+                                                ],
                                               ),
-                                              SizedBox(height: 4),
-                                              Text(
-                                                "Tarik Dana",
-                                                style: controller
-                                                    .typographyServices
-                                                    .captionLargeRegular
-                                                    .value,
-                                              ),
-                                            ],
+                                            ),
                                           ),
                                           SizedBox(width: 14),
-                                          Column(
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/icons/icon_others.svg",
-                                                width: 18,
-                                                height: 18,
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: Container(
+                                              color: Colors.transparent,
+                                              child: Column(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/icons/icon_others.svg",
+                                                    width: 18,
+                                                    height: 18,
+                                                  ),
+                                                  SizedBox(height: 4),
+                                                  Text(
+                                                    "Lainnya",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .captionLargeRegular
+                                                        .value,
+                                                  ),
+                                                ],
                                               ),
-                                              SizedBox(height: 4),
-                                              Text(
-                                                "Lainnya",
-                                                style: controller
-                                                    .typographyServices
-                                                    .captionLargeRegular
-                                                    .value,
-                                              ),
-                                            ],
+                                            ),
                                           ),
                                         ],
                                       ),

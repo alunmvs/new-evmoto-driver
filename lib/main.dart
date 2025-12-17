@@ -1,4 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,6 +32,17 @@ Future<void> main() async {
 
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp();
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordError(
+      errorDetails.exception,
+      errorDetails.stack,
+      fatal: true,
+    );
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   Get.put(ThemeColorServices(), permanent: true);
   Get.put(TypographyServices(), permanent: true);
