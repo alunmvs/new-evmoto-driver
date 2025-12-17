@@ -24,6 +24,9 @@ abstract class Routes {
   static const ACCOUNT_MY_EVALUATION = _Paths.ACCOUNT_MY_EVALUATION;
   static const ACCOUNT_FEEDBACK = _Paths.ACCOUNT_FEEDBACK;
   static const ACCOUNT_SERVICE = _Paths.ACCOUNT_SERVICE;
+  static const ACCOUNT_UPDATE_MOBILE_PHONE = _Paths.ACCOUNT_UPDATE_MOBILE_PHONE;
+  static const ACCOUNT_UPDATE_MOBILE_PHONE_VERIFICATION_OTP =
+      _Paths.ACCOUNT_UPDATE_MOBILE_PHONE_VERIFICATION_OTP;
 }
 
 abstract class _Paths {
@@ -49,4 +52,7 @@ abstract class _Paths {
   static const ACCOUNT_MY_EVALUATION = '/account-my-evaluation';
   static const ACCOUNT_FEEDBACK = '/account-feedback';
   static const ACCOUNT_SERVICE = '/account-service';
+  static const ACCOUNT_UPDATE_MOBILE_PHONE = '/account-update-mobile-phone';
+  static const ACCOUNT_UPDATE_MOBILE_PHONE_VERIFICATION_OTP =
+      '/account-update-mobile-phone-verification-otp';
 }

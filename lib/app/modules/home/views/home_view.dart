@@ -1060,7 +1060,7 @@ class HomeView extends GetView<HomeController> {
                                                                           ),
                                                                           child: Text(
                                                                             "Ambil",
-                                                                            style: controller.typographyServices.bodyLargeBold.value.copyWith(
+                                                                            style: controller.typographyServices.bodySmallBold.value.copyWith(
                                                                               color: controller.themeColorServices.neutralsColorGrey0.value,
                                                                             ),
                                                                           ),

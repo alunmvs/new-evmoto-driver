@@ -1743,7 +1743,7 @@ class RegisterFormView extends GetView<RegisterFormController> {
                   ),
                   child: Text(
                     "Lanjutkan",
-                    style: controller.typographyServices.bodyLargeBold.value
+                    style: controller.typographyServices.bodySmallBold.value
                         .copyWith(color: Colors.white),
                   ),
                 ),

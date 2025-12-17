@@ -158,7 +158,7 @@ class AccountServiceView extends GetView<AccountServiceController> {
                           "Simpan",
                           style: controller
                               .typographyServices
-                              .bodyLargeBold
+                              .bodySmallBold
                               .value
                               .copyWith(color: Colors.white),
                         ),

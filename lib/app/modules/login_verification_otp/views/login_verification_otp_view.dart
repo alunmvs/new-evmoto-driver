@@ -185,7 +185,7 @@ class LoginVerificationOtpView extends GetView<LoginVerificationOtpController> {
                                 "Kirim ulang kode",
                                 style: controller
                                     .typographyServices
-                                    .bodySmallRegular
+                                    .bodySmallBold
                                     .value
                                     .copyWith(color: Colors.white),
                               ),
@@ -214,7 +214,7 @@ class LoginVerificationOtpView extends GetView<LoginVerificationOtpController> {
                             "Lanjutkan",
                             style: controller
                                 .typographyServices
-                                .bodyLargeBold
+                                .bodySmallBold
                                 .value
                                 .copyWith(color: Colors.white),
                           ),

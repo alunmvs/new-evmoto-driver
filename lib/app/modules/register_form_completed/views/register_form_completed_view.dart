@@ -175,7 +175,7 @@ class RegisterFormCompletedView
                   ),
                   child: Text(
                     "Konfirmasi",
-                    style: controller.typographyServices.bodyLargeBold.value
+                    style: controller.typographyServices.bodySmallBold.value
                         .copyWith(color: Colors.white),
                   ),
                 ),

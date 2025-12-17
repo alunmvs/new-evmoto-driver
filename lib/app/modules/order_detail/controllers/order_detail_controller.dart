@@ -949,7 +949,7 @@ class OrderDetailController extends GetxController {
                                       content: Text(
                                         e.toString(),
                                         style: typographyServices
-                                            .bodySmallRegular
+                                            .bodySmallBold
                                             .value
                                             .copyWith(
                                               color: themeColorServices

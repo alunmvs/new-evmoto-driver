@@ -141,7 +141,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
                                 ),
                                 child: Text(
                                   "Batalkan",
-                                  style: typographyServices.bodyLargeBold.value
+                                  style: typographyServices.bodySmallBold.value
                                       .copyWith(
                                         color: themeColorServices
                                             .neutralsColorGrey0

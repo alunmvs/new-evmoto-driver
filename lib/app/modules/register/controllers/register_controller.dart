@@ -1,14 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:new_evmoto_driver/app/data/models/open_city_model.dart';
-import 'package:new_evmoto_driver/app/data/models/province_cities_model.dart';
-import 'package:new_evmoto_driver/app/data/models/registered_driver_model.dart';
-import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
-import 'package:new_evmoto_driver/app/repositories/register_repository.dart';
-import 'package:new_evmoto_driver/app/repositories/upload_image_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';

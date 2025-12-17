@@ -143,7 +143,7 @@ class RegisterView extends GetView<RegisterController> {
                               .value,
                           cursorErrorColor:
                               controller.themeColorServices.primaryBlue.value,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.phone,
                           maxLength: 25,
                           onChanged: (control) {
                             controller.mobilePhone.value =
@@ -261,7 +261,7 @@ class RegisterView extends GetView<RegisterController> {
                     ),
                     child: Text(
                       "Lanjutkan",
-                      style: controller.typographyServices.bodyLargeBold.value
+                      style: controller.typographyServices.bodySmallBold.value
                           .copyWith(color: Colors.white),
                     ),
                   ),

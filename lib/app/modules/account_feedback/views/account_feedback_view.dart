@@ -150,7 +150,7 @@ class AccountFeedbackView extends GetView<AccountFeedbackController> {
                   ),
                   child: Text(
                     "Kirim Masukan",
-                    style: controller.typographyServices.bodyLargeBold.value
+                    style: controller.typographyServices.bodySmallBold.value
                         .copyWith(color: Colors.white),
                   ),
                 ),

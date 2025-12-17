@@ -228,7 +228,7 @@ class LoginView extends GetView<LoginController> {
                                       child: Column(
                                         children: [
                                           TextFormField(
-                                            keyboardType: TextInputType.number,
+                                            keyboardType: TextInputType.phone,
                                             controller: controller
                                                 .mobileNumberTextEditingController,
                                             style: controller
@@ -412,7 +412,7 @@ class LoginView extends GetView<LoginController> {
                                                 "Join Sekarang",
                                                 style: controller
                                                     .typographyServices
-                                                    .bodyLargeBold
+                                                    .bodySmallBold
                                                     .value
                                                     .copyWith(
                                                       color: controller

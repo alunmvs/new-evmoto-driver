@@ -1048,7 +1048,7 @@ class OrderPaymentConfirmationView
                             "Konfirmasi Pembayaran",
                             style: controller
                                 .typographyServices
-                                .bodyLargeBold
+                                .bodySmallBold
                                 .value
                                 .copyWith(color: Colors.white),
                           ),
@@ -1075,7 +1075,7 @@ class OrderPaymentConfirmationView
                             "Pembayaran Sudah Diterima",
                             style: controller
                                 .typographyServices
-                                .bodyLargeBold
+                                .bodySmallBold
                                 .value
                                 .copyWith(color: Colors.white),
                           ),

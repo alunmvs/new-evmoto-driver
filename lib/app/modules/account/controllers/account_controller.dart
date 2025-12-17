@@ -142,7 +142,7 @@ class AccountController extends GetxController {
                                 ),
                                 child: Text(
                                   "Keluar",
-                                  style: typographyServices.bodyLargeBold.value
+                                  style: typographyServices.bodySmallBold.value
                                       .copyWith(
                                         color: themeColorServices
                                             .neutralsColorGrey0

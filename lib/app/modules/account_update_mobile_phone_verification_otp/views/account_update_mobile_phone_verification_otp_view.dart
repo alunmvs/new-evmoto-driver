@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:slide_countdown/slide_countdown.dart';
-import '../controllers/register_verification_otp_controller.dart';
 
-class RegisterVerificationOtpView
-    extends GetView<RegisterVerificationOtpController> {
-  const RegisterVerificationOtpView({super.key});
+import '../controllers/account_update_mobile_phone_verification_otp_controller.dart';
+
+class AccountUpdateMobilePhoneVerificationOtpView
+    extends GetView<AccountUpdateMobilePhoneVerificationOtpController> {
+  const AccountUpdateMobilePhoneVerificationOtpView({super.key});
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
+          title: Text(
+            "Ubah Nomor Telepon",
+            style: controller.typographyServices.bodyLargeBold.value,
+          ),
+          centerTitle: false,
           backgroundColor:
               controller.themeColorServices.neutralsColorGrey0.value,
           surfaceTintColor:
@@ -35,55 +41,6 @@ class RegisterVerificationOtpView
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 16),
-                      SvgPicture.asset(
-                        "assets/logos/logo_evmoto.svg",
-                        width: 95.46,
-                        height: 29.56,
-                      ),
-                      SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Lengkapi Verifikasi Kode",
-                                style: controller
-                                    .typographyServices
-                                    .headingSmallBold
-                                    .value
-                                    .copyWith(
-                                      color: controller
-                                          .themeColorServices
-                                          .textColor
-                                          .value,
-                                    ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Masukan 4 kode untuk melanjutkan",
-                                style: controller
-                                    .typographyServices
-                                    .bodySmallRegular
-                                    .value
-                                    .copyWith(
-                                      color: controller
-                                          .themeColorServices
-                                          .secondaryTextColor
-                                          .value,
-                                    ),
-                              ),
-                            ],
-                          ),
-                          SvgPicture.asset(
-                            "assets/images/img_progress_register_1_of_3.svg",
-                            width: 72,
-                            height: 72,
-                          ),
-                        ],
-                      ),
                       SizedBox(height: 16),
                       Text(
                         "Verifikasi Kode",
@@ -189,7 +146,7 @@ class RegisterVerificationOtpView
                                 "Kirim ulang kode",
                                 style: controller
                                     .typographyServices
-                                    .bodySmallBold
+                                    .bodySmallRegular
                                     .value
                                     .copyWith(color: Colors.white),
                               ),
@@ -205,7 +162,7 @@ class RegisterVerificationOtpView
                           onPressed: controller.otpCode.value.length != 4
                               ? null
                               : () async {
-                                  await controller.onTapNext();
+                                  await controller.onTapSubmit();
                                 },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:

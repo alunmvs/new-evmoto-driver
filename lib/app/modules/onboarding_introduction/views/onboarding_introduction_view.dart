@@ -102,7 +102,7 @@ class OnboardingIntroductionView
                             "Enter Now",
                             style: controller
                                 .typographyServices
-                                .bodyLargeBold
+                                .bodySmallBold
                                 .value
                                 .copyWith(color: Colors.white),
                           ),

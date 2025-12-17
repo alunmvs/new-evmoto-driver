@@ -8,6 +8,10 @@ import '../modules/account_my_evaluation/bindings/account_my_evaluation_binding.
 import '../modules/account_my_evaluation/views/account_my_evaluation_view.dart';
 import '../modules/account_service/bindings/account_service_binding.dart';
 import '../modules/account_service/views/account_service_view.dart';
+import '../modules/account_update_mobile_phone/bindings/account_update_mobile_phone_binding.dart';
+import '../modules/account_update_mobile_phone/views/account_update_mobile_phone_view.dart';
+import '../modules/account_update_mobile_phone_verification_otp/bindings/account_update_mobile_phone_verification_otp_binding.dart';
+import '../modules/account_update_mobile_phone_verification_otp/views/account_update_mobile_phone_verification_otp_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
@@ -148,6 +152,16 @@ class AppPages {
       name: _Paths.ACCOUNT_SERVICE,
       page: () => const AccountServiceView(),
       binding: AccountServiceBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_UPDATE_MOBILE_PHONE,
+      page: () => const AccountUpdateMobilePhoneView(),
+      binding: AccountUpdateMobilePhoneBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_UPDATE_MOBILE_PHONE_VERIFICATION_OTP,
+      page: () => const AccountUpdateMobilePhoneVerificationOtpView(),
+      binding: AccountUpdateMobilePhoneVerificationOtpBinding(),
     ),
   ];
 }
