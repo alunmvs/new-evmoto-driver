@@ -21,6 +21,7 @@ abstract class Routes {
   static const DEPOSIT_BALANCE_PAYMENT_WEBVIEW =
       _Paths.DEPOSIT_BALANCE_PAYMENT_WEBVIEW;
   static const ACCOUNT = _Paths.ACCOUNT;
+  static const ACCOUNT_MY_EVALUATION = _Paths.ACCOUNT_MY_EVALUATION;
 }
 
 abstract class _Paths {
@@ -43,4 +44,5 @@ abstract class _Paths {
   static const DEPOSIT_BALANCE_PAYMENT_WEBVIEW =
       '/deposit-balance-payment-webview';
   static const ACCOUNT = '/account';
+  static const ACCOUNT_MY_EVALUATION = '/account-my-evaluation';
 }

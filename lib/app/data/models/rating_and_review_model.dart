@@ -1,5 +1,5 @@
 class RatingAndReview {
-  int? sumScore;
+  double? sumScore;
   List<RatingReview>? ratingReview;
 
   RatingAndReview({this.sumScore, this.ratingReview});
@@ -27,7 +27,7 @@ class RatingAndReview {
 class RatingReview {
   String? time;
   String? content;
-  int? fraction;
+  double? fraction;
 
   RatingReview({this.time, this.content, this.fraction});
 

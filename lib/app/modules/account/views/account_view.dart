@@ -176,7 +176,9 @@ class AccountView extends GetView<AccountController> {
                           child: Column(
                             children: [
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Get.toNamed(Routes.ACCOUNT_MY_EVALUATION);
+                                },
                                 child: Container(
                                   color: Colors.transparent,
                                   padding: EdgeInsets.all(16),
