@@ -21,7 +21,7 @@ class AccountServiceView extends GetView<AccountServiceController> {
           surfaceTintColor:
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
-        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
+        backgroundColor: controller.themeColorServices.backgroundColor.value,
         body: controller.isFetch.value
             ? Center(
                 child: SizedBox(
@@ -59,7 +59,10 @@ class AccountServiceView extends GetView<AccountServiceController> {
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 16),
                             decoration: BoxDecoration(
-                              color: Colors.transparent,
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey0
+                                  .value,
                               border: Border.all(
                                 color: updatedServiceOrder.updatedState == 2
                                     ? Color(0XFFB3B3B3)

@@ -22,7 +22,7 @@ class AccountFeedbackView extends GetView<AccountFeedbackController> {
           surfaceTintColor:
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
-        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
+        backgroundColor: controller.themeColorServices.backgroundColor.value,
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -42,6 +42,11 @@ class AccountFeedbackView extends GetView<AccountFeedbackController> {
                       ValidationMessage.required: (error) => 'Wajib diisi',
                     },
                     decoration: InputDecoration(
+                      fillColor: controller
+                          .themeColorServices
+                          .neutralsColorGrey0
+                          .value,
+                      filled: true,
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 0,
                         vertical: 12,

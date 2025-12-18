@@ -24,7 +24,7 @@ class AccountUpdateMobilePhoneVerificationOtpView
           surfaceTintColor:
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
-        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
+        backgroundColor: controller.themeColorServices.backgroundColor.value,
         body: controller.isFetch.value
             ? Center(
                 child: SizedBox(
@@ -71,6 +71,10 @@ class AccountUpdateMobilePhoneVerificationOtpView
                           width: MediaQuery.of(context).size.width * (83 / 375),
                           height: 47,
                           decoration: BoxDecoration(
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey0
+                                .value,
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
                               color: controller

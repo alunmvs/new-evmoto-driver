@@ -23,7 +23,7 @@ class AccountUpdateMobilePhoneView
           surfaceTintColor:
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
-        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
+        backgroundColor: controller.themeColorServices.backgroundColor.value,
         body: controller.isFetch.value
             ? Center(
                 child: SizedBox(
