@@ -23,7 +23,7 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
           surfaceTintColor:
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
-        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
+        backgroundColor: controller.themeColorServices.backgroundColor.value,
         body: controller.isFetch.value
             ? Center(
                 child: SizedBox(
@@ -65,10 +65,7 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                               decoration: BoxDecoration(
                                 color: controller.selectedIndex.value == index
                                     ? Color(0XFFE9E9E9)
-                                    : controller
-                                          .themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
+                                    : Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(color: Color(0XFFE2E2E2)),
                               ),
@@ -207,16 +204,36 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        ratingAndReviewData.time!,
-                                        style: controller
-                                            .typographyServices
-                                            .bodyLargeRegular
-                                            .value
-                                            .copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0XFF696969),
-                                            ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Nama User",
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallBold
+                                                .value
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .textColor
+                                                      .value,
+                                                ),
+                                          ),
+                                          Text(
+                                            ratingAndReviewData.time!,
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Color(0XFF696969),
+                                                ),
+                                          ),
+                                        ],
                                       ),
                                       RatingBar.builder(
                                         initialRating:
@@ -267,10 +284,7 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                                           .typographyServices
                                           .bodySmallRegular
                                           .value
-                                          .copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: Color(0XFFB3B3B3),
-                                          ),
+                                          .copyWith(color: Color(0XFFB3B3B3)),
                                     ),
                                   ],
                                 ],
