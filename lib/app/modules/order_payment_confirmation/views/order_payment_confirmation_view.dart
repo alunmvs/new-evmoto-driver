@@ -734,7 +734,7 @@ class OrderPaymentConfirmationView
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SvgPicture.asset(
-                                    "assets/icons/icon_location.svg",
+                                    "assets/icons/icon_card_origin.svg",
                                     width: 18.24,
                                     height: 18.24,
                                   ),
@@ -784,7 +784,7 @@ class OrderPaymentConfirmationView
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SvgPicture.asset(
-                                    "assets/icons/icon_pin_location.svg",
+                                    "assets/icons/icon_card_destination.svg",
                                     width: 20,
                                     height: 20,
                                   ),

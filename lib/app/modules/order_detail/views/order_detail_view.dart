@@ -305,7 +305,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                             .start,
                                                     children: [
                                                       SvgPicture.asset(
-                                                        "assets/icons/icon_location.svg",
+                                                        "assets/icons/icon_card_origin.svg",
                                                         width: 18,
                                                         height: 18,
                                                       ),
@@ -358,7 +358,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                             .start,
                                                     children: [
                                                       SvgPicture.asset(
-                                                        "assets/icons/icon_pin_location.svg",
+                                                        "assets/icons/icon_card_destination.svg",
                                                         width: 18,
                                                         height: 18,
                                                       ),

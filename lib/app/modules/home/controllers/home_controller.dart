@@ -498,7 +498,7 @@ class HomeController extends GetxController
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SvgPicture.asset(
-                                  "assets/icons/icon_location.svg",
+                                  "assets/icons/icon_card_origin.svg",
                                   width: 16,
                                   height: 16,
                                 ),
@@ -540,7 +540,7 @@ class HomeController extends GetxController
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SvgPicture.asset(
-                                  "assets/icons/icon_pin_location.svg",
+                                  "assets/icons/icon_card_destination.svg",
                                   width: 16,
                                   height: 16,
                                 ),
