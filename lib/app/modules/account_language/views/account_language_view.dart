@@ -21,7 +21,7 @@ class AccountLanguageView extends GetView<AccountLanguageController> {
           surfaceTintColor:
               controller.themeColorServices.neutralsColorGrey0.value,
         ),
-        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
+        backgroundColor: controller.themeColorServices.backgroundColor.value,
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -46,7 +46,10 @@ class AccountLanguageView extends GetView<AccountLanguageController> {
                     child: Container(
                       padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.transparent,
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey0
+                            .value,
                         border: Border.all(
                           color: controller.tempLanguageCode.value == "ZH_CN"
                               ? Color(0XFFB3B3B3)
@@ -96,7 +99,10 @@ class AccountLanguageView extends GetView<AccountLanguageController> {
                     child: Container(
                       padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.transparent,
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey0
+                            .value,
                         border: Border.all(
                           color: controller.tempLanguageCode.value == "EN"
                               ? Color(0XFFB3B3B3)
@@ -146,7 +152,10 @@ class AccountLanguageView extends GetView<AccountLanguageController> {
                     child: Container(
                       padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.transparent,
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey0
+                            .value,
                         border: Border.all(
                           color: controller.tempLanguageCode.value == "ID"
                               ? Color(0XFFB3B3B3)

@@ -20,8 +20,10 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: true,
-          backgroundColor: Color(0XFFF7F7F7),
-          surfaceTintColor: Color(0XFFF7F7F7),
+          backgroundColor:
+              controller.themeColorServices.neutralsColorGrey0.value,
+          surfaceTintColor:
+              controller.themeColorServices.neutralsColorGrey0.value,
           leading: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,7 +68,7 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
             ],
           ),
         ),
-        backgroundColor: Color(0XFFF7F7F7),
+        backgroundColor: controller.themeColorServices.backgroundColor.value,
         body: controller.isFetch.value
             ? Center(
                 child: SizedBox(
