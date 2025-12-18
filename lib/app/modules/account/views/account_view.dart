@@ -164,8 +164,7 @@ class AccountView extends GetView<AccountController> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    color:
-                        controller.themeColorServices.neutralsColorGrey0.value,
+                    color: controller.themeColorServices.backgroundColor.value,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(16),
                       topRight: Radius.circular(16),
