@@ -60,9 +60,12 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
               dataJson['data'],
             );
             var homeController = Get.find<HomeController>();
-            await homeController.showDialogOrderConfirmation(
-              socketOrderStatusData: socketOrderStatusData,
-            );
+            await Future.wait([
+              homeController.refreshAll(),
+              homeController.showDialogOrderConfirmation(
+                socketOrderStatusData: socketOrderStatusData,
+              ),
+            ]);
 
             if (socketOrderStatusData.state == 8 &&
                 Get.currentRoute == Routes.ORDER_PAYMENT_CONFIRMATION) {
@@ -167,6 +170,9 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
         "method": "LOCATION",
         "msg": "SUCCESS",
       };
+
+      print(jsonEncode(dataUser));
+      print(jsonEncode(dataLocation));
 
       socket.add(convertJsonToPacket(dataUser));
       socket.add(convertJsonToPacket(dataLocation));

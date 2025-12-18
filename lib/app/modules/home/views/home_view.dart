@@ -329,46 +329,52 @@ class HomeView extends GetView<HomeController> {
                                                 ),
                                               ),
                                               Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      controller
-                                                          .vehicleStatistics
-                                                          .value
-                                                          .activity
-                                                          .toString(),
-                                                      style: controller
-                                                          .typographyServices
-                                                          .bodyLargeBold
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .textColor
-                                                                .value,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .underline,
-                                                          ),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                child: GestureDetector(
+                                                  onTap: () {},
+                                                  child: Container(
+                                                    color: Colors.transparent,
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                          controller
+                                                              .vehicleStatistics
+                                                              .value
+                                                              .activity
+                                                              .toString(),
+                                                          style: controller
+                                                              .typographyServices
+                                                              .bodyLargeBold
+                                                              .value
+                                                              .copyWith(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .textColor
+                                                                    .value,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .underline,
+                                                              ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                        Text(
+                                                          "Aktivitas\nSaya",
+                                                          style: controller
+                                                              .typographyServices
+                                                              .captionLargeRegular
+                                                              .value
+                                                              .copyWith(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .textColor
+                                                                    .value,
+                                                              ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      "Aktivitas\nSaya",
-                                                      style: controller
-                                                          .typographyServices
-                                                          .captionLargeRegular
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .textColor
-                                                                .value,
-                                                          ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -661,9 +667,171 @@ class HomeView extends GetView<HomeController> {
                                           }
                                         },
                                         tabs: [
-                                          Tab(text: 'Menerima Pesanan'),
-                                          Tab(text: 'Dalam Layanan'),
-                                          Tab(text: 'Menunggu'),
+                                          Tab(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Menerima Pesanan',
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallBold
+                                                      .value,
+                                                ),
+                                                if (controller
+                                                    .orderGrabbingHallList
+                                                    .isNotEmpty) ...[
+                                                  SizedBox(width: 4),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(4),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.red,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                          minWidth: 18,
+                                                          minHeight: 18,
+                                                        ),
+                                                    child: Text(
+                                                      NumberFormat.currency(
+                                                        locale: 'id_ID',
+                                                        symbol: '',
+                                                        decimalDigits: 0,
+                                                      ).format(
+                                                        controller
+                                                                    .orderGrabbingHallList
+                                                                    .length >=
+                                                                99
+                                                            ? 99
+                                                            : controller
+                                                                  .orderGrabbingHallList
+                                                                  .length,
+                                                      ),
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ],
+                                            ),
+                                          ),
+                                          Tab(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Dalam Layanan',
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallBold
+                                                      .value,
+                                                ),
+                                                if (controller
+                                                    .orderInServiceList
+                                                    .isNotEmpty) ...[
+                                                  SizedBox(width: 4),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(4),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.red,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                          minWidth: 18,
+                                                          minHeight: 18,
+                                                        ),
+                                                    child: Text(
+                                                      NumberFormat.currency(
+                                                        locale: 'id_ID',
+                                                        symbol: '',
+                                                        decimalDigits: 0,
+                                                      ).format(
+                                                        controller
+                                                                    .orderInServiceList
+                                                                    .length >=
+                                                                99
+                                                            ? 99
+                                                            : controller
+                                                                  .orderInServiceList
+                                                                  .length,
+                                                      ),
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ],
+                                            ),
+                                          ),
+                                          Tab(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Menunggu',
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallBold
+                                                      .value,
+                                                ),
+                                                if (controller
+                                                    .orderToBeServedList
+                                                    .isNotEmpty) ...[
+                                                  SizedBox(width: 4),
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(4),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.red,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                          minWidth: 18,
+                                                          minHeight: 18,
+                                                        ),
+                                                    child: Text(
+                                                      NumberFormat.currency(
+                                                        locale: 'id_ID',
+                                                        symbol: '',
+                                                        decimalDigits: 0,
+                                                      ).format(
+                                                        controller
+                                                                    .orderToBeServedList
+                                                                    .length >=
+                                                                99
+                                                            ? 99
+                                                            : controller
+                                                                  .orderToBeServedList
+                                                                  .length,
+                                                      ),
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       Expanded(
