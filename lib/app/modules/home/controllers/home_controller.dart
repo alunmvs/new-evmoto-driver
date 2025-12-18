@@ -232,7 +232,7 @@ class HomeController extends GetxController
         size: 10,
         language: 2,
         state: 3,
-        pageNum: orderInServicePageNum.value,
+        pageNum: orderToBeServedPageNum.value,
       ));
 
       this.orderToBeServedList.addAll(orderToBeServedList);
