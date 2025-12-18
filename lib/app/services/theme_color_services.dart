@@ -41,6 +41,7 @@ class ThemeColorServices extends GetxService {
   final forthTextColor = Color(0XFF7D7D7D).obs;
   final imageUploadMenuBackgroundColor = Color(0XFFEDEDED).obs;
   final imageUploadVerticalDividerColor = Color(0XFFB3B3B3).obs;
+  final backgroundColor = Color(0XFFF7F7F7).obs;
 
   final scheduleArrivalPlaceBackgroundColor = Color(0XFFD7EAFF).obs;
   final waitingToGoBackgroundColor = Color(0XFFFBE4A2).obs;

@@ -33,6 +33,9 @@ abstract class Routes {
   static const ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES =
       _Paths.ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES;
   static const ACCOUNT_ABOUT_US = _Paths.ACCOUNT_ABOUT_US;
+  static const ACTIVITY = _Paths.ACTIVITY;
+  static const ORDER_DETAIL_DONE = _Paths.ORDER_DETAIL_DONE;
+  static const ORDER_DETAIL_CANCEL = _Paths.ORDER_DETAIL_CANCEL;
 }
 
 abstract class _Paths {
@@ -67,4 +70,7 @@ abstract class _Paths {
   static const ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES =
       '/account-legal-terms-and-platform-rules';
   static const ACCOUNT_ABOUT_US = '/account-about-us';
+  static const ACTIVITY = '/activity';
+  static const ORDER_DETAIL_DONE = '/order-detail-done';
+  static const ORDER_DETAIL_CANCEL = '/order-detail-cancel';
 }

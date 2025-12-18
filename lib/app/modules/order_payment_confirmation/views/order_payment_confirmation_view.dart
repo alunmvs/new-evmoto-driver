@@ -97,6 +97,21 @@ class OrderPaymentConfirmationView
                 header: MaterialClassicHeader(
                   color: controller.themeColorServices.primaryBlue.value,
                 ),
+                footer: ClassicFooter(
+                  loadStyle: LoadStyle.HideAlways,
+                  textStyle: controller
+                      .typographyServices
+                      .bodySmallRegular
+                      .value
+                      .copyWith(
+                        color: controller.themeColorServices.primaryBlue.value,
+                      ),
+                  canLoadingIcon: null,
+                  loadingIcon: null,
+                  idleIcon: null,
+                  noMoreIcon: null,
+                  failedIcon: null,
+                ),
                 enablePullDown: true,
                 onRefresh: () async {
                   await controller.refreshAll();

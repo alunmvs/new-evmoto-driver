@@ -330,7 +330,11 @@ class HomeView extends GetView<HomeController> {
                                               ),
                                               Expanded(
                                                 child: GestureDetector(
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    Get.toNamed(
+                                                      Routes.ACTIVITY,
+                                                    );
+                                                  },
                                                   child: Container(
                                                     color: Colors.transparent,
                                                     child: Column(
@@ -583,7 +587,7 @@ class HomeView extends GetView<HomeController> {
                                       TabBar(
                                         labelColor: controller
                                             .themeColorServices
-                                            .primaryBlue
+                                            .textColor
                                             .value,
                                         indicatorColor: controller
                                             .themeColorServices
@@ -591,7 +595,7 @@ class HomeView extends GetView<HomeController> {
                                             .value,
                                         unselectedLabelColor: controller
                                             .themeColorServices
-                                            .primaryBlue
+                                            .textColor
                                             .value,
                                         dividerColor: controller
                                             .themeColorServices
@@ -668,54 +672,47 @@ class HomeView extends GetView<HomeController> {
                                         },
                                         tabs: [
                                           Tab(
-                                            child: Row(
+                                            child: Stack(
                                               children: [
-                                                Text(
-                                                  'Menerima Pesanan',
-                                                  style: controller
-                                                      .typographyServices
-                                                      .bodySmallBold
-                                                      .value,
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      'Menerima Pesanan',
+                                                      style: controller
+                                                          .typographyServices
+                                                          .bodySmallBold
+                                                          .value,
+                                                    ),
+                                                    if (controller
+                                                        .orderGrabbingHallList
+                                                        .isNotEmpty) ...[
+                                                      SizedBox(width: 10),
+                                                    ],
+                                                  ],
                                                 ),
                                                 if (controller
                                                     .orderGrabbingHallList
                                                     .isNotEmpty) ...[
-                                                  SizedBox(width: 4),
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(4),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.red,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    constraints:
-                                                        const BoxConstraints(
-                                                          minWidth: 18,
-                                                          minHeight: 18,
-                                                        ),
-                                                    child: Text(
-                                                      NumberFormat.currency(
-                                                        locale: 'id_ID',
-                                                        symbol: '',
-                                                        decimalDigits: 0,
-                                                      ).format(
-                                                        controller
-                                                                    .orderGrabbingHallList
-                                                                    .length >=
-                                                                99
-                                                            ? 99
-                                                            : controller
-                                                                  .orderGrabbingHallList
-                                                                  .length,
+                                                  Positioned(
+                                                    top: 0,
+                                                    right: 0,
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            4,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .redColor
+                                                            .value,
+                                                        shape: BoxShape.circle,
                                                       ),
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                      constraints:
+                                                          const BoxConstraints(
+                                                            minWidth: 5,
+                                                            minHeight: 5,
+                                                          ),
                                                     ),
                                                   ),
                                                 ],
@@ -723,109 +720,96 @@ class HomeView extends GetView<HomeController> {
                                             ),
                                           ),
                                           Tab(
-                                            child: Row(
+                                            child: Stack(
                                               children: [
-                                                Text(
-                                                  'Dalam Layanan',
-                                                  style: controller
-                                                      .typographyServices
-                                                      .bodySmallBold
-                                                      .value,
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      'Dalam Layanan',
+                                                      style: controller
+                                                          .typographyServices
+                                                          .bodySmallBold
+                                                          .value,
+                                                    ),
+                                                    if (controller
+                                                        .orderInServiceList
+                                                        .isNotEmpty) ...[
+                                                      SizedBox(width: 10),
+                                                    ],
+                                                  ],
                                                 ),
                                                 if (controller
                                                     .orderInServiceList
                                                     .isNotEmpty) ...[
-                                                  SizedBox(width: 4),
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(4),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.red,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    constraints:
-                                                        const BoxConstraints(
-                                                          minWidth: 18,
-                                                          minHeight: 18,
-                                                        ),
-                                                    child: Text(
-                                                      NumberFormat.currency(
-                                                        locale: 'id_ID',
-                                                        symbol: '',
-                                                        decimalDigits: 0,
-                                                      ).format(
-                                                        controller
-                                                                    .orderInServiceList
-                                                                    .length >=
-                                                                99
-                                                            ? 99
-                                                            : controller
-                                                                  .orderInServiceList
-                                                                  .length,
+                                                  Positioned(
+                                                    top: 0,
+                                                    right: 0,
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            4,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .redColor
+                                                            .value,
+                                                        shape: BoxShape.circle,
                                                       ),
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                      constraints:
+                                                          const BoxConstraints(
+                                                            minWidth: 5,
+                                                            minHeight: 5,
+                                                          ),
                                                     ),
                                                   ),
                                                 ],
                                               ],
                                             ),
                                           ),
+
                                           Tab(
-                                            child: Row(
+                                            child: Stack(
                                               children: [
-                                                Text(
-                                                  'Menunggu',
-                                                  style: controller
-                                                      .typographyServices
-                                                      .bodySmallBold
-                                                      .value,
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      'Menunggu',
+                                                      style: controller
+                                                          .typographyServices
+                                                          .bodySmallBold
+                                                          .value,
+                                                    ),
+                                                    if (controller
+                                                        .orderToBeServedList
+                                                        .isNotEmpty) ...[
+                                                      SizedBox(width: 10),
+                                                    ],
+                                                  ],
                                                 ),
                                                 if (controller
                                                     .orderToBeServedList
                                                     .isNotEmpty) ...[
-                                                  SizedBox(width: 4),
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(4),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.red,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    constraints:
-                                                        const BoxConstraints(
-                                                          minWidth: 18,
-                                                          minHeight: 18,
-                                                        ),
-                                                    child: Text(
-                                                      NumberFormat.currency(
-                                                        locale: 'id_ID',
-                                                        symbol: '',
-                                                        decimalDigits: 0,
-                                                      ).format(
-                                                        controller
-                                                                    .orderToBeServedList
-                                                                    .length >=
-                                                                99
-                                                            ? 99
-                                                            : controller
-                                                                  .orderToBeServedList
-                                                                  .length,
+                                                  Positioned(
+                                                    top: 0,
+                                                    right: 0,
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                            4,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .redColor
+                                                            .value,
+                                                        shape: BoxShape.circle,
                                                       ),
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                      constraints:
+                                                          const BoxConstraints(
+                                                            minWidth: 5,
+                                                            minHeight: 5,
+                                                          ),
                                                     ),
                                                   ),
                                                 ],
@@ -844,6 +828,24 @@ class HomeView extends GetView<HomeController> {
                                                     .themeColorServices
                                                     .primaryBlue
                                                     .value,
+                                              ),
+                                              footer: ClassicFooter(
+                                                loadStyle: LoadStyle.HideAlways,
+                                                textStyle: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .primaryBlue
+                                                          .value,
+                                                    ),
+                                                canLoadingIcon: null,
+                                                loadingIcon: null,
+                                                idleIcon: null,
+                                                noMoreIcon: null,
+                                                failedIcon: null,
                                               ),
                                               enablePullDown: true,
                                               enablePullUp: controller
@@ -1256,6 +1258,24 @@ class HomeView extends GetView<HomeController> {
                                                     .primaryBlue
                                                     .value,
                                               ),
+                                              footer: ClassicFooter(
+                                                loadStyle: LoadStyle.HideAlways,
+                                                textStyle: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .primaryBlue
+                                                          .value,
+                                                    ),
+                                                canLoadingIcon: null,
+                                                loadingIcon: null,
+                                                idleIcon: null,
+                                                noMoreIcon: null,
+                                                failedIcon: null,
+                                              ),
                                               enablePullDown: true,
                                               enablePullUp: controller
                                                   .isSeeMoreOrderInService
@@ -1628,6 +1648,24 @@ class HomeView extends GetView<HomeController> {
                                                     .themeColorServices
                                                     .primaryBlue
                                                     .value,
+                                              ),
+                                              footer: ClassicFooter(
+                                                loadStyle: LoadStyle.HideAlways,
+                                                textStyle: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .primaryBlue
+                                                          .value,
+                                                    ),
+                                                canLoadingIcon: null,
+                                                loadingIcon: null,
+                                                idleIcon: null,
+                                                noMoreIcon: null,
+                                                failedIcon: null,
                                               ),
                                               enablePullDown: true,
                                               enablePullUp: controller

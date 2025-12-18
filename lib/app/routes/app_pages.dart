@@ -22,6 +22,8 @@ import '../modules/account_update_mobile_phone_verification_otp/bindings/account
 import '../modules/account_update_mobile_phone_verification_otp/views/account_update_mobile_phone_verification_otp_view.dart';
 import '../modules/account_user_guide/bindings/account_user_guide_binding.dart';
 import '../modules/account_user_guide/views/account_user_guide_view.dart';
+import '../modules/activity/bindings/activity_binding.dart';
+import '../modules/activity/views/activity_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
@@ -36,6 +38,10 @@ import '../modules/onboarding_introduction/bindings/onboarding_introduction_bind
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
 import '../modules/order_detail/bindings/order_detail_binding.dart';
 import '../modules/order_detail/views/order_detail_view.dart';
+import '../modules/order_detail_cancel/bindings/order_detail_cancel_binding.dart';
+import '../modules/order_detail_cancel/views/order_detail_cancel_view.dart';
+import '../modules/order_detail_done/bindings/order_detail_done_binding.dart';
+import '../modules/order_detail_done/views/order_detail_done_view.dart';
 import '../modules/order_payment_confirmation/bindings/order_payment_confirmation_binding.dart';
 import '../modules/order_payment_confirmation/views/order_payment_confirmation_view.dart';
 import '../modules/order_payment_detail/bindings/order_payment_detail_binding.dart';
@@ -197,6 +203,21 @@ class AppPages {
       name: _Paths.ACCOUNT_ABOUT_US,
       page: () => const AccountAboutUsView(),
       binding: AccountAboutUsBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACTIVITY,
+      page: () => const ActivityView(),
+      binding: ActivityBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_DETAIL_DONE,
+      page: () => const OrderDetailDoneView(),
+      binding: OrderDetailDoneBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_DETAIL_CANCEL,
+      page: () => const OrderDetailCancelView(),
+      binding: OrderDetailCancelBinding(),
     ),
   ];
 }

@@ -79,6 +79,33 @@ class OrderDetailController extends GetxController {
       setupSchedulerDriverCurrentLocation(),
       setupSchedulerDriverRefocusMapBound(),
     ]);
+
+    if ([7].contains(orderDetail.value.state)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.offAndToNamed(
+          Routes.ORDER_PAYMENT_CONFIRMATION,
+          arguments: {"order_id": orderId.value, "order_type": orderType.value},
+        );
+      });
+    }
+
+    if ([8, 9].contains(orderDetail.value.state)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.offAndToNamed(
+          Routes.ORDER_DETAIL_DONE,
+          arguments: {"order_id": orderId.value, "order_type": orderType.value},
+        );
+      });
+    }
+
+    if (orderDetail.value.state == 10) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.offAndToNamed(
+          Routes.ORDER_DETAIL_CANCEL,
+          arguments: {"order_id": orderId.value, "order_type": orderType.value},
+        );
+      });
+    }
   }
 
   @override

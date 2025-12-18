@@ -80,6 +80,21 @@ class OrderPaymentDetailView extends GetView<OrderPaymentDetailController> {
                 header: MaterialClassicHeader(
                   color: controller.themeColorServices.primaryBlue.value,
                 ),
+                footer: ClassicFooter(
+                  loadStyle: LoadStyle.HideAlways,
+                  textStyle: controller
+                      .typographyServices
+                      .bodySmallRegular
+                      .value
+                      .copyWith(
+                        color: controller.themeColorServices.primaryBlue.value,
+                      ),
+                  canLoadingIcon: null,
+                  loadingIcon: null,
+                  idleIcon: null,
+                  noMoreIcon: null,
+                  failedIcon: null,
+                ),
                 enablePullDown: true,
                 onRefresh: () async {
                   await controller.refreshAll();
@@ -194,6 +209,50 @@ class OrderPaymentDetailView extends GetView<OrderPaymentDetailController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
+                                    "Collected by drivers",
+                                    style: controller
+                                        .typographyServices
+                                        .captionLargeRegular
+                                        .value
+                                        .copyWith(
+                                          color: controller
+                                              .themeColorServices
+                                              .thirdTextColor
+                                              .value,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                  Text(
+                                    NumberFormat.currency(
+                                      locale: 'id_ID',
+                                      symbol: 'Rp ',
+                                      decimalDigits: 0,
+                                    ).format(
+                                      controller
+                                          .orderDetail
+                                          .value
+                                          .collectionFees,
+                                    ),
+                                    style: controller
+                                        .typographyServices
+                                        .captionLargeRegular
+                                        .value
+                                        .copyWith(
+                                          color: controller
+                                              .themeColorServices
+                                              .textColor
+                                              .value,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
                                     "Surcharge",
                                     style: controller
                                         .typographyServices
@@ -230,50 +289,6 @@ class OrderPaymentDetailView extends GetView<OrderPaymentDetailController> {
                                                     .additionalCharge ??
                                                 0.0,
                                           ),
-                                    style: controller
-                                        .typographyServices
-                                        .captionLargeRegular
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .textColor
-                                              .value,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 8),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Collected by drivers",
-                                    style: controller
-                                        .typographyServices
-                                        .captionLargeRegular
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .thirdTextColor
-                                              .value,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                  ),
-                                  Text(
-                                    NumberFormat.currency(
-                                      locale: 'id_ID',
-                                      symbol: 'Rp ',
-                                      decimalDigits: 0,
-                                    ).format(
-                                      controller
-                                          .orderDetail
-                                          .value
-                                          .collectionFees,
-                                    ),
                                     style: controller
                                         .typographyServices
                                         .captionLargeRegular
