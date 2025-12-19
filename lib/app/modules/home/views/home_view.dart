@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/modules/account/views/account_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/order_card_home_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import '../controllers/home_controller.dart';
 import 'package:intl/intl.dart';
@@ -237,11 +238,16 @@ class HomeView extends GetView<HomeController> {
                                                     child: Column(
                                                       children: [
                                                         Text(
-                                                          controller
-                                                              .vehicleStatistics
-                                                              .value
-                                                              .dayNum
-                                                              .toString(),
+                                                          NumberFormat.currency(
+                                                            locale: 'id_ID',
+                                                            symbol: '',
+                                                            decimalDigits: 0,
+                                                          ).format(
+                                                            controller
+                                                                .vehicleStatistics
+                                                                .value
+                                                                .dayNum,
+                                                          ),
                                                           style: controller
                                                               .typographyServices
                                                               .bodyLargeBold
@@ -288,11 +294,16 @@ class HomeView extends GetView<HomeController> {
                                                     child: Column(
                                                       children: [
                                                         Text(
-                                                          controller
-                                                              .vehicleStatistics
-                                                              .value
-                                                              .mouthNum
-                                                              .toString(),
+                                                          NumberFormat.currency(
+                                                            locale: 'id_ID',
+                                                            symbol: '',
+                                                            decimalDigits: 0,
+                                                          ).format(
+                                                            controller
+                                                                .vehicleStatistics
+                                                                .value
+                                                                .mouthNum,
+                                                          ),
                                                           style: controller
                                                               .typographyServices
                                                               .bodyLargeBold
@@ -1238,11 +1249,532 @@ class HomeView extends GetView<HomeController> {
             ? null
             : BottomAppBar(
                 color: controller.themeColorServices.neutralsColorGrey0.value,
-                height: 80,
+                height: 80 + 20,
                 padding: EdgeInsets.all(0),
                 child: Column(
                   children: [
                     Divider(height: 0, color: Color(0XFFE1E1E1)),
+                    GestureDetector(
+                      onTap: () {
+                        Get.bottomSheet(
+                          Obx(
+                            () => Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(16),
+                                    topLeft: Radius.circular(16),
+                                  ),
+                                  child: Material(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(16),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Status",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodyLargeBold
+                                                    .value,
+                                              ),
+                                              SizedBox(width: 5),
+                                              SizedBox(
+                                                width: 20,
+                                                height: 20,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      "assets/icons/icon_arrow_down.svg",
+                                                      width: 20,
+                                                      height: 20,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          height: 0,
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey200
+                                              .value,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsetsGeometry.all(16),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Status Saat Ini",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallBold
+                                                    .value,
+                                              ),
+                                              AnimatedToggleSwitch<int>.dual(
+                                                current:
+                                                    controller.workStatus.value,
+                                                first: 2,
+                                                second: 1,
+                                                height: 50,
+                                                borderWidth: 0,
+                                                customIconBuilder:
+                                                    (context, local, global) {
+                                                      if (local.value == 2) {
+                                                        return CircleAvatar(
+                                                          backgroundColor:
+                                                              Color(0XFF999898),
+                                                          child: SvgPicture.asset(
+                                                            "assets/icons/icon_scooter.svg",
+                                                            width: 28.57,
+                                                            height: 28.57,
+                                                            color: Color(
+                                                              0XFF696969,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
+                                                      return CircleAvatar(
+                                                        backgroundColor: Color(
+                                                          0XFF37C086,
+                                                        ),
+                                                        child: SvgPicture.asset(
+                                                          "assets/icons/icon_scooter.svg",
+                                                          width: 28.57,
+                                                          height: 28.57,
+                                                          color: Color(
+                                                            0XFFFFFFFF,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                customStyleBuilder:
+                                                    (context, local, global) {
+                                                      if (local.value == 2) {
+                                                        return ToggleStyle(
+                                                          backgroundColor:
+                                                              Color(0XFFCECECE),
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                9999,
+                                                              ),
+                                                          indicatorColor: Colors
+                                                              .transparent,
+                                                        );
+                                                      }
+                                                      return ToggleStyle(
+                                                        backgroundColor: Color(
+                                                          0XFF1FF79B,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              9999,
+                                                            ),
+                                                        indicatorColor:
+                                                            Colors.transparent,
+                                                      );
+                                                    },
+                                                onChanged: (value) async {
+                                                  controller
+                                                      .onSwitchStatusWork();
+                                                },
+                                                customTextBuilder:
+                                                    (context, local, global) {
+                                                      return Text(
+                                                        local.value == 2
+                                                            ? "Offline"
+                                                            : "Online",
+                                                        style: controller
+                                                            .typographyServices
+                                                            .bodyLargeBold
+                                                            .value
+                                                            .copyWith(
+                                                              color:
+                                                                  local.value ==
+                                                                      2
+                                                                  ? Color(
+                                                                      0XFF747474,
+                                                                    )
+                                                                  : Color(
+                                                                      0XFF07824D,
+                                                                    ),
+                                                            ),
+                                                      );
+                                                    },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          height: 0,
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey200
+                                              .value,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsetsGeometry.all(16),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Total Pesanan Kamu",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallBold
+                                                    .value,
+                                              ),
+                                              SizedBox(height: 8),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                            horizontal: 16,
+                                                            vertical: 8,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: Color(
+                                                          0XFFF8F8F8,
+                                                        ),
+                                                        border: Border.all(
+                                                          color: Color(
+                                                            0XFFE8E8E8,
+                                                          ),
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              8,
+                                                            ),
+                                                      ),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            "Pesanan Hari Ini",
+                                                            style: controller
+                                                                .typographyServices
+                                                                .bodySmallRegular
+                                                                .value
+                                                                .copyWith(
+                                                                  color: controller
+                                                                      .themeColorServices
+                                                                      .primaryBlue
+                                                                      .value,
+                                                                ),
+                                                          ),
+                                                          SizedBox(height: 4),
+                                                          Text(
+                                                            "${NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0).format(controller.vehicleStatistics.value.dayNum)} Pesanan",
+                                                            style: controller
+                                                                .typographyServices
+                                                                .bodyLargeBold
+                                                                .value
+                                                                .copyWith(
+                                                                  color: controller
+                                                                      .themeColorServices
+                                                                      .primaryBlue
+                                                                      .value,
+                                                                ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                            horizontal: 16,
+                                                            vertical: 8,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .primaryBlue
+                                                            .value,
+                                                        border: Border.all(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .primaryBlue
+                                                              .value,
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              8,
+                                                            ),
+                                                      ),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            "Pesanan Bulan Ini",
+                                                            style: controller
+                                                                .typographyServices
+                                                                .bodySmallRegular
+                                                                .value
+                                                                .copyWith(
+                                                                  color: controller
+                                                                      .themeColorServices
+                                                                      .neutralsColorGrey0
+                                                                      .value,
+                                                                ),
+                                                          ),
+                                                          SizedBox(height: 4),
+                                                          Text(
+                                                            "${NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0).format(controller.vehicleStatistics.value.mouthNum)} Pesanan",
+                                                            style: controller
+                                                                .typographyServices
+                                                                .bodyLargeBold
+                                                                .value
+                                                                .copyWith(
+                                                                  color: controller
+                                                                      .themeColorServices
+                                                                      .neutralsColorGrey0
+                                                                      .value,
+                                                                ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          height: 0,
+                                          color: controller
+                                              .themeColorServices
+                                              .neutralsColorGrey200
+                                              .value,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsetsGeometry.all(16),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Pilih Layanan Kamu",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallBold
+                                                    .value,
+                                              ),
+                                              SizedBox(height: 8),
+                                              for (var updatedServiceOrder
+                                                  in controller
+                                                      .serviceOrderList) ...[
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    try {
+                                                      await controller
+                                                          .accountRepository
+                                                          .updateServiceOrderStatus(
+                                                            language: 2,
+                                                            type:
+                                                                updatedServiceOrder
+                                                                    .type,
+                                                          );
+                                                    } catch (e) {
+                                                      Get.close(1);
+                                                      final SnackBar
+                                                      snackBar = SnackBar(
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .fixed,
+                                                        backgroundColor: controller
+                                                            .themeColorServices
+                                                            .sematicColorRed400
+                                                            .value,
+                                                        content: Text(
+                                                          e.toString(),
+                                                          style: controller
+                                                              .typographyServices
+                                                              .bodySmallRegular
+                                                              .value
+                                                              .copyWith(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .neutralsColorGrey0
+                                                                    .value,
+                                                              ),
+                                                        ),
+                                                      );
+                                                      rootScaffoldMessengerKey
+                                                          .currentState
+                                                          ?.showSnackBar(
+                                                            snackBar,
+                                                          );
+                                                      return;
+                                                    }
+
+                                                    await controller
+                                                        .getServiceOrderList();
+
+                                                    controller.serviceOrderList
+                                                        .refresh();
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                          horizontal: 16,
+                                                        ),
+                                                    decoration: BoxDecoration(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey0
+                                                          .value,
+                                                      border: Border.all(
+                                                        color:
+                                                            updatedServiceOrder
+                                                                    .updatedState ==
+                                                                2
+                                                            ? Color(0XFFB3B3B3)
+                                                            : Color(0XFFE8E8E8),
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            8,
+                                                          ),
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(height: 16),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              updatedServiceOrder
+                                                                      .name ??
+                                                                  "-",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .bodySmallRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color:
+                                                                        updatedServiceOrder.updatedState ==
+                                                                            2
+                                                                        ? controller
+                                                                              .themeColorServices
+                                                                              .textColor
+                                                                              .value
+                                                                        : Color(
+                                                                            0XFFB3B3B3,
+                                                                          ),
+                                                                  ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 25,
+                                                              height: 25,
+                                                              child: Checkbox(
+                                                                value:
+                                                                    updatedServiceOrder
+                                                                        .updatedState ==
+                                                                    2,
+                                                                activeColor: controller
+                                                                    .themeColorServices
+                                                                    .primaryBlue
+                                                                    .value,
+                                                                side: BorderSide(
+                                                                  color: Color(
+                                                                    0XFFB3B3B3,
+                                                                  ),
+                                                                ),
+                                                                onChanged: (value) {
+                                                                  if (value ==
+                                                                      false) {
+                                                                    updatedServiceOrder
+                                                                            .updatedState =
+                                                                        1;
+                                                                  } else {
+                                                                    updatedServiceOrder
+                                                                            .updatedState =
+                                                                        2;
+                                                                  }
+                                                                  controller
+                                                                      .serviceOrderList
+                                                                      .refresh();
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 16),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 8),
+                                              ],
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 16),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(color: Colors.transparent),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_arrow_up.svg",
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -1431,6 +1963,7 @@ class HomeView extends GetView<HomeController> {
                         ],
                       ),
                     ),
+                    SizedBox(height: 16),
                   ],
                 ),
               ),

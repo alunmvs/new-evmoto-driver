@@ -10,9 +10,11 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_driver/app/data/consts/order_state_const.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
+import 'package:new_evmoto_driver/app/data/models/service_order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_driver/app/data/models/vehicle_statistics_model.dart';
+import 'package:new_evmoto_driver/app/repositories/account_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/vehicle_repository.dart';
@@ -32,11 +34,13 @@ class HomeController extends GetxController
   final VehicleRepository vehicleRepository;
   final OrderRepository orderRepository;
   final UserRepository userRepository;
+  final AccountRepository accountRepository;
 
   HomeController({
     required this.vehicleRepository,
     required this.orderRepository,
     required this.userRepository,
+    required this.accountRepository,
   });
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -63,6 +67,8 @@ class HomeController extends GetxController
   final orderToBeServedList = <Order>[].obs;
   final orderToBeServedPageNum = 1.obs;
   final isSeeMoreOrderToBeServed = true.obs;
+
+  final serviceOrderList = <ServiceOrder>[].obs;
 
   final workStatus = 2.obs;
   final selectedIndex = 0.obs;
@@ -128,6 +134,7 @@ class HomeController extends GetxController
       getOrderGrabbingHallList(),
       getOrderInServiceList(),
       getOrderToBeServedList(),
+      getServiceOrderList(),
     ]);
 
     workStatus.value = vehicleStatistics.value.work ?? 2;
@@ -206,6 +213,14 @@ class HomeController extends GetxController
         isSeeMoreOrderInService.value = false;
       }
     }
+  }
+
+  Future<void> getServiceOrderList() async {
+    serviceOrderList.value = await accountRepository.getServiceOrderList(
+      size: 999999,
+      pageNum: 1,
+      language: 2,
+    );
   }
 
   Future<void> getOrderToBeServedList() async {
