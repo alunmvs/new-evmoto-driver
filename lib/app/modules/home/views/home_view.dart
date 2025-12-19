@@ -1257,6 +1257,7 @@ class HomeView extends GetView<HomeController> {
                     GestureDetector(
                       onTap: () {
                         Get.bottomSheet(
+                          isScrollControlled: true,
                           Obx(
                             () => Column(
                               mainAxisSize: MainAxisSize.min,
@@ -1593,52 +1594,18 @@ class HomeView extends GetView<HomeController> {
                                                   in controller
                                                       .serviceOrderList) ...[
                                                 GestureDetector(
-                                                  onTap: () async {
-                                                    try {
-                                                      await controller
-                                                          .accountRepository
-                                                          .updateServiceOrderStatus(
-                                                            language: 2,
-                                                            type:
-                                                                updatedServiceOrder
-                                                                    .type,
-                                                          );
-                                                    } catch (e) {
-                                                      Get.close(1);
-                                                      final SnackBar
-                                                      snackBar = SnackBar(
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .fixed,
-                                                        backgroundColor: controller
-                                                            .themeColorServices
-                                                            .sematicColorRed400
-                                                            .value,
-                                                        content: Text(
-                                                          e.toString(),
-                                                          style: controller
-                                                              .typographyServices
-                                                              .bodySmallRegular
-                                                              .value
-                                                              .copyWith(
-                                                                color: controller
-                                                                    .themeColorServices
-                                                                    .neutralsColorGrey0
-                                                                    .value,
-                                                              ),
-                                                        ),
-                                                      );
-                                                      rootScaffoldMessengerKey
-                                                          .currentState
-                                                          ?.showSnackBar(
-                                                            snackBar,
-                                                          );
-                                                      return;
+                                                  onTap: () {
+                                                    if (updatedServiceOrder
+                                                            .updatedState ==
+                                                        2) {
+                                                      updatedServiceOrder
+                                                              .updatedState =
+                                                          1;
+                                                    } else {
+                                                      updatedServiceOrder
+                                                              .updatedState =
+                                                          2;
                                                     }
-
-                                                    await controller
-                                                        .getServiceOrderList();
-
                                                     controller.serviceOrderList
                                                         .refresh();
                                                   },
@@ -1662,7 +1629,7 @@ class HomeView extends GetView<HomeController> {
                                                       ),
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                            8,
+                                                            16,
                                                           ),
                                                     ),
                                                     child: Column(
@@ -1738,6 +1705,43 @@ class HomeView extends GetView<HomeController> {
                                                 SizedBox(height: 8),
                                               ],
                                             ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: SizedBox(
+                                            height: 46,
+                                            width: MediaQuery.of(
+                                              context,
+                                            ).size.width,
+                                            child: ElevatedButton(
+                                              onPressed: () async {
+                                                await controller
+                                                    .onTapSaveServiceOrder();
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: controller
+                                                    .themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                ),
+                                              ),
+                                              child: Text(
+                                                "Simpan",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallBold
+                                                    .value
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         SizedBox(height: 16),

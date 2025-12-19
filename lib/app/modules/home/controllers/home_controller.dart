@@ -824,4 +824,46 @@ class HomeController extends GetxController
       } catch (e) {}
     }
   }
+
+  Future<void> onTapSaveServiceOrder() async {
+    for (var serviceOrder in serviceOrderList) {
+      if (serviceOrder.state != serviceOrder.updatedState) {
+        try {
+          await accountRepository.updateServiceOrderStatus(
+            language: 2,
+            type: serviceOrder.type,
+          );
+        } catch (e) {
+          Get.close(1);
+          final SnackBar snackBar = SnackBar(
+            behavior: SnackBarBehavior.fixed,
+            backgroundColor: themeColorServices.sematicColorRed400.value,
+            content: Text(
+              e.toString(),
+              style: typographyServices.bodySmallRegular.value.copyWith(
+                color: themeColorServices.neutralsColorGrey0.value,
+              ),
+            ),
+          );
+          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+          await getServiceOrderList();
+          return;
+        }
+      }
+    }
+
+    Get.close(1);
+    final SnackBar snackBar = SnackBar(
+      behavior: SnackBarBehavior.fixed,
+      backgroundColor: themeColorServices.sematicColorGreen400.value,
+      content: Text(
+        "Berhasil mengubah layanan",
+        style: typographyServices.bodySmallRegular.value.copyWith(
+          color: themeColorServices.neutralsColorGrey0.value,
+        ),
+      ),
+    );
+    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    await getServiceOrderList();
+  }
 }
