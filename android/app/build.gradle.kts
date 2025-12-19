@@ -25,7 +25,7 @@ plugins {
 }
 
 android {
-    namespace = "com.driver.evmototrip"
+    namespace = "com.evmoto.driver.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -40,7 +40,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.driver.evmototrip"
+        applicationId = "com.evmoto.driver.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -48,7 +48,7 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 
-        manifestPlaceholders["JPUSH_PKGNAME"] = "com.driver.evmototrip"
+        manifestPlaceholders["JPUSH_PKGNAME"] = "com.evmoto.driver.app"
         manifestPlaceholders["JPUSH_APPKEY"] = "a9c733989e650330102962d5"
         manifestPlaceholders["JPUSH_CHANNEL"] = "developer-default"
         manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey

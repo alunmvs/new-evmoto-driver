@@ -1,12 +1,12 @@
 # -------------------------------------------------
 # Gson: do not obfuscate model classes
 # -------------------------------------------------
--keep class com.driver.evmototrip.model.** { *; }
+-keep class com.evmoto.driver.app.model.** { *; }
 
 # -------------------------------------------------
 # Retrofit: interfaces should not be obfuscated
 # -------------------------------------------------
--keep interface com.driver.evmototrip.network.** { *; }
+-keep interface com.evmoto.driver.app.network.** { *; }
 
 # -------------------------------------------------
 # Room: entity, dao, database

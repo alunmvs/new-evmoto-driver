@@ -47,7 +47,7 @@ class AccountController extends GetxController {
   Future<void> onTapShareAppLink() async {
     var shareParams = ShareParams(
       uri: Uri.parse(
-        "https://play.google.com/store/apps/details?id=com.driver.evmototrip",
+        "https://play.google.com/store/apps/details?id=com.evmoto.driver.app",
       ),
     );
 

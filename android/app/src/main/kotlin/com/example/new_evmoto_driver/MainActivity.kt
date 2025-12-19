@@ -1,4 +1,4 @@
-package com.driver.evmototrip
+package com.evmoto.driver.app
 
 import io.flutter.embedding.android.FlutterActivity
 

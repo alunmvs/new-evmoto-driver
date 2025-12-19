@@ -103,7 +103,7 @@ class AccountOtherSettingController extends GetxController {
 
   Future<void> onTapUpdateVersion() async {
     var url = Uri.parse(
-      "https://play.google.com/store/apps/details?id=com.driver.evmototrip",
+      "https://play.google.com/store/apps/details?id=com.evmoto.driver.app",
     );
 
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
