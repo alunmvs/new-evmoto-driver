@@ -162,189 +162,85 @@ class HomeView extends GetView<HomeController> {
                                           ],
                                         ),
                                       ),
-                                      Container(
-                                        padding: EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: Color(0XFFF5F5F5),
-                                          borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(8),
-                                            bottomRight: Radius.circular(8),
+                                      Stack(
+                                        clipBehavior: Clip.none,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.toNamed(Routes.ACTIVITY);
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.only(
+                                                bottom: 12,
+                                              ),
+                                              width: MediaQuery.of(
+                                                context,
+                                              ).size.width,
+                                              height: 92,
+                                              decoration: BoxDecoration(
+                                                color: Color(0XFF0052AA),
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft: Radius.circular(
+                                                    16,
+                                                  ),
+                                                  bottomRight: Radius.circular(
+                                                    16,
+                                                  ),
+                                                ),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    "Lihat Aktivitas Saya",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallBold
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey0
+                                                              .value,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                        child: IntrinsicHeight(
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      controller
-                                                          .vehicleStatistics
-                                                          .value
-                                                          .dayNum
-                                                          .toString(),
-                                                      style: controller
-                                                          .typographyServices
-                                                          .bodyLargeBold
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .textColor
-                                                                .value,
-                                                          ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    Text(
-                                                      "Pesanan\nHari Ini",
-                                                      style: controller
-                                                          .typographyServices
-                                                          .captionLargeRegular
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .textColor
-                                                                .value,
-                                                          ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ],
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                              top: 8,
+                                              left: 8,
+                                              right: 8,
+                                              bottom: 8,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Color(0XFFF5F5F5),
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(16),
+                                                bottomRight: Radius.circular(
+                                                  16,
                                                 ),
                                               ),
-                                              Center(
-                                                child: SizedBox(
-                                                  height: 19,
-                                                  child: VerticalDivider(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey200
-                                                        .value,
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      controller
-                                                          .vehicleStatistics
-                                                          .value
-                                                          .mouthNum
-                                                          .toString(),
-                                                      style: controller
-                                                          .typographyServices
-                                                          .bodyLargeBold
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .textColor
-                                                                .value,
-                                                          ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    Text(
-                                                      "Pesanan\nBulan Ini",
-                                                      style: controller
-                                                          .typographyServices
-                                                          .captionLargeRegular
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .textColor
-                                                                .value,
-                                                          ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Center(
-                                                child: SizedBox(
-                                                  height: 19,
-                                                  child: VerticalDivider(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey200
-                                                        .value,
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      controller
-                                                          .vehicleStatistics
-                                                          .value
-                                                          .score!
-                                                          .toStringAsFixed(1),
-                                                      style: controller
-                                                          .typographyServices
-                                                          .bodyLargeBold
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .textColor
-                                                                .value,
-                                                          ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    Text(
-                                                      "Rating\nSaya",
-                                                      style: controller
-                                                          .typographyServices
-                                                          .captionLargeRegular
-                                                          .value
-                                                          .copyWith(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .textColor
-                                                                .value,
-                                                          ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Center(
-                                                child: SizedBox(
-                                                  height: 19,
-                                                  child: VerticalDivider(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey200
-                                                        .value,
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    Get.toNamed(
-                                                      Routes.ACTIVITY,
-                                                    );
-                                                  },
-                                                  child: Container(
-                                                    color: Colors.transparent,
+                                            ),
+                                            child: IntrinsicHeight(
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Expanded(
                                                     child: Column(
                                                       children: [
                                                         Text(
                                                           controller
                                                               .vehicleStatistics
                                                               .value
-                                                              .activity
+                                                              .dayNum
                                                               .toString(),
                                                           style: controller
                                                               .typographyServices
@@ -355,15 +251,12 @@ class HomeView extends GetView<HomeController> {
                                                                     .themeColorServices
                                                                     .textColor
                                                                     .value,
-                                                                decoration:
-                                                                    TextDecoration
-                                                                        .underline,
                                                               ),
                                                           textAlign:
                                                               TextAlign.center,
                                                         ),
                                                         Text(
-                                                          "Aktivitas\nSaya",
+                                                          "Pesanan Hari Ini",
                                                           style: controller
                                                               .typographyServices
                                                               .captionLargeRegular
@@ -380,11 +273,179 @@ class HomeView extends GetView<HomeController> {
                                                       ],
                                                     ),
                                                   ),
-                                                ),
+                                                  Center(
+                                                    child: SizedBox(
+                                                      height: 19,
+                                                      child: VerticalDivider(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey200
+                                                            .value,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                          controller
+                                                              .vehicleStatistics
+                                                              .value
+                                                              .mouthNum
+                                                              .toString(),
+                                                          style: controller
+                                                              .typographyServices
+                                                              .bodyLargeBold
+                                                              .value
+                                                              .copyWith(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .textColor
+                                                                    .value,
+                                                              ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                        Text(
+                                                          "Pesanan Bulan Ini",
+                                                          style: controller
+                                                              .typographyServices
+                                                              .captionLargeRegular
+                                                              .value
+                                                              .copyWith(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .textColor
+                                                                    .value,
+                                                              ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: SizedBox(
+                                                      height: 19,
+                                                      child: VerticalDivider(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey200
+                                                            .value,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                          controller
+                                                              .vehicleStatistics
+                                                              .value
+                                                              .score!
+                                                              .toStringAsFixed(
+                                                                1,
+                                                              ),
+                                                          style: controller
+                                                              .typographyServices
+                                                              .bodyLargeBold
+                                                              .value
+                                                              .copyWith(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .textColor
+                                                                    .value,
+                                                              ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                        Text(
+                                                          "Rating Saya",
+                                                          style: controller
+                                                              .typographyServices
+                                                              .captionLargeRegular
+                                                              .value
+                                                              .copyWith(
+                                                                color: controller
+                                                                    .themeColorServices
+                                                                    .textColor
+                                                                    .value,
+                                                              ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  // Center(
+                                                  //   child: SizedBox(
+                                                  //     height: 19,
+                                                  //     child: VerticalDivider(
+                                                  //       color: controller
+                                                  //           .themeColorServices
+                                                  //           .neutralsColorGrey200
+                                                  //           .value,
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // Expanded(
+                                                  //   child: GestureDetector(
+                                                  //     onTap: () {
+                                                  //       Get.toNamed(
+                                                  //         Routes.ACTIVITY,
+                                                  //       );
+                                                  //     },
+                                                  //     child: Container(
+                                                  //       color: Colors.transparent,
+                                                  //       child: Column(
+                                                  //         children: [
+                                                  //           Text(
+                                                  //             controller
+                                                  //                 .vehicleStatistics
+                                                  //                 .value
+                                                  //                 .activity
+                                                  //                 .toString(),
+                                                  //             style: controller
+                                                  //                 .typographyServices
+                                                  //                 .bodyLargeBold
+                                                  //                 .value
+                                                  //                 .copyWith(
+                                                  //                   color: controller
+                                                  //                       .themeColorServices
+                                                  //                       .textColor
+                                                  //                       .value,
+                                                  //                   decoration:
+                                                  //                       TextDecoration
+                                                  //                           .underline,
+                                                  //                 ),
+                                                  //             textAlign:
+                                                  //                 TextAlign.center,
+                                                  //           ),
+                                                  //           Text(
+                                                  //             "Aktivitas\nSaya",
+                                                  //             style: controller
+                                                  //                 .typographyServices
+                                                  //                 .captionLargeRegular
+                                                  //                 .value
+                                                  //                 .copyWith(
+                                                  //                   color: controller
+                                                  //                       .themeColorServices
+                                                  //                       .textColor
+                                                  //                       .value,
+                                                  //                 ),
+                                                  //             textAlign:
+                                                  //                 TextAlign.center,
+                                                  //           ),
+                                                  //         ],
+                                                  //       ),
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ),
                                     ],
                                   ),
