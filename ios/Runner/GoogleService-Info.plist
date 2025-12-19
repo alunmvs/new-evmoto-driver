@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.driver.evmototrip</string>
+	<string>com.evmoto.driver.app</string>
 	<key>PROJECT_ID</key>
 	<string>ecgo-new-apps</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:784665362923:ios:54bcd27466c726d97f99ae</string>
+	<string>1:784665362923:ios:10f8220956cbb9fb7f99ae</string>
 </dict>
 </plist>

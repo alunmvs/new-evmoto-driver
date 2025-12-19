@@ -83,6 +83,44 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:73fd0e00c9d363877f99ae",
+        "android_client_info": {
+          "package_name": "com.evmoto.driver.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784665362923:android:8a71b5fe01f805937f99ae",
+        "android_client_info": {
+          "package_name": "com.evmoto.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0wQyKUlaq0RzQ1rWaJgYfAzN84byeOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:784665362923:android:c6275b5ae55e0df97f99ae",
         "android_client_info": {
           "package_name": "com.example.ecgo_surveyor"
