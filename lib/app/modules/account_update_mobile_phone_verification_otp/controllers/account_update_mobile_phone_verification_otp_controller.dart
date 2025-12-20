@@ -47,7 +47,7 @@ class AccountUpdateMobilePhoneVerificationOtpController extends GetxController {
   Future<void> onTapSubmit() async {
     try {
       await accountRepository.updateMobilePhone(
-        password: "1234567899",
+        password: "123456789",
         phone: "62${mobilePhone.value}",
         language: 2,
       );
