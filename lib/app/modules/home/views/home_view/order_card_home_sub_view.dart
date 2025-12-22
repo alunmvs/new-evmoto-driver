@@ -148,7 +148,7 @@ class OrderCardHomeSubView extends GetView<HomeController> {
                     locale: 'id_ID',
                     symbol: 'Rp ',
                     decimalDigits: 0,
-                  ).format(0),
+                  ).format(order.orderMoney ?? 0.0),
                   style: controller.typographyServices.bodySmallBold.value
                       .copyWith(
                         color: controller.themeColorServices.textColor.value,

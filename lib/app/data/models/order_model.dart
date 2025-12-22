@@ -17,6 +17,7 @@ class Order {
   String? cargoName;
   double? ordersMileage;
   double? passengersFrom;
+  double? orderMoney;
 
   Order({
     this.id,
@@ -37,6 +38,7 @@ class Order {
     this.cargoName,
     this.ordersMileage,
     this.passengersFrom,
+    this.orderMoney,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -58,6 +60,7 @@ class Order {
     cargoName = json['cargoName'];
     ordersMileage = json['ordersMileage'];
     passengersFrom = json['passengersFrom'];
+    orderMoney = json['orderMoney'];
   }
 
   Map<String, dynamic> toJson() {
@@ -80,6 +83,7 @@ class Order {
     data['cargoName'] = this.cargoName;
     data['ordersMileage'] = this.ordersMileage;
     data['passengersFrom'] = this.passengersFrom;
+    data['orderMoney'] = this.orderMoney;
     return data;
   }
 }
