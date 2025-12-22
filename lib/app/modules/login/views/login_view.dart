@@ -456,7 +456,10 @@ class LoginView extends GetView<LoginController> {
                                                       ),
                                                   recognizer:
                                                       TapGestureRecognizer()
-                                                        ..onTap = () {},
+                                                        ..onTap = () async {
+                                                          await controller
+                                                              .onTapContactCs();
+                                                        },
                                                 ),
                                                 TextSpan(
                                                   text: " Kami",
