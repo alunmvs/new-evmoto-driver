@@ -49,7 +49,7 @@ class LoginVerificationOtpController extends GetxController {
   Future<void> requestOtp() async {
     try {
       await otpRepository.requestOTP(
-        phone: "62${mobilePhone.value}",
+        phone: mobilePhone.value,
         language: 2,
         type: 3,
       );
@@ -71,6 +71,12 @@ class LoginVerificationOtpController extends GetxController {
 
   Future<void> onTapSubmit() async {
     try {
+      await otpRepository.checkOTP(
+        phone: mobilePhone.value,
+        code: otpCode.value,
+        language: 2,
+      );
+
       var token = await loginRepository.loginByMobileNumber(
         phone: mobilePhone.value,
         password: "123456789",
