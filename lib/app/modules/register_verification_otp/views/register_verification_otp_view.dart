@@ -100,7 +100,7 @@ class RegisterVerificationOtpView
                                 .languageServices
                                 .language
                                 .value
-                                .resendVerificationCode ??
+                                .verificationCode ??
                             "-",
                         style: controller
                             .typographyServices
