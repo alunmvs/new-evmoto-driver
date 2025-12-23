@@ -42,7 +42,12 @@ class RegisterView extends GetView<RegisterController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Registrasi Driver Baru",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .registerTitle ??
+                              "-",
                           style: controller
                               .typographyServices
                               .headingSmallBold
@@ -56,7 +61,12 @@ class RegisterView extends GetView<RegisterController> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "Lengkapi data Anda untuk melanjutkan.",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .registerSubtitle ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodySmallRegular
@@ -79,7 +89,7 @@ class RegisterView extends GetView<RegisterController> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  "Nomor Handphone",
+                  controller.languageServices.language.value.mobilePhone ?? "-",
                   style: controller.typographyServices.bodyLargeRegular.value
                       .copyWith(
                         color:
@@ -155,11 +165,26 @@ class RegisterView extends GetView<RegisterController> {
                           },
                           validationMessages: {
                             ValidationMessage.required: (error) =>
-                                'Wajib diisi',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationRequired ??
+                                "-",
                             ValidationMessage.minLength: (error) =>
-                                'Minimal nomor handphone 8 angka',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationLengthMin8 ??
+                                "-",
                             ValidationMessage.pattern: (error) =>
-                                'Harus diawali dengan angka 8',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationFirst8 ??
+                                "-",
                           },
                           decoration: InputDecoration(
                             counterText: '',
@@ -260,7 +285,8 @@ class RegisterView extends GetView<RegisterController> {
                       ),
                     ),
                     child: Text(
-                      "Lanjutkan",
+                      controller.languageServices.language.value.buttonNext ??
+                          "-",
                       style: controller.typographyServices.bodySmallBold.value
                           .copyWith(color: Colors.white),
                     ),
@@ -270,7 +296,13 @@ class RegisterView extends GetView<RegisterController> {
                 RichText(
                   textAlign: TextAlign.start,
                   text: TextSpan(
-                    text: "Dengan Mendaftar / Masuk, kamu menyetujui ",
+                    text:
+                        controller
+                            .languageServices
+                            .language
+                            .value
+                            .tncPrivacyConfirmation1 ??
+                        "-",
                     style: controller
                         .typographyServices
                         .captionLargeRegular
@@ -280,7 +312,8 @@ class RegisterView extends GetView<RegisterController> {
                         ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: "Syarat Ketentuan",
+                        text:
+                            " ${controller.languageServices.language.value.termAndCondition ?? "-"} ",
                         style: controller
                             .typographyServices
                             .captionLargeBold
@@ -295,7 +328,13 @@ class RegisterView extends GetView<RegisterController> {
                           },
                       ),
                       TextSpan(
-                        text: " & ",
+                        text:
+                            controller
+                                .languageServices
+                                .language
+                                .value
+                                .tncPrivacyConfirmation2 ??
+                            "-",
                         style: controller
                             .typographyServices
                             .captionLargeRegular
@@ -306,7 +345,8 @@ class RegisterView extends GetView<RegisterController> {
                             ),
                       ),
                       TextSpan(
-                        text: "Kebijakan Privasi",
+                        text:
+                            " ${controller.languageServices.language.value.privacyPolicy ?? "-"} ",
                         style: controller
                             .typographyServices
                             .captionLargeBold
@@ -321,7 +361,13 @@ class RegisterView extends GetView<RegisterController> {
                           },
                       ),
                       TextSpan(
-                        text: " berlaku",
+                        text:
+                            controller
+                                .languageServices
+                                .language
+                                .value
+                                .tncPrivacyConfirmation3 ??
+                            "-",
                         style: controller
                             .typographyServices
                             .captionLargeRegular
