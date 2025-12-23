@@ -1,193 +1,225 @@
 class Language {
-  String? onboardingIntroTitle1;
-  String? onboardingIntroDescription1;
-  String? onboardingIntroTitle2;
-  String? onboardingIntroDescription2;
-  String? buttonNext;
   String? loginTitle;
-  String? loginDescription;
+  String? loginSubtitle;
   String? mobilePhone;
   String? loginButton;
-  String? loginOr;
+  String? loginContactCs1;
+  String? loginContactCs2;
+  String? loginContactCs3;
   String? termAndCondition;
   String? privacyPolicy;
   String? tncPrivacyConfirmation1;
   String? tncPrivacyConfirmation2;
   String? tncPrivacyConfirmation3;
-  String? verificationOtpTitle;
-  String? verificationOtpDescription;
-  String? verificationOtpNotReceive;
-  String? verificationOtpResend;
-  String? verificationOtpNotMatch;
-  String? homeRideReadyToGoTitle;
-  String? homeRideReadyToGoHint;
-  String? addLocationHome;
-  String? addLocationOffice;
-  String? addLocationOther;
-  String? discount50;
-  String? comingSoon;
-  String? delivery;
-  String? package;
-  String? food;
-  String? myBalance;
-  String? topup;
-  String? history;
-  String? seeAll;
-  String? promoToday;
-  String? home;
-  String? activity;
-  String? account;
-  String? settingLanguage;
-  String? settingPayment;
-  String? settingSavedLocation;
-  String? customerService;
-  String? rateUs;
-  String? logout;
-  String? appVersion;
+  String? registerAsNewDriver;
+  String? registerTitle;
+  String? registerSubtitle;
+  String? validateOtpTitle;
+  String? validateOtpSubtitle;
+  String? resendVerificationCode;
+  String? buttonNext;
+  String? registerFormTitle;
+  String? registerFormDescription;
+  String? formTitleIdCardPhoto;
+  String? formTitleFullName;
+  String? formHintFullName;
+  String? formTitleGender;
+  String? formHintGender;
+  String? formTitleDomicile;
+  String? formHintDomicileProvince;
+  String? formHintDomicileCity;
+  String? formTitleIdCardNumber;
+  String? formHintIdCardNumber;
+  String? formTitleDrivingStartAt;
+  String? formHintDrivingStartAt;
+  String? formTitleDriverLicensePhoto;
+  String? formTitleService;
+  String? motorcycle;
+  String? intraCityExpressDelivery;
+  String? formTitleLocationService;
+  String? formHintLocationService;
+  String? formValidationRequired;
+  String? formValidationFirst8;
+  String? formValidationLengthMin8;
+  String? formTitleAvatarPhoto;
+  String? registerCompleteTitle;
+  String? registerCompleteDescription;
+  String? registerCompleteTitle1;
+  String? registerCompleteDescription1;
+  String? confirmation;
+  String? homeOrderToday;
+  String? homeOrderThisMonth;
+  String? homeMyRating;
+  String? homeSeeMyActivity;
+  String? homeYourBalance;
 
   Language({
-    this.onboardingIntroTitle1,
-    this.onboardingIntroDescription1,
-    this.onboardingIntroTitle2,
-    this.onboardingIntroDescription2,
-    this.buttonNext,
     this.loginTitle,
-    this.loginDescription,
+    this.loginSubtitle,
     this.mobilePhone,
     this.loginButton,
-    this.loginOr,
+    this.loginContactCs1,
+    this.loginContactCs2,
+    this.loginContactCs3,
     this.termAndCondition,
     this.privacyPolicy,
     this.tncPrivacyConfirmation1,
     this.tncPrivacyConfirmation2,
     this.tncPrivacyConfirmation3,
-    this.verificationOtpTitle,
-    this.verificationOtpDescription,
-    this.verificationOtpNotReceive,
-    this.verificationOtpResend,
-    this.verificationOtpNotMatch,
-    this.homeRideReadyToGoTitle,
-    this.homeRideReadyToGoHint,
-    this.addLocationHome,
-    this.addLocationOffice,
-    this.addLocationOther,
-    this.discount50,
-    this.comingSoon,
-    this.delivery,
-    this.package,
-    this.food,
-    this.myBalance,
-    this.topup,
-    this.history,
-    this.seeAll,
-    this.promoToday,
-    this.home,
-    this.activity,
-    this.account,
-    this.settingLanguage,
-    this.settingPayment,
-    this.settingSavedLocation,
-    this.customerService,
-    this.rateUs,
-    this.logout,
-    this.appVersion,
+    this.registerAsNewDriver,
+    this.registerTitle,
+    this.registerSubtitle,
+    this.validateOtpTitle,
+    this.validateOtpSubtitle,
+    this.resendVerificationCode,
+    this.buttonNext,
+    this.registerFormTitle,
+    this.registerFormDescription,
+    this.formTitleIdCardPhoto,
+    this.formTitleFullName,
+    this.formHintFullName,
+    this.formTitleGender,
+    this.formHintGender,
+    this.formTitleDomicile,
+    this.formHintDomicileProvince,
+    this.formHintDomicileCity,
+    this.formTitleIdCardNumber,
+    this.formHintIdCardNumber,
+    this.formTitleDrivingStartAt,
+    this.formHintDrivingStartAt,
+    this.formTitleDriverLicensePhoto,
+    this.formTitleService,
+    this.motorcycle,
+    this.intraCityExpressDelivery,
+    this.formTitleLocationService,
+    this.formHintLocationService,
+    this.formValidationRequired,
+    this.formValidationFirst8,
+    this.formValidationLengthMin8,
+    this.formTitleAvatarPhoto,
+    this.registerCompleteTitle,
+    this.registerCompleteDescription,
+    this.registerCompleteTitle1,
+    this.registerCompleteDescription1,
+    this.confirmation,
+    this.homeOrderToday,
+    this.homeOrderThisMonth,
+    this.homeMyRating,
+    this.homeSeeMyActivity,
+    this.homeYourBalance,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
-    onboardingIntroTitle1 = json['onboarding_intro_title_1'];
-    onboardingIntroDescription1 = json['onboarding_intro_description_1'];
-    onboardingIntroTitle2 = json['onboarding_intro_title_2'];
-    onboardingIntroDescription2 = json['onboarding_intro_description_2'];
-    buttonNext = json['button_next'];
     loginTitle = json['login_title'];
-    loginDescription = json['login_description'];
+    loginSubtitle = json['login_subtitle'];
     mobilePhone = json['mobile_phone'];
     loginButton = json['login_button'];
-    loginOr = json['login_or'];
+    loginContactCs1 = json['login_contact_cs_1'];
+    loginContactCs2 = json['login_contact_cs_2'];
+    loginContactCs3 = json['login_contact_cs_3'];
     termAndCondition = json['term_and_condition'];
     privacyPolicy = json['privacy_policy'];
     tncPrivacyConfirmation1 = json['tnc_privacy_confirmation_1'];
     tncPrivacyConfirmation2 = json['tnc_privacy_confirmation_2'];
     tncPrivacyConfirmation3 = json['tnc_privacy_confirmation_3'];
-    verificationOtpTitle = json['verification_otp_title'];
-    verificationOtpDescription = json['verification_otp_description'];
-    verificationOtpNotReceive = json['verification_otp_not_receive'];
-    verificationOtpResend = json['verification_otp_resend'];
-    verificationOtpNotMatch = json['verification_otp_not_match'];
-    homeRideReadyToGoTitle = json['home_ride_ready_to_go_title'];
-    homeRideReadyToGoHint = json['home_ride_ready_to_go_hint'];
-    addLocationHome = json['add_location_home'];
-    addLocationOffice = json['add_location_office'];
-    addLocationOther = json['add_location_other'];
-    discount50 = json['discount_50'];
-    comingSoon = json['coming_soon'];
-    delivery = json['delivery'];
-    package = json['package'];
-    food = json['food'];
-    myBalance = json['my_balance'];
-    topup = json['topup'];
-    history = json['history'];
-    seeAll = json['see_all'];
-    promoToday = json['promo_today'];
-    home = json['home'];
-    activity = json['activity'];
-    account = json['account'];
-    settingLanguage = json['setting_language'];
-    settingPayment = json['setting_payment'];
-    settingSavedLocation = json['setting_saved_location'];
-    customerService = json['customer_service'];
-    rateUs = json['rate_us'];
-    logout = json['logout'];
-    appVersion = json['app_version'];
+    registerAsNewDriver = json['register_as_new_driver'];
+    registerTitle = json['register_title'];
+    registerSubtitle = json['register_subtitle'];
+    validateOtpTitle = json['validate_otp_title'];
+    validateOtpSubtitle = json['validate_otp_subtitle'];
+    resendVerificationCode = json['resend_verification_code'];
+    buttonNext = json['button_next'];
+    registerFormTitle = json['register_form_title'];
+    registerFormDescription = json['register_form_description'];
+    formTitleIdCardPhoto = json['form_title_id_card_photo'];
+    formTitleFullName = json['form_title_full_name'];
+    formHintFullName = json['form_hint_full_name'];
+    formTitleGender = json['form_title_gender'];
+    formHintGender = json['form_hint_gender'];
+    formTitleDomicile = json['form_title_domicile'];
+    formHintDomicileProvince = json['form_hint_domicile_province'];
+    formHintDomicileCity = json['form_hint_domicile_city'];
+    formTitleIdCardNumber = json['form_title_id_card_number'];
+    formHintIdCardNumber = json['form_hint_id_card_number'];
+    formTitleDrivingStartAt = json['form_title_driving_start_at'];
+    formHintDrivingStartAt = json['form_hint_driving_start_at'];
+    formTitleDriverLicensePhoto = json['form_title_driver_license_photo'];
+    formTitleService = json['form_title_service'];
+    motorcycle = json['motorcycle'];
+    intraCityExpressDelivery = json['intra_city_express_delivery'];
+    formTitleLocationService = json['form_title_location_service'];
+    formHintLocationService = json['form_hint_location_service'];
+    formValidationRequired = json['form_validation_required'];
+    formValidationFirst8 = json['form_validation_first_8'];
+    formValidationLengthMin8 = json['form_validation_length_min_8'];
+    formTitleAvatarPhoto = json['form_title_avatar_photo'];
+    registerCompleteTitle = json['register_complete_title'];
+    registerCompleteDescription = json['register_complete_description'];
+    registerCompleteTitle1 = json['register_complete_title_1'];
+    registerCompleteDescription1 = json['register_complete_description_1'];
+    confirmation = json['confirmation'];
+    homeOrderToday = json['home_order_today'];
+    homeOrderThisMonth = json['home_order_this_month'];
+    homeMyRating = json['home_my_rating'];
+    homeSeeMyActivity = json['home_see_my_activity'];
+    homeYourBalance = json['home_your_balance'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['onboarding_intro_title_1'] = this.onboardingIntroTitle1;
-    data['onboarding_intro_description_1'] = this.onboardingIntroDescription1;
-    data['onboarding_intro_title_2'] = this.onboardingIntroTitle2;
-    data['onboarding_intro_description_2'] = this.onboardingIntroDescription2;
-    data['button_next'] = this.buttonNext;
     data['login_title'] = this.loginTitle;
-    data['login_description'] = this.loginDescription;
+    data['login_subtitle'] = this.loginSubtitle;
     data['mobile_phone'] = this.mobilePhone;
     data['login_button'] = this.loginButton;
-    data['login_or'] = this.loginOr;
+    data['login_contact_cs_1'] = this.loginContactCs1;
+    data['login_contact_cs_2'] = this.loginContactCs2;
+    data['login_contact_cs_3'] = this.loginContactCs3;
     data['term_and_condition'] = this.termAndCondition;
     data['privacy_policy'] = this.privacyPolicy;
     data['tnc_privacy_confirmation_1'] = this.tncPrivacyConfirmation1;
     data['tnc_privacy_confirmation_2'] = this.tncPrivacyConfirmation2;
     data['tnc_privacy_confirmation_3'] = this.tncPrivacyConfirmation3;
-    data['verification_otp_title'] = this.verificationOtpTitle;
-    data['verification_otp_description'] = this.verificationOtpDescription;
-    data['verification_otp_not_receive'] = this.verificationOtpNotReceive;
-    data['verification_otp_resend'] = this.verificationOtpResend;
-    data['verification_otp_not_match'] = this.verificationOtpNotMatch;
-    data['home_ride_ready_to_go_title'] = this.homeRideReadyToGoTitle;
-    data['home_ride_ready_to_go_hint'] = this.homeRideReadyToGoHint;
-    data['add_location_home'] = this.addLocationHome;
-    data['add_location_office'] = this.addLocationOffice;
-    data['add_location_other'] = this.addLocationOther;
-    data['discount_50'] = this.discount50;
-    data['coming_soon'] = this.comingSoon;
-    data['delivery'] = this.delivery;
-    data['package'] = this.package;
-    data['food'] = this.food;
-    data['my_balance'] = this.myBalance;
-    data['topup'] = this.topup;
-    data['history'] = this.history;
-    data['see_all'] = this.seeAll;
-    data['promo_today'] = this.promoToday;
-    data['home'] = this.home;
-    data['activity'] = this.activity;
-    data['account'] = this.account;
-    data['setting_language'] = this.settingLanguage;
-    data['setting_payment'] = this.settingPayment;
-    data['setting_saved_location'] = this.settingSavedLocation;
-    data['customer_service'] = this.customerService;
-    data['rate_us'] = this.rateUs;
-    data['logout'] = this.logout;
-    data['app_version'] = this.appVersion;
+    data['register_as_new_driver'] = this.registerAsNewDriver;
+    data['register_title'] = this.registerTitle;
+    data['register_subtitle'] = this.registerSubtitle;
+    data['validate_otp_title'] = this.validateOtpTitle;
+    data['validate_otp_subtitle'] = this.validateOtpSubtitle;
+    data['resend_verification_code'] = this.resendVerificationCode;
+    data['button_next'] = this.buttonNext;
+    data['register_form_title'] = this.registerFormTitle;
+    data['register_form_description'] = this.registerFormDescription;
+    data['form_title_id_card_photo'] = this.formTitleIdCardPhoto;
+    data['form_title_full_name'] = this.formTitleFullName;
+    data['form_hint_full_name'] = this.formHintFullName;
+    data['form_title_gender'] = this.formTitleGender;
+    data['form_hint_gender'] = this.formHintGender;
+    data['form_title_domicile'] = this.formTitleDomicile;
+    data['form_hint_domicile_province'] = this.formHintDomicileProvince;
+    data['form_hint_domicile_city'] = this.formHintDomicileCity;
+    data['form_title_id_card_number'] = this.formTitleIdCardNumber;
+    data['form_hint_id_card_number'] = this.formHintIdCardNumber;
+    data['form_title_driving_start_at'] = this.formTitleDrivingStartAt;
+    data['form_hint_driving_start_at'] = this.formHintDrivingStartAt;
+    data['form_title_driver_license_photo'] = this.formTitleDriverLicensePhoto;
+    data['form_title_service'] = this.formTitleService;
+    data['motorcycle'] = this.motorcycle;
+    data['intra_city_express_delivery'] = this.intraCityExpressDelivery;
+    data['form_title_location_service'] = this.formTitleLocationService;
+    data['form_hint_location_service'] = this.formHintLocationService;
+    data['form_validation_required'] = this.formValidationRequired;
+    data['form_validation_first_8'] = this.formValidationFirst8;
+    data['form_validation_length_min_8'] = this.formValidationLengthMin8;
+    data['form_title_avatar_photo'] = this.formTitleAvatarPhoto;
+    data['register_complete_title'] = this.registerCompleteTitle;
+    data['register_complete_description'] = this.registerCompleteDescription;
+    data['register_complete_title_1'] = this.registerCompleteTitle1;
+    data['register_complete_description_1'] = this.registerCompleteDescription1;
+    data['confirmation'] = this.confirmation;
+    data['home_order_today'] = this.homeOrderToday;
+    data['home_order_this_month'] = this.homeOrderThisMonth;
+    data['home_my_rating'] = this.homeMyRating;
+    data['home_see_my_activity'] = this.homeSeeMyActivity;
+    data['home_your_balance'] = this.homeYourBalance;
     return data;
   }
 }
