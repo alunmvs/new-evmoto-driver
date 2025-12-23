@@ -16,6 +16,7 @@ class Language {
   String? registerSubtitle;
   String? validateOtpTitle;
   String? validateOtpSubtitle;
+  String? verificationCode;
   String? resendVerificationCode;
   String? buttonNext;
   String? registerFormTitle;
@@ -52,6 +53,12 @@ class Language {
   String? homeMyRating;
   String? homeSeeMyActivity;
   String? homeYourBalance;
+  String? updatePhoto;
+  String? delete;
+  String? male;
+  String? female;
+  String? formValidationNikMinLength;
+  String? formValidationNikMaxLength;
 
   Language({
     this.loginTitle,
@@ -71,6 +78,7 @@ class Language {
     this.registerSubtitle,
     this.validateOtpTitle,
     this.validateOtpSubtitle,
+    this.verificationCode,
     this.resendVerificationCode,
     this.buttonNext,
     this.registerFormTitle,
@@ -107,6 +115,12 @@ class Language {
     this.homeMyRating,
     this.homeSeeMyActivity,
     this.homeYourBalance,
+    this.updatePhoto,
+    this.delete,
+    this.male,
+    this.female,
+    this.formValidationNikMinLength,
+    this.formValidationNikMaxLength,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -127,6 +141,7 @@ class Language {
     registerSubtitle = json['register_subtitle'];
     validateOtpTitle = json['validate_otp_title'];
     validateOtpSubtitle = json['validate_otp_subtitle'];
+    verificationCode = json['verification_code'];
     resendVerificationCode = json['resend_verification_code'];
     buttonNext = json['button_next'];
     registerFormTitle = json['register_form_title'];
@@ -163,6 +178,12 @@ class Language {
     homeMyRating = json['home_my_rating'];
     homeSeeMyActivity = json['home_see_my_activity'];
     homeYourBalance = json['home_your_balance'];
+    updatePhoto = json['update_photo'];
+    delete = json['delete'];
+    male = json['male'];
+    female = json['female'];
+    formValidationNikMinLength = json['form_validation_nik_min_length'];
+    formValidationNikMaxLength = json['form_validation_nik_max_length'];
   }
 
   Map<String, dynamic> toJson() {
@@ -184,6 +205,7 @@ class Language {
     data['register_subtitle'] = this.registerSubtitle;
     data['validate_otp_title'] = this.validateOtpTitle;
     data['validate_otp_subtitle'] = this.validateOtpSubtitle;
+    data['verification_code'] = this.verificationCode;
     data['resend_verification_code'] = this.resendVerificationCode;
     data['button_next'] = this.buttonNext;
     data['register_form_title'] = this.registerFormTitle;
@@ -220,6 +242,12 @@ class Language {
     data['home_my_rating'] = this.homeMyRating;
     data['home_see_my_activity'] = this.homeSeeMyActivity;
     data['home_your_balance'] = this.homeYourBalance;
+    data['update_photo'] = this.updatePhoto;
+    data['delete'] = this.delete;
+    data['male'] = this.male;
+    data['female'] = this.female;
+    data['form_validation_nik_min_length'] = this.formValidationNikMinLength;
+    data['form_validation_nik_max_length'] = this.formValidationNikMaxLength;
     return data;
   }
 }
