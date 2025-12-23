@@ -52,5 +52,11 @@
     "home_order_this_month": "This Month's Orders",
     "home_my_rating": "My Rating",
     "home_see_my_activity": "View My Activity",
-    "home_your_balance": "Your Balance"
+    "home_your_balance": "Your Balance",
+    "update_photo": "Photo Update",
+    "delete": "Delete",
+    "male": "Man",
+    "female": "Woman",
+    "form_validation_nik_min_length": "NIK must consist of 16 digits",
+    "form_validation_nik_max_length": "NIK must consist of 16 digits"
 }

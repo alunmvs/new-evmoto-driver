@@ -52,5 +52,11 @@
     "home_order_this_month": "Pesanan Bulan Ini",
     "home_my_rating": "Rating Saya",
     "home_see_my_activity": "Lihat Aktivitas Saya",
-    "home_your_balance": "Saldo Kamu"
+    "home_your_balance": "Saldo Kamu",
+    "update_photo": "Update Foto",
+    "delete": "Hapus",
+    "male": "Laki-laki",
+    "female": "Perempuan",
+    "form_validation_nik_min_length": "NIK harus terdiri dari 16 digit angka",
+    "form_validation_nik_max_length": "NIK harus terdiri dari 16 digit angka"
 }

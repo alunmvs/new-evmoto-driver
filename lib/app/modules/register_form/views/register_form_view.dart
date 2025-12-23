@@ -54,7 +54,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Data Informasi Personal",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .registerFormTitle ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .headingSmallBold
@@ -68,7 +73,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                 ),
                                 SizedBox(height: 8),
                                 Text(
-                                  "Lengkapi data Anda untuk melanjutkan.",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .registerFormDescription ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallRegular
@@ -93,7 +103,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         Row(
                           children: [
                             Text(
-                              "Foto ID KTP",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formTitleIdCardPhoto ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -192,7 +207,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                                     .onTapUploadIdPhoto();
                                               },
                                               child: Text(
-                                                "Ganti Foto",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .updatePhoto ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodyLargeRegular
@@ -233,7 +253,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                                   ),
                                                   SizedBox(width: 5),
                                                   Text(
-                                                    "Hapus",
+                                                    controller
+                                                            .languageServices
+                                                            .language
+                                                            .value
+                                                            .delete ??
+                                                        "-",
                                                     style: controller
                                                         .typographyServices
                                                         .bodyLargeRegular
@@ -262,7 +287,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         Row(
                           children: [
                             Text(
-                              "Nama Lengkap",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formTitleFullName ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -301,7 +331,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                           formControlName: 'full_name',
                           validationMessages: {
                             ValidationMessage.required: (error) =>
-                                'Wajib diisi',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationRequired ??
+                                "-",
                           },
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
@@ -310,7 +345,13 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ),
                             prefix: SizedBox(width: 12),
                             suffix: SizedBox(width: 12),
-                            hintText: 'Masukkan nama lengkap',
+                            hintText:
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formHintFullName ??
+                                "-",
                             hintStyle: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -382,7 +423,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         Row(
                           children: [
                             Text(
-                              "Jenis Kelamin",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formTitleGender ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -428,13 +474,23 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               .value,
                           validationMessages: {
                             ValidationMessage.required: (error) =>
-                                'Wajib diisi',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationRequired ??
+                                "-",
                           },
                           items: [
                             DropdownMenuItem(
                               value: 1,
                               child: Text(
-                                "Laki-laki",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .male ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -444,7 +500,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             DropdownMenuItem(
                               value: 2,
                               child: Text(
-                                "Perempuan",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .female ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -465,7 +526,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               children: [
                                 SizedBox(width: 12),
                                 Text(
-                                  'Pilih jenis kelamin',
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .formHintGender ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallRegular
@@ -541,7 +607,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         Row(
                           children: [
                             Text(
-                              "Tempat Tinggal",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formTitleDomicile ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -598,7 +669,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                   },
                                   validationMessages: {
                                     ValidationMessage.required: (error) =>
-                                        'Wajib diisi',
+                                        controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .formValidationRequired ??
+                                        "-",
                                   },
                                   items: [
                                     for (var province
@@ -631,7 +707,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                       children: [
                                         SizedBox(width: 12),
                                         Text(
-                                          'Pilih provinsi',
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .formHintDomicileProvince ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -724,7 +805,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                       .value,
                                   validationMessages: {
                                     ValidationMessage.required: (error) =>
-                                        'Wajib diisi',
+                                        controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .formValidationRequired ??
+                                        "-",
                                   },
                                   items: [
                                     for (var city in controller.citiesList) ...[
@@ -756,7 +842,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                       children: [
                                         SizedBox(width: 12),
                                         Text(
-                                          'Pilih kota',
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .formHintDomicileCity ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -837,7 +928,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         Row(
                           children: [
                             Text(
-                              "No. KTP",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formTitleIdCardNumber ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -878,11 +974,26 @@ class RegisterFormView extends GetView<RegisterFormController> {
                           maxLength: 16,
                           validationMessages: {
                             ValidationMessage.required: (error) =>
-                                'Wajib diisi',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationRequired ??
+                                "-",
                             ValidationMessage.minLength: (error) =>
-                                'NIK harus terdiri dari 16 digit angka',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationNikMinLength ??
+                                "-",
                             ValidationMessage.maxLength: (error) =>
-                                'NIK harus terdiri dari 16 digit angka',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationNikMaxLength ??
+                                "-",
                           },
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
@@ -895,7 +1006,13 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ),
                             prefix: SizedBox(width: 12),
                             suffix: SizedBox(width: 12),
-                            hintText: 'Misalnya 102303040303',
+                            hintText:
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formHintIdCardNumber ??
+                                "-",
                             hintStyle: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -967,7 +1084,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         Row(
                           children: [
                             Text(
-                              "Pengalaman Berkendara Sejak",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formTitleDrivingStartAt ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -1007,7 +1129,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               controller.themeColorServices.primaryBlue.value,
                           validationMessages: {
                             ValidationMessage.required: (error) =>
-                                'Wajib diisi',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationRequired ??
+                                "-",
                           },
                           onTap: (value) async {
                             DateTime? pickedDate = await showDatePicker(
@@ -1110,7 +1237,13 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ),
                             prefix: SizedBox(width: 12),
                             suffix: SizedBox(width: 12),
-                            hintText: 'Misalnya 2025-11-29',
+                            hintText:
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formHintDrivingStartAt ??
+                                "-",
                             hintStyle: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -1182,7 +1315,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         Row(
                           children: [
                             Text(
-                              "Foto SIM",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formTitleDriverLicensePhoto ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -1283,7 +1421,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                                     .onTapUploadDriverLicense();
                                               },
                                               child: Text(
-                                                "Ganti Foto",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .updatePhoto ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodyLargeRegular
@@ -1326,7 +1469,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                                   ),
                                                   SizedBox(width: 5),
                                                   Text(
-                                                    "Hapus",
+                                                    controller
+                                                            .languageServices
+                                                            .language
+                                                            .value
+                                                            .delete ??
+                                                        "-",
                                                     style: controller
                                                         .typographyServices
                                                         .bodyLargeRegular
@@ -1355,7 +1503,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         Row(
                           children: [
                             Text(
-                              "Layanan",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formTitleService ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -1387,7 +1540,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         ReactiveCheckboxListTile(
                           formControlName: 'service_type_motorcycle',
                           title: Text(
-                            "Motorcycle",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .motorcycle ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -1412,7 +1570,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         Row(
                           children: [
                             Text(
-                              "Lokasi Layanan",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formTitleLocationService ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -1458,7 +1621,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               .value,
                           validationMessages: {
                             ValidationMessage.required: (error) =>
-                                'Wajib diisi',
+                                controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationRequired ??
+                                "-",
                           },
                           items: [
                             for (var openCity in controller.openCityList) ...[
@@ -1488,7 +1656,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               children: [
                                 SizedBox(width: 12),
                                 Text(
-                                  'Pilih lokasi layanan',
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .formHintLocationService ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallRegular
@@ -1565,7 +1738,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         Row(
                           children: [
                             Text(
-                              "Foto Avatar",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formTitleAvatarPhoto ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodyLargeRegular
@@ -1650,7 +1828,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                           await controller.onTapUploadAvatar();
                                         },
                                         child: Text(
-                                          "Ganti Foto",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .updatePhoto ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodyLargeRegular
@@ -1690,7 +1873,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                             ),
                                             SizedBox(width: 5),
                                             Text(
-                                              "Hapus",
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .delete ??
+                                                  "-",
                                               style: controller
                                                   .typographyServices
                                                   .bodyLargeRegular
@@ -1742,7 +1930,8 @@ class RegisterFormView extends GetView<RegisterFormController> {
                     ),
                   ),
                   child: Text(
-                    "Lanjutkan",
+                    controller.languageServices.language.value.buttonNext ??
+                        "-",
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(color: Colors.white),
                   ),

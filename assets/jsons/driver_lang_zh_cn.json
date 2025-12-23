@@ -52,5 +52,11 @@
     "home_order_this_month": "本月订单",
     "home_my_rating": "我的评分",
     "home_see_my_activity": "查看我的活动",
-    "home_your_balance": "您的余额"
+    "home_your_balance": "您的余额",
+    "update_photo": "照片更新",
+    "delete": "擦拭",
+    "male": "男人",
+    "female": "女士",
+    "form_validation_nik_min_length": "NIK 必须由 16 位数字组成",
+    "form_validation_nik_max_length": "NIK 必须由 16 位数字组成"
 }

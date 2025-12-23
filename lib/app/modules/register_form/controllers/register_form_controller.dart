@@ -9,6 +9,7 @@ import 'package:new_evmoto_driver/app/data/models/province_cities_model.dart';
 import 'package:new_evmoto_driver/app/repositories/register_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/upload_image_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
@@ -26,6 +27,7 @@ class RegisterFormController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final formGroup = FormGroup({
     "full_name": FormControl<String>(
