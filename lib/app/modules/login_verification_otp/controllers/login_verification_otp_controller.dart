@@ -81,7 +81,7 @@ class LoginVerificationOtpController extends GetxController {
 
       var token = await loginRepository.loginByMobileNumber(
         phone: mobilePhone.value,
-        password: "1234567899",
+        password: "123456789",
         language: 2,
       );
 
