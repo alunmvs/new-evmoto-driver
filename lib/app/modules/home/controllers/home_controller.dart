@@ -19,6 +19,7 @@ import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/vehicle_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
@@ -47,6 +48,7 @@ class HomeController extends GetxController
   final typographyServices = Get.find<TypographyServices>();
   final pushNotificationServices = Get.find<PushNotificationServices>();
   final socketServices = Get.find<SocketServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
@@ -81,7 +83,7 @@ class HomeController extends GetxController
     tabController = TabController(length: 3, vsync: this);
     await requestLocation();
     await refreshAll();
-    await socketServices.setupWebsocket();
+    await Future.wait([socketServices.setupWebsocket()]);
     isFetch.value = false;
   }
 
@@ -401,15 +403,20 @@ class HomeController extends GetxController
       durationAccept.value = socketOrderStatusData.time ?? 0;
 
       late Timer timerDuration;
-      timerDuration = Timer.periodic(Duration(seconds: 1), (timer) {
+      timerDuration = Timer.periodic(Duration(seconds: 1), (timer) async {
         durationAccept.value -= 1;
         if (durationAccept.value == 0) {
+          await orderRepository.cancelOrder(
+            orderType: socketOrderStatusData.orderType!,
+            orderId: socketOrderStatusData.orderId.toString(),
+            language: languageServices.languageCodeSystem.value,
+          );
           timerDuration.cancel();
           Get.close(1);
         }
       });
 
-      await Get.dialog(
+      var result = await Get.dialog(
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -458,8 +465,15 @@ class HomeController extends GetxController
                               ],
                             ),
                             GestureDetector(
-                              onTap: () {
-                                Get.close(1);
+                              onTap: () async {
+                                await orderRepository.cancelOrder(
+                                  orderType: socketOrderStatusData.orderType!,
+                                  orderId: socketOrderStatusData.orderId
+                                      .toString(),
+                                  language:
+                                      languageServices.languageCodeSystem.value,
+                                );
+                                Get.back(result: true);
                               },
                               child: Container(
                                 width: 24,
@@ -642,7 +656,7 @@ class HomeController extends GetxController
                               boxShadow: [],
                               action: (actionController) async {
                                 actionController.loading();
-                                Get.close(1);
+                                Get.back(result: true);
                                 try {
                                   await orderRepository.grabOrder(
                                     orderType: socketOrderStatusData.orderType!,
@@ -818,6 +832,14 @@ class HomeController extends GetxController
           ],
         ),
       );
+
+      if (result != true) {
+        await orderRepository.cancelOrder(
+          orderType: socketOrderStatusData.orderType!,
+          orderId: socketOrderStatusData.orderId.toString(),
+          language: languageServices.languageCodeSystem.value,
+        );
+      }
 
       try {
         timerDuration.cancel();
