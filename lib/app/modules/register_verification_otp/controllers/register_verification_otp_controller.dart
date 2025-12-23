@@ -76,12 +76,12 @@ class RegisterVerificationOtpController extends GetxController {
     try {
       await otpRepository.checkOTP(
         phone: "62${mobilePhone.value}",
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         code: otpCode.value,
       );
       registeredDriver.value = (await registerRepository.registerDriver(
         code: otpCode.value,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         password: "123456789",
         phone: "62${mobilePhone.value}",
       ))!;

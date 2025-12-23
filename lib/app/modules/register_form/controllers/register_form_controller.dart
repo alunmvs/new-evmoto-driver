@@ -97,12 +97,14 @@ class RegisterFormController extends GetxController {
 
   Future<void> getProvinceCitiesList() async {
     provinceCitiesList.value = (await registerRepository
-        .getAllProvinceCitiesList(language: 2));
+        .getAllProvinceCitiesList(
+          language: languageServices.languageCodeSystem.value,
+        ));
   }
 
   Future<void> getOpenCityList() async {
     openCityList.value = (await registerRepository.getAllOpenCityList(
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     ));
   }
 
@@ -253,7 +255,7 @@ class RegisterFormController extends GetxController {
         uid: uid.value,
         placeOfEmployment: formGroup.control("place_of_employment_id").value,
         getDriverLicenseDate: formGroup.control("driving_experience").value,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         type: generateType(),
         driverContactAddress: generateDriverContactAddress(),
         driverContactAddress_: generateDriverContactAddress_(),

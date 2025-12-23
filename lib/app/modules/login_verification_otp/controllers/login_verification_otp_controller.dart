@@ -52,7 +52,7 @@ class LoginVerificationOtpController extends GetxController {
     try {
       await otpRepository.requestOTP(
         phone: mobilePhone.value,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         type: 3,
       );
       isButtonResendEnable.value = false;
@@ -76,13 +76,13 @@ class LoginVerificationOtpController extends GetxController {
       await otpRepository.checkOTP(
         phone: mobilePhone.value,
         code: otpCode.value,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
 
       var token = await loginRepository.loginByMobileNumber(
         phone: mobilePhone.value,
         password: "123456789",
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
 
       var storage = FlutterSecureStorage();
