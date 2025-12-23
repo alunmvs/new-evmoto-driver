@@ -16,6 +16,7 @@
     "register_subtitle": "Complete your details to continue",
     "validate_otp_title": "Complete Code Verification",
     "validate_otp_subtitle": "Enter 4 codes to continue",
+    "verification_code": "Verify Code",
     "resend_verification_code": "Resend code",
     "button_next": "Continue",
     "register_form_title": "Personal Information Data",
@@ -47,9 +48,9 @@
     "register_complete_title_1": "DATA SENT SUCCESSFULLY",
     "register_complete_description_1": "Thank you for choosing to join the EVMOTO Family. Our team will contact you within 2 hours to confirm the relevant information. Please ensure your phone remains active. Thank you for your support and understanding.",
     "confirmation": "Confirmation",
-    "home_order_today": NaN,
-    "home_order_this_month": NaN,
-    "home_my_rating": NaN,
-    "home_see_my_activity": NaN,
-    "home_your_balance": NaN
+    "home_order_today": "Today's Orders",
+    "home_order_this_month": "This Month's Orders",
+    "home_my_rating": "My Rating",
+    "home_see_my_activity": "View My Activity",
+    "home_your_balance": "Your Balance"
 }

@@ -4,6 +4,7 @@ import 'package:new_evmoto_driver/app/data/models/registered_driver_model.dart';
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/register_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -19,6 +20,7 @@ class RegisterVerificationOtpController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final mobilePhone = "".obs;
   final otpCode = "".obs;
