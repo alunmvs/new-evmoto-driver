@@ -36,6 +36,8 @@ import '../modules/login_verification_otp/bindings/login_verification_otp_bindin
 import '../modules/login_verification_otp/views/login_verification_otp_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
+import '../modules/order_chat/bindings/order_chat_binding.dart';
+import '../modules/order_chat/views/order_chat_view.dart';
 import '../modules/order_detail/bindings/order_detail_binding.dart';
 import '../modules/order_detail/views/order_detail_view.dart';
 import '../modules/order_detail_cancel/bindings/order_detail_cancel_binding.dart';
@@ -58,6 +60,8 @@ import '../modules/register_verification_otp/bindings/register_verification_otp_
 import '../modules/register_verification_otp/views/register_verification_otp_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
+import '../modules/switch_vehicle/bindings/switch_vehicle_binding.dart';
+import '../modules/switch_vehicle/views/switch_vehicle_view.dart';
 import '../modules/terms_and_conditions/bindings/terms_and_conditions_binding.dart';
 import '../modules/terms_and_conditions/views/terms_and_conditions_view.dart';
 
@@ -218,6 +222,16 @@ class AppPages {
       name: _Paths.ORDER_DETAIL_CANCEL,
       page: () => const OrderDetailCancelView(),
       binding: OrderDetailCancelBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_CHAT,
+      page: () => const OrderChatView(),
+      binding: OrderChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.SWITCH_VEHICLE,
+      page: () => const SwitchVehicleView(),
+      binding: SwitchVehicleBinding(),
     ),
   ];
 }

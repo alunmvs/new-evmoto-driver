@@ -36,6 +36,8 @@ abstract class Routes {
   static const ACTIVITY = _Paths.ACTIVITY;
   static const ORDER_DETAIL_DONE = _Paths.ORDER_DETAIL_DONE;
   static const ORDER_DETAIL_CANCEL = _Paths.ORDER_DETAIL_CANCEL;
+  static const ORDER_CHAT = _Paths.ORDER_CHAT;
+  static const SWITCH_VEHICLE = _Paths.SWITCH_VEHICLE;
 }
 
 abstract class _Paths {
@@ -73,4 +75,6 @@ abstract class _Paths {
   static const ACTIVITY = '/activity';
   static const ORDER_DETAIL_DONE = '/order-detail-done';
   static const ORDER_DETAIL_CANCEL = '/order-detail-cancel';
+  static const ORDER_CHAT = '/order-chat';
+  static const SWITCH_VEHICLE = '/switch-vehicle';
 }
