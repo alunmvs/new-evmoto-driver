@@ -51,51 +51,55 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
     socket?.listen(
       (data) async {
         var dataJson = convertBytesToJson(bytes: data);
-        var method = dataJson['method'] ?? "";
 
-        switch (method) {
-          case 'OK':
-            break;
-          case 'ORDER_STATUS':
-            // print(dataJson);
-            var socketOrderStatusData = SocketOrderStatusData.fromJson(
-              dataJson['data'],
-            );
-            var homeController = Get.find<HomeController>();
-            await Future.wait([
-              homeController.refreshAll(),
-              homeController.showDialogOrderConfirmation(
-                socketOrderStatusData: socketOrderStatusData,
-              ),
-            ]);
+        if (dataJson != null) {
+          var method = dataJson['method'] ?? "";
 
-            if (socketOrderStatusData.state == 8 &&
-                Get.currentRoute == Routes.ORDER_PAYMENT_CONFIRMATION) {
-              await Get.find<OrderPaymentConfirmationController>().refreshAll();
-            }
-            if (socketOrderStatusData.state == 10 &&
-                Get.currentRoute == Routes.ORDER_DETAIL) {
-              Get.back();
-              await Get.find<HomeController>().refreshAll();
-              final SnackBar snackBar = SnackBar(
-                behavior: SnackBarBehavior.fixed,
-                backgroundColor: themeColorServices.sematicColorRed400.value,
-                content: Text(
-                  "Pelanggan membatalkan pesanan",
-                  style: typographyServices.bodySmallRegular.value.copyWith(
-                    color: themeColorServices.neutralsColorGrey0.value,
-                  ),
-                ),
+          switch (method) {
+            case 'OK':
+              break;
+            case 'ORDER_STATUS':
+              // print(dataJson);
+              var socketOrderStatusData = SocketOrderStatusData.fromJson(
+                dataJson['data'],
               );
-              rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-            }
-            if (socketOrderStatusData.state == 10 &&
-                Get.currentRoute != Routes.ORDER_DETAIL) {
-              await Get.find<HomeController>().refreshAll();
-            }
-            break;
-          default:
-            break;
+              var homeController = Get.find<HomeController>();
+              await Future.wait([
+                homeController.refreshAll(),
+                homeController.showDialogOrderConfirmation(
+                  socketOrderStatusData: socketOrderStatusData,
+                ),
+              ]);
+
+              if (socketOrderStatusData.state == 8 &&
+                  Get.currentRoute == Routes.ORDER_PAYMENT_CONFIRMATION) {
+                await Get.find<OrderPaymentConfirmationController>()
+                    .refreshAll();
+              }
+              if (socketOrderStatusData.state == 10 &&
+                  Get.currentRoute == Routes.ORDER_DETAIL) {
+                Get.back();
+                await Get.find<HomeController>().refreshAll();
+                final SnackBar snackBar = SnackBar(
+                  behavior: SnackBarBehavior.fixed,
+                  backgroundColor: themeColorServices.sematicColorRed400.value,
+                  content: Text(
+                    "Pelanggan membatalkan pesanan",
+                    style: typographyServices.bodySmallRegular.value.copyWith(
+                      color: themeColorServices.neutralsColorGrey0.value,
+                    ),
+                  ),
+                );
+                rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+              }
+              if (socketOrderStatusData.state == 10 &&
+                  Get.currentRoute != Routes.ORDER_DETAIL) {
+                await Get.find<HomeController>().refreshAll();
+              }
+              break;
+            default:
+              break;
+          }
         }
       },
       onError: (error) {
