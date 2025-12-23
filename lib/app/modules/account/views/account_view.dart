@@ -394,56 +394,62 @@ class AccountView extends GetView<AccountController> {
                                     color: Color(0XFFE8E8E8),
                                   ),
                                 ),
-                                Container(
-                                  padding: EdgeInsets.all(16),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 22,
-                                        height: 22,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              "assets/icons/icon_account_switch.svg",
-                                              width: 18.33,
-                                              height: 18.33,
-                                            ),
-                                          ],
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.SWITCH_VEHICLE);
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: EdgeInsets.all(16),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 22,
+                                          height: 22,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_account_switch.svg",
+                                                width: 18.33,
+                                                height: 18.33,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(width: 16),
-                                      Expanded(
-                                        child: Text(
-                                          "Ubah Kendaraan",
-                                          style: controller
-                                              .typographyServices
-                                              .bodySmallBold
-                                              .value,
+                                        SizedBox(width: 16),
+                                        Expanded(
+                                          child: Text(
+                                            "Ubah Kendaraan",
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallBold
+                                                .value,
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(width: 16),
-                                      SizedBox(
-                                        width: 19,
-                                        height: 19,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              "assets/icons/icon_arrow_right.svg",
-                                              width: 4.75,
-                                              height: 9.5,
-                                            ),
-                                          ],
+                                        SizedBox(width: 16),
+                                        SizedBox(
+                                          width: 19,
+                                          height: 19,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_arrow_right.svg",
+                                                width: 4.75,
+                                                height: 9.5,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Padding(
