@@ -18,7 +18,7 @@ import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class SocketServices extends GetxService with WidgetsBindingObserver {
-  late Socket socket;
+  late Socket? socket;
   late Timer? schedulerDataSocketTimer;
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -37,8 +37,10 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       setupWebsocket();
     } else if (state == AppLifecycleState.paused) {
-      socket.close();
-      isSocketClose.value = true;
+      if (isSocketClose.value == false) {
+        socket?.close();
+        isSocketClose.value = true;
+      }
     }
   }
 
@@ -46,7 +48,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
     socket = await Socket.connect("api-dev.evmotoapp.com", 8888);
     isSocketClose.value = false;
 
-    socket.listen(
+    socket?.listen(
       (data) async {
         var dataJson = convertBytesToJson(bytes: data);
         var method = dataJson['method'] ?? "";
@@ -55,7 +57,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
           case 'OK':
             break;
           case 'ORDER_STATUS':
-            print(dataJson);
+            // print(dataJson);
             var socketOrderStatusData = SocketOrderStatusData.fromJson(
               dataJson['data'],
             );
@@ -99,12 +101,12 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
       onError: (error) {
         print('Error: $error');
         isSocketClose.value = true;
-        socket.destroy();
+        socket?.destroy();
       },
       onDone: () {
         print('Server closed connection');
         isSocketClose.value = true;
-        socket.destroy();
+        socket?.destroy();
       },
     );
 
@@ -113,7 +115,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
   Future<void> closeWebsocket() async {
     WidgetsBinding.instance.removeObserver(this);
-    await socket.close();
+    await socket?.close();
     isSocketClose.value = true;
   }
 
@@ -171,14 +173,14 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
         "msg": "SUCCESS",
       };
 
-      print(jsonEncode(dataUser));
-      print(jsonEncode(dataLocation));
+      // print(jsonEncode(dataUser));
+      // print(jsonEncode(dataLocation));
 
-      socket.add(convertJsonToPacket(dataUser));
-      socket.add(convertJsonToPacket(dataLocation));
+      socket?.add(convertJsonToPacket(dataUser));
+      socket?.add(convertJsonToPacket(dataLocation));
 
       if (isSocketClose.value == false) {
-        await socket.flush();
+        await socket?.flush();
       }
     }
   }
