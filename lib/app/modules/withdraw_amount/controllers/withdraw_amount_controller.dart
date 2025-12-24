@@ -1,0 +1,291 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/data/models/bank_account_model.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
+import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
+import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+
+class WithdrawAmountController extends GetxController {
+  final themeColorServices = Get.find<ThemeColorServices>();
+  final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
+
+  final homeController = Get.find<HomeController>();
+
+  final formGroup = FormGroup({
+    "money": FormControl<String>(validators: <Validator>[Validators.required]),
+  });
+
+  final isInfoExpanded = false.obs;
+
+  final selectedBankAccount = BankAccount().obs;
+
+  final isFetch = false.obs;
+
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    isFetch.value = true;
+    selectedBankAccount.value =
+        Get.arguments?['selected_bank_account'] ?? BankAccount();
+    isFetch.value = false;
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  Future<void> onTapSubmit() async {
+    // if (formGroup.valid) {
+    Get.bottomSheet(
+      isScrollControlled: true,
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(16),
+              topLeft: Radius.circular(16),
+            ),
+            child: Material(
+              color: themeColorServices.neutralsColorGrey0.value,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Konfirmasi Penarikan Dana",
+                          style: typographyServices.bodyLargeBold.value,
+                        ),
+                        SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/icon_close.svg",
+                                width: 12,
+                                height: 12,
+                                color: themeColorServices.textColor.value,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    height: 0,
+                    color: themeColorServices.neutralsColorGrey200.value,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Penerima",
+                          style: typographyServices.bodySmallRegular.value
+                              .copyWith(fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(height: 8),
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Color(0XFFF8F8F8),
+                            border: Border.all(color: Color(0XFFD4D4D4)),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: 35,
+                                width: 35,
+                                child: Placeholder(),
+                              ),
+                              SizedBox(width: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    selectedBankAccount.value.name ?? "-",
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(color: Color(0XFF7D7D7D)),
+                                  ),
+                                  Text(
+                                    selectedBankAccount.value.code!.length < 5
+                                        ? "*****"
+                                        : selectedBankAccount.value.code!
+                                              .replaceRange(0, 5, "***** "),
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(color: Color(0XFF7D7D7D)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Divider(
+                          height: 0,
+                          color: themeColorServices.neutralsColorGrey200.value,
+                        ),
+                        SizedBox(height: 16),
+                        Container(
+                          width: Get.width,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            border: Border.all(color: Color(0XFFB3B3B3)),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Nominal Penarikan Dana",
+                                style: typographyServices.bodySmallRegular.value
+                                    .copyWith(
+                                      color: Color(0XFFB3B3B3),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                "Rp50.000",
+                                style: typographyServices.bodySmallRegular.value
+                                    .copyWith(
+                                      color: themeColorServices.textColor.value,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                              SizedBox(height: 16),
+                              Text(
+                                "Biaya Admin Penarikan",
+                                style: typographyServices.bodySmallRegular.value
+                                    .copyWith(
+                                      color: Color(0XFFB3B3B3),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                              SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Text(
+                                    "* ",
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: themeColorServices
+                                              .sematicColorRed400
+                                              .value,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                  Text(
+                                    "Rp6.500",
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: themeColorServices
+                                              .textColor
+                                              .value,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 16),
+                              Divider(
+                                height: 0,
+                                color: themeColorServices
+                                    .neutralsColorGrey200
+                                    .value,
+                              ),
+                              SizedBox(height: 16),
+                              Text(
+                                "Total Penarikan Dana",
+                                style: typographyServices.bodySmallRegular.value
+                                    .copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0XFFB3B3B3),
+                                    ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                "Rp56.500",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices.textColor.value,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 16 * 2),
+                        SizedBox(
+                          width: Get.width,
+                          height: 46,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              Get.close(1);
+                              Get.back();
+                              Get.back();
+                              Get.toNamed(Routes.WITHDRAW_DETAIL);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  themeColorServices.primaryBlue.value,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            child: Text(
+                              "Konfirmasi",
+                              style: typographyServices.bodySmallBold.value
+                                  .copyWith(
+                                    color: themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    // }
+  }
+}

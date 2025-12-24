@@ -38,6 +38,11 @@ abstract class Routes {
   static const ORDER_DETAIL_CANCEL = _Paths.ORDER_DETAIL_CANCEL;
   static const ORDER_CHAT = _Paths.ORDER_CHAT;
   static const SWITCH_VEHICLE = _Paths.SWITCH_VEHICLE;
+  static const WITHDRAW = _Paths.WITHDRAW;
+  static const ADD_EDIT_WITHDRAW_BANK_ACCOUNT =
+      _Paths.ADD_EDIT_WITHDRAW_BANK_ACCOUNT;
+  static const WITHDRAW_AMOUNT = _Paths.WITHDRAW_AMOUNT;
+  static const WITHDRAW_DETAIL = _Paths.WITHDRAW_DETAIL;
 }
 
 abstract class _Paths {
@@ -77,4 +82,9 @@ abstract class _Paths {
   static const ORDER_DETAIL_CANCEL = '/order-detail-cancel';
   static const ORDER_CHAT = '/order-chat';
   static const SWITCH_VEHICLE = '/switch-vehicle';
+  static const WITHDRAW = '/withdraw';
+  static const ADD_EDIT_WITHDRAW_BANK_ACCOUNT =
+      '/add-edit-withdraw-bank-account';
+  static const WITHDRAW_AMOUNT = '/withdraw-amount';
+  static const WITHDRAW_DETAIL = '/withdraw-detail';
 }

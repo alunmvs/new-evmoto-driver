@@ -24,6 +24,8 @@ import '../modules/account_user_guide/bindings/account_user_guide_binding.dart';
 import '../modules/account_user_guide/views/account_user_guide_view.dart';
 import '../modules/activity/bindings/activity_binding.dart';
 import '../modules/activity/views/activity_view.dart';
+import '../modules/add_edit_withdraw_bank_account/bindings/add_edit_withdraw_bank_account_binding.dart';
+import '../modules/add_edit_withdraw_bank_account/views/add_edit_withdraw_bank_account_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
@@ -64,6 +66,12 @@ import '../modules/switch_vehicle/bindings/switch_vehicle_binding.dart';
 import '../modules/switch_vehicle/views/switch_vehicle_view.dart';
 import '../modules/terms_and_conditions/bindings/terms_and_conditions_binding.dart';
 import '../modules/terms_and_conditions/views/terms_and_conditions_view.dart';
+import '../modules/withdraw/bindings/withdraw_binding.dart';
+import '../modules/withdraw/views/withdraw_view.dart';
+import '../modules/withdraw_amount/bindings/withdraw_amount_binding.dart';
+import '../modules/withdraw_amount/views/withdraw_amount_view.dart';
+import '../modules/withdraw_detail/bindings/withdraw_detail_binding.dart';
+import '../modules/withdraw_detail/views/withdraw_detail_view.dart';
 
 part 'app_routes.dart';
 
@@ -232,6 +240,26 @@ class AppPages {
       name: _Paths.SWITCH_VEHICLE,
       page: () => const SwitchVehicleView(),
       binding: SwitchVehicleBinding(),
+    ),
+    GetPage(
+      name: _Paths.WITHDRAW,
+      page: () => const WithdrawView(),
+      binding: WithdrawBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_EDIT_WITHDRAW_BANK_ACCOUNT,
+      page: () => const AddEditWithdrawBankAccountView(),
+      binding: AddEditWithdrawBankAccountBinding(),
+    ),
+    GetPage(
+      name: _Paths.WITHDRAW_AMOUNT,
+      page: () => const WithdrawAmountView(),
+      binding: WithdrawAmountBinding(),
+    ),
+    GetPage(
+      name: _Paths.WITHDRAW_DETAIL,
+      page: () => const WithdrawDetailView(),
+      binding: WithdrawDetailBinding(),
     ),
   ];
 }
