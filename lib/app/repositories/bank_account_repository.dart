@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/bank_account_model.dart';
 import 'package:new_evmoto_driver/app/data/models/bank_model.dart';
@@ -16,8 +17,20 @@ class BankAccountRepository {
 
       var formData = FormData.fromMap({"language": language});
 
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
       var dio = apiServices.dio;
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
@@ -49,8 +62,20 @@ class BankAccountRepository {
         "pageNum": pageNum,
       });
 
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
       var dio = apiServices.dio;
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
@@ -86,8 +111,20 @@ class BankAccountRepository {
         "name": name,
       });
 
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
       var dio = apiServices.dio;
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
@@ -100,12 +137,24 @@ class BankAccountRepository {
   Future<void> deleteBankAccountById({int? id, int? language}) async {
     try {
       var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/updateBankCard";
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/delBankCard";
 
       var formData = FormData.fromMap({"language": language, "id": id});
 
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
       var dio = apiServices.dio;
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
