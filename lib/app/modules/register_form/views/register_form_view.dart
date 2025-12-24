@@ -458,6 +458,7 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         ),
                         SizedBox(height: 4),
                         ReactiveDropdownField(
+                          isExpanded: true,
                           style: controller
                               .typographyServices
                               .bodySmallRegular
@@ -648,6 +649,7 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             children: [
                               Expanded(
                                 child: ReactiveDropdownField(
+                                  isExpanded: true,
                                   style: controller
                                       .typographyServices
                                       .bodySmallRegular
@@ -789,6 +791,7 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               SizedBox(width: 8),
                               Expanded(
                                 child: ReactiveDropdownField(
+                                  isExpanded: true,
                                   style: controller
                                       .typographyServices
                                       .bodySmallRegular
@@ -1605,6 +1608,7 @@ class RegisterFormView extends GetView<RegisterFormController> {
                         ),
                         SizedBox(height: 4),
                         ReactiveDropdownField(
+                          isExpanded: true,
                           style: controller
                               .typographyServices
                               .bodySmallRegular
