@@ -129,7 +129,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
   Future<void> schedulerDataSocket() async {
     await sendHeartBeat();
 
-    schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
+    schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 3), (
       timer,
     ) async {
       await sendHeartBeat();
