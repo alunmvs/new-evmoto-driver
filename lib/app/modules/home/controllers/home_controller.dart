@@ -406,10 +406,9 @@ class HomeController extends GetxController
       timerDuration = Timer.periodic(Duration(seconds: 1), (timer) async {
         durationAccept.value -= 1;
         if (durationAccept.value == 0) {
-          await orderRepository.cancelOrder(
-            orderType: socketOrderStatusData.orderType!,
-            orderId: socketOrderStatusData.orderId.toString(),
-            language: languageServices.languageCodeSystem.value,
+          await prefs.setBool(
+            'dialog_order_confirmation_${socketOrderStatusData.orderId}',
+            false,
           );
           timerDuration.cancel();
           Get.close(1);
@@ -466,13 +465,6 @@ class HomeController extends GetxController
                             ),
                             GestureDetector(
                               onTap: () async {
-                                await orderRepository.cancelOrder(
-                                  orderType: socketOrderStatusData.orderType!,
-                                  orderId: socketOrderStatusData.orderId
-                                      .toString(),
-                                  language:
-                                      languageServices.languageCodeSystem.value,
-                                );
                                 Get.back(result: true);
                               },
                               child: Container(
@@ -834,10 +826,9 @@ class HomeController extends GetxController
       );
 
       if (result != true) {
-        await orderRepository.cancelOrder(
-          orderType: socketOrderStatusData.orderType!,
-          orderId: socketOrderStatusData.orderId.toString(),
-          language: languageServices.languageCodeSystem.value,
+        await prefs.setBool(
+          'dialog_order_confirmation_${socketOrderStatusData.orderId}',
+          false,
         );
       }
 
