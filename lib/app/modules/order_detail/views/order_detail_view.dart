@@ -1,11 +1,10 @@
 import 'package:action_slider/action_slider.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 
 import '../controllers/order_detail_controller.dart';
 
@@ -191,29 +190,40 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                 ),
                                               ),
                                               SizedBox(width: 8),
-                                              Container(
-                                                width: 34,
-                                                height: 34,
-                                                decoration: BoxDecoration(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .primaryBlue
-                                                      .value,
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      "assets/icons/icon_bubble_chat_2.svg",
-                                                      width: 21.15,
-                                                      height: 21.15,
-                                                    ),
-                                                  ],
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Get.toNamed(
+                                                    Routes.ORDER_CHAT,
+                                                  );
+                                                },
+                                                child: Container(
+                                                  width: 34,
+                                                  height: 34,
+                                                  decoration: BoxDecoration(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .primaryBlue
+                                                        .value,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          8,
+                                                        ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                        "assets/icons/icon_bubble_chat_2.svg",
+                                                        width: 21.15,
+                                                        height: 21.15,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -760,8 +770,8 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         children: [
                                           Text(
                                             state.position >= 0.5
-                                                ? "Sedang menjemput"
-                                                : "Berangkat menjemput",
+                                                ? "Tiba dilokasi penjemputan"
+                                                : "Tiba dilokasi penjemputan",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeRegular
