@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/modules/account/views/account_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/order_card_home_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
-import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import '../controllers/home_controller.dart';
 import 'package:intl/intl.dart';
@@ -643,7 +642,13 @@ class HomeView extends GetView<HomeController> {
                                           ),
                                           SizedBox(width: 14),
                                           GestureDetector(
-                                            onTap: () {},
+                                            onTap: () async {
+                                              await Get.toNamed(
+                                                Routes.WITHDRAW,
+                                              );
+
+                                              await controller.refreshAll();
+                                            },
                                             child: Container(
                                               color: Colors.transparent,
                                               child: Column(
