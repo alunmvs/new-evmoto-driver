@@ -64,7 +64,8 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
                 dataJson['data'],
               );
               var homeController = Get.find<HomeController>();
-              if (Get.currentRoute == Routes.HOME) {
+              if (Get.currentRoute == Routes.HOME &&
+                  socketOrderStatusData.state == 2) {
                 await Future.wait([
                   homeController.refreshAll(),
                   homeController.showDialogOrderConfirmation(
