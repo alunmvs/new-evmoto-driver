@@ -397,6 +397,10 @@ class LoginView extends GetView<LoginController> {
                                                           .formValidationLengthMin8 ??
                                                       "-";
                                                 }
+
+                                                if (value.length > 15) {
+                                                  return "Maksimal nomor handphone 15 angka";
+                                                }
                                               }
                                               return null;
                                             },

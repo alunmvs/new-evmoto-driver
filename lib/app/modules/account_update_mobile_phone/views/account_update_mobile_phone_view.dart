@@ -209,6 +209,8 @@ class AccountUpdateMobilePhoneView
                                       'Wajib diisi',
                                   ValidationMessage.minLength: (error) =>
                                       'Minimal nomor handphone 8 angka',
+                                  ValidationMessage.maxLength: (error) =>
+                                      'Maksimal nomor handphone 15 angka',
                                   ValidationMessage.pattern: (error) =>
                                       'Harus diawali dengan angka 8',
                                 },

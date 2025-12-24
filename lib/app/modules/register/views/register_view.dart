@@ -178,6 +178,8 @@ class RegisterView extends GetView<RegisterController> {
                                     .value
                                     .formValidationLengthMin8 ??
                                 "-",
+                            ValidationMessage.maxLength: (error) =>
+                                "Maksimal nomor handphone 15 angka",
                             ValidationMessage.pattern: (error) =>
                                 controller
                                     .languageServices

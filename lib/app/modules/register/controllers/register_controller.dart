@@ -17,6 +17,7 @@ class RegisterController extends GetxController {
         Validators.required,
         Validators.pattern(r'^8.*'),
         Validators.minLength(8),
+        Validators.maxLength(15),
       ],
     ),
   });

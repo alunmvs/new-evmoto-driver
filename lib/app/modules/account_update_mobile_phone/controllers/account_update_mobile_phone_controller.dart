@@ -17,17 +17,14 @@ class AccountUpdateMobilePhoneController extends GetxController {
 
   final formGroup = FormGroup({
     "old_mobile_phone": FormControl<String>(
-      validators: <Validator>[
-        Validators.required,
-        Validators.pattern(r'^8.*'),
-        Validators.minLength(8),
-      ],
+      validators: <Validator>[Validators.required],
     ),
     "new_mobile_phone": FormControl<String>(
       validators: <Validator>[
         Validators.required,
         Validators.pattern(r'^8.*'),
         Validators.minLength(8),
+        Validators.maxLength(15),
       ],
     ),
   });
