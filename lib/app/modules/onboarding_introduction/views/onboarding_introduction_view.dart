@@ -14,10 +14,8 @@ class OnboardingIntroductionView
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          backgroundColor:
-              controller.themeColorServices.neutralsColorGrey0.value,
-          surfaceTintColor:
-              controller.themeColorServices.neutralsColorGrey0.value,
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
           actions: [
             GestureDetector(
               onTap: () async {
@@ -35,6 +33,8 @@ class OnboardingIntroductionView
           ],
         ),
         backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
+        extendBodyBehindAppBar: true,
+        extendBody: true,
         body: controller.isFetch.value
             ? Center(
                 child: CircularProgressIndicator(
@@ -48,77 +48,41 @@ class OnboardingIntroductionView
                     "assets/images/img_background_onboarding_introduction.png",
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
+                    fit: BoxFit.cover,
                   ),
                   SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CarouselSlider(
-                            items: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 100),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 45,
-                                    ),
-                                    child: AspectRatio(
-                                      aspectRatio: 285 / 160,
-                                      child: SizedBox(
-                                        width: MediaQuery.of(
-                                          context,
-                                        ).size.width,
-                                        child: Placeholder(),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 135),
-                                  Text(
-                                    "Dukungan Operasional untuk Aktivitas Mitra Driver",
-                                    style: controller
-                                        .typographyServices
-                                        .headingSmallBold
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .textColor
-                                              .value,
-                                        ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  Text(
-                                    "Semua layanan dan informasi driver tersedia dalam satu aplikasi!",
-                                    style: controller
-                                        .typographyServices
-                                        .bodyLargeRegular
-                                        .value
-                                        .copyWith(color: Color(0XFF696969)),
-                                  ),
-                                ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CarouselSlider(
+                          items: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
                               ),
-                              Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(height: 100),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 45,
-                                    ),
+                                  SizedBox(height: 16 * 8),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
                                     child: AspectRatio(
-                                      aspectRatio: 285 / 160,
+                                      aspectRatio: 343 / 244,
                                       child: SizedBox(
                                         width: MediaQuery.of(
                                           context,
                                         ).size.width,
-                                        child: Placeholder(),
+                                        child: Image.asset(
+                                          "assets/images/img_onboarding_introduction_1.png",
+                                          fit: BoxFit.cover,
+                                          width: MediaQuery.of(
+                                            context,
+                                          ).size.width,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 135),
+                                  SizedBox(height: 16 * 2),
                                   Text(
                                     "Solusi Berkendara untuk Mitra Driver",
                                     style: controller
@@ -134,7 +98,7 @@ class OnboardingIntroductionView
                                   ),
                                   SizedBox(height: 16),
                                   Text(
-                                    "EV Moto Hadir untuk mendukung mitra driver dalam setiap perjalanan agar tetap lancar dan nyaman.",
+                                    "EVMoto Driver App mendukung kamu di setiap perjalanan kerja. Dengan solusi berkendara yang praktis dan nyaman, aktivitas harian jadi lebih lancar dari awal hingga selesai.",
                                     style: controller
                                         .typographyServices
                                         .bodyLargeRegular
@@ -143,27 +107,36 @@ class OnboardingIntroductionView
                                   ),
                                 ],
                               ),
-                              Column(
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(height: 100),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 45,
-                                    ),
+                                  SizedBox(height: 16 * 8),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
                                     child: AspectRatio(
-                                      aspectRatio: 285 / 160,
+                                      aspectRatio: 343 / 244,
                                       child: SizedBox(
                                         width: MediaQuery.of(
                                           context,
                                         ).size.width,
-                                        child: Placeholder(),
+                                        child: Image.asset(
+                                          "assets/images/img_onboarding_introduction_2.png",
+                                          fit: BoxFit.cover,
+                                          width: MediaQuery.of(
+                                            context,
+                                          ).size.width,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 135),
+                                  SizedBox(height: 16 * 2),
                                   Text(
-                                    "Temani Perjalanan Kerja Setiap Hari",
+                                    "Dukung Setiap Langkah Kerja Kamu",
                                     style: controller
                                         .typographyServices
                                         .headingSmallBold
@@ -177,7 +150,7 @@ class OnboardingIntroductionView
                                   ),
                                   SizedBox(height: 16),
                                   Text(
-                                    "Menjadi bagian dari aktivitas kerja mitra driver melalui solusi mobilitas yang sederhana dan mudah.",
+                                    "Setiap perjalanan punya tujuan. EVMoto hadir untuk membantu proses kerja harian kamu berjalan lebih cepat dan lebih praktis.",
                                     style: controller
                                         .typographyServices
                                         .bodyLargeRegular
@@ -186,52 +159,106 @@ class OnboardingIntroductionView
                                   ),
                                 ],
                               ),
-                            ],
-                            carouselController:
-                                controller.carouselSliderController,
-                            options: CarouselOptions(
-                              onPageChanged: (index, reason) {
-                                controller.indexBanner.value = index.toDouble();
-                              },
-                              height: MediaQuery.of(context).size.height / 1.4,
-                              enableInfiniteScroll: false,
-                              autoPlay: false,
-                              disableCenter: true,
-                              viewportFraction: 1,
-                              padEnds: false,
                             ),
-                          ),
-                          SizedBox(height: 12),
-                          Center(
-                            child: DotsIndicator(
-                              dotsCount: 3,
-                              position: controller.indexBanner.value,
-                              decorator: DotsDecorator(
-                                spacing: EdgeInsets.symmetric(
-                                  horizontal: 3,
-                                  vertical: 4,
-                                ),
-                                color: controller
-                                    .themeColorServices
-                                    .neutralsColorGrey300
-                                    .value,
-                                activeColor: controller
-                                    .themeColorServices
-                                    .primaryBlue
-                                    .value,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 16 * 8),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: AspectRatio(
+                                      aspectRatio: 343 / 244,
+                                      child: SizedBox(
+                                        width: MediaQuery.of(
+                                          context,
+                                        ).size.width,
+                                        child: Image.asset(
+                                          "assets/images/img_onboarding_introduction_3.png",
+                                          fit: BoxFit.cover,
+                                          width: MediaQuery.of(
+                                            context,
+                                          ).size.width,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 16 * 2),
+                                  Text(
+                                    "Mulai Perjalanan Dengan Menggunakan EVMoto",
+                                    style: controller
+                                        .typographyServices
+                                        .headingSmallBold
+                                        .value
+                                        .copyWith(
+                                          color: controller
+                                              .themeColorServices
+                                              .textColor
+                                              .value,
+                                        ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    "Bersama EVMoto, setiap perjalanan kerja dimulai dengan solusi yang kamu butuhkan. Kami hadir untuk mendukung langkah kamu di jalan, hari demi hari.",
+                                    style: controller
+                                        .typographyServices
+                                        .bodyLargeRegular
+                                        .value
+                                        .copyWith(color: Color(0XFF696969)),
+                                  ),
+                                ],
                               ),
                             ),
+                          ],
+                          carouselController:
+                              controller.carouselSliderController,
+                          options: CarouselOptions(
+                            onPageChanged: (index, reason) {
+                              controller.indexBanner.value = index.toDouble();
+                            },
+                            height: MediaQuery.of(context).size.height / 1.4,
+                            enableInfiniteScroll: false,
+                            autoPlay: false,
+                            disableCenter: true,
+                            viewportFraction: 1,
+                            padEnds: false,
                           ),
-                          SizedBox(height: 12),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 12),
+                        Center(
+                          child: DotsIndicator(
+                            dotsCount: 3,
+                            position: controller.indexBanner.value,
+                            decorator: DotsDecorator(
+                              spacing: EdgeInsets.symmetric(
+                                horizontal: 3,
+                                vertical: 4,
+                              ),
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey300
+                                  .value,
+                              activeColor: controller
+                                  .themeColorServices
+                                  .primaryBlue
+                                  .value,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                      ],
                     ),
                   ),
                 ],
               ),
         bottomNavigationBar: BottomAppBar(
           height: 78,
-          color: controller.themeColorServices.neutralsColorGrey0.value,
+          color: Colors.transparent,
+          shadowColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
