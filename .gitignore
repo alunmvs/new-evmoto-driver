@@ -1,0 +1,68 @@
+# Miscellaneous
+*.class
+*.lock
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+.env
+
+# As packages are no longer pinned, we use a lockfile for testing locally.
+# When unpinning packages, Using lockfiles ensures that failures in PRs are
+# actually due to those PRs, not due to a package being updated.
+!/pubspec.lock
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code related
+.classpath
+.project
+.settings/
+.vscode/*
+.ccls-cache
+
+# Flutter
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.dart_tool/
+build/
+.gradle/
+.android/
+.ios/
+generated_plugin_registrant.dart
+# If you are using code generation like `json_serializable`, `freezed`, etc.
+# you might want to ignore the generated files.
+# For example, for json_serializable:
+# lib/**/*.g.dart
+
+# Android specific
+android/gradlew
+android/gradlew.bat
+android/.gradle
+android/local.properties
+android/key.properties
+android/*.keystore
+
+# iOS specific
+ios/Flutter/.last_build_id
+ios/Pods/
+ios/.symlinks/
+ios/Runner.xcworkspace/xcuserdata/
+ios/Runner.xcworkspace/xcshareddata/
+ios/.bundle/
+ios/build/
+
+# Firebase
+firebase-debug.log
+firebase-debug.*.log
+.firebaserc
+.firebase/

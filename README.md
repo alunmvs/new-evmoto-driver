@@ -1,6 +1,6 @@
 # new_evmoto_driver
 
-A new Flutter project.
+The official app for electric motorcycle ride-hailing drivers and daily work support.
 
 ## Getting Started
 
