@@ -29,6 +29,7 @@ import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -72,6 +73,19 @@ class HomeController extends GetxController
 
   final serviceOrderList = <ServiceOrder>[].obs;
 
+  // coachmark
+  final activityStatisticsGlobalKey = GlobalKey();
+  final buttonSeeAllMyActivityGlobalKey = GlobalKey();
+  final buttonOfflineOnlineGlobalKey = GlobalKey();
+  final balanceGlobalKey = GlobalKey();
+  final topUpGlobalKey = GlobalKey();
+  final withdrawGlobalKey = GlobalKey();
+  final historyGlobalKey = GlobalKey();
+  final menuGlobalKey = GlobalKey();
+
+  final coachmarkWorkStatus = 2.obs;
+  final isCoachmarkActive = false.obs;
+
   final workStatus = 2.obs;
   final selectedIndex = 0.obs;
   final isFetch = false.obs;
@@ -85,6 +99,11 @@ class HomeController extends GetxController
     await refreshAll();
     await Future.wait([socketServices.setupWebsocket()]);
     isFetch.value = false;
+
+    ShowcaseView.register();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await displayCoachmark();
+    });
   }
 
   @override
@@ -878,5 +897,107 @@ class HomeController extends GetxController
     );
     rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     await getServiceOrderList();
+  }
+
+  Future<void> displayCoachmark() async {
+    var prefs = await SharedPreferences.getInstance();
+    var isCoachmarkDisplayed = prefs.getBool('is_coachmark_displayed') ?? false;
+
+    if (isCoachmarkDisplayed == false) {
+      await Get.dialog(
+        barrierDismissible: false,
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Material(
+                  color: themeColorServices.neutralsColorGrey0.value,
+                  child: Column(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 325 / 110,
+                        child: Image.asset(
+                          "assets/images/img_coachmark.png",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Partner Kendaraan Listrik untuk Aktivitas Kerja Driver Setiap Hari",
+                              style: typographyServices.bodyLargeBold.value
+                                  .copyWith(
+                                    color: themeColorServices.textColor.value,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              "Membantu menghubungkan perjalanan, pesanan, dan catatan aktivitas dalam satu sistem bersama EVMoto Driver.",
+                              style: typographyServices.bodySmallRegular.value
+                                  .copyWith(
+                                    color: themeColorServices.textColor.value,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 16),
+                            SizedBox(
+                              width: Get.width,
+                              height: 46,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  Get.close(1);
+
+                                  isCoachmarkActive.value = true;
+
+                                  ShowcaseView.get().startShowCase([
+                                    activityStatisticsGlobalKey,
+                                    buttonSeeAllMyActivityGlobalKey,
+                                    buttonOfflineOnlineGlobalKey,
+                                    balanceGlobalKey,
+                                    topUpGlobalKey,
+                                    withdrawGlobalKey,
+                                    historyGlobalKey,
+                                    menuGlobalKey,
+                                  ]);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      themeColorServices.primaryBlue.value,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Jelajahi EVMoto Driver",
+                                  style: typographyServices.bodySmallBold.value
+                                      .copyWith(
+                                        color: themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }
