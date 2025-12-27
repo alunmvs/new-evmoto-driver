@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
-import 'package:new_evmoto_driver/app/services/typography_services.dart';
 
 String formatDouble(double value) {
   if (value == value.toInt()) {

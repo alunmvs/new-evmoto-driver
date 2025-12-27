@@ -50,6 +50,8 @@ import '../modules/order_payment_confirmation/bindings/order_payment_confirmatio
 import '../modules/order_payment_confirmation/views/order_payment_confirmation_view.dart';
 import '../modules/order_payment_detail/bindings/order_payment_detail_binding.dart';
 import '../modules/order_payment_detail/views/order_payment_detail_view.dart';
+import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
+import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
 import '../modules/privacy_policy/views/privacy_policy_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -260,6 +262,11 @@ class AppPages {
       name: _Paths.WITHDRAW_DETAIL,
       page: () => const WithdrawDetailView(),
       binding: WithdrawDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.PHOTO_VIEWER,
+      page: () => const PhotoViewerView(),
+      binding: PhotoViewerBinding(),
     ),
   ];
 }

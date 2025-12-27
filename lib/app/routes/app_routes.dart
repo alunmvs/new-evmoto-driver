@@ -43,6 +43,7 @@ abstract class Routes {
       _Paths.ADD_EDIT_WITHDRAW_BANK_ACCOUNT;
   static const WITHDRAW_AMOUNT = _Paths.WITHDRAW_AMOUNT;
   static const WITHDRAW_DETAIL = _Paths.WITHDRAW_DETAIL;
+  static const PHOTO_VIEWER = _Paths.PHOTO_VIEWER;
 }
 
 abstract class _Paths {
@@ -87,4 +88,5 @@ abstract class _Paths {
       '/add-edit-withdraw-bank-account';
   static const WITHDRAW_AMOUNT = '/withdraw-amount';
   static const WITHDRAW_DETAIL = '/withdraw-detail';
+  static const PHOTO_VIEWER = '/photo-viewer';
 }
