@@ -99,7 +99,7 @@ class HistoryBalanceRepository {
         throw response.data['msg'];
       }
 
-      return HistoryBalanceRevenue.fromJson(response.data);
+      return HistoryBalanceRevenue.fromJson(response.data['data']);
     } on DioException catch (e) {
       rethrow;
     }

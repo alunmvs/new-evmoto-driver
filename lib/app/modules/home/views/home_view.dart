@@ -1751,7 +1751,11 @@ class HomeView extends GetView<HomeController> {
                                               ],
                                             ),
                                             child: GestureDetector(
-                                              onTap: () {},
+                                              onTap: () {
+                                                Get.toNamed(
+                                                  Routes.HISTORY_BALANCE_ALL,
+                                                );
+                                              },
                                               child: Container(
                                                 color: Colors.transparent,
                                                 child: Column(

@@ -30,6 +30,14 @@ import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
 import '../modules/deposit_balance_payment_webview/views/deposit_balance_payment_webview_view.dart';
+import '../modules/history_balance_all/bindings/history_balance_all_binding.dart';
+import '../modules/history_balance_all/views/history_balance_all_view.dart';
+import '../modules/history_balance_recharge/bindings/history_balance_recharge_binding.dart';
+import '../modules/history_balance_recharge/views/history_balance_recharge_view.dart';
+import '../modules/history_balance_revenue/bindings/history_balance_revenue_binding.dart';
+import '../modules/history_balance_revenue/views/history_balance_revenue_view.dart';
+import '../modules/history_balance_withdraw/bindings/history_balance_withdraw_binding.dart';
+import '../modules/history_balance_withdraw/views/history_balance_withdraw_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -267,6 +275,26 @@ class AppPages {
       name: _Paths.PHOTO_VIEWER,
       page: () => const PhotoViewerView(),
       binding: PhotoViewerBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_BALANCE_ALL,
+      page: () => const HistoryBalanceAllView(),
+      binding: HistoryBalanceAllBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_BALANCE_REVENUE,
+      page: () => const HistoryBalanceRevenueView(),
+      binding: HistoryBalanceRevenueBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_BALANCE_WITHDRAW,
+      page: () => const HistoryBalanceWithdrawView(),
+      binding: HistoryBalanceWithdrawBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_BALANCE_RECHARGE,
+      page: () => const HistoryBalanceRechargeView(),
+      binding: HistoryBalanceRechargeBinding(),
     ),
   ];
 }

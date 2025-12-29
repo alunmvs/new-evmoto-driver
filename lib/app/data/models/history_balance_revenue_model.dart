@@ -33,21 +33,22 @@ class Revenue {
   int? payManner;
   int? payType;
   String? payTime;
-  int? payMoney;
-  int? startMoney;
-  int? startMileage;
-  int? mileageMoney;
-  int? mileageKilometers;
-  int? durationMoney;
-  int? duration;
-  int? waitMoney;
-  int? wait;
-  int? fastigiumMoney;
-  int? longDistanceMoney;
-  int? longDistance;
-  int? nightMoney;
-  int? additionalCharge;
-  int? collectionFees;
+  double? payMoney;
+  double? startMoney;
+  double? startMileage;
+  double? mileageMoney;
+  double? mileageKilometers;
+  double? durationMoney;
+  double? duration;
+  double? waitMoney;
+  double? wait;
+  double? fastigiumMoney;
+  double? longDistanceMoney;
+  double? longDistance;
+  double? nightMoney;
+  double? additionalCharge;
+  double? collectionFees;
+  Null? subsidy;
 
   Revenue({
     this.orderId,
@@ -70,6 +71,7 @@ class Revenue {
     this.nightMoney,
     this.additionalCharge,
     this.collectionFees,
+    this.subsidy,
   });
 
   Revenue.fromJson(Map<String, dynamic> json) {
@@ -93,6 +95,7 @@ class Revenue {
     nightMoney = json['nightMoney'];
     additionalCharge = json['additionalCharge'];
     collectionFees = json['collectionFees'];
+    subsidy = json['subsidy'];
   }
 
   Map<String, dynamic> toJson() {
@@ -117,6 +120,7 @@ class Revenue {
     data['nightMoney'] = this.nightMoney;
     data['additionalCharge'] = this.additionalCharge;
     data['collectionFees'] = this.collectionFees;
+    data['subsidy'] = this.subsidy;
     return data;
   }
 }

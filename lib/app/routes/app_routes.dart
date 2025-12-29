@@ -44,6 +44,10 @@ abstract class Routes {
   static const WITHDRAW_AMOUNT = _Paths.WITHDRAW_AMOUNT;
   static const WITHDRAW_DETAIL = _Paths.WITHDRAW_DETAIL;
   static const PHOTO_VIEWER = _Paths.PHOTO_VIEWER;
+  static const HISTORY_BALANCE_ALL = _Paths.HISTORY_BALANCE_ALL;
+  static const HISTORY_BALANCE_REVENUE = _Paths.HISTORY_BALANCE_REVENUE;
+  static const HISTORY_BALANCE_WITHDRAW = _Paths.HISTORY_BALANCE_WITHDRAW;
+  static const HISTORY_BALANCE_RECHARGE = _Paths.HISTORY_BALANCE_RECHARGE;
 }
 
 abstract class _Paths {
@@ -89,4 +93,8 @@ abstract class _Paths {
   static const WITHDRAW_AMOUNT = '/withdraw-amount';
   static const WITHDRAW_DETAIL = '/withdraw-detail';
   static const PHOTO_VIEWER = '/photo-viewer';
+  static const HISTORY_BALANCE_ALL = '/history-balance-all';
+  static const HISTORY_BALANCE_REVENUE = '/history-balance-revenue';
+  static const HISTORY_BALANCE_WITHDRAW = '/history-balance-withdraw';
+  static const HISTORY_BALANCE_RECHARGE = '/history-balance-recharge';
 }
