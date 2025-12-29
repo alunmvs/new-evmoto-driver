@@ -74,6 +74,7 @@ dependencies:
   flutter_cache_manager: ^3.4.1
   path_provider: ^2.1.5
   cloud_firestore: ^6.1.1
+  sliver_tools: ^0.2.12
 
 dev_dependencies:
   get_cli: ^1.9.1

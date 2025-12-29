@@ -88,6 +88,7 @@ class HomeController extends GetxController
 
   final workStatus = 2.obs;
   final selectedIndex = 0.obs;
+
   final isFetch = false.obs;
 
   @override
