@@ -46,7 +46,8 @@ class OrderCardHomeSubView extends GetView<HomeController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Dijemput",
+                        controller.languageServices.language.value.pickedUp ??
+                            "-",
                         style: controller
                             .typographyServices
                             .bodySmallRegular
@@ -99,7 +100,12 @@ class OrderCardHomeSubView extends GetView<HomeController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Lokasi Tujuan",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .destinationLocation ??
+                            "-",
                         style: controller
                             .typographyServices
                             .bodySmallRegular
@@ -137,7 +143,7 @@ class OrderCardHomeSubView extends GetView<HomeController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Total Biaya",
+                  controller.languageServices.language.value.totalCost ?? "-",
                   style: controller.typographyServices.bodySmallRegular.value
                       .copyWith(
                         color: controller.themeColorServices.textColor.value,

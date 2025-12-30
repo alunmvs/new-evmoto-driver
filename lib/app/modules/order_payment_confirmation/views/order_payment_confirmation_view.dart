@@ -21,8 +21,8 @@ class OrderPaymentConfirmationView
         appBar: AppBar(
           title: Text(
             controller.orderDetail.value.state == 5
-                ? "Konfirmasi Pembayaran (Cash)"
-                : "Menunggu Pembayaran (Cash)",
+                ? "${controller.languageServices.language.value.paymentConfirmation} (Cash)"
+                : "${controller.languageServices.language.value.waitingForPayment} (Cash)",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: true,
@@ -155,7 +155,12 @@ class OrderPaymentConfirmationView
                             child: Column(
                               children: [
                                 Text(
-                                  "Total Pembayaran",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .totalPayment ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallBold
@@ -192,7 +197,12 @@ class OrderPaymentConfirmationView
                                     ),
                                     SizedBox(width: 8),
                                     Text(
-                                      "Basic Expense",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .basicExpense ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .captionLargeRegular
@@ -222,7 +232,7 @@ class OrderPaymentConfirmationView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Starting price (${controller.orderPayment.value.startMileage!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.startingPrice} (${controller.orderPayment.value.startMileage!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.km}",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -266,7 +276,7 @@ class OrderPaymentConfirmationView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Wait fee (${controller.orderPayment.value.wait!.toStringAsPrecision(2)}) minutes",
+                                          "${controller.languageServices.language.value.waitFee} (${controller.orderPayment.value.wait!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.minute}",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -310,7 +320,7 @@ class OrderPaymentConfirmationView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Mileage fee (${controller.orderPayment.value.mileage!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.mileageFee} (${controller.orderPayment.value.mileage!.toStringAsPrecision(2)}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -354,7 +364,7 @@ class OrderPaymentConfirmationView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Time cost (${controller.orderPayment.value.duration!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.timeCost} (${controller.orderPayment.value.duration!.toStringAsPrecision(2)}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -398,7 +408,7 @@ class OrderPaymentConfirmationView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Long distance fee (${controller.orderPayment.value.longDistance!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.longDistanceFee} (${controller.orderPayment.value.longDistance!.toStringAsPrecision(2)}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -442,7 +452,12 @@ class OrderPaymentConfirmationView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Collected by drivers",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .collectedByDrivers ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -496,7 +511,12 @@ class OrderPaymentConfirmationView
                                     ),
                                     SizedBox(width: 8),
                                     Text(
-                                      "Other Fee",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .otherFee ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .captionLargeRegular
@@ -520,7 +540,12 @@ class OrderPaymentConfirmationView
                                 ),
                                 SizedBox(height: 16),
                                 Text(
-                                  "You need to charge additional fees for manual entry",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .youNeedToChargeAdditionalFeeForManualEntry ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .captionLargeRegular
@@ -580,7 +605,13 @@ class OrderPaymentConfirmationView
                                                 ),
                                               ],
                                               decoration: InputDecoration(
-                                                hintText: 'Please enter...',
+                                                hintText:
+                                                    controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .pleaseEnter ??
+                                                    "-",
                                                 hintStyle: controller
                                                     .typographyServices
                                                     .bodySmallRegular
@@ -629,7 +660,13 @@ class OrderPaymentConfirmationView
                                             .bodySmallRegular
                                             .value,
                                         decoration: InputDecoration(
-                                          hintText: 'Please enter...',
+                                          hintText:
+                                              controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .pleaseEnter ??
+                                              "-",
                                           hintStyle: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -686,7 +723,7 @@ class OrderPaymentConfirmationView
                               ),
                               SizedBox(height: 4),
                               Text(
-                                "${controller.orderDetail.value.historyNum} Rides",
+                                "${controller.orderDetail.value.historyNum} ${controller.languageServices.language.value.rides}",
                                 style: controller
                                     .typographyServices
                                     .captionLargeRegular
@@ -745,7 +782,12 @@ class OrderPaymentConfirmationView
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Dijemput",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .pickedUp ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -795,7 +837,12 @@ class OrderPaymentConfirmationView
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Lokasi Tujuan",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .destinationLocation ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -862,7 +909,12 @@ class OrderPaymentConfirmationView
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Pembayaran yang dibayar oleh penumpang",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .paymentsPaidByPassengers ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallRegular
@@ -904,7 +956,12 @@ class OrderPaymentConfirmationView
                                     );
                                   },
                                   child: Text(
-                                    "Lihat detail pembayaran",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .viewPaymentDetails ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodySmallRegular
@@ -943,7 +1000,12 @@ class OrderPaymentConfirmationView
                                   ),
                                   SizedBox(width: 8),
                                   Text(
-                                    "Konfirmasi dengan penumpang untuk pembayaran",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .confirmWithPassengerForPayment ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .captionLargeRegular
@@ -992,7 +1054,12 @@ class OrderPaymentConfirmationView
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Yang dibayarkan oleh penumpang",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .paidByPassengers ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodySmallRegular
@@ -1060,7 +1127,12 @@ class OrderPaymentConfirmationView
                             ),
                           ),
                           child: Text(
-                            "Konfirmasi Pembayaran",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .paymentConfirmation ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallBold
@@ -1087,7 +1159,12 @@ class OrderPaymentConfirmationView
                             ),
                           ),
                           child: Text(
-                            "Pembayaran Sudah Diterima",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .paymentReceived ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallBold

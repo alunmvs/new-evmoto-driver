@@ -160,10 +160,21 @@ class OrderChatView extends GetView<OrderChatController> {
                           .toString(),
                     ),
                     builder: (context, snapshot) {
-                      // return Center(child: Text('Belum ada pesan'));
-
                       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                        return Center(child: Text('Belum ada pesan'));
+                        return Center(
+                          child: Text(
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .noOrderTitle ??
+                                "-",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value,
+                          ),
+                        );
                       }
 
                       var messageList = snapshot.data?.docs;
@@ -484,7 +495,13 @@ class OrderChatView extends GetView<OrderChatController> {
                                   horizontal: 12,
                                   vertical: 12,
                                 ),
-                                hintText: 'Ketik Pesan...',
+                                hintText:
+                                    controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .typeMessage ??
+                                    "-",
                                 hintStyle: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -631,7 +648,12 @@ class OrderChatView extends GetView<OrderChatController> {
                                         ),
                                         SizedBox(height: 8),
                                         Text(
-                                          "Galeri",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .gallery ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -698,7 +720,12 @@ class OrderChatView extends GetView<OrderChatController> {
                                         ),
                                         SizedBox(height: 8),
                                         Text(
-                                          "Kamera",
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .camera ??
+                                              "-",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular

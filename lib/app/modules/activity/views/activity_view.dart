@@ -388,7 +388,12 @@ class ActivityView extends GetView<ActivityController> {
                                               ),
                                               SizedBox(height: 8),
                                               Text(
-                                                "Lokasi Tujuan",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .destinationLocation ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .captionLargeRegular
@@ -596,7 +601,12 @@ class ActivityView extends GetView<ActivityController> {
                                                             ),
                                                       ),
                                                       child: Text(
-                                                        "Menunggu Pembayaran",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .waitingForPayment ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionSmallRegular
@@ -678,7 +688,12 @@ class ActivityView extends GetView<ActivityController> {
                                               ),
                                               SizedBox(height: 8),
                                               Text(
-                                                "Lokasi Tujuan",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .destinationLocation ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .captionLargeRegular
@@ -973,7 +988,12 @@ class ActivityView extends GetView<ActivityController> {
                                               ),
                                               SizedBox(height: 8),
                                               Text(
-                                                "Lokasi Tujuan",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .destinationLocation ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .captionLargeRegular

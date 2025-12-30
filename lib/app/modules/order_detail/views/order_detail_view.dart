@@ -145,7 +145,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                     ),
                                               ),
                                               Text(
-                                                "${controller.orderDetail.value.historyNum} Rides",
+                                                "${controller.orderDetail.value.historyNum} ${controller.languageServices.language.value.rides}",
                                                 style: controller
                                                     .typographyServices
                                                     .captionLargeRegular
@@ -327,7 +327,12 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              "Dijemput",
+                                                              controller
+                                                                      .languageServices
+                                                                      .language
+                                                                      .value
+                                                                      .pickedUp ??
+                                                                  "-",
                                                               style: controller
                                                                   .typographyServices
                                                                   .bodySmallRegular
@@ -380,7 +385,12 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              "Lokasi Tujuan",
+                                                              controller
+                                                                      .languageServices
+                                                                      .language
+                                                                      .value
+                                                                      .destinationLocation ??
+                                                                  "-",
                                                               style: controller
                                                                   .typographyServices
                                                                   .bodySmallRegular
@@ -660,8 +670,18 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         children: [
                                           Text(
                                             state.position >= 0.5
-                                                ? "Sedang menjemput"
-                                                : "Berangkat menjemput",
+                                                ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .pickingUp ??
+                                                      "-"
+                                                : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .departToPickup ??
+                                                      "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeRegular
@@ -770,8 +790,18 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         children: [
                                           Text(
                                             state.position >= 0.5
-                                                ? "Tiba dilokasi penjemputan"
-                                                : "Tiba dilokasi penjemputan",
+                                                ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .arriveAtThePickUpLocation ??
+                                                      "-"
+                                                : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .arriveAtThePickUpLocation ??
+                                                      "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeRegular
@@ -880,8 +910,18 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         children: [
                                           Text(
                                             state.position >= 0.5
-                                                ? "Sedang mengantar"
-                                                : "Mengantar penumpang",
+                                                ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .delivering ??
+                                                      "-"
+                                                : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .deliveringPassengers ??
+                                                      "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeRegular
@@ -991,8 +1031,18 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         children: [
                                           Text(
                                             state.position >= 0.5
-                                                ? "Selesai mengantar penumpang"
-                                                : "Selesai mengantar penumpang",
+                                                ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .finishedDroppingOffPassenger ??
+                                                      "-"
+                                                : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .finishedDroppingOffPassenger ??
+                                                      "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeRegular
@@ -1032,7 +1082,12 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     await controller.onTapCancelOrder();
                                   },
                                   child: Text(
-                                    "Batalkan",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .cancel ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodyLargeBold

@@ -139,6 +139,52 @@ class Language {
   String? versionUpdate;
   String? languageChange;
   String? selectLanguage;
+  String? rechargeBalance;
+  String? pleaseSelect;
+  String? enterAmount;
+  String? numberOfRecharge;
+  String? minimumRechargeBalance;
+  String? rechargeNow;
+  String? pickedUp;
+  String? destinationLocation;
+  String? totalCost;
+  String? rides;
+  String? noMessagesYet;
+  String? typeMessage;
+  String? gallery;
+  String? camera;
+  String? departToPickup;
+  String? cancel;
+  String? pickingUp;
+  String? arriveAtThePickUpLocation;
+  String? deliveringPassengers;
+  String? delivering;
+  String? finishedDroppingOffPassenger;
+  String? paymentConfirmation;
+  String? totalPayment;
+  String? basicExpense;
+  String? km;
+  String? startingPrice;
+  String? waitFee;
+  String? minute;
+  String? mileageFee;
+  String? timeCost;
+  String? longDistanceFee;
+  String? collectedByDrivers;
+  String? otherFee;
+  String? youNeedToChargeAdditionalFeeForManualEntry;
+  String? surcharge;
+  String? pleaseEnter;
+  String? surchargeFeeDescription;
+  String? waitingForPayment;
+  String? paymentsPaidByPassengers;
+  String? viewPaymentDetails;
+  String? confirmWithPassengerForPayment;
+  String? paymentDetails;
+  String? cashPayment;
+  String? expenseDetail;
+  String? paidByPassengers;
+  String? paymentReceived;
 
   Language({
     this.loginTitle,
@@ -281,6 +327,52 @@ class Language {
     this.versionUpdate,
     this.languageChange,
     this.selectLanguage,
+    this.rechargeBalance,
+    this.pleaseSelect,
+    this.enterAmount,
+    this.numberOfRecharge,
+    this.minimumRechargeBalance,
+    this.rechargeNow,
+    this.pickedUp,
+    this.destinationLocation,
+    this.totalCost,
+    this.rides,
+    this.noMessagesYet,
+    this.typeMessage,
+    this.gallery,
+    this.camera,
+    this.departToPickup,
+    this.cancel,
+    this.pickingUp,
+    this.arriveAtThePickUpLocation,
+    this.deliveringPassengers,
+    this.delivering,
+    this.finishedDroppingOffPassenger,
+    this.paymentConfirmation,
+    this.totalPayment,
+    this.basicExpense,
+    this.km,
+    this.startingPrice,
+    this.waitFee,
+    this.minute,
+    this.mileageFee,
+    this.timeCost,
+    this.longDistanceFee,
+    this.collectedByDrivers,
+    this.otherFee,
+    this.youNeedToChargeAdditionalFeeForManualEntry,
+    this.surcharge,
+    this.pleaseEnter,
+    this.surchargeFeeDescription,
+    this.waitingForPayment,
+    this.paymentsPaidByPassengers,
+    this.viewPaymentDetails,
+    this.confirmWithPassengerForPayment,
+    this.paymentDetails,
+    this.cashPayment,
+    this.expenseDetail,
+    this.paidByPassengers,
+    this.paymentReceived,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -424,6 +516,53 @@ class Language {
     versionUpdate = json['version_update'];
     languageChange = json['language_change'];
     selectLanguage = json['select_language'];
+    rechargeBalance = json['recharge_balance'];
+    pleaseSelect = json['please_select'];
+    enterAmount = json['enter_amount'];
+    numberOfRecharge = json['number_of_recharge'];
+    minimumRechargeBalance = json['minimum_recharge_balance'];
+    rechargeNow = json['recharge_now'];
+    pickedUp = json['picked_up'];
+    destinationLocation = json['destination_location'];
+    totalCost = json['total_cost'];
+    rides = json['rides'];
+    noMessagesYet = json['no_messages_yet'];
+    typeMessage = json['type_message'];
+    gallery = json['gallery'];
+    camera = json['camera'];
+    departToPickup = json['depart_to_pickup'];
+    cancel = json['cancel'];
+    pickingUp = json['picking_up'];
+    arriveAtThePickUpLocation = json['arrive_at_the_pick_up_location'];
+    deliveringPassengers = json['delivering_passengers'];
+    delivering = json['delivering'];
+    finishedDroppingOffPassenger = json['finished_dropping_off_passenger'];
+    paymentConfirmation = json['payment_confirmation'];
+    totalPayment = json['total_payment'];
+    basicExpense = json['basic_expense'];
+    km = json['km'];
+    startingPrice = json['starting_price'];
+    waitFee = json['wait_fee'];
+    minute = json['minute'];
+    mileageFee = json['mileage_fee'];
+    timeCost = json['time_cost'];
+    longDistanceFee = json['long_distance_fee'];
+    collectedByDrivers = json['collected_by_drivers'];
+    otherFee = json['other_fee'];
+    youNeedToChargeAdditionalFeeForManualEntry =
+        json['you_need_to_charge_additional_fee_for_manual_entry'];
+    surcharge = json['surcharge'];
+    pleaseEnter = json['please_enter'];
+    surchargeFeeDescription = json['surcharge_fee_description'];
+    waitingForPayment = json['waiting_for_payment'];
+    paymentsPaidByPassengers = json['payments_paid_by_passengers'];
+    viewPaymentDetails = json['view_payment_details'];
+    confirmWithPassengerForPayment = json['confirm_with_passenger_for_payment'];
+    paymentDetails = json['payment_details'];
+    cashPayment = json['cash_payment'];
+    expenseDetail = json['expense_detail'];
+    paidByPassengers = json['paid_by_passengers'];
+    paymentReceived = json['payment_received'];
   }
 
   Map<String, dynamic> toJson() {
@@ -569,6 +708,54 @@ class Language {
     data['version_update'] = this.versionUpdate;
     data['language_change'] = this.languageChange;
     data['select_language'] = this.selectLanguage;
+    data['recharge_balance'] = this.rechargeBalance;
+    data['please_select'] = this.pleaseSelect;
+    data['enter_amount'] = this.enterAmount;
+    data['number_of_recharge'] = this.numberOfRecharge;
+    data['minimum_recharge_balance'] = this.minimumRechargeBalance;
+    data['recharge_now'] = this.rechargeNow;
+    data['picked_up'] = this.pickedUp;
+    data['destination_location'] = this.destinationLocation;
+    data['total_cost'] = this.totalCost;
+    data['rides'] = this.rides;
+    data['no_messages_yet'] = this.noMessagesYet;
+    data['type_message'] = this.typeMessage;
+    data['gallery'] = this.gallery;
+    data['camera'] = this.camera;
+    data['depart_to_pickup'] = this.departToPickup;
+    data['cancel'] = this.cancel;
+    data['picking_up'] = this.pickingUp;
+    data['arrive_at_the_pick_up_location'] = this.arriveAtThePickUpLocation;
+    data['delivering_passengers'] = this.deliveringPassengers;
+    data['delivering'] = this.delivering;
+    data['finished_dropping_off_passenger'] = this.finishedDroppingOffPassenger;
+    data['payment_confirmation'] = this.paymentConfirmation;
+    data['total_payment'] = this.totalPayment;
+    data['basic_expense'] = this.basicExpense;
+    data['km'] = this.km;
+    data['starting_price'] = this.startingPrice;
+    data['wait_fee'] = this.waitFee;
+    data['minute'] = this.minute;
+    data['mileage_fee'] = this.mileageFee;
+    data['time_cost'] = this.timeCost;
+    data['long_distance_fee'] = this.longDistanceFee;
+    data['collected_by_drivers'] = this.collectedByDrivers;
+    data['other_fee'] = this.otherFee;
+    data['you_need_to_charge_additional_fee_for_manual_entry'] =
+        this.youNeedToChargeAdditionalFeeForManualEntry;
+    data['surcharge'] = this.surcharge;
+    data['please_enter'] = this.pleaseEnter;
+    data['surcharge_fee_description'] = this.surchargeFeeDescription;
+    data['waiting_for_payment'] = this.waitingForPayment;
+    data['payments_paid_by_passengers'] = this.paymentsPaidByPassengers;
+    data['view_payment_details'] = this.viewPaymentDetails;
+    data['confirm_with_passenger_for_payment'] =
+        this.confirmWithPassengerForPayment;
+    data['payment_details'] = this.paymentDetails;
+    data['cash_payment'] = this.cashPayment;
+    data['expense_detail'] = this.expenseDetail;
+    data['paid_by_passengers'] = this.paidByPassengers;
+    data['payment_received'] = this.paymentReceived;
     return data;
   }
 }

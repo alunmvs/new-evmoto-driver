@@ -235,7 +235,12 @@ class WithdrawDetailView extends GetView<WithdrawDetailController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Biaya Lainnya",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .otherFee ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .captionLargeRegular

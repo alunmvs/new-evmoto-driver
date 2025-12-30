@@ -502,7 +502,12 @@ class HistoryBalanceRevenueView
                                                       ),
                                                       SizedBox(height: 8),
                                                       Text(
-                                                        "Lokasi Tujuan",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .destinationLocation ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionLargeRegular
@@ -870,7 +875,12 @@ class HistoryBalanceRevenueView
                                                       ),
                                                       SizedBox(height: 8),
                                                       Text(
-                                                        "Lokasi Tujuan",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .destinationLocation ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionLargeRegular

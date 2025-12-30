@@ -12,6 +12,7 @@ import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.d
 import 'package:new_evmoto_driver/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
@@ -30,6 +31,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
   final homeController = Get.find<HomeController>();
 
   final initialCameraPosition = CameraPosition(

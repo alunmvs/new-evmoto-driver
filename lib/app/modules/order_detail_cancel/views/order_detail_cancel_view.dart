@@ -133,7 +133,12 @@ class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Dijemput",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .pickedUp ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallRegular
@@ -187,7 +192,12 @@ class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Lokasi Tujuan",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .destinationLocation ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallRegular

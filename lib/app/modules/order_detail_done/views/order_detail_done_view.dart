@@ -131,7 +131,12 @@ class OrderDetailDoneView extends GetView<OrderDetailDoneController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Dijemput",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .pickedUp ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallRegular
@@ -185,7 +190,12 @@ class OrderDetailDoneView extends GetView<OrderDetailDoneController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Lokasi Tujuan",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .destinationLocation ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallRegular
@@ -250,7 +260,12 @@ class OrderDetailDoneView extends GetView<OrderDetailDoneController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Basic Expense",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .basicExpense ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallBold
@@ -262,7 +277,12 @@ class OrderDetailDoneView extends GetView<OrderDetailDoneController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Collected by drivers",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .collectedByDrivers ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular
@@ -299,7 +319,12 @@ class OrderDetailDoneView extends GetView<OrderDetailDoneController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Surcharge",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .surcharge ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular
@@ -350,7 +375,12 @@ class OrderDetailDoneView extends GetView<OrderDetailDoneController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Total Pembayaran",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .totalPayment ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular

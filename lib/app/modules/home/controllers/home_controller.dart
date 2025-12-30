@@ -550,7 +550,11 @@ class HomeController extends GetxController
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Dijemput",
+                                        languageServices
+                                                .language
+                                                .value
+                                                .pickedUp ??
+                                            "-",
                                         style: typographyServices
                                             .bodySmallRegular
                                             .value
@@ -592,7 +596,11 @@ class HomeController extends GetxController
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Lokasi Tujuan",
+                                        languageServices
+                                                .language
+                                                .value
+                                                .destinationLocation ??
+                                            "-",
                                         style: typographyServices
                                             .bodySmallRegular
                                             .value
