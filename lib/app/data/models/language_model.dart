@@ -95,6 +95,50 @@ class Language {
   String? noOrderTitle;
   String? noOrderDescription;
   String? withdraw;
+  String? home;
+  String? menu;
+  String? myBalance;
+  String? totalOrder;
+  String? myRating;
+  String? online;
+  String? offline;
+  String? status;
+  String? currentStatus;
+  String? yourTotalOrder;
+  String? todayOrder;
+  String? order;
+  String? thisMonthOrder;
+  String? chooseService;
+  String? myEvaluation;
+  String? provideFeedback;
+  String? overallRating;
+  String? noteMax200Char;
+  String? hintFeedback;
+  String? sendFeedback;
+  String? selectService;
+  String? save;
+  String? changeVehicle;
+  String? currentVehicle;
+  String? vehicleAvailable;
+  String? currentlyNoVehicle;
+  String? changeMobileNumber;
+  String? enterOldMobileNumber;
+  String? enterNewMobileNumber;
+  String? sendOtpCode;
+  String? otpWillSentNewMobileNumber;
+  String? recommendToFriend;
+  String? contactCs;
+  String? otherSetting;
+  String? logout;
+  String? appVersion;
+  String? userGuide;
+  String? legalTermsAndApplicationRules;
+  String? aboutUs;
+  String? clearCache;
+  String? currentVersion;
+  String? versionUpdate;
+  String? languageChange;
+  String? selectLanguage;
 
   Language({
     this.loginTitle,
@@ -193,6 +237,50 @@ class Language {
     this.noOrderTitle,
     this.noOrderDescription,
     this.withdraw,
+    this.home,
+    this.menu,
+    this.myBalance,
+    this.totalOrder,
+    this.myRating,
+    this.online,
+    this.offline,
+    this.status,
+    this.currentStatus,
+    this.yourTotalOrder,
+    this.todayOrder,
+    this.order,
+    this.thisMonthOrder,
+    this.chooseService,
+    this.myEvaluation,
+    this.provideFeedback,
+    this.overallRating,
+    this.noteMax200Char,
+    this.hintFeedback,
+    this.sendFeedback,
+    this.selectService,
+    this.save,
+    this.changeVehicle,
+    this.currentVehicle,
+    this.vehicleAvailable,
+    this.currentlyNoVehicle,
+    this.changeMobileNumber,
+    this.enterOldMobileNumber,
+    this.enterNewMobileNumber,
+    this.sendOtpCode,
+    this.otpWillSentNewMobileNumber,
+    this.recommendToFriend,
+    this.contactCs,
+    this.otherSetting,
+    this.logout,
+    this.appVersion,
+    this.userGuide,
+    this.legalTermsAndApplicationRules,
+    this.aboutUs,
+    this.clearCache,
+    this.currentVersion,
+    this.versionUpdate,
+    this.languageChange,
+    this.selectLanguage,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -292,6 +380,50 @@ class Language {
     noOrderTitle = json['no_order_title'];
     noOrderDescription = json['no_order_description'];
     withdraw = json['withdraw'];
+    home = json['home'];
+    menu = json['menu'];
+    myBalance = json['my_balance'];
+    totalOrder = json['total_order'];
+    myRating = json['my_rating'];
+    online = json['online'];
+    offline = json['offline'];
+    status = json['status'];
+    currentStatus = json['current_status'];
+    yourTotalOrder = json['your_total_order'];
+    todayOrder = json['today_order'];
+    order = json['order'];
+    thisMonthOrder = json['this_month_order'];
+    chooseService = json['choose_service'];
+    myEvaluation = json['my_evaluation'];
+    provideFeedback = json['provide_feedback'];
+    overallRating = json['overall_rating'];
+    noteMax200Char = json['note_max_200_char'];
+    hintFeedback = json['hint_feedback'];
+    sendFeedback = json['send_feedback'];
+    selectService = json['select_service'];
+    save = json['save'];
+    changeVehicle = json['change_vehicle'];
+    currentVehicle = json['current_vehicle'];
+    vehicleAvailable = json['vehicle_available'];
+    currentlyNoVehicle = json['currently_no_vehicle'];
+    changeMobileNumber = json['change_mobile_number'];
+    enterOldMobileNumber = json['enter_old_mobile_number'];
+    enterNewMobileNumber = json['enter_new_mobile_number'];
+    sendOtpCode = json['send_otp_code'];
+    otpWillSentNewMobileNumber = json['otp_will_sent_new_mobile_number'];
+    recommendToFriend = json['recommend_to_friend'];
+    contactCs = json['contact_cs'];
+    otherSetting = json['other_setting'];
+    logout = json['logout'];
+    appVersion = json['app_version'];
+    userGuide = json['user_guide'];
+    legalTermsAndApplicationRules = json['legal_terms_and_application_rules'];
+    aboutUs = json['about_us'];
+    clearCache = json['clear_cache'];
+    currentVersion = json['current_version'];
+    versionUpdate = json['version_update'];
+    languageChange = json['language_change'];
+    selectLanguage = json['select_language'];
   }
 
   Map<String, dynamic> toJson() {
@@ -392,6 +524,51 @@ class Language {
     data['no_order_title'] = this.noOrderTitle;
     data['no_order_description'] = this.noOrderDescription;
     data['withdraw'] = this.withdraw;
+    data['home'] = this.home;
+    data['menu'] = this.menu;
+    data['my_balance'] = this.myBalance;
+    data['total_order'] = this.totalOrder;
+    data['my_rating'] = this.myRating;
+    data['online'] = this.online;
+    data['offline'] = this.offline;
+    data['status'] = this.status;
+    data['current_status'] = this.currentStatus;
+    data['your_total_order'] = this.yourTotalOrder;
+    data['today_order'] = this.todayOrder;
+    data['order'] = this.order;
+    data['this_month_order'] = this.thisMonthOrder;
+    data['choose_service'] = this.chooseService;
+    data['my_evaluation'] = this.myEvaluation;
+    data['provide_feedback'] = this.provideFeedback;
+    data['overall_rating'] = this.overallRating;
+    data['note_max_200_char'] = this.noteMax200Char;
+    data['hint_feedback'] = this.hintFeedback;
+    data['send_feedback'] = this.sendFeedback;
+    data['select_service'] = this.selectService;
+    data['save'] = this.save;
+    data['change_vehicle'] = this.changeVehicle;
+    data['current_vehicle'] = this.currentVehicle;
+    data['vehicle_available'] = this.vehicleAvailable;
+    data['currently_no_vehicle'] = this.currentlyNoVehicle;
+    data['change_mobile_number'] = this.changeMobileNumber;
+    data['enter_old_mobile_number'] = this.enterOldMobileNumber;
+    data['enter_new_mobile_number'] = this.enterNewMobileNumber;
+    data['send_otp_code'] = this.sendOtpCode;
+    data['otp_will_sent_new_mobile_number'] = this.otpWillSentNewMobileNumber;
+    data['recommend_to_friend'] = this.recommendToFriend;
+    data['contact_cs'] = this.contactCs;
+    data['other_setting'] = this.otherSetting;
+    data['logout'] = this.logout;
+    data['app_version'] = this.appVersion;
+    data['user_guide'] = this.userGuide;
+    data['legal_terms_and_application_rules'] =
+        this.legalTermsAndApplicationRules;
+    data['about_us'] = this.aboutUs;
+    data['clear_cache'] = this.clearCache;
+    data['current_version'] = this.currentVersion;
+    data['version_update'] = this.versionUpdate;
+    data['language_change'] = this.languageChange;
+    data['select_language'] = this.selectLanguage;
     return data;
   }
 }

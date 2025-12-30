@@ -14,7 +14,7 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Pengaturan Lainnya",
+            controller.languageServices.language.value.otherSetting ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -68,7 +68,12 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                               SizedBox(width: 16),
                               Expanded(
                                 child: Text(
-                                  "Panduan Pengguna",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .userGuide ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallBold
@@ -128,7 +133,12 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                               SizedBox(width: 16),
                               Expanded(
                                 child: Text(
-                                  "Ketentuan Hukum & Aturan Aplikasi",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .legalTermsAndApplicationRules ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallBold
@@ -186,7 +196,12 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                               SizedBox(width: 16),
                               Expanded(
                                 child: Text(
-                                  "Tentang Kami",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .aboutUs ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallBold
@@ -254,7 +269,12 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                               SizedBox(width: 16),
                               Expanded(
                                 child: Text(
-                                  "Bersihkan Cache",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .clearCache ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallBold
@@ -305,7 +325,12 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                               SizedBox(width: 16),
                               Expanded(
                                 child: Text(
-                                  "Versi Sekarang",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .currentVersion ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallBold
@@ -356,7 +381,12 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                               SizedBox(width: 16),
                               Expanded(
                                 child: Text(
-                                  "Pembaruan Versi",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .versionUpdate ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallBold
@@ -414,7 +444,12 @@ class AccountOtherSettingView extends GetView<AccountOtherSettingController> {
                               SizedBox(width: 16),
                               Expanded(
                                 child: Text(
-                                  "Pergantian Bahasa",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .languageChange ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .bodySmallBold

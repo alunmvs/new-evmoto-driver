@@ -14,7 +14,12 @@ class AccountLegalTermsAndPlatformRulesView
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Ketentuan Hukum & Aturan Aplikasi",
+            controller
+                    .languageServices
+                    .language
+                    .value
+                    .legalTermsAndApplicationRules ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,

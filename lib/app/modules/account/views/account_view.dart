@@ -77,7 +77,12 @@ class AccountView extends GetView<AccountController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Saldo Saya",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .myBalance ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .captionLargeRegular
@@ -109,7 +114,12 @@ class AccountView extends GetView<AccountController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Total Orderan",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .totalOrder ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .captionLargeRegular
@@ -134,7 +144,12 @@ class AccountView extends GetView<AccountController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Rating Saya",
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .myRating ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .captionLargeRegular
@@ -216,7 +231,12 @@ class AccountView extends GetView<AccountController> {
                                         SizedBox(width: 16),
                                         Expanded(
                                           child: Text(
-                                            "Evaluasi Saya",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .myEvaluation ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
@@ -283,7 +303,12 @@ class AccountView extends GetView<AccountController> {
                                         SizedBox(width: 16),
                                         Expanded(
                                           child: Text(
-                                            "Berikan Masukan",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .sendFeedback ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
@@ -356,7 +381,12 @@ class AccountView extends GetView<AccountController> {
                                         SizedBox(width: 16),
                                         Expanded(
                                           child: Text(
-                                            "Pilih Jenis Layanan",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .selectService ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
@@ -423,7 +453,12 @@ class AccountView extends GetView<AccountController> {
                                         SizedBox(width: 16),
                                         Expanded(
                                           child: Text(
-                                            "Ubah Kendaraan",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .changeVehicle ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
@@ -492,7 +527,12 @@ class AccountView extends GetView<AccountController> {
                                         SizedBox(width: 16),
                                         Expanded(
                                           child: Text(
-                                            "Ubah Nomor Telepon",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .changeMobileNumber ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
@@ -565,7 +605,12 @@ class AccountView extends GetView<AccountController> {
                                         SizedBox(width: 16),
                                         Expanded(
                                           child: Text(
-                                            "Rekomendasi Kepada Teman",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .recommendToFriend ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
@@ -631,7 +676,12 @@ class AccountView extends GetView<AccountController> {
                                         SizedBox(width: 16),
                                         Expanded(
                                           child: Text(
-                                            "Hubungi Customer Service",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .contactCs ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
@@ -697,7 +747,12 @@ class AccountView extends GetView<AccountController> {
                                         SizedBox(width: 16),
                                         Expanded(
                                           child: Text(
-                                            "Pengaturan Lainnya",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .otherSetting ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
@@ -769,7 +824,12 @@ class AccountView extends GetView<AccountController> {
                                         SizedBox(width: 16),
                                         Expanded(
                                           child: Text(
-                                            "Keluar",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .logout ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
@@ -814,7 +874,7 @@ class AccountView extends GetView<AccountController> {
                               borderRadius: BorderRadius.circular(9999),
                             ),
                             child: Text(
-                              "App Versi v.${controller.packageVersion.value}",
+                              "${controller.languageServices.language.value.appVersion ?? "-"} v.${controller.packageVersion.value}",
                               style: controller
                                   .typographyServices
                                   .captionSmallBold

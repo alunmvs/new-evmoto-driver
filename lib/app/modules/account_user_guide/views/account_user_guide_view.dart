@@ -13,7 +13,7 @@ class AccountUserGuideView extends GetView<AccountUserGuideController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Panduan Pengguna",
+            controller.languageServices.language.value.userGuide ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,

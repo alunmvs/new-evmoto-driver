@@ -391,6 +391,10 @@ class HomeView extends GetView<HomeController> {
                                                                     Text(
                                                                       DateFormat(
                                                                         'MM/dd\nEEEE',
+                                                                        controller
+                                                                            .languageServices
+                                                                            .languageCode
+                                                                            .value,
                                                                       ).format(
                                                                         DateTime.now(),
                                                                       ),
@@ -2548,7 +2552,12 @@ class HomeView extends GetView<HomeController> {
                                                 CrossAxisAlignment.center,
                                             children: [
                                               Text(
-                                                "Status",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .status ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodyLargeBold
@@ -2589,7 +2598,12 @@ class HomeView extends GetView<HomeController> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                "Status Saat Ini",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .currentStatus ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallBold
@@ -2666,8 +2680,18 @@ class HomeView extends GetView<HomeController> {
                                                     (context, local, global) {
                                                       return Text(
                                                         local.value == 2
-                                                            ? "Offline"
-                                                            : "Online",
+                                                            ? controller
+                                                                      .languageServices
+                                                                      .language
+                                                                      .value
+                                                                      .offline ??
+                                                                  "-"
+                                                            : controller
+                                                                      .languageServices
+                                                                      .language
+                                                                      .value
+                                                                      .online ??
+                                                                  "-",
                                                         style: controller
                                                             .typographyServices
                                                             .bodyLargeBold
@@ -2703,7 +2727,12 @@ class HomeView extends GetView<HomeController> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Total Pesanan Kamu",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .yourTotalOrder ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallBold
@@ -2735,7 +2764,12 @@ class HomeView extends GetView<HomeController> {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            "Pesanan Hari Ini",
+                                                            controller
+                                                                    .languageServices
+                                                                    .language
+                                                                    .value
+                                                                    .homeOrderToday ??
+                                                                "-",
                                                             style: controller
                                                                 .typographyServices
                                                                 .bodySmallRegular
@@ -2749,7 +2783,7 @@ class HomeView extends GetView<HomeController> {
                                                           ),
                                                           SizedBox(height: 4),
                                                           Text(
-                                                            "${NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0).format(controller.vehicleStatistics.value.dayNum)} Pesanan",
+                                                            "${NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0).format(controller.vehicleStatistics.value.dayNum)} ${controller.languageServices.language.value.order ?? "-"}",
                                                             style: controller
                                                                 .typographyServices
                                                                 .bodyLargeBold
@@ -2789,7 +2823,12 @@ class HomeView extends GetView<HomeController> {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            "Pesanan Bulan Ini",
+                                                            controller
+                                                                    .languageServices
+                                                                    .language
+                                                                    .value
+                                                                    .homeOrderThisMonth ??
+                                                                "-",
                                                             style: controller
                                                                 .typographyServices
                                                                 .bodySmallRegular
@@ -2803,7 +2842,7 @@ class HomeView extends GetView<HomeController> {
                                                           ),
                                                           SizedBox(height: 4),
                                                           Text(
-                                                            "${NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0).format(controller.vehicleStatistics.value.mouthNum)} Pesanan",
+                                                            "${NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0).format(controller.vehicleStatistics.value.mouthNum)} ${controller.languageServices.language.value.order ?? "-"}",
                                                             style: controller
                                                                 .typographyServices
                                                                 .bodyLargeBold
@@ -2838,7 +2877,12 @@ class HomeView extends GetView<HomeController> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Pilih Layanan Kamu",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .selectService ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallBold
@@ -2987,7 +3031,12 @@ class HomeView extends GetView<HomeController> {
                                                 ),
                                               ),
                                               child: Text(
-                                                "Simpan",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .save ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallBold
@@ -3071,7 +3120,12 @@ class HomeView extends GetView<HomeController> {
                                     ),
                                     SizedBox(height: 5),
                                     Text(
-                                      "Beranda",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .home ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular
@@ -3342,8 +3396,18 @@ class HomeView extends GetView<HomeController> {
                                         (context, local, global) {
                                           return Text(
                                             local.value == 2
-                                                ? "Offline"
-                                                : "Online",
+                                                ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .offline ??
+                                                      "-"
+                                                : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .online ??
+                                                      "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeBold
@@ -3606,7 +3670,12 @@ class HomeView extends GetView<HomeController> {
                                           ),
                                           SizedBox(height: 5),
                                           Text(
-                                            "Menu",
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .menu ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallRegular
