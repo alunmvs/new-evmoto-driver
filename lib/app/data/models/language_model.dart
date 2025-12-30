@@ -59,6 +59,42 @@ class Language {
   String? female;
   String? formValidationNikMinLength;
   String? formValidationNikMaxLength;
+  String? onboardingTitle1;
+  String? onboardingDescription1;
+  String? onboardingTitle2;
+  String? onboardingDescription2;
+  String? onboardingTitle3;
+  String? onboardingDescription3;
+  String? skip;
+  String? dialogCoachmarkTitle;
+  String? dialogCoachmarkDescription;
+  String? dialogCoachmarkButton;
+  String? coachmarkTitle1;
+  String? coachmarkDescription1;
+  String? buttonNext1;
+  String? coachmarkTitle2;
+  String? coachmarkDescription2;
+  String? coachmarkTitle3;
+  String? coachmarkDescription3;
+  String? coachmarkTitle4;
+  String? coachmarkDescription4;
+  String? coachmarkTitle5;
+  String? coachmarkDescription5;
+  String? coachmarkTitle6;
+  String? coachmarkDescription6;
+  String? coachmarkTitle7;
+  String? coachmarkDescription7;
+  String? coachmarkTitle8;
+  String? coachmarkDescription8;
+  String? coachmarkButton8;
+  String? recharge;
+  String? history;
+  String? acceptOrder;
+  String? inService;
+  String? waiting;
+  String? noOrderTitle;
+  String? noOrderDescription;
+  String? withdraw;
 
   Language({
     this.loginTitle,
@@ -121,6 +157,42 @@ class Language {
     this.female,
     this.formValidationNikMinLength,
     this.formValidationNikMaxLength,
+    this.onboardingTitle1,
+    this.onboardingDescription1,
+    this.onboardingTitle2,
+    this.onboardingDescription2,
+    this.onboardingTitle3,
+    this.onboardingDescription3,
+    this.skip,
+    this.dialogCoachmarkTitle,
+    this.dialogCoachmarkDescription,
+    this.dialogCoachmarkButton,
+    this.coachmarkTitle1,
+    this.coachmarkDescription1,
+    this.buttonNext1,
+    this.coachmarkTitle2,
+    this.coachmarkDescription2,
+    this.coachmarkTitle3,
+    this.coachmarkDescription3,
+    this.coachmarkTitle4,
+    this.coachmarkDescription4,
+    this.coachmarkTitle5,
+    this.coachmarkDescription5,
+    this.coachmarkTitle6,
+    this.coachmarkDescription6,
+    this.coachmarkTitle7,
+    this.coachmarkDescription7,
+    this.coachmarkTitle8,
+    this.coachmarkDescription8,
+    this.coachmarkButton8,
+    this.recharge,
+    this.history,
+    this.acceptOrder,
+    this.inService,
+    this.waiting,
+    this.noOrderTitle,
+    this.noOrderDescription,
+    this.withdraw,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -184,6 +256,42 @@ class Language {
     female = json['female'];
     formValidationNikMinLength = json['form_validation_nik_min_length'];
     formValidationNikMaxLength = json['form_validation_nik_max_length'];
+    onboardingTitle1 = json['onboarding_title_1'];
+    onboardingDescription1 = json['onboarding_description_1'];
+    onboardingTitle2 = json['onboarding_title_2'];
+    onboardingDescription2 = json['onboarding_description_2'];
+    onboardingTitle3 = json['onboarding_title_3'];
+    onboardingDescription3 = json['onboarding_description_3'];
+    skip = json['skip'];
+    dialogCoachmarkTitle = json['dialog_coachmark_title'];
+    dialogCoachmarkDescription = json['dialog_coachmark_description'];
+    dialogCoachmarkButton = json['dialog_coachmark_button'];
+    coachmarkTitle1 = json['coachmark_title_1'];
+    coachmarkDescription1 = json['coachmark_description_1'];
+    buttonNext1 = json['button_next_1'];
+    coachmarkTitle2 = json['coachmark_title_2'];
+    coachmarkDescription2 = json['coachmark_description_2'];
+    coachmarkTitle3 = json['coachmark_title_3'];
+    coachmarkDescription3 = json['coachmark_description_3'];
+    coachmarkTitle4 = json['coachmark_title_4'];
+    coachmarkDescription4 = json['coachmark_description_4'];
+    coachmarkTitle5 = json['coachmark_title_5'];
+    coachmarkDescription5 = json['coachmark_description_5'];
+    coachmarkTitle6 = json['coachmark_title_6'];
+    coachmarkDescription6 = json['coachmark_description_6'];
+    coachmarkTitle7 = json['coachmark_title_7'];
+    coachmarkDescription7 = json['coachmark_description_7'];
+    coachmarkTitle8 = json['coachmark_title_8'];
+    coachmarkDescription8 = json['coachmark_description_8'];
+    coachmarkButton8 = json['coachmark_button_8'];
+    recharge = json['recharge'];
+    history = json['history'];
+    acceptOrder = json['accept_order'];
+    inService = json['in_service'];
+    waiting = json['waiting'];
+    noOrderTitle = json['no_order_title'];
+    noOrderDescription = json['no_order_description'];
+    withdraw = json['withdraw'];
   }
 
   Map<String, dynamic> toJson() {
@@ -248,6 +356,42 @@ class Language {
     data['female'] = this.female;
     data['form_validation_nik_min_length'] = this.formValidationNikMinLength;
     data['form_validation_nik_max_length'] = this.formValidationNikMaxLength;
+    data['onboarding_title_1'] = this.onboardingTitle1;
+    data['onboarding_description_1'] = this.onboardingDescription1;
+    data['onboarding_title_2'] = this.onboardingTitle2;
+    data['onboarding_description_2'] = this.onboardingDescription2;
+    data['onboarding_title_3'] = this.onboardingTitle3;
+    data['onboarding_description_3'] = this.onboardingDescription3;
+    data['skip'] = this.skip;
+    data['dialog_coachmark_title'] = this.dialogCoachmarkTitle;
+    data['dialog_coachmark_description'] = this.dialogCoachmarkDescription;
+    data['dialog_coachmark_button'] = this.dialogCoachmarkButton;
+    data['coachmark_title_1'] = this.coachmarkTitle1;
+    data['coachmark_description_1'] = this.coachmarkDescription1;
+    data['button_next_1'] = this.buttonNext1;
+    data['coachmark_title_2'] = this.coachmarkTitle2;
+    data['coachmark_description_2'] = this.coachmarkDescription2;
+    data['coachmark_title_3'] = this.coachmarkTitle3;
+    data['coachmark_description_3'] = this.coachmarkDescription3;
+    data['coachmark_title_4'] = this.coachmarkTitle4;
+    data['coachmark_description_4'] = this.coachmarkDescription4;
+    data['coachmark_title_5'] = this.coachmarkTitle5;
+    data['coachmark_description_5'] = this.coachmarkDescription5;
+    data['coachmark_title_6'] = this.coachmarkTitle6;
+    data['coachmark_description_6'] = this.coachmarkDescription6;
+    data['coachmark_title_7'] = this.coachmarkTitle7;
+    data['coachmark_description_7'] = this.coachmarkDescription7;
+    data['coachmark_title_8'] = this.coachmarkTitle8;
+    data['coachmark_description_8'] = this.coachmarkDescription8;
+    data['coachmark_button_8'] = this.coachmarkButton8;
+    data['recharge'] = this.recharge;
+    data['history'] = this.history;
+    data['accept_order'] = this.acceptOrder;
+    data['in_service'] = this.inService;
+    data['waiting'] = this.waiting;
+    data['no_order_title'] = this.noOrderTitle;
+    data['no_order_description'] = this.noOrderDescription;
+    data['withdraw'] = this.withdraw;
     return data;
   }
 }

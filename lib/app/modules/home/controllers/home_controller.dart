@@ -933,7 +933,11 @@ class HomeController extends GetxController
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Partner Kendaraan Listrik untuk Aktivitas Kerja Driver Setiap Hari",
+                              languageServices
+                                      .language
+                                      .value
+                                      .dialogCoachmarkTitle ??
+                                  "-",
                               style: typographyServices.bodyLargeBold.value
                                   .copyWith(
                                     color: themeColorServices.textColor.value,
@@ -942,7 +946,11 @@ class HomeController extends GetxController
                             ),
                             SizedBox(height: 8),
                             Text(
-                              "Membantu menghubungkan perjalanan, pesanan, dan catatan aktivitas dalam satu sistem bersama EVMoto Driver.",
+                              languageServices
+                                      .language
+                                      .value
+                                      .dialogCoachmarkDescription ??
+                                  "-",
                               style: typographyServices.bodySmallRegular.value
                                   .copyWith(
                                     color: themeColorServices.textColor.value,
@@ -978,7 +986,11 @@ class HomeController extends GetxController
                                   ),
                                 ),
                                 child: Text(
-                                  "Jelajahi EVMoto Driver",
+                                  languageServices
+                                          .language
+                                          .value
+                                          .dialogCoachmarkButton ??
+                                      "-",
                                   style: typographyServices.bodySmallBold.value
                                       .copyWith(
                                         color: themeColorServices
