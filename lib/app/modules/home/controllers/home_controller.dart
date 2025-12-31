@@ -342,29 +342,39 @@ class HomeController extends GetxController
   String getStringOrderState({required int state}) {
     switch (state) {
       case OrderState.WAITING_LIST:
-        return 'Daftar Tunggu';
+        return languageServices.language.value.orderStateWaitingList ?? "-";
       case OrderState.TO_BE_STARTED:
-        return 'Dimulai';
+        return languageServices.language.value.orderStateToBeStarted ?? "-";
       case OrderState.SCHEDULED_ARRIVAL_PLACE:
-        return 'Tempat Kedatangan';
+        return languageServices
+                .language
+                .value
+                .orderStateScheduledArrivalPlace ??
+            "-";
       case OrderState.WAIT_FOR_PASSENGERS_TO_BOARD:
-        return 'Tunggu Penumpang untuk Naik';
+        return languageServices
+                .language
+                .value
+                .orderStateWaitForPassengersToBoard ??
+            "-";
       case OrderState.SERVING:
-        return 'Sedang Berlangsung';
+        return languageServices.language.value.orderStateServing ?? "-";
       case OrderState.COMPLETION_SERVICE:
-        return 'Layanan Penyelesaian';
+        return languageServices.language.value.orderStateCompletionService ??
+            "-";
       case OrderState.TO_BE_PAID:
-        return 'Akan Dibayarkan';
+        return languageServices.language.value.orderStateToBePaid ?? "-";
       case OrderState.TO_BE_EVALUATED:
-        return 'Akan Dievaluasi';
+        return languageServices.language.value.orderStateToBeEvaluated ?? "-";
       case OrderState.COMPLETED:
-        return 'Selesai';
+        return languageServices.language.value.orderStateCompleted ?? "-";
       case OrderState.CANCELLED:
-        return 'Dibatalkan';
+        return languageServices.language.value.orderStateCancelled ?? "-";
       case OrderState.BEING_REASSIGNED:
-        return 'Dialihkan';
+        return languageServices.language.value.orderStateBeingReassigned ?? "-";
       case OrderState.CANCEL_PENDING_PAYMENT:
-        return 'Batalkan Pembayaran yang Pending';
+        return languageServices.language.value.orderStateCancelPendingPayment ??
+            "-";
       default:
         return '-';
     }

@@ -15,7 +15,7 @@ class ActivityView extends GetView<ActivityController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Aktivitas Saya",
+            controller.languageServices.language.value.myActivities ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -68,7 +68,8 @@ class ActivityView extends GetView<ActivityController> {
                         tabs: [
                           Tab(
                             child: Text(
-                              'All',
+                              controller.languageServices.language.value.all ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallBold
@@ -81,7 +82,12 @@ class ActivityView extends GetView<ActivityController> {
                                 Row(
                                   children: [
                                     Text(
-                                      'To Be Paid',
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .toBePaid ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallBold
@@ -117,7 +123,12 @@ class ActivityView extends GetView<ActivityController> {
                           ),
                           Tab(
                             child: Text(
-                              'Cancel Order',
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .cancelOrder ??
+                                  "-",
                               style: controller
                                   .typographyServices
                                   .bodySmallBold
@@ -188,7 +199,12 @@ class ActivityView extends GetView<ActivityController> {
                                       ),
                                       SizedBox(height: 16),
                                       Text(
-                                        "Belum Ada Aktivitas",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .noActivityYet ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodyLargeBold
@@ -197,7 +213,12 @@ class ActivityView extends GetView<ActivityController> {
                                       ),
                                       SizedBox(height: 8),
                                       Text(
-                                        "Tidak ada aktivitas pada bagian semua aktivitas",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .thereIsNoActivityAllActivities ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallRegular
@@ -266,7 +287,12 @@ class ActivityView extends GetView<ActivityController> {
                                                             ),
                                                       ),
                                                       child: Text(
-                                                        "Dibatalkan",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .canceled ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionSmallRegular
@@ -306,7 +332,12 @@ class ActivityView extends GetView<ActivityController> {
                                                             ),
                                                       ),
                                                       child: Text(
-                                                        "Dalam Layanan",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .inService ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionSmallRegular
@@ -338,7 +369,12 @@ class ActivityView extends GetView<ActivityController> {
                                                             ),
                                                       ),
                                                       child: Text(
-                                                        "Selesai",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .finished ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionSmallRegular
@@ -490,7 +526,12 @@ class ActivityView extends GetView<ActivityController> {
                                       ),
                                       SizedBox(height: 16),
                                       Text(
-                                        "Belum Ada Aktivitas",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .noActivityYet ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodyLargeBold
@@ -499,7 +540,12 @@ class ActivityView extends GetView<ActivityController> {
                                       ),
                                       SizedBox(height: 8),
                                       Text(
-                                        "Tidak ada aktivitas pada bagian menunggu pembayaran",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .thereIsNoActivityWaitingForPayment ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallRegular
@@ -561,7 +607,12 @@ class ActivityView extends GetView<ActivityController> {
                                                             ),
                                                       ),
                                                       child: Text(
-                                                        "Dibatalkan",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .canceled ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionSmallRegular
@@ -638,7 +689,12 @@ class ActivityView extends GetView<ActivityController> {
                                                             ),
                                                       ),
                                                       child: Text(
-                                                        "Selesai",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .finished ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionSmallRegular
@@ -793,7 +849,12 @@ class ActivityView extends GetView<ActivityController> {
                                       ),
                                       SizedBox(height: 16),
                                       Text(
-                                        "Belum Ada Aktivitas",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .noActivityYet ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodyLargeBold
@@ -802,7 +863,12 @@ class ActivityView extends GetView<ActivityController> {
                                       ),
                                       SizedBox(height: 8),
                                       Text(
-                                        "Tidak ada aktivitas pada bagian dibatalkan",
+                                        controller
+                                                .languageServices
+                                                .language
+                                                .value
+                                                .thereIsNoActivityCancelled ??
+                                            "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallRegular
@@ -865,7 +931,12 @@ class ActivityView extends GetView<ActivityController> {
                                                             ),
                                                       ),
                                                       child: Text(
-                                                        "Dibatalkan",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .canceled ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionSmallRegular
@@ -937,7 +1008,12 @@ class ActivityView extends GetView<ActivityController> {
                                                             ),
                                                       ),
                                                       child: Text(
-                                                        "Selesai",
+                                                        controller
+                                                                .languageServices
+                                                                .language
+                                                                .value
+                                                                .finished ??
+                                                            "-",
                                                         style: controller
                                                             .typographyServices
                                                             .captionSmallRegular

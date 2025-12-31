@@ -399,7 +399,12 @@ class LoginView extends GetView<LoginController> {
                                                 }
 
                                                 if (value.length > 15) {
-                                                  return "Maksimal nomor handphone 15 angka";
+                                                  return controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .formValidationMobileMaxLength ??
+                                                      "-";
                                                 }
                                               }
                                               return null;

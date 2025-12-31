@@ -185,6 +185,44 @@ class Language {
   String? expenseDetail;
   String? paidByPassengers;
   String? paymentReceived;
+  String? meter;
+  String? onlinePayment;
+  String? myActivities;
+  String? all;
+  String? toBePaid;
+  String? cancelOrder;
+  String? canceled;
+  String? noActivityYet;
+  String? thereIsNoActivityAllActivities;
+  String? thereIsNoActivityWaitingForPayment;
+  String? thereIsNoActivityCancelled;
+  String? finished;
+  String? orderStateWaitingList;
+  String? orderStateToBeStarted;
+  String? orderStateScheduledArrivalPlace;
+  String? orderStateWaitForPassengersToBoard;
+  String? orderStateServing;
+  String? orderStateCompletionService;
+  String? orderStateToBePaid;
+  String? orderStateToBeEvaluated;
+  String? orderStateCompleted;
+  String? orderStateCancelled;
+  String? orderStateBeingReassigned;
+  String? orderStateCancelPendingPayment;
+  String? orderCanceled;
+  String? travelActivities;
+  String? informationCanceled;
+  String? canceledBy;
+  String? costReduction;
+  String? reasonForCancellation;
+  String? user;
+  String? driver;
+  String? evaluationNotFoundTitle;
+  String? evaluationNotFoundDescription;
+  String? formNotValid;
+  String? successSaveChanges;
+  String? formValidationMobileMaxLength;
+  String? mobileNumberSuccessChanged;
 
   Language({
     this.loginTitle,
@@ -373,6 +411,44 @@ class Language {
     this.expenseDetail,
     this.paidByPassengers,
     this.paymentReceived,
+    this.meter,
+    this.onlinePayment,
+    this.myActivities,
+    this.all,
+    this.toBePaid,
+    this.cancelOrder,
+    this.canceled,
+    this.noActivityYet,
+    this.thereIsNoActivityAllActivities,
+    this.thereIsNoActivityWaitingForPayment,
+    this.thereIsNoActivityCancelled,
+    this.finished,
+    this.orderStateWaitingList,
+    this.orderStateToBeStarted,
+    this.orderStateScheduledArrivalPlace,
+    this.orderStateWaitForPassengersToBoard,
+    this.orderStateServing,
+    this.orderStateCompletionService,
+    this.orderStateToBePaid,
+    this.orderStateToBeEvaluated,
+    this.orderStateCompleted,
+    this.orderStateCancelled,
+    this.orderStateBeingReassigned,
+    this.orderStateCancelPendingPayment,
+    this.orderCanceled,
+    this.travelActivities,
+    this.informationCanceled,
+    this.canceledBy,
+    this.costReduction,
+    this.reasonForCancellation,
+    this.user,
+    this.driver,
+    this.evaluationNotFoundTitle,
+    this.evaluationNotFoundDescription,
+    this.formNotValid,
+    this.successSaveChanges,
+    this.formValidationMobileMaxLength,
+    this.mobileNumberSuccessChanged,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
@@ -563,6 +639,48 @@ class Language {
     expenseDetail = json['expense_detail'];
     paidByPassengers = json['paid_by_passengers'];
     paymentReceived = json['payment_received'];
+    meter = json['meter'];
+    onlinePayment = json['online_payment'];
+    myActivities = json['my_activities'];
+    all = json['all'];
+    toBePaid = json['to_be_paid'];
+    cancelOrder = json['cancel_order'];
+    canceled = json['canceled'];
+    noActivityYet = json['no_activity_yet'];
+    thereIsNoActivityAllActivities =
+        json['there_is_no_activity_all_activities'];
+    thereIsNoActivityWaitingForPayment =
+        json['there_is_no_activity_waiting_for_payment'];
+    thereIsNoActivityCancelled = json['there_is_no_activity_cancelled'];
+    finished = json['finished'];
+    orderStateWaitingList = json['order_state_waiting_list'];
+    orderStateToBeStarted = json['order_state_to_be_started'];
+    orderStateScheduledArrivalPlace =
+        json['order_state_scheduled_arrival_place'];
+    orderStateWaitForPassengersToBoard =
+        json['order_state_wait_for_passengers_to_board'];
+    orderStateServing = json['order_state_serving'];
+    orderStateCompletionService = json['order_state_completion_service'];
+    orderStateToBePaid = json['order_state_to_be_paid'];
+    orderStateToBeEvaluated = json['order_state_to_be_evaluated'];
+    orderStateCompleted = json['order_state_completed'];
+    orderStateCancelled = json['order_state_cancelled'];
+    orderStateBeingReassigned = json['order_state_being_reassigned'];
+    orderStateCancelPendingPayment = json['order_state_cancel_pending_payment'];
+    orderCanceled = json['order_canceled'];
+    travelActivities = json['travel_activities'];
+    informationCanceled = json['information_canceled'];
+    canceledBy = json['canceled_by'];
+    costReduction = json['cost_reduction'];
+    reasonForCancellation = json['reason_for_cancellation'];
+    user = json['user'];
+    driver = json['driver'];
+    evaluationNotFoundTitle = json['evaluation_not_found_title'];
+    evaluationNotFoundDescription = json['evaluation_not_found_description'];
+    formNotValid = json['form_not_valid'];
+    successSaveChanges = json['success_save_changes'];
+    formValidationMobileMaxLength = json['form_validation_mobile_max_length'];
+    mobileNumberSuccessChanged = json['mobile_number_success_changed'];
   }
 
   Map<String, dynamic> toJson() {
@@ -756,6 +874,51 @@ class Language {
     data['expense_detail'] = this.expenseDetail;
     data['paid_by_passengers'] = this.paidByPassengers;
     data['payment_received'] = this.paymentReceived;
+    data['meter'] = this.meter;
+    data['online_payment'] = this.onlinePayment;
+    data['my_activities'] = this.myActivities;
+    data['all'] = this.all;
+    data['to_be_paid'] = this.toBePaid;
+    data['cancel_order'] = this.cancelOrder;
+    data['canceled'] = this.canceled;
+    data['no_activity_yet'] = this.noActivityYet;
+    data['there_is_no_activity_all_activities'] =
+        this.thereIsNoActivityAllActivities;
+    data['there_is_no_activity_waiting_for_payment'] =
+        this.thereIsNoActivityWaitingForPayment;
+    data['there_is_no_activity_cancelled'] = this.thereIsNoActivityCancelled;
+    data['finished'] = this.finished;
+    data['order_state_waiting_list'] = this.orderStateWaitingList;
+    data['order_state_to_be_started'] = this.orderStateToBeStarted;
+    data['order_state_scheduled_arrival_place'] =
+        this.orderStateScheduledArrivalPlace;
+    data['order_state_wait_for_passengers_to_board'] =
+        this.orderStateWaitForPassengersToBoard;
+    data['order_state_serving'] = this.orderStateServing;
+    data['order_state_completion_service'] = this.orderStateCompletionService;
+    data['order_state_to_be_paid'] = this.orderStateToBePaid;
+    data['order_state_to_be_evaluated'] = this.orderStateToBeEvaluated;
+    data['order_state_completed'] = this.orderStateCompleted;
+    data['order_state_cancelled'] = this.orderStateCancelled;
+    data['order_state_being_reassigned'] = this.orderStateBeingReassigned;
+    data['order_state_cancel_pending_payment'] =
+        this.orderStateCancelPendingPayment;
+    data['order_canceled'] = this.orderCanceled;
+    data['travel_activities'] = this.travelActivities;
+    data['information_canceled'] = this.informationCanceled;
+    data['canceled_by'] = this.canceledBy;
+    data['cost_reduction'] = this.costReduction;
+    data['reason_for_cancellation'] = this.reasonForCancellation;
+    data['user'] = this.user;
+    data['driver'] = this.driver;
+    data['evaluation_not_found_title'] = this.evaluationNotFoundTitle;
+    data['evaluation_not_found_description'] =
+        this.evaluationNotFoundDescription;
+    data['form_not_valid'] = this.formNotValid;
+    data['success_save_changes'] = this.successSaveChanges;
+    data['form_validation_mobile_max_length'] =
+        this.formValidationMobileMaxLength;
+    data['mobile_number_success_changed'] = this.mobileNumberSuccessChanged;
     return data;
   }
 }

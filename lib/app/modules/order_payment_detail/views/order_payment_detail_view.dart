@@ -138,7 +138,12 @@ class OrderPaymentDetailView extends GetView<OrderPaymentDetailController> {
                             children: [
                               Text(
                                 controller.orderDetail.value.payManner == 1
-                                    ? "Pembayaran Online"
+                                    ? controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .onlinePayment ??
+                                          "-"
                                     : controller
                                               .languageServices
                                               .language

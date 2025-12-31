@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/repositories/account_repository.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -19,6 +20,7 @@ class AccountFeedbackController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   @override
   void onInit() {
@@ -64,7 +66,7 @@ class AccountFeedbackController extends GetxController {
       behavior: SnackBarBehavior.fixed,
       backgroundColor: themeColorServices.sematicColorGreen400.value,
       content: Text(
-        "Berhasil memberikan feedback",
+        languageServices.language.value.formNotValid ?? "-",
         style: typographyServices.bodySmallRegular.value.copyWith(
           color: themeColorServices.neutralsColorGrey0.value,
         ),

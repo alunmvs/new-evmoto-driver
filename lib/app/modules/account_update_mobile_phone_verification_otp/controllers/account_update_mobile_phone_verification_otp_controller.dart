@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/repositories/account_repository.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -14,6 +15,7 @@ class AccountUpdateMobilePhoneVerificationOtpController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final mobilePhone = "".obs;
   final otpCode = "".obs;
@@ -74,7 +76,7 @@ class AccountUpdateMobilePhoneVerificationOtpController extends GetxController {
       behavior: SnackBarBehavior.fixed,
       backgroundColor: themeColorServices.sematicColorGreen400.value,
       content: Text(
-        "Nomor HP berhasil diubah",
+        languageServices.language.value.mobileNumberSuccessChanged ?? "-",
         style: typographyServices.bodySmallRegular.value.copyWith(
           color: themeColorServices.neutralsColorGrey0.value,
         ),

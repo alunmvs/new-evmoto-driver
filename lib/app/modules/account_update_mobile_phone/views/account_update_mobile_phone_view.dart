@@ -14,7 +14,8 @@ class AccountUpdateMobilePhoneView
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Ubah Nomor Telepon",
+            controller.languageServices.language.value.changeMobileNumber ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -57,7 +58,12 @@ class AccountUpdateMobilePhoneView
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Masukan Nomor Telepon Lama",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterOldMobileNumber ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -84,7 +90,12 @@ class AccountUpdateMobilePhoneView
                                 maxLines: 1,
                                 validationMessages: {
                                   ValidationMessage.required: (error) =>
-                                      'Wajib diisi',
+                                      controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .formValidationRequired ??
+                                      "-",
                                 },
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
@@ -180,7 +191,12 @@ class AccountUpdateMobilePhoneView
                               ),
                               SizedBox(height: 16),
                               Text(
-                                "Masukan Nomor Telepon Baru",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .enterNewMobileNumber ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -206,13 +222,33 @@ class AccountUpdateMobilePhoneView
                                 maxLines: 1,
                                 validationMessages: {
                                   ValidationMessage.required: (error) =>
-                                      'Wajib diisi',
+                                      controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .formValidationRequired ??
+                                      "-",
                                   ValidationMessage.minLength: (error) =>
-                                      'Minimal nomor handphone 8 angka',
+                                      controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .formValidationLengthMin8 ??
+                                      "-",
                                   ValidationMessage.maxLength: (error) =>
-                                      'Maksimal nomor handphone 15 angka',
+                                      controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .formValidationMobileMaxLength ??
+                                      "-",
                                   ValidationMessage.pattern: (error) =>
-                                      'Harus diawali dengan angka 8',
+                                      controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .formValidationFirst8 ??
+                                      "-",
                                 },
                                 keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
@@ -325,7 +361,12 @@ class AccountUpdateMobilePhoneView
                                     ),
                                   ),
                                   child: Text(
-                                    "Kirimkan Kode OTP",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .sendOtpCode ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodySmallBold
@@ -342,7 +383,12 @@ class AccountUpdateMobilePhoneView
                               SizedBox(height: 8),
                               Center(
                                 child: Text(
-                                  "Kode OTP dikirimkan ke nomor baru",
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .otpWillSentNewMobileNumber ??
+                                      "-",
                                   style: controller
                                       .typographyServices
                                       .captionLargeRegular

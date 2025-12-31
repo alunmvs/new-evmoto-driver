@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-
 import '../controllers/order_detail_cancel_controller.dart';
 
 class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
@@ -16,7 +13,7 @@ class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Pesanan Dibatalkan",
+            controller.languageServices.language.value.orderCanceled ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -54,7 +51,12 @@ class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Aktivitas Perjalanan",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .travelActivities ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -228,7 +230,12 @@ class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            "Informasi Dibatalkan",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .informationCanceled ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -266,7 +273,12 @@ class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Dibatalkan Oleh :",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .canceledBy ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular
@@ -293,8 +305,18 @@ class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
                                                     .value
                                                     .cancelUserType ==
                                                 1
-                                            ? "User"
-                                            : "Driver",
+                                            ? controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .user ??
+                                                  "-"
+                                            : controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .driver ??
+                                                  "-",
                                         style: controller
                                             .typographyServices
                                             .bodySmallRegular
@@ -315,7 +337,12 @@ class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Pengurangan Biaya",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .costReduction ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular
@@ -364,7 +391,12 @@ class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Alasan Pembatalan",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .reasonForCancellation ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular
@@ -391,7 +423,7 @@ class OrderDetailCancelView extends GetView<OrderDetailCancelController> {
                                     ),
                                     prefix: SizedBox(width: 12),
                                     suffix: SizedBox(width: 12),
-                                    hintText: 'Alasan pembatalan',
+                                    hintText: "-",
                                     hintStyle: controller
                                         .typographyServices
                                         .bodySmallRegular

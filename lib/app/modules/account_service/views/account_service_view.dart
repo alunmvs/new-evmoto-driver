@@ -12,7 +12,7 @@ class AccountServiceView extends GetView<AccountServiceController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Pilih Jenis Layanan",
+            controller.languageServices.language.value.selectService ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -40,7 +40,12 @@ class AccountServiceView extends GetView<AccountServiceController> {
                     children: [
                       SizedBox(height: 16),
                       Text(
-                        "Pilih Jenis Layanan",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .selectService ??
+                            "-",
                         style:
                             controller.typographyServices.bodySmallBold.value,
                       ),
@@ -158,7 +163,8 @@ class AccountServiceView extends GetView<AccountServiceController> {
                           ),
                         ),
                         child: Text(
-                          "Simpan",
+                          controller.languageServices.language.value.save ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodySmallBold

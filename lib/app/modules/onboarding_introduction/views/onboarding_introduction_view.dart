@@ -84,7 +84,12 @@ class OnboardingIntroductionView
                                   ),
                                   SizedBox(height: 16 * 2),
                                   Text(
-                                    "Solusi Berkendara untuk Mitra Driver",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .onboardingTitle1 ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .headingSmallBold
@@ -98,7 +103,12 @@ class OnboardingIntroductionView
                                   ),
                                   SizedBox(height: 16),
                                   Text(
-                                    "EVMoto Driver App mendukung kamu di setiap perjalanan kerja. Dengan solusi berkendara yang praktis dan nyaman, aktivitas harian jadi lebih lancar dari awal hingga selesai.",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .onboardingDescription1 ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodyLargeRegular
@@ -136,7 +146,12 @@ class OnboardingIntroductionView
                                   ),
                                   SizedBox(height: 16 * 2),
                                   Text(
-                                    "Dukung Setiap Langkah Kerja Kamu",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .onboardingTitle2 ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .headingSmallBold
@@ -150,7 +165,12 @@ class OnboardingIntroductionView
                                   ),
                                   SizedBox(height: 16),
                                   Text(
-                                    "Setiap perjalanan punya tujuan. EVMoto hadir untuk membantu proses kerja harian kamu berjalan lebih cepat dan lebih praktis.",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .onboardingDescription1 ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodyLargeRegular
@@ -188,7 +208,12 @@ class OnboardingIntroductionView
                                   ),
                                   SizedBox(height: 16 * 2),
                                   Text(
-                                    "Mulai Perjalanan Dengan Menggunakan EVMoto",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .onboardingTitle3 ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .headingSmallBold
@@ -202,7 +227,12 @@ class OnboardingIntroductionView
                                   ),
                                   SizedBox(height: 16),
                                   Text(
-                                    "Bersama EVMoto, setiap perjalanan kerja dimulai dengan solusi yang kamu butuhkan. Kami hadir untuk mendukung langkah kamu di jalan, hari demi hari.",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .onboardingDescription3 ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodyLargeRegular
@@ -278,7 +308,8 @@ class OnboardingIntroductionView
                     ),
                   ),
                   child: Text(
-                    "Lanjutkan",
+                    controller.languageServices.language.value.buttonNext ??
+                        "-",
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(color: Colors.white),
                   ),

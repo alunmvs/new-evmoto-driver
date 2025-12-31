@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/rating_and_review_model.dart';
 import 'package:new_evmoto_driver/app/repositories/account_repository.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 
@@ -11,6 +12,7 @@ class AccountMyEvaluationController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final ratingAndReview = RatingAndReview().obs;
 
