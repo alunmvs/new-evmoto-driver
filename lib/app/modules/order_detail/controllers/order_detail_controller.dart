@@ -122,8 +122,19 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   @override
-  void onClose() {
+  Future<void> onClose() async {
     super.onClose();
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderDetail.value.orderId.toString())
+        .set({
+          "driverId": orderDetail.value.driverId,
+          "driverName": homeController.userInfo.value.name,
+          "driverIsOnline": false,
+          "driverLastSeen": FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+
     try {
       googleMapController.dispose();
     } catch (e) {}
@@ -195,24 +206,26 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         .get();
 
     if (docs.exists == true) {
-      evmotoOrderChatParticipants.value = EvmotoOrderChatParticipants.fromJson(
-        docs.data()!,
-      );
-    }
-
-    if (docs.exists == false ||
-        (docs.exists == true && docs.data()?['driverId'] == null)) {
-      await FirebaseFirestore.instance
+      FirebaseFirestore.instance
           .collection('evmoto_order_chat_participants')
           .doc(orderDetail.value.orderId.toString())
-          .set({
-            "driverId": orderDetail.value.driverId,
-            "driverName": homeController.userInfo.value.name,
-            "driverIsOnline": true,
-            "driverLastSeen": FieldValue.serverTimestamp(),
-            "driverJoinedAt": FieldValue.serverTimestamp(),
-          }, SetOptions(merge: true));
+          .snapshots()
+          .listen((event) {
+            evmotoOrderChatParticipants.value =
+                EvmotoOrderChatParticipants.fromJson(event.data()!);
+          });
     }
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderDetail.value.orderId.toString())
+        .set({
+          "driverId": orderDetail.value.driverId,
+          "driverName": homeController.userInfo.value.name,
+          "driverIsOnline": true,
+          "driverLastSeen": FieldValue.serverTimestamp(),
+          "driverJoinedAt": FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
   }
 
   Future<void> requestLocation() async {
