@@ -167,7 +167,7 @@ class OrderChatView extends GetView<OrderChatController> {
                                     .languageServices
                                     .language
                                     .value
-                                    .noOrderTitle ??
+                                    .noMessagesYet ??
                                 "-",
                             style: controller
                                 .typographyServices
