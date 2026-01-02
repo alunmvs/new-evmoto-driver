@@ -75,6 +75,8 @@ dependencies:
   path_provider: ^2.1.5
   cloud_firestore: ^6.1.1
   sliver_tools: ^0.2.12
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   get_cli: ^1.9.1
