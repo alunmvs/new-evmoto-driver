@@ -524,23 +524,67 @@ class HomeController extends GetxController
                         child: Column(
                           children: [
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SvgPicture.asset(
-                                  "assets/icons/icon_clock.svg",
+                                SizedBox(
                                   width: 16,
                                   height: 16,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/icon_passenger.svg",
+                                        width: 11.7,
+                                        height: 14.17,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(width: 6),
-                                Text(
-                                  orderData.travelTime ?? "-",
-                                  style: typographyServices
-                                      .bodyLargeRegular
-                                      .value
-                                      .copyWith(
-                                        color:
-                                            themeColorServices.textColor.value,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        orderData.user ?? "-",
+                                        style: typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .textColor
+                                                  .value,
+                                            ),
                                       ),
+                                      Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_star.svg",
+                                            width: 9.17,
+                                            height: 10,
+                                            color: themeColorServices
+                                                .sematicColorYellow400
+                                                .value,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            "5.0 (0)",
+                                            style: typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: themeColorServices
+                                                      .textColor
+                                                      .value,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

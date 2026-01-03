@@ -93,7 +93,9 @@ class Language {
   String? inService;
   String? waiting;
   String? noOrderTitle;
-  String? noOrderDescription;
+  String? noOrderAcceptOrderDescription;
+  String? noOrderInServiceDescription;
+  String? noOrderWaitingDescription;
   String? withdraw;
   String? home;
   String? menu;
@@ -319,7 +321,9 @@ class Language {
     this.inService,
     this.waiting,
     this.noOrderTitle,
-    this.noOrderDescription,
+    this.noOrderAcceptOrderDescription,
+    this.noOrderInServiceDescription,
+    this.noOrderWaitingDescription,
     this.withdraw,
     this.home,
     this.menu,
@@ -546,7 +550,9 @@ class Language {
     inService = json['in_service'];
     waiting = json['waiting'];
     noOrderTitle = json['no_order_title'];
-    noOrderDescription = json['no_order_description'];
+    noOrderAcceptOrderDescription = json['no_order_accept_order_description'];
+    noOrderInServiceDescription = json['no_order_in_service_description'];
+    noOrderWaitingDescription = json['no_order_waiting_description'];
     withdraw = json['withdraw'];
     home = json['home'];
     menu = json['menu'];
@@ -779,7 +785,10 @@ class Language {
     data['in_service'] = this.inService;
     data['waiting'] = this.waiting;
     data['no_order_title'] = this.noOrderTitle;
-    data['no_order_description'] = this.noOrderDescription;
+    data['no_order_accept_order_description'] =
+        this.noOrderAcceptOrderDescription;
+    data['no_order_in_service_description'] = this.noOrderInServiceDescription;
+    data['no_order_waiting_description'] = this.noOrderWaitingDescription;
     data['withdraw'] = this.withdraw;
     data['home'] = this.home;
     data['menu'] = this.menu;
