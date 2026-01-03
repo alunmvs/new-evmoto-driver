@@ -35,6 +35,73 @@ class OrderCardHomeSubView extends GetView<HomeController> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  width: 27,
+                  height: 27,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/icon_passenger.svg",
+                        width: 11.7,
+                        height: 14.17,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 6),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        order.user ?? "-",
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
+                            .value
+                            .copyWith(
+                              color:
+                                  controller.themeColorServices.textColor.value,
+                            ),
+                      ),
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/icon_star.svg",
+                            width: 9.17,
+                            height: 10,
+                            color: controller
+                                .themeColorServices
+                                .sematicColorYellow400
+                                .value,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            "5.0 (0)",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .textColor
+                                      .value,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 SvgPicture.asset(
                   "assets/icons/icon_card_origin.svg",
                   width: 27,
