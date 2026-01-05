@@ -90,6 +90,7 @@ class HomeController extends GetxController
   final selectedIndex = 0.obs;
 
   final lastPressedBackDateTime = DateTime.now().obs;
+  final errorInfoBottomSheet = "".obs;
 
   final isFetch = false.obs;
 
@@ -296,6 +297,7 @@ class HomeController extends GetxController
         workStatus.value = 2;
       }
     } catch (e) {
+      errorInfoBottomSheet.value = e.toString();
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,

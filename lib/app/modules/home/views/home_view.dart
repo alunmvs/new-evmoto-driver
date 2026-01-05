@@ -2530,8 +2530,8 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       Divider(height: 0, color: Color(0XFFE1E1E1)),
                       GestureDetector(
-                        onTap: () {
-                          Get.bottomSheet(
+                        onTap: () async {
+                          await Get.bottomSheet(
                             isScrollControlled: true,
                             Obx(
                               () => Column(
@@ -2882,7 +2882,12 @@ class HomeView extends GetView<HomeController> {
                                                 .value,
                                           ),
                                           Padding(
-                                            padding: EdgeInsetsGeometry.all(16),
+                                            padding: EdgeInsetsGeometry.only(
+                                              left: 16,
+                                              right: 16,
+                                              top: 16,
+                                              bottom: 8,
+                                            ),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -3019,6 +3024,39 @@ class HomeView extends GetView<HomeController> {
                                               ],
                                             ),
                                           ),
+                                          if (controller
+                                                  .errorInfoBottomSheet
+                                                  .value !=
+                                              "") ...[
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                  ),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    controller
+                                                        .errorInfoBottomSheet
+                                                        .value,
+                                                    style: controller
+                                                        .typographyServices
+                                                        .captionLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .redColor
+                                                              .value,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height: 16),
+                                          ],
                                           Padding(
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 16,
@@ -3072,6 +3110,7 @@ class HomeView extends GetView<HomeController> {
                               ),
                             ),
                           );
+                          controller.errorInfoBottomSheet.value = "";
                         },
                         child: Container(
                           decoration: BoxDecoration(color: Colors.transparent),
