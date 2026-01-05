@@ -73,6 +73,9 @@ class RegisterFormController extends GetxController {
 
   final uid = "".obs;
   final mobilePhone = "".obs;
+
+  final isFormValid = true.obs;
+
   final isFetch = false.obs;
 
   @override
@@ -238,6 +241,7 @@ class RegisterFormController extends GetxController {
         ),
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      isFormValid.value = false;
       return;
     }
 

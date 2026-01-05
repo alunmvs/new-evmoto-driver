@@ -148,10 +148,15 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
                                   border: Border.all(
-                                    color: controller
-                                        .themeColorServices
-                                        .neutralsColorGrey400
-                                        .value,
+                                    color: controller.isFormValid.value
+                                        ? controller
+                                              .themeColorServices
+                                              .neutralsColorGrey400
+                                              .value
+                                        : controller
+                                              .themeColorServices
+                                              .sematicColorRed500
+                                              .value,
                                   ),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -165,6 +170,27 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               ),
                             ),
                           ),
+                          if (controller.isFormValid.value == false) ...[
+                            SizedBox(height: 4),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formValidationRequired ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed500
+                                        .value,
+                                  ),
+                            ),
+                          ],
                         ],
                         if (controller.idPhotoUrl.value != "") ...[
                           AspectRatio(
@@ -1363,10 +1389,15 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
                                   border: Border.all(
-                                    color: controller
-                                        .themeColorServices
-                                        .neutralsColorGrey400
-                                        .value,
+                                    color: controller.isFormValid.value == true
+                                        ? controller
+                                              .themeColorServices
+                                              .neutralsColorGrey400
+                                              .value
+                                        : controller
+                                              .themeColorServices
+                                              .sematicColorRed500
+                                              .value,
                                   ),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -1380,6 +1411,27 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               ),
                             ),
                           ),
+                          if (controller.isFormValid.value == false) ...[
+                            SizedBox(height: 4),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formValidationRequired ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed500
+                                        .value,
+                                  ),
+                            ),
+                          ],
                         ],
                         if (controller.drivingLicensePhotoUrl.value != "") ...[
                           AspectRatio(
@@ -1561,14 +1613,40 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               .neutralsColorGrey0
                               .value,
                           side: BorderSide(
-                            color: controller
-                                .themeColorServices
-                                .neutralsColorGrey400
-                                .value,
+                            color: controller.isFormValid.value == true
+                                ? controller
+                                      .themeColorServices
+                                      .neutralsColorGrey400
+                                      .value
+                                : controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
                           ),
                           activeColor:
                               controller.themeColorServices.primaryBlue.value,
                         ),
+                        if (controller.isFormValid.value == false) ...[
+                          SizedBox(height: 4),
+                          Text(
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationRequired ??
+                                "-",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                          ),
+                        ],
                         SizedBox(height: 16),
                         Row(
                           children: [
@@ -1654,7 +1732,6 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ),
                             prefix: SizedBox(width: 12),
                             suffix: SizedBox(width: 12),
-
                             label: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -1737,7 +1814,6 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ),
                           ),
                         ),
-
                         SizedBox(height: 16),
                         Row(
                           children: [
@@ -1787,10 +1863,15 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
                                   border: Border.all(
-                                    color: controller
-                                        .themeColorServices
-                                        .neutralsColorGrey400
-                                        .value,
+                                    color: controller.isFormValid.value == true
+                                        ? controller
+                                              .themeColorServices
+                                              .neutralsColorGrey400
+                                              .value
+                                        : controller
+                                              .themeColorServices
+                                              .sematicColorRed500
+                                              .value,
                                   ),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -1804,6 +1885,27 @@ class RegisterFormView extends GetView<RegisterFormController> {
                               ),
                             ),
                           ),
+                          if (controller.isFormValid.value == false) ...[
+                            SizedBox(height: 4),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formValidationRequired ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed500
+                                        .value,
+                                  ),
+                            ),
+                          ],
                         ],
                         if (controller.avatarPhotoUrl.value != "") ...[
                           Row(
