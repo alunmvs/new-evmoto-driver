@@ -50,237 +50,217 @@ class OnboardingIntroductionView
                     height: MediaQuery.of(context).size.height,
                     fit: BoxFit.cover,
                   ),
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CarouselSlider(
-                          items: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 16 * 8),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: AspectRatio(
-                                      aspectRatio: 343 / 244,
-                                      child: SizedBox(
-                                        width: MediaQuery.of(
-                                          context,
-                                        ).size.width,
-                                        child: Image.asset(
-                                          "assets/images/img_onboarding_introduction_1.png",
-                                          fit: BoxFit.cover,
-                                          width: MediaQuery.of(
-                                            context,
-                                          ).size.width,
-                                        ),
-                                      ),
-                                    ),
+                  CarouselSlider(
+                    items: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 16 * 8),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: AspectRatio(
+                                aspectRatio: 343 / 244,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Image.asset(
+                                    "assets/images/img_onboarding_introduction_1.png",
+                                    fit: BoxFit.cover,
+                                    width: MediaQuery.of(context).size.width,
                                   ),
-                                  SizedBox(height: 16 * 2),
-                                  Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .onboardingTitle1 ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .headingSmallBold
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .textColor
-                                              .value,
-                                        ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .onboardingDescription1 ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .bodyLargeRegular
-                                        .value
-                                        .copyWith(color: Color(0XFF696969)),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 16 * 8),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: AspectRatio(
-                                      aspectRatio: 343 / 244,
-                                      child: SizedBox(
-                                        width: MediaQuery.of(
-                                          context,
-                                        ).size.width,
-                                        child: Image.asset(
-                                          "assets/images/img_onboarding_introduction_2.png",
-                                          fit: BoxFit.cover,
-                                          width: MediaQuery.of(
-                                            context,
-                                          ).size.width,
-                                        ),
-                                      ),
-                                    ),
+                            SizedBox(height: 16 * 2),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .onboardingTitle1 ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .headingSmallBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .textColor
+                                        .value,
                                   ),
-                                  SizedBox(height: 16 * 2),
-                                  Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .onboardingTitle2 ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .headingSmallBold
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .textColor
-                                              .value,
-                                        ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .onboardingDescription1 ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .bodyLargeRegular
-                                        .value
-                                        .copyWith(color: Color(0XFF696969)),
-                                  ),
-                                ],
-                              ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 16 * 8),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: AspectRatio(
-                                      aspectRatio: 343 / 244,
-                                      child: SizedBox(
-                                        width: MediaQuery.of(
-                                          context,
-                                        ).size.width,
-                                        child: Image.asset(
-                                          "assets/images/img_onboarding_introduction_3.png",
-                                          fit: BoxFit.cover,
-                                          width: MediaQuery.of(
-                                            context,
-                                          ).size.width,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 16 * 2),
-                                  Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .onboardingTitle3 ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .headingSmallBold
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .textColor
-                                              .value,
-                                        ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .onboardingDescription3 ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .bodyLargeRegular
-                                        .value
-                                        .copyWith(color: Color(0XFF696969)),
-                                  ),
-                                ],
-                              ),
+                            SizedBox(height: 16),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .onboardingDescription1 ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(color: Color(0XFF696969)),
                             ),
                           ],
-                          carouselController:
-                              controller.carouselSliderController,
-                          options: CarouselOptions(
-                            onPageChanged: (index, reason) {
-                              controller.indexBanner.value = index.toDouble();
-                            },
-                            height: MediaQuery.of(context).size.height / 1.4,
-                            enableInfiniteScroll: false,
-                            autoPlay: false,
-                            disableCenter: true,
-                            viewportFraction: 1,
-                            padEnds: false,
-                          ),
                         ),
-                        SizedBox(height: 12),
-                        Center(
-                          child: DotsIndicator(
-                            dotsCount: 3,
-                            position: controller.indexBanner.value,
-                            decorator: DotsDecorator(
-                              spacing: EdgeInsets.symmetric(
-                                horizontal: 3,
-                                vertical: 4,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 16 * 8),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: AspectRatio(
+                                aspectRatio: 343 / 244,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Image.asset(
+                                    "assets/images/img_onboarding_introduction_2.png",
+                                    fit: BoxFit.cover,
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
+                                ),
                               ),
-                              color: controller
-                                  .themeColorServices
-                                  .neutralsColorGrey300
-                                  .value,
-                              activeColor: controller
-                                  .themeColorServices
-                                  .primaryBlue
-                                  .value,
                             ),
+                            SizedBox(height: 16 * 2),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .onboardingTitle2 ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .headingSmallBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .textColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .onboardingDescription1 ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(color: Color(0XFF696969)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 16 * 8),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: AspectRatio(
+                                aspectRatio: 343 / 244,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Image.asset(
+                                    "assets/images/img_onboarding_introduction_3.png",
+                                    fit: BoxFit.cover,
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 16 * 2),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .onboardingTitle3 ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .headingSmallBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .textColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .onboardingDescription3 ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(color: Color(0XFF696969)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                    carouselController: controller.carouselSliderController,
+                    options: CarouselOptions(
+                      onPageChanged: (index, reason) {
+                        controller.indexBanner.value = index.toDouble();
+                      },
+                      height: MediaQuery.of(context).size.height,
+                      enableInfiniteScroll: false,
+                      autoPlay: false,
+                      disableCenter: true,
+                      viewportFraction: 1,
+                      padEnds: false,
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 12),
+                      Center(
+                        child: DotsIndicator(
+                          dotsCount: 3,
+                          position: controller.indexBanner.value,
+                          decorator: DotsDecorator(
+                            spacing: EdgeInsets.symmetric(
+                              horizontal: 3,
+                              vertical: 4,
+                            ),
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey300
+                                .value,
+                            activeColor:
+                                controller.themeColorServices.primaryBlue.value,
                           ),
                         ),
-                        SizedBox(height: 12),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                      ),
+                    ],
                   ),
                 ],
               ),
