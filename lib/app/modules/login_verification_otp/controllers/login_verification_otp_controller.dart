@@ -90,8 +90,6 @@ class LoginVerificationOtpController extends GetxController {
 
       Get.offAllNamed(Routes.HOME);
     } catch (e) {
-      Get.offAllNamed(Routes.LOGIN);
-
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,
