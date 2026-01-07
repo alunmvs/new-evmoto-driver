@@ -46,6 +46,8 @@ import '../modules/login_verification_otp/bindings/login_verification_otp_bindin
 import '../modules/login_verification_otp/views/login_verification_otp_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
+import '../modules/order_call/bindings/order_call_binding.dart';
+import '../modules/order_call/views/order_call_view.dart';
 import '../modules/order_chat/bindings/order_chat_binding.dart';
 import '../modules/order_chat/views/order_chat_view.dart';
 import '../modules/order_detail/bindings/order_detail_binding.dart';
@@ -295,6 +297,11 @@ class AppPages {
       name: _Paths.HISTORY_BALANCE_RECHARGE,
       page: () => const HistoryBalanceRechargeView(),
       binding: HistoryBalanceRechargeBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_CALL,
+      page: () => const OrderCallView(),
+      binding: OrderCallBinding(),
     ),
   ];
 }

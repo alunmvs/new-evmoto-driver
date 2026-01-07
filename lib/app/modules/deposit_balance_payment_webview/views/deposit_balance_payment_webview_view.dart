@@ -18,7 +18,6 @@ class DepositBalancePaymentWebviewView
           await controller.showDialogBackButton();
         }
       },
-
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,

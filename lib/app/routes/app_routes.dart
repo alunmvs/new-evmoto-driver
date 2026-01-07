@@ -48,6 +48,7 @@ abstract class Routes {
   static const HISTORY_BALANCE_REVENUE = _Paths.HISTORY_BALANCE_REVENUE;
   static const HISTORY_BALANCE_WITHDRAW = _Paths.HISTORY_BALANCE_WITHDRAW;
   static const HISTORY_BALANCE_RECHARGE = _Paths.HISTORY_BALANCE_RECHARGE;
+  static const ORDER_CALL = _Paths.ORDER_CALL;
 }
 
 abstract class _Paths {
@@ -97,4 +98,5 @@ abstract class _Paths {
   static const HISTORY_BALANCE_REVENUE = '/history-balance-revenue';
   static const HISTORY_BALANCE_WITHDRAW = '/history-balance-withdraw';
   static const HISTORY_BALANCE_RECHARGE = '/history-balance-recharge';
+  static const ORDER_CALL = '/order-call';
 }
