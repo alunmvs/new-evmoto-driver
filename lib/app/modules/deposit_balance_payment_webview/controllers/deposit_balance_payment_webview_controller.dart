@@ -27,27 +27,43 @@ class DepositBalancePaymentWebviewController extends GetxController {
       NavigationDelegate(
         onNavigationRequest: (request) async {
           var uri = Uri.parse(request.url);
-          try {
-            await paymentRepository.redirectUrlDepositBalance(
-              orderId: uri.queryParameters['order_id'].toString(),
-              statusCode: uri.queryParameters['status_code'].toString(),
-              transactionStatus: uri.queryParameters['transaction_status']
-                  .toString(),
-            );
-          } catch (e) {}
-          Get.back();
-          Get.back();
-          final SnackBar snackBar = SnackBar(
-            behavior: SnackBarBehavior.fixed,
-            backgroundColor: themeColorServices.sematicColorGreen400.value,
-            content: Text(
-              "Saldo berhasil ditambah",
-              style: typographyServices.bodySmallRegular.value.copyWith(
-                color: themeColorServices.neutralsColorGrey0.value,
+          if (uri.queryParameters['transaction_status'].toString() ==
+              "settlement") {
+            try {
+              await paymentRepository.redirectUrlDepositBalance(
+                orderId: uri.queryParameters['order_id'].toString(),
+                statusCode: uri.queryParameters['status_code'].toString(),
+                transactionStatus: uri.queryParameters['transaction_status']
+                    .toString(),
+              );
+            } catch (e) {}
+            Get.back();
+            Get.back();
+            final SnackBar snackBar = SnackBar(
+              behavior: SnackBarBehavior.fixed,
+              backgroundColor: themeColorServices.sematicColorGreen400.value,
+              content: Text(
+                "Saldo berhasil ditambah",
+                style: typographyServices.bodySmallRegular.value.copyWith(
+                  color: themeColorServices.neutralsColorGrey0.value,
+                ),
               ),
-            ),
-          );
-          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+            );
+            rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+          } else if (uri.queryParameters['action'].toString() == "abandoned") {
+            Get.back();
+            final SnackBar snackBar = SnackBar(
+              behavior: SnackBarBehavior.fixed,
+              backgroundColor: themeColorServices.sematicColorRed400.value,
+              content: Text(
+                "Transaksi kedaluwarsa",
+                style: typographyServices.bodySmallRegular.value.copyWith(
+                  color: themeColorServices.neutralsColorGrey0.value,
+                ),
+              ),
+            );
+            rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+          }
           return NavigationDecision.prevent;
         },
       ),
