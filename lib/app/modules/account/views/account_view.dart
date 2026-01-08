@@ -202,78 +202,78 @@ class AccountView extends GetView<AccountController> {
                             ),
                             child: Column(
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(Routes.ACCOUNT_MY_EVALUATION);
-                                  },
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    padding: EdgeInsets.all(16),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/icons/icon_account_my_evaluation.svg",
-                                                width: 20,
-                                                height: 20,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 16),
-                                        Expanded(
-                                          child: Text(
-                                            controller
-                                                    .languageServices
-                                                    .language
-                                                    .value
-                                                    .myEvaluation ??
-                                                "-",
-                                            style: controller
-                                                .typographyServices
-                                                .bodySmallBold
-                                                .value,
-                                          ),
-                                        ),
-                                        SizedBox(width: 16),
-                                        SizedBox(
-                                          width: 19,
-                                          height: 19,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/icons/icon_arrow_right.svg",
-                                                width: 4.75,
-                                                height: 9.5,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                  ),
-                                  child: Divider(
-                                    height: 0,
-                                    color: Color(0XFFE8E8E8),
-                                  ),
-                                ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     Get.toNamed(Routes.ACCOUNT_MY_EVALUATION);
+                                //   },
+                                //   child: Container(
+                                //     color: Colors.transparent,
+                                //     padding: EdgeInsets.all(16),
+                                //     child: Row(
+                                //       children: [
+                                //         SizedBox(
+                                //           width: 20,
+                                //           height: 20,
+                                //           child: Row(
+                                //             mainAxisAlignment:
+                                //                 MainAxisAlignment.center,
+                                //             crossAxisAlignment:
+                                //                 CrossAxisAlignment.center,
+                                //             children: [
+                                //               SvgPicture.asset(
+                                //                 "assets/icons/icon_account_my_evaluation.svg",
+                                //                 width: 20,
+                                //                 height: 20,
+                                //               ),
+                                //             ],
+                                //           ),
+                                //         ),
+                                //         SizedBox(width: 16),
+                                //         Expanded(
+                                //           child: Text(
+                                //             controller
+                                //                     .languageServices
+                                //                     .language
+                                //                     .value
+                                //                     .myEvaluation ??
+                                //                 "-",
+                                //             style: controller
+                                //                 .typographyServices
+                                //                 .bodySmallBold
+                                //                 .value,
+                                //           ),
+                                //         ),
+                                //         SizedBox(width: 16),
+                                //         SizedBox(
+                                //           width: 19,
+                                //           height: 19,
+                                //           child: Row(
+                                //             mainAxisAlignment:
+                                //                 MainAxisAlignment.center,
+                                //             crossAxisAlignment:
+                                //                 CrossAxisAlignment.center,
+                                //             children: [
+                                //               SvgPicture.asset(
+                                //                 "assets/icons/icon_arrow_right.svg",
+                                //                 width: 4.75,
+                                //                 height: 9.5,
+                                //               ),
+                                //             ],
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
+                                // Padding(
+                                //   padding: const EdgeInsets.symmetric(
+                                //     horizontal: 16,
+                                //   ),
+                                //   child: Divider(
+                                //     height: 0,
+                                //     color: Color(0XFFE8E8E8),
+                                //   ),
+                                // ),
                                 GestureDetector(
                                   onTap: () {
                                     Get.toNamed(Routes.ACCOUNT_FEEDBACK);
@@ -487,80 +487,81 @@ class AccountView extends GetView<AccountController> {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                  ),
-                                  child: Divider(
-                                    height: 0,
-                                    color: Color(0XFFE8E8E8),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(
-                                      Routes.ACCOUNT_UPDATE_MOBILE_PHONE,
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(16),
-                                    color: Colors.transparent,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 22,
-                                          height: 22,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/icons/icon_account_switch.svg",
-                                                width: 18.33,
-                                                height: 18.33,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: 16),
-                                        Expanded(
-                                          child: Text(
-                                            controller
-                                                    .languageServices
-                                                    .language
-                                                    .value
-                                                    .changeMobileNumber ??
-                                                "-",
-                                            style: controller
-                                                .typographyServices
-                                                .bodySmallBold
-                                                .value,
-                                          ),
-                                        ),
-                                        SizedBox(width: 16),
-                                        SizedBox(
-                                          width: 19,
-                                          height: 19,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/icons/icon_arrow_right.svg",
-                                                width: 4.75,
-                                                height: 9.5,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+
+                                // Padding(
+                                //   padding: const EdgeInsets.symmetric(
+                                //     horizontal: 16,
+                                //   ),
+                                //   child: Divider(
+                                //     height: 0,
+                                //     color: Color(0XFFE8E8E8),
+                                //   ),
+                                // ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     Get.toNamed(
+                                //       Routes.ACCOUNT_UPDATE_MOBILE_PHONE,
+                                //     );
+                                //   },
+                                //   child: Container(
+                                //     padding: EdgeInsets.all(16),
+                                //     color: Colors.transparent,
+                                //     child: Row(
+                                //       children: [
+                                //         SizedBox(
+                                //           width: 22,
+                                //           height: 22,
+                                //           child: Row(
+                                //             mainAxisAlignment:
+                                //                 MainAxisAlignment.center,
+                                //             crossAxisAlignment:
+                                //                 CrossAxisAlignment.center,
+                                //             children: [
+                                //               SvgPicture.asset(
+                                //                 "assets/icons/icon_account_switch.svg",
+                                //                 width: 18.33,
+                                //                 height: 18.33,
+                                //               ),
+                                //             ],
+                                //           ),
+                                //         ),
+                                //         SizedBox(width: 16),
+                                //         Expanded(
+                                //           child: Text(
+                                //             controller
+                                //                     .languageServices
+                                //                     .language
+                                //                     .value
+                                //                     .changeMobileNumber ??
+                                //                 "-",
+                                //             style: controller
+                                //                 .typographyServices
+                                //                 .bodySmallBold
+                                //                 .value,
+                                //           ),
+                                //         ),
+                                //         SizedBox(width: 16),
+                                //         SizedBox(
+                                //           width: 19,
+                                //           height: 19,
+                                //           child: Row(
+                                //             mainAxisAlignment:
+                                //                 MainAxisAlignment.center,
+                                //             crossAxisAlignment:
+                                //                 CrossAxisAlignment.center,
+                                //             children: [
+                                //               SvgPicture.asset(
+                                //                 "assets/icons/icon_arrow_right.svg",
+                                //                 width: 4.75,
+                                //                 height: 9.5,
+                                //               ),
+                                //             ],
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
@@ -578,7 +579,9 @@ class AccountView extends GetView<AccountController> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    await controller.onTapShareAppLink();
+                                    await controller.onTapShareAppLink(
+                                      context: context,
+                                    );
                                   },
                                   child: Container(
                                     color: Colors.transparent,
