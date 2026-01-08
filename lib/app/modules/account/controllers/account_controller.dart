@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -49,14 +51,32 @@ class AccountController extends GetxController {
     packageVersion.value = packageInfo.version;
   }
 
-  Future<void> onTapShareAppLink() async {
-    var shareParams = ShareParams(
-      uri: Uri.parse(
-        "https://play.google.com/store/apps/details?id=com.evmoto.driver.app",
-      ),
-    );
+  Future<void> onTapShareAppLink({required BuildContext context}) async {
+    final box = context.findRenderObject() as RenderBox?;
 
-    await SharePlus.instance.share(shareParams);
+    if (Platform.isAndroid) {
+      var shareParams = ShareParams(
+        uri: Uri.parse(
+          firebaseRemoteConfigServices.remoteConfig.getString(
+            "driver_playstore_link",
+          ),
+        ),
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      );
+
+      await SharePlus.instance.share(shareParams);
+    } else if (Platform.isIOS) {
+      var shareParams = ShareParams(
+        uri: Uri.parse(
+          firebaseRemoteConfigServices.remoteConfig.getString(
+            "driver_appstore_link",
+          ),
+        ),
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      );
+
+      await SharePlus.instance.share(shareParams);
+    }
   }
 
   Future<void> onTapLogout() async {

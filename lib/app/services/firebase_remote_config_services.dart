@@ -15,8 +15,11 @@ class FirebaseRemoteConfigServices extends GetxService {
     );
 
     await remoteConfig.setDefaults({
-      "driver_base_url": "http://api-dev.evmotoapp.com:8500",
-      "driver_cs_whatsapp": "628123456789",
+      "driver_base_url": "http://api-dev.evmotoapp.com",
+      "driver_cs_whatsapp": "6285167020937",
+      "driver_appstore_link": "https://apps.apple.com/id/app/id6757465813",
+      "driver_playstore_link":
+          "https://play.google.com/store/apps/details?id=com.evmoto.driver.app",
     });
 
     await remoteConfig.fetchAndActivate();
