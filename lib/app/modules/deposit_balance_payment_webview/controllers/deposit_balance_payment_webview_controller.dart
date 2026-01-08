@@ -64,7 +64,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
             );
             rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
           }
-          return NavigationDecision.prevent;
+          return NavigationDecision.navigate;
         },
       ),
     );
