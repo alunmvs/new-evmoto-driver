@@ -18,7 +18,6 @@ class OrderCallView extends GetView<OrderCallController> {
       () => PopScope(
         canPop: true,
         onPopInvokedWithResult: (didPop, result) async {
-          print("ini state $result");
           if (result == true) {
             await FirebaseFirestore.instance
                 .collection('evmoto_order_chat_calls')

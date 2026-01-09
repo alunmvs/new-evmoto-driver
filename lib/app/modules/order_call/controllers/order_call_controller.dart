@@ -88,11 +88,9 @@ class OrderCallController extends GetxController {
     peerConnection!.onSignalingState = (state) {};
 
     peerConnection!.onConnectionState = (state) async {
-      print("ini state ${state}");
       if (state == RTCPeerConnectionState.RTCPeerConnectionStateClosed) {
         if (Get.currentRoute == Routes.ORDER_CALL) {
           Get.back(result: true);
-          print("ini state back connection state");
         }
       }
     };
@@ -247,7 +245,6 @@ class OrderCallController extends GetxController {
             if (evmotoOrderChatCalls.value.callEndedAt != null) {
               if (Get.currentRoute == Routes.ORDER_CALL) {
                 Get.back(result: true);
-                print("ini state back firestore");
               }
             }
           }
@@ -411,5 +408,10 @@ class OrderCallController extends GetxController {
         .collection('evmoto_order_chat_calls')
         .doc(docsId.value)
         .set({'driver_call_file_url': callFileUrl}, SetOptions(merge: true));
+
+    var file = File(outputFilePath);
+    if (await file.exists()) {
+      await file.delete();
+    }
   }
 }
