@@ -101,12 +101,12 @@ class HomeController extends GetxController
     tabController = TabController(length: 3, vsync: this);
     await requestLocation();
     await refreshAll();
-    await Future.wait([socketServices.setupWebsocket()]);
     isFetch.value = false;
 
     ShowcaseView.register();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await displayCoachmark();
+      await Future.wait([socketServices.setupWebsocket()]);
     });
   }
 

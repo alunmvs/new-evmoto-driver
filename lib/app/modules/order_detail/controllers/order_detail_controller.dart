@@ -17,6 +17,7 @@ import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_driver/app/utils/location_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -59,6 +60,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   final isSchedulerDriverCurrentLocationIsProcess = false.obs;
   final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
 
+  final isLocationReadyStatus = false.obs;
   final isFetch = false.obs;
 
   @override
@@ -67,52 +69,68 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     isFetch.value = true;
     orderId.value = Get.arguments['order_id'].toString();
     orderType.value = Get.arguments['order_type'];
-    await requestLocation();
-    await getOrderDetail();
-    await joinFirestoreChatRooms();
-    WidgetsBinding.instance.addObserver(this);
-    isFetch.value = false;
 
-    if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
-      await setupGoogleMapsPickUpCustomer();
-    }
+    isLocationReadyStatus.value = await isLocationReady();
 
-    if (orderDetail.value.state == 4 ||
-        orderDetail.value.state == 5 ||
-        orderDetail.value.state == 6) {
-      await setupGoogleMapOriginToDestination();
-    }
+    if (isLocationReadyStatus.value == true) {
+      await requestLocation();
+      await getOrderDetail();
+      await joinFirestoreChatRooms();
+      WidgetsBinding.instance.addObserver(this);
+      isFetch.value = false;
 
-    await Future.wait([
-      setupSchedulerDriverCurrentLocation(),
-      setupSchedulerDriverRefocusMapBound(),
-    ]);
+      if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
+        await setupGoogleMapsPickUpCustomer();
+      }
 
-    if ([7].contains(orderDetail.value.state)) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.offAndToNamed(
-          Routes.ORDER_PAYMENT_CONFIRMATION,
-          arguments: {"order_id": orderId.value, "order_type": orderType.value},
-        );
-      });
-    }
+      if (orderDetail.value.state == 4 ||
+          orderDetail.value.state == 5 ||
+          orderDetail.value.state == 6) {
+        await setupGoogleMapOriginToDestination();
+      }
 
-    if ([8, 9].contains(orderDetail.value.state)) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.offAndToNamed(
-          Routes.ORDER_DETAIL_DONE,
-          arguments: {"order_id": orderId.value, "order_type": orderType.value},
-        );
-      });
-    }
+      await Future.wait([
+        setupSchedulerDriverCurrentLocation(),
+        setupSchedulerDriverRefocusMapBound(),
+      ]);
 
-    if (orderDetail.value.state == 10) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.offAndToNamed(
-          Routes.ORDER_DETAIL_CANCEL,
-          arguments: {"order_id": orderId.value, "order_type": orderType.value},
-        );
-      });
+      if ([7].contains(orderDetail.value.state)) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Get.offAndToNamed(
+            Routes.ORDER_PAYMENT_CONFIRMATION,
+            arguments: {
+              "order_id": orderId.value,
+              "order_type": orderType.value,
+            },
+          );
+        });
+      }
+
+      if ([8, 9].contains(orderDetail.value.state)) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Get.offAndToNamed(
+            Routes.ORDER_DETAIL_DONE,
+            arguments: {
+              "order_id": orderId.value,
+              "order_type": orderType.value,
+            },
+          );
+        });
+      }
+
+      if (orderDetail.value.state == 10) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Get.offAndToNamed(
+            Routes.ORDER_DETAIL_CANCEL,
+            arguments: {
+              "order_id": orderId.value,
+              "order_type": orderType.value,
+            },
+          );
+        });
+      }
+    } else {
+      isFetch.value = false;
     }
   }
 
