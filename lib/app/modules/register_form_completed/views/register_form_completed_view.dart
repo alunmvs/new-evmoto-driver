@@ -40,7 +40,12 @@ class RegisterFormCompletedView
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Informasi Sudah Dilengkapi",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .registerCompleteTitle ??
+                              "-",
                           style: controller
                               .typographyServices
                               .headingSmallBold
@@ -54,7 +59,12 @@ class RegisterFormCompletedView
                         ),
                         SizedBox(height: 8),
                         Text(
-                          "Mohon menunggu konfirmasi lanjutan",
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .registerCompleteDescription ??
+                              "-",
                           style: controller
                               .typographyServices
                               .bodySmallRegular
@@ -97,7 +107,12 @@ class RegisterFormCompletedView
                             children: [
                               SizedBox(height: 19),
                               Text(
-                                "DATA YANG DIKIRIM BERHASIL",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .registerCompleteTitle1 ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodyLargeBold
@@ -111,7 +126,12 @@ class RegisterFormCompletedView
                               ),
                               SizedBox(height: 16),
                               Text(
-                                "Terima kasih telah memilih untuk bergabung dengan Keluarga EVMOTO. Tim kami akan menghubungi Anda dalam waktu 2 jam untuk mengonfirmasi informasi yang relevan. Mohon pastikan telepon Anda tetap aktif. Terima kasih atas dukungan dan pengertian Anda.",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .registerCompleteDescription1 ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -174,7 +194,8 @@ class RegisterFormCompletedView
                     ),
                   ),
                   child: Text(
-                    "Konfirmasi",
+                    controller.languageServices.language.value.confirmation ??
+                        "-",
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(color: Colors.white),
                   ),

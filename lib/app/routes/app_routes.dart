@@ -36,6 +36,19 @@ abstract class Routes {
   static const ACTIVITY = _Paths.ACTIVITY;
   static const ORDER_DETAIL_DONE = _Paths.ORDER_DETAIL_DONE;
   static const ORDER_DETAIL_CANCEL = _Paths.ORDER_DETAIL_CANCEL;
+  static const ORDER_CHAT = _Paths.ORDER_CHAT;
+  static const SWITCH_VEHICLE = _Paths.SWITCH_VEHICLE;
+  static const WITHDRAW = _Paths.WITHDRAW;
+  static const ADD_EDIT_WITHDRAW_BANK_ACCOUNT =
+      _Paths.ADD_EDIT_WITHDRAW_BANK_ACCOUNT;
+  static const WITHDRAW_AMOUNT = _Paths.WITHDRAW_AMOUNT;
+  static const WITHDRAW_DETAIL = _Paths.WITHDRAW_DETAIL;
+  static const PHOTO_VIEWER = _Paths.PHOTO_VIEWER;
+  static const HISTORY_BALANCE_ALL = _Paths.HISTORY_BALANCE_ALL;
+  static const HISTORY_BALANCE_REVENUE = _Paths.HISTORY_BALANCE_REVENUE;
+  static const HISTORY_BALANCE_WITHDRAW = _Paths.HISTORY_BALANCE_WITHDRAW;
+  static const HISTORY_BALANCE_RECHARGE = _Paths.HISTORY_BALANCE_RECHARGE;
+  static const ORDER_CALL = _Paths.ORDER_CALL;
 }
 
 abstract class _Paths {
@@ -73,4 +86,17 @@ abstract class _Paths {
   static const ACTIVITY = '/activity';
   static const ORDER_DETAIL_DONE = '/order-detail-done';
   static const ORDER_DETAIL_CANCEL = '/order-detail-cancel';
+  static const ORDER_CHAT = '/order-chat';
+  static const SWITCH_VEHICLE = '/switch-vehicle';
+  static const WITHDRAW = '/withdraw';
+  static const ADD_EDIT_WITHDRAW_BANK_ACCOUNT =
+      '/add-edit-withdraw-bank-account';
+  static const WITHDRAW_AMOUNT = '/withdraw-amount';
+  static const WITHDRAW_DETAIL = '/withdraw-detail';
+  static const PHOTO_VIEWER = '/photo-viewer';
+  static const HISTORY_BALANCE_ALL = '/history-balance-all';
+  static const HISTORY_BALANCE_REVENUE = '/history-balance-revenue';
+  static const HISTORY_BALANCE_WITHDRAW = '/history-balance-withdraw';
+  static const HISTORY_BALANCE_RECHARGE = '/history-balance-recharge';
+  static const ORDER_CALL = '/order-call';
 }

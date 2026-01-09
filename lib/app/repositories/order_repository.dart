@@ -175,8 +175,6 @@ class OrderRepository {
         options: Options(headers: headers),
       );
 
-      print(response.data);
-
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }

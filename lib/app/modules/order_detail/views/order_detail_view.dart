@@ -1,11 +1,10 @@
 import 'package:action_slider/action_slider.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 
 import '../controllers/order_detail_controller.dart';
 
@@ -118,103 +117,216 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                               .value,
                                         ),
                                       ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                controller
-                                                    .orderDetail
-                                                    .value
-                                                    .nickName
-                                                    .toString(),
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodySmallBold
-                                                    .value
-                                                    .copyWith(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .textColor
-                                                          .value,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                              ),
-                                              Text(
-                                                "${controller.orderDetail.value.historyNum} Rides",
-                                                style: controller
-                                                    .typographyServices
-                                                    .captionLargeRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .imageUploadVerticalDividerColor
-                                                          .value,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                              ),
-                                            ],
+                                          Text(
+                                            controller
+                                                .orderDetail
+                                                .value
+                                                .nickName
+                                                .toString(),
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: Color(0XFFB3B3B3),
+                                                ),
                                           ),
+                                          SizedBox(height: 4),
                                           Row(
-                                            mainAxisSize: MainAxisSize.min,
                                             children: [
-                                              Container(
-                                                width: 34,
-                                                height: 34,
-                                                decoration: BoxDecoration(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .primaryBlue
-                                                      .value,
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                              Expanded(
+                                                child: Column(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    SvgPicture.asset(
-                                                      "assets/icons/icon_call.svg",
-                                                      width: 21.15,
-                                                      height: 21.15,
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 16,
+                                                          height: 16,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                "assets/icons/icon_passenger.svg",
+                                                                width: 11.7,
+                                                                height: 14.17,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 4),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              controller
+                                                                      .orderDetail
+                                                                      .value
+                                                                      .user ??
+                                                                  "-",
+                                                              style: controller
+                                                                  .typographyServices
+                                                                  .bodySmallRegular
+                                                                  .value
+                                                                  .copyWith(
+                                                                    color: controller
+                                                                        .themeColorServices
+                                                                        .textColor
+                                                                        .value,
+                                                                  ),
+                                                            ),
+                                                            SizedBox(height: 4),
+                                                            Row(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                SizedBox(
+                                                                  width: 16,
+                                                                  height: 16,
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      SvgPicture.asset(
+                                                                        "assets/icons/icon_star.svg",
+                                                                        width:
+                                                                            15,
+                                                                        height:
+                                                                            15,
+                                                                        color: controller
+                                                                            .themeColorServices
+                                                                            .sematicColorYellow400
+                                                                            .value,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 4,
+                                                                ),
+                                                                Text(
+                                                                  "5.0 (0)",
+                                                                  style: controller
+                                                                      .typographyServices
+                                                                      .bodySmallRegular
+                                                                      .value
+                                                                      .copyWith(
+                                                                        color: controller
+                                                                            .themeColorServices
+                                                                            .textColor
+                                                                            .value,
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              SizedBox(width: 8),
-                                              Container(
-                                                width: 34,
-                                                height: 34,
-                                                decoration: BoxDecoration(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .primaryBlue
-                                                      .value,
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      "assets/icons/icon_bubble_chat_2.svg",
-                                                      width: 21.15,
-                                                      height: 21.15,
+                                              SizedBox(width: 12),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      Get.toNamed(
+                                                        Routes.ORDER_CALL,
+                                                        arguments: {
+                                                          "call_type": "caller",
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      width: 34,
+                                                      height: 34,
+                                                      decoration: BoxDecoration(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .primaryBlue
+                                                            .value,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              8,
+                                                            ),
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                            "assets/icons/icon_call.svg",
+                                                            width: 21.15,
+                                                            height: 21.15,
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Get.toNamed(
+                                                        Routes.ORDER_CHAT,
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      width: 34,
+                                                      height: 34,
+                                                      decoration: BoxDecoration(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .primaryBlue
+                                                            .value,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              8,
+                                                            ),
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                            "assets/icons/icon_bubble_chat_2.svg",
+                                                            width: 21.15,
+                                                            height: 21.15,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
@@ -317,7 +429,12 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              "Dijemput",
+                                                              controller
+                                                                      .languageServices
+                                                                      .language
+                                                                      .value
+                                                                      .pickedUp ??
+                                                                  "-",
                                                               style: controller
                                                                   .typographyServices
                                                                   .bodySmallRegular
@@ -370,7 +487,12 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              "Lokasi Tujuan",
+                                                              controller
+                                                                      .languageServices
+                                                                      .language
+                                                                      .value
+                                                                      .destinationLocation ??
+                                                                  "-",
                                                               style: controller
                                                                   .typographyServices
                                                                   .bodySmallRegular
@@ -650,8 +772,18 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         children: [
                                           Text(
                                             state.position >= 0.5
-                                                ? "Sedang menjemput"
-                                                : "Berangkat menjemput",
+                                                ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .pickingUp ??
+                                                      "-"
+                                                : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .departToPickup ??
+                                                      "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeRegular
@@ -760,8 +892,18 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         children: [
                                           Text(
                                             state.position >= 0.5
-                                                ? "Sedang menjemput"
-                                                : "Berangkat menjemput",
+                                                ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .arriveAtThePickUpLocation ??
+                                                      "-"
+                                                : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .arriveAtThePickUpLocation ??
+                                                      "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeRegular
@@ -870,8 +1012,18 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         children: [
                                           Text(
                                             state.position >= 0.5
-                                                ? "Sedang mengantar"
-                                                : "Mengantar penumpang",
+                                                ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .delivering ??
+                                                      "-"
+                                                : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .deliveringPassengers ??
+                                                      "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeRegular
@@ -981,8 +1133,18 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         children: [
                                           Text(
                                             state.position >= 0.5
-                                                ? "Selesai mengantar penumpang"
-                                                : "Selesai mengantar penumpang",
+                                                ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .finishedDroppingOffPassenger ??
+                                                      "-"
+                                                : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .finishedDroppingOffPassenger ??
+                                                      "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodyLargeRegular
@@ -1022,7 +1184,12 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     await controller.onTapCancelOrder();
                                   },
                                   child: Text(
-                                    "Batalkan",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .cancel ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodyLargeBold

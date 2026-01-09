@@ -19,6 +19,7 @@ import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/vehicle_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
@@ -28,6 +29,7 @@ import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class HomeController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -47,6 +49,7 @@ class HomeController extends GetxController
   final typographyServices = Get.find<TypographyServices>();
   final pushNotificationServices = Get.find<PushNotificationServices>();
   final socketServices = Get.find<SocketServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
@@ -70,8 +73,25 @@ class HomeController extends GetxController
 
   final serviceOrderList = <ServiceOrder>[].obs;
 
+  // coachmark
+  final activityStatisticsGlobalKey = GlobalKey();
+  final buttonSeeAllMyActivityGlobalKey = GlobalKey();
+  final buttonOfflineOnlineGlobalKey = GlobalKey();
+  final balanceGlobalKey = GlobalKey();
+  final topUpGlobalKey = GlobalKey();
+  final withdrawGlobalKey = GlobalKey();
+  final historyGlobalKey = GlobalKey();
+  final menuGlobalKey = GlobalKey();
+
+  final coachmarkWorkStatus = 2.obs;
+  final isCoachmarkActive = false.obs;
+
   final workStatus = 2.obs;
   final selectedIndex = 0.obs;
+
+  final lastPressedBackDateTime = DateTime.now().obs;
+  final errorInfoBottomSheet = "".obs;
+
   final isFetch = false.obs;
 
   @override
@@ -81,8 +101,13 @@ class HomeController extends GetxController
     tabController = TabController(length: 3, vsync: this);
     await requestLocation();
     await refreshAll();
-    await socketServices.setupWebsocket();
+    await Future.wait([socketServices.setupWebsocket()]);
     isFetch.value = false;
+
+    ShowcaseView.register();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await displayCoachmark();
+    });
   }
 
   @override
@@ -272,6 +297,7 @@ class HomeController extends GetxController
         workStatus.value = 2;
       }
     } catch (e) {
+      errorInfoBottomSheet.value = e.toString();
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,
@@ -320,29 +346,39 @@ class HomeController extends GetxController
   String getStringOrderState({required int state}) {
     switch (state) {
       case OrderState.WAITING_LIST:
-        return 'Daftar Tunggu';
+        return languageServices.language.value.orderStateWaitingList ?? "-";
       case OrderState.TO_BE_STARTED:
-        return 'Dimulai';
+        return languageServices.language.value.orderStateToBeStarted ?? "-";
       case OrderState.SCHEDULED_ARRIVAL_PLACE:
-        return 'Tempat Kedatangan';
+        return languageServices
+                .language
+                .value
+                .orderStateScheduledArrivalPlace ??
+            "-";
       case OrderState.WAIT_FOR_PASSENGERS_TO_BOARD:
-        return 'Tunggu Penumpang untuk Naik';
+        return languageServices
+                .language
+                .value
+                .orderStateWaitForPassengersToBoard ??
+            "-";
       case OrderState.SERVING:
-        return 'Sedang Berlangsung';
+        return languageServices.language.value.orderStateServing ?? "-";
       case OrderState.COMPLETION_SERVICE:
-        return 'Layanan Penyelesaian';
+        return languageServices.language.value.orderStateCompletionService ??
+            "-";
       case OrderState.TO_BE_PAID:
-        return 'Akan Dibayarkan';
+        return languageServices.language.value.orderStateToBePaid ?? "-";
       case OrderState.TO_BE_EVALUATED:
-        return 'Akan Dievaluasi';
+        return languageServices.language.value.orderStateToBeEvaluated ?? "-";
       case OrderState.COMPLETED:
-        return 'Selesai';
+        return languageServices.language.value.orderStateCompleted ?? "-";
       case OrderState.CANCELLED:
-        return 'Dibatalkan';
+        return languageServices.language.value.orderStateCancelled ?? "-";
       case OrderState.BEING_REASSIGNED:
-        return 'Dialihkan';
+        return languageServices.language.value.orderStateBeingReassigned ?? "-";
       case OrderState.CANCEL_PENDING_PAYMENT:
-        return 'Batalkan Pembayaran yang Pending';
+        return languageServices.language.value.orderStateCancelPendingPayment ??
+            "-";
       default:
         return '-';
     }
@@ -401,15 +437,19 @@ class HomeController extends GetxController
       durationAccept.value = socketOrderStatusData.time ?? 0;
 
       late Timer timerDuration;
-      timerDuration = Timer.periodic(Duration(seconds: 1), (timer) {
+      timerDuration = Timer.periodic(Duration(seconds: 1), (timer) async {
         durationAccept.value -= 1;
         if (durationAccept.value == 0) {
+          await prefs.setBool(
+            'dialog_order_confirmation_${socketOrderStatusData.orderId}',
+            false,
+          );
           timerDuration.cancel();
           Get.close(1);
         }
       });
 
-      await Get.dialog(
+      var result = await Get.dialog(
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -458,8 +498,8 @@ class HomeController extends GetxController
                               ],
                             ),
                             GestureDetector(
-                              onTap: () {
-                                Get.close(1);
+                              onTap: () async {
+                                Get.back(result: true);
                               },
                               child: Container(
                                 width: 24,
@@ -488,23 +528,67 @@ class HomeController extends GetxController
                         child: Column(
                           children: [
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SvgPicture.asset(
-                                  "assets/icons/icon_clock.svg",
+                                SizedBox(
                                   width: 16,
                                   height: 16,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/icon_passenger.svg",
+                                        width: 11.7,
+                                        height: 14.17,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(width: 6),
-                                Text(
-                                  orderData.travelTime ?? "-",
-                                  style: typographyServices
-                                      .bodyLargeRegular
-                                      .value
-                                      .copyWith(
-                                        color:
-                                            themeColorServices.textColor.value,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        orderData.user ?? "-",
+                                        style: typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .textColor
+                                                  .value,
+                                            ),
                                       ),
+                                      Row(
+                                        children: [
+                                          SvgPicture.asset(
+                                            "assets/icons/icon_star.svg",
+                                            width: 9.17,
+                                            height: 10,
+                                            color: themeColorServices
+                                                .sematicColorYellow400
+                                                .value,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            "5.0 (0)",
+                                            style: typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: themeColorServices
+                                                      .textColor
+                                                      .value,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -524,7 +608,11 @@ class HomeController extends GetxController
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Dijemput",
+                                        languageServices
+                                                .language
+                                                .value
+                                                .pickedUp ??
+                                            "-",
                                         style: typographyServices
                                             .bodySmallRegular
                                             .value
@@ -566,7 +654,11 @@ class HomeController extends GetxController
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Lokasi Tujuan",
+                                        languageServices
+                                                .language
+                                                .value
+                                                .destinationLocation ??
+                                            "-",
                                         style: typographyServices
                                             .bodySmallRegular
                                             .value
@@ -642,7 +734,7 @@ class HomeController extends GetxController
                               boxShadow: [],
                               action: (actionController) async {
                                 actionController.loading();
-                                Get.close(1);
+                                Get.back(result: true);
                                 try {
                                   await orderRepository.grabOrder(
                                     orderType: socketOrderStatusData.orderType!,
@@ -819,6 +911,13 @@ class HomeController extends GetxController
         ),
       );
 
+      if (result != true) {
+        await prefs.setBool(
+          'dialog_order_confirmation_${socketOrderStatusData.orderId}',
+          false,
+        );
+      }
+
       try {
         timerDuration.cancel();
       } catch (e) {}
@@ -865,5 +964,119 @@ class HomeController extends GetxController
     );
     rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     await getServiceOrderList();
+  }
+
+  Future<void> displayCoachmark() async {
+    var prefs = await SharedPreferences.getInstance();
+    var isCoachmarkDisplayed = prefs.getBool('is_coachmark_displayed') ?? false;
+
+    if (isCoachmarkDisplayed == false) {
+      await Get.dialog(
+        barrierDismissible: false,
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Material(
+                  color: themeColorServices.neutralsColorGrey0.value,
+                  child: Column(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 325 / 110,
+                        child: Image.asset(
+                          "assets/images/img_coachmark.png",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              languageServices
+                                      .language
+                                      .value
+                                      .dialogCoachmarkTitle ??
+                                  "-",
+                              style: typographyServices.bodyLargeBold.value
+                                  .copyWith(
+                                    color: themeColorServices.textColor.value,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              languageServices
+                                      .language
+                                      .value
+                                      .dialogCoachmarkDescription ??
+                                  "-",
+                              style: typographyServices.bodySmallRegular.value
+                                  .copyWith(
+                                    color: themeColorServices.textColor.value,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 16),
+                            SizedBox(
+                              width: Get.width,
+                              height: 46,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  Get.close(1);
+
+                                  isCoachmarkActive.value = true;
+
+                                  ShowcaseView.get().startShowCase([
+                                    activityStatisticsGlobalKey,
+                                    buttonSeeAllMyActivityGlobalKey,
+                                    buttonOfflineOnlineGlobalKey,
+                                    balanceGlobalKey,
+                                    topUpGlobalKey,
+                                    withdrawGlobalKey,
+                                    historyGlobalKey,
+                                    menuGlobalKey,
+                                  ]);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      themeColorServices.primaryBlue.value,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
+                                child: Text(
+                                  languageServices
+                                          .language
+                                          .value
+                                          .dialogCoachmarkButton ??
+                                      "-",
+                                  style: typographyServices.bodySmallBold.value
+                                      .copyWith(
+                                        color: themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 }

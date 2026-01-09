@@ -24,10 +24,20 @@ import '../modules/account_user_guide/bindings/account_user_guide_binding.dart';
 import '../modules/account_user_guide/views/account_user_guide_view.dart';
 import '../modules/activity/bindings/activity_binding.dart';
 import '../modules/activity/views/activity_view.dart';
+import '../modules/add_edit_withdraw_bank_account/bindings/add_edit_withdraw_bank_account_binding.dart';
+import '../modules/add_edit_withdraw_bank_account/views/add_edit_withdraw_bank_account_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
 import '../modules/deposit_balance_payment_webview/views/deposit_balance_payment_webview_view.dart';
+import '../modules/history_balance_all/bindings/history_balance_all_binding.dart';
+import '../modules/history_balance_all/views/history_balance_all_view.dart';
+import '../modules/history_balance_recharge/bindings/history_balance_recharge_binding.dart';
+import '../modules/history_balance_recharge/views/history_balance_recharge_view.dart';
+import '../modules/history_balance_revenue/bindings/history_balance_revenue_binding.dart';
+import '../modules/history_balance_revenue/views/history_balance_revenue_view.dart';
+import '../modules/history_balance_withdraw/bindings/history_balance_withdraw_binding.dart';
+import '../modules/history_balance_withdraw/views/history_balance_withdraw_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -36,6 +46,10 @@ import '../modules/login_verification_otp/bindings/login_verification_otp_bindin
 import '../modules/login_verification_otp/views/login_verification_otp_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
+import '../modules/order_call/bindings/order_call_binding.dart';
+import '../modules/order_call/views/order_call_view.dart';
+import '../modules/order_chat/bindings/order_chat_binding.dart';
+import '../modules/order_chat/views/order_chat_view.dart';
 import '../modules/order_detail/bindings/order_detail_binding.dart';
 import '../modules/order_detail/views/order_detail_view.dart';
 import '../modules/order_detail_cancel/bindings/order_detail_cancel_binding.dart';
@@ -46,6 +60,8 @@ import '../modules/order_payment_confirmation/bindings/order_payment_confirmatio
 import '../modules/order_payment_confirmation/views/order_payment_confirmation_view.dart';
 import '../modules/order_payment_detail/bindings/order_payment_detail_binding.dart';
 import '../modules/order_payment_detail/views/order_payment_detail_view.dart';
+import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
+import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
 import '../modules/privacy_policy/views/privacy_policy_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -58,8 +74,16 @@ import '../modules/register_verification_otp/bindings/register_verification_otp_
 import '../modules/register_verification_otp/views/register_verification_otp_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
+import '../modules/switch_vehicle/bindings/switch_vehicle_binding.dart';
+import '../modules/switch_vehicle/views/switch_vehicle_view.dart';
 import '../modules/terms_and_conditions/bindings/terms_and_conditions_binding.dart';
 import '../modules/terms_and_conditions/views/terms_and_conditions_view.dart';
+import '../modules/withdraw/bindings/withdraw_binding.dart';
+import '../modules/withdraw/views/withdraw_view.dart';
+import '../modules/withdraw_amount/bindings/withdraw_amount_binding.dart';
+import '../modules/withdraw_amount/views/withdraw_amount_view.dart';
+import '../modules/withdraw_detail/bindings/withdraw_detail_binding.dart';
+import '../modules/withdraw_detail/views/withdraw_detail_view.dart';
 
 part 'app_routes.dart';
 
@@ -218,6 +242,66 @@ class AppPages {
       name: _Paths.ORDER_DETAIL_CANCEL,
       page: () => const OrderDetailCancelView(),
       binding: OrderDetailCancelBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_CHAT,
+      page: () => const OrderChatView(),
+      binding: OrderChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.SWITCH_VEHICLE,
+      page: () => const SwitchVehicleView(),
+      binding: SwitchVehicleBinding(),
+    ),
+    GetPage(
+      name: _Paths.WITHDRAW,
+      page: () => const WithdrawView(),
+      binding: WithdrawBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_EDIT_WITHDRAW_BANK_ACCOUNT,
+      page: () => const AddEditWithdrawBankAccountView(),
+      binding: AddEditWithdrawBankAccountBinding(),
+    ),
+    GetPage(
+      name: _Paths.WITHDRAW_AMOUNT,
+      page: () => const WithdrawAmountView(),
+      binding: WithdrawAmountBinding(),
+    ),
+    GetPage(
+      name: _Paths.WITHDRAW_DETAIL,
+      page: () => const WithdrawDetailView(),
+      binding: WithdrawDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.PHOTO_VIEWER,
+      page: () => const PhotoViewerView(),
+      binding: PhotoViewerBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_BALANCE_ALL,
+      page: () => const HistoryBalanceAllView(),
+      binding: HistoryBalanceAllBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_BALANCE_REVENUE,
+      page: () => const HistoryBalanceRevenueView(),
+      binding: HistoryBalanceRevenueBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_BALANCE_WITHDRAW,
+      page: () => const HistoryBalanceWithdrawView(),
+      binding: HistoryBalanceWithdrawBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_BALANCE_RECHARGE,
+      page: () => const HistoryBalanceRechargeView(),
+      binding: HistoryBalanceRechargeBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_CALL,
+      page: () => const OrderCallView(),
+      binding: OrderCallBinding(),
     ),
   ];
 }

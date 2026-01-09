@@ -49,7 +49,12 @@ class RegisterVerificationOtpView
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Lengkapi Verifikasi Kode",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .validateOtpTitle ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .headingSmallBold
@@ -63,7 +68,12 @@ class RegisterVerificationOtpView
                               ),
                               SizedBox(height: 8),
                               Text(
-                                "Masukan 4 kode untuk melanjutkan",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .validateOtpSubtitle ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -86,7 +96,12 @@ class RegisterVerificationOtpView
                       ),
                       SizedBox(height: 16),
                       Text(
-                        "Verifikasi Kode",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .verificationCode ??
+                            "-",
                         style: controller
                             .typographyServices
                             .bodyLargeRegular
@@ -186,7 +201,12 @@ class RegisterVerificationOtpView
                                 ),
                               ),
                               child: Text(
-                                "Kirim ulang kode",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .resendVerificationCode ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallBold
@@ -215,7 +235,12 @@ class RegisterVerificationOtpView
                             ),
                           ),
                           child: Text(
-                            "Lanjutkan",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .buttonNext ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallBold

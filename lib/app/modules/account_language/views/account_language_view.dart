@@ -12,7 +12,7 @@ class AccountLanguageView extends GetView<AccountLanguageController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Pilih Bahasa",
+            controller.languageServices.language.value.selectLanguage ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -35,7 +35,8 @@ class AccountLanguageView extends GetView<AccountLanguageController> {
                 children: [
                   SizedBox(height: 16),
                   Text(
-                    "Pilih Bahasa",
+                    controller.languageServices.language.value.selectLanguage ??
+                        "-",
                     style: controller.typographyServices.bodySmallBold.value,
                   ),
                   SizedBox(height: 8),
@@ -224,7 +225,7 @@ class AccountLanguageView extends GetView<AccountLanguageController> {
                     ),
                   ),
                   child: Text(
-                    "Simpan",
+                    controller.languageServices.language.value.save ?? "-",
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(color: Colors.white),
                   ),

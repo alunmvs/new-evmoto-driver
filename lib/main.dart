@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
@@ -13,6 +14,7 @@ import 'package:new_evmoto_driver/app/services/push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'app/routes/app_pages.dart';
 
@@ -21,6 +23,8 @@ final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeDateFormatting('id_ID', null);
 
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
@@ -56,6 +60,16 @@ Future<void> main() async {
   runApp(
     GetMaterialApp(
       title: "Evmoto Driver",
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', 'US'),
+        Locale('id', 'ID'),
+        Locale('zh', 'CN'),
+      ],
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       scaffoldMessengerKey: rootScaffoldMessengerKey,

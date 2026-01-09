@@ -35,6 +35,73 @@ class OrderCardHomeSubView extends GetView<HomeController> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  width: 27,
+                  height: 27,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/icon_passenger.svg",
+                        width: 11.7,
+                        height: 14.17,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 6),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        order.user ?? "-",
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
+                            .value
+                            .copyWith(
+                              color:
+                                  controller.themeColorServices.textColor.value,
+                            ),
+                      ),
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/icon_star.svg",
+                            width: 9.17,
+                            height: 10,
+                            color: controller
+                                .themeColorServices
+                                .sematicColorYellow400
+                                .value,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            "5.0 (0)",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .textColor
+                                      .value,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 SvgPicture.asset(
                   "assets/icons/icon_card_origin.svg",
                   width: 27,
@@ -46,7 +113,8 @@ class OrderCardHomeSubView extends GetView<HomeController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Dijemput",
+                        controller.languageServices.language.value.pickedUp ??
+                            "-",
                         style: controller
                             .typographyServices
                             .bodySmallRegular
@@ -99,7 +167,12 @@ class OrderCardHomeSubView extends GetView<HomeController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Lokasi Tujuan",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .destinationLocation ??
+                            "-",
                         style: controller
                             .typographyServices
                             .bodySmallRegular
@@ -137,7 +210,7 @@ class OrderCardHomeSubView extends GetView<HomeController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Total Biaya",
+                  controller.languageServices.language.value.totalCost ?? "-",
                   style: controller.typographyServices.bodySmallRegular.value
                       .copyWith(
                         color: controller.themeColorServices.textColor.value,
@@ -148,7 +221,7 @@ class OrderCardHomeSubView extends GetView<HomeController> {
                     locale: 'id_ID',
                     symbol: 'Rp ',
                     decimalDigits: 0,
-                  ).format(0),
+                  ).format(order.orderMoney ?? 0.0),
                   style: controller.typographyServices.bodySmallBold.value
                       .copyWith(
                         color: controller.themeColorServices.textColor.value,

@@ -14,7 +14,7 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Evaluasi Saya",
+            controller.languageServices.language.value.myEvaluation ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -143,7 +143,7 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      "Keseluruhan Penilaian (${controller.getTotalRatingByIndex(index: controller.selectedIndex.value)})",
+                      "${controller.languageServices.language.value.overallRating} (${controller.getTotalRatingByIndex(index: controller.selectedIndex.value)})",
                       style: controller.typographyServices.bodyLargeBold.value,
                     ),
                   ),
@@ -174,7 +174,12 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                                     ),
                                     SizedBox(height: 16),
                                     Text(
-                                      "Belum ada evaluasi",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .evaluationNotFoundTitle ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodyLargeBold
@@ -183,7 +188,12 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                                     ),
                                     SizedBox(height: 8),
                                     Text(
-                                      "Tidak ada evaluasi pada bagian ini",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .evaluationNotFoundDescription ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallRegular

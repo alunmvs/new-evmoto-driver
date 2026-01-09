@@ -9,6 +9,7 @@ import 'package:new_evmoto_driver/app/data/models/province_cities_model.dart';
 import 'package:new_evmoto_driver/app/repositories/register_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/upload_image_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
@@ -26,6 +27,7 @@ class RegisterFormController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final formGroup = FormGroup({
     "full_name": FormControl<String>(
@@ -71,6 +73,9 @@ class RegisterFormController extends GetxController {
 
   final uid = "".obs;
   final mobilePhone = "".obs;
+
+  final isFormValid = true.obs;
+
   final isFetch = false.obs;
 
   @override
@@ -95,12 +100,14 @@ class RegisterFormController extends GetxController {
 
   Future<void> getProvinceCitiesList() async {
     provinceCitiesList.value = (await registerRepository
-        .getAllProvinceCitiesList(language: 2));
+        .getAllProvinceCitiesList(
+          language: languageServices.languageCodeSystem.value,
+        ));
   }
 
   Future<void> getOpenCityList() async {
     openCityList.value = (await registerRepository.getAllOpenCityList(
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     ));
   }
 
@@ -234,6 +241,7 @@ class RegisterFormController extends GetxController {
         ),
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      isFormValid.value = false;
       return;
     }
 
@@ -251,7 +259,7 @@ class RegisterFormController extends GetxController {
         uid: uid.value,
         placeOfEmployment: formGroup.control("place_of_employment_id").value,
         getDriverLicenseDate: formGroup.control("driving_experience").value,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         type: generateType(),
         driverContactAddress: generateDriverContactAddress(),
         driverContactAddress_: generateDriverContactAddress_(),

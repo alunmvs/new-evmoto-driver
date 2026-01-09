@@ -1,15 +1,18 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
@@ -17,7 +20,7 @@ import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class OrderDetailController extends GetxController {
+class OrderDetailController extends GetxController with WidgetsBindingObserver {
   final OrderRepository orderRepository;
   final GoogleMapsRepository googleMapsRepository;
 
@@ -28,6 +31,8 @@ class OrderDetailController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
+  final homeController = Get.find<HomeController>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),
@@ -52,6 +57,7 @@ class OrderDetailController extends GetxController {
   late Timer? refocusMapBoundsTimer;
 
   final isSchedulerDriverCurrentLocationIsProcess = false.obs;
+  final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
 
   final isFetch = false.obs;
 
@@ -63,6 +69,8 @@ class OrderDetailController extends GetxController {
     orderType.value = Get.arguments['order_type'];
     await requestLocation();
     await getOrderDetail();
+    await joinFirestoreChatRooms();
+    WidgetsBinding.instance.addObserver(this);
     isFetch.value = false;
 
     if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
@@ -114,8 +122,19 @@ class OrderDetailController extends GetxController {
   }
 
   @override
-  void onClose() {
+  Future<void> onClose() async {
     super.onClose();
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderDetail.value.orderId.toString())
+        .set({
+          "driverId": orderDetail.value.driverId,
+          "driverName": homeController.userInfo.value.name,
+          "driverIsOnline": false,
+          "driverLastSeen": FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+
     try {
       googleMapController.dispose();
     } catch (e) {}
@@ -125,6 +144,31 @@ class OrderDetailController extends GetxController {
     try {
       refocusMapBoundsTimer?.cancel();
     } catch (e) {}
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(orderDetail.value.orderId.toString())
+          .set({
+            "driverId": orderDetail.value.driverId,
+            "driverName": homeController.userInfo.value.name,
+            "driverIsOnline": true,
+            "driverLastSeen": FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+    } else if (state == AppLifecycleState.paused) {
+      await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(orderDetail.value.orderId.toString())
+          .set({
+            "driverId": orderDetail.value.driverId,
+            "driverName": homeController.userInfo.value.name,
+            "driverIsOnline": false,
+            "driverLastSeen": FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+    }
   }
 
   Future<void> refreshAll() async {
@@ -153,6 +197,28 @@ class OrderDetailController extends GetxController {
       setupSchedulerDriverCurrentLocation(),
       setupSchedulerDriverRefocusMapBound(),
     ]);
+  }
+
+  Future<void> joinFirestoreChatRooms() async {
+    FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderDetail.value.orderId.toString())
+        .snapshots()
+        .listen((event) {
+          evmotoOrderChatParticipants.value =
+              EvmotoOrderChatParticipants.fromJson(event.data()!);
+        });
+
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderDetail.value.orderId.toString())
+        .set({
+          "driverId": orderDetail.value.driverId,
+          "driverName": homeController.userInfo.value.name,
+          "driverIsOnline": true,
+          "driverLastSeen": FieldValue.serverTimestamp(),
+          "driverJoinedAt": FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
   }
 
   Future<void> requestLocation() async {

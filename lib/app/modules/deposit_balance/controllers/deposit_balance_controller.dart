@@ -4,6 +4,7 @@ import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_driver/app/repositories/payment_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -21,6 +22,7 @@ class DepositBalanceController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final formGroup = FormGroup({
     "money": FormControl<String>(validators: <Validator>[Validators.required]),
@@ -79,7 +81,7 @@ class DepositBalanceController extends GetxController {
             behavior: SnackBarBehavior.fixed,
             backgroundColor: themeColorServices.sematicColorRed400.value,
             content: Text(
-              "Minimal pengisian saldo Rp10.000",
+              languageServices.language.value.minimumRechargeBalance ?? "-",
               style: typographyServices.bodySmallRegular.value.copyWith(
                 color: themeColorServices.neutralsColorGrey0.value,
               ),

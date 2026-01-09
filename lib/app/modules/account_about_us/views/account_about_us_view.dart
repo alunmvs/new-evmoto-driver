@@ -13,7 +13,7 @@ class AccountAboutUsView extends GetView<AccountAboutUsController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Tentang Kami",
+            controller.languageServices.language.value.aboutUs ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,

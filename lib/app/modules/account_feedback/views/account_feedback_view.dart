@@ -13,7 +13,12 @@ class AccountFeedbackView extends GetView<AccountFeedbackController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Berikan Masukan",
+            controller
+                    .languageServices
+                    .language
+                    .value
+                    .evaluationNotFoundTitle ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -54,7 +59,12 @@ class AccountFeedbackView extends GetView<AccountFeedbackController> {
                       prefix: SizedBox(width: 12),
                       suffix: SizedBox(width: 12),
                       hintText:
-                          'Our progress is inseparable from your every suggestion and creativity, and we look forward to your heartfelt wishes!',
+                          controller
+                              .languageServices
+                              .language
+                              .value
+                              .hintFeedback ??
+                          "-",
                       hintStyle: controller
                           .typographyServices
                           .bodySmallRegular
@@ -122,7 +132,8 @@ class AccountFeedbackView extends GetView<AccountFeedbackController> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    "* Anda dapat memasukkan 200 karakter",
+                    controller.languageServices.language.value.noteMax200Char ??
+                        "-",
                     style: controller.typographyServices.bodySmallRegular.value
                         .copyWith(color: Color(0XFFB3B3B3)),
                   ),
@@ -154,7 +165,8 @@ class AccountFeedbackView extends GetView<AccountFeedbackController> {
                     ),
                   ),
                   child: Text(
-                    "Kirim Masukan",
+                    controller.languageServices.language.value.sendFeedback ??
+                        "-",
                     style: controller.typographyServices.bodySmallBold.value
                         .copyWith(color: Colors.white),
                   ),

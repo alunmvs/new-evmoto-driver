@@ -49,14 +49,20 @@ class LoginView extends GetView<LoginController> {
                     ),
                     SizedBox(height: 24),
                     Text(
-                      "Hai, Yuk Join Sekarang",
+                      controller.languageServices.language.value.loginTitle ??
+                          "-",
                       style:
                           controller.typographyServices.headingSmallBold.value,
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 8),
                     Text(
-                      "Masukan nomor telepon dan password untuk login",
+                      controller
+                              .languageServices
+                              .language
+                              .value
+                              .loginSubtitle ??
+                          "-",
                       style:
                           controller.typographyServices.bodySmallRegular.value,
                       textAlign: TextAlign.center,
@@ -105,7 +111,12 @@ class LoginView extends GetView<LoginController> {
                                             textAlign: TextAlign.center,
                                             text: TextSpan(
                                               text:
-                                                  "Dengan Mendaftar / Masuk, kamu menyetujui ",
+                                                  controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .tncPrivacyConfirmation1 ??
+                                                  "-",
                                               style: controller
                                                   .typographyServices
                                                   .captionLargeRegular
@@ -115,7 +126,8 @@ class LoginView extends GetView<LoginController> {
                                                   ),
                                               children: <TextSpan>[
                                                 TextSpan(
-                                                  text: "Syarat Ketentuan",
+                                                  text:
+                                                      " ${controller.languageServices.language.value.termAndCondition ?? "-"} ",
                                                   style: controller
                                                       .typographyServices
                                                       .captionLargeBold
@@ -132,7 +144,13 @@ class LoginView extends GetView<LoginController> {
                                                     },
                                                 ),
                                                 TextSpan(
-                                                  text: " & ",
+                                                  text:
+                                                      controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .tncPrivacyConfirmation2 ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .captionLargeRegular
@@ -142,7 +160,8 @@ class LoginView extends GetView<LoginController> {
                                                       ),
                                                 ),
                                                 TextSpan(
-                                                  text: "Kebijakan Privasi",
+                                                  text:
+                                                      " ${controller.languageServices.language.value.privacyPolicy ?? "-"} ",
                                                   style: controller
                                                       .typographyServices
                                                       .captionLargeBold
@@ -160,7 +179,13 @@ class LoginView extends GetView<LoginController> {
                                                         },
                                                 ),
                                                 TextSpan(
-                                                  text: " berlaku",
+                                                  text:
+                                                      controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .tncPrivacyConfirmation3 ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .captionLargeRegular
@@ -216,7 +241,12 @@ class LoginView extends GetView<LoginController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Nomor Handphone",
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .mobilePhone ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodyLargeBold
@@ -351,11 +381,30 @@ class LoginView extends GetView<LoginController> {
                                                 if (value.isNotEmpty) {
                                                   if (value.substring(0, 1) !=
                                                       "8") {
-                                                    return 'Harus diawali dengan angka 8';
+                                                    return controller
+                                                            .languageServices
+                                                            .language
+                                                            .value
+                                                            .formValidationFirst8 ??
+                                                        "-";
                                                   }
                                                 }
                                                 if (value.length < 8) {
-                                                  return 'Minimal nomor handphone 8 angka';
+                                                  return controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .formValidationLengthMin8 ??
+                                                      "-";
+                                                }
+
+                                                if (value.length > 15) {
+                                                  return controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .formValidationMobileMaxLength ??
+                                                      "-";
                                                 }
                                               }
                                               return null;
@@ -411,7 +460,12 @@ class LoginView extends GetView<LoginController> {
                                                 ),
                                               ),
                                               child: Text(
-                                                "Join Sekarang",
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .loginButton ??
+                                                    "-",
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallBold
@@ -430,7 +484,12 @@ class LoginView extends GetView<LoginController> {
                                             textAlign: TextAlign.center,
                                             text: TextSpan(
                                               text:
-                                                  "Nomor telepon bermasalah? Silahkan \n",
+                                                  controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .loginContactCs1 ??
+                                                  "-",
                                               style: controller
                                                   .typographyServices
                                                   .bodySmallRegular
@@ -443,7 +502,8 @@ class LoginView extends GetView<LoginController> {
                                                   ),
                                               children: <TextSpan>[
                                                 TextSpan(
-                                                  text: "Hubungi CS",
+                                                  text:
+                                                      " ${controller.languageServices.language.value.loginContactCs2 ?? "-"} ",
                                                   style: controller
                                                       .typographyServices
                                                       .bodySmallBold
@@ -456,10 +516,19 @@ class LoginView extends GetView<LoginController> {
                                                       ),
                                                   recognizer:
                                                       TapGestureRecognizer()
-                                                        ..onTap = () {},
+                                                        ..onTap = () async {
+                                                          await controller
+                                                              .onTapContactCs();
+                                                        },
                                                 ),
                                                 TextSpan(
-                                                  text: " Kami",
+                                                  text:
+                                                      controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .loginContactCs3 ??
+                                                      "-",
                                                   style: controller
                                                       .typographyServices
                                                       .bodySmallRegular
@@ -529,7 +598,12 @@ class LoginView extends GetView<LoginController> {
                       ),
                       SizedBox(width: 5),
                       Text(
-                        "Daftar sebagai Driver baru",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .registerAsNewDriver ??
+                            "-",
                         style: controller.typographyServices.bodySmallBold.value
                             .copyWith(
                               color: controller

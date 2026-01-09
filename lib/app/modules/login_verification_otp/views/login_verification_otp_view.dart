@@ -50,7 +50,12 @@ class LoginVerificationOtpView extends GetView<LoginVerificationOtpController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Lengkapi Verifikasi Kode",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .validateOtpTitle ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .headingSmallBold
@@ -64,7 +69,12 @@ class LoginVerificationOtpView extends GetView<LoginVerificationOtpController> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                "Masukan 4 kode untuk melanjutkan",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .validateOtpSubtitle ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -82,7 +92,12 @@ class LoginVerificationOtpView extends GetView<LoginVerificationOtpController> {
                       ),
                       SizedBox(height: 16),
                       Text(
-                        "Verifikasi Kode",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .verificationCode ??
+                            "-",
                         style: controller
                             .typographyServices
                             .bodyLargeRegular
@@ -182,7 +197,12 @@ class LoginVerificationOtpView extends GetView<LoginVerificationOtpController> {
                                 ),
                               ),
                               child: Text(
-                                "Kirim ulang kode",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .resendVerificationCode ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallBold
@@ -211,7 +231,12 @@ class LoginVerificationOtpView extends GetView<LoginVerificationOtpController> {
                             ),
                           ),
                           child: Text(
-                            "Lanjutkan",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .buttonNext ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallBold

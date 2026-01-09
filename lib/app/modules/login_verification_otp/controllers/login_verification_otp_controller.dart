@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/repositories/login_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -19,6 +20,7 @@ class LoginVerificationOtpController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final mobilePhone = "".obs;
   final otpCode = "".obs;
@@ -49,8 +51,8 @@ class LoginVerificationOtpController extends GetxController {
   Future<void> requestOtp() async {
     try {
       await otpRepository.requestOTP(
-        phone: "62${mobilePhone.value}",
-        language: 2,
+        phone: mobilePhone.value,
+        language: languageServices.languageCodeSystem.value,
         type: 3,
       );
       isButtonResendEnable.value = false;
@@ -71,10 +73,16 @@ class LoginVerificationOtpController extends GetxController {
 
   Future<void> onTapSubmit() async {
     try {
+      await otpRepository.checkOTP(
+        phone: mobilePhone.value,
+        code: otpCode.value,
+        language: languageServices.languageCodeSystem.value,
+      );
+
       var token = await loginRepository.loginByMobileNumber(
         phone: mobilePhone.value,
         password: "123456789",
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
 
       var storage = FlutterSecureStorage();
@@ -82,8 +90,6 @@ class LoginVerificationOtpController extends GetxController {
 
       Get.offAllNamed(Routes.HOME);
     } catch (e) {
-      Get.offAllNamed(Routes.LOGIN);
-
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,

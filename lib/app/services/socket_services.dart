@@ -18,7 +18,7 @@ import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class SocketServices extends GetxService with WidgetsBindingObserver {
-  late Socket socket;
+  late Socket? socket;
   late Timer? schedulerDataSocketTimer;
 
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -37,8 +37,10 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       setupWebsocket();
     } else if (state == AppLifecycleState.paused) {
-      socket.close();
-      isSocketClose.value = true;
+      if (isSocketClose.value == false) {
+        socket?.close();
+        isSocketClose.value = true;
+      }
     }
   }
 
@@ -46,65 +48,72 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
     socket = await Socket.connect("api-dev.evmotoapp.com", 8888);
     isSocketClose.value = false;
 
-    socket.listen(
+    socket?.listen(
       (data) async {
         var dataJson = convertBytesToJson(bytes: data);
-        var method = dataJson['method'] ?? "";
 
-        switch (method) {
-          case 'OK':
-            break;
-          case 'ORDER_STATUS':
-            print(dataJson);
-            var socketOrderStatusData = SocketOrderStatusData.fromJson(
-              dataJson['data'],
-            );
-            var homeController = Get.find<HomeController>();
-            await Future.wait([
-              homeController.refreshAll(),
-              homeController.showDialogOrderConfirmation(
-                socketOrderStatusData: socketOrderStatusData,
-              ),
-            ]);
+        if (dataJson != null) {
+          var method = dataJson['method'] ?? "";
 
-            if (socketOrderStatusData.state == 8 &&
-                Get.currentRoute == Routes.ORDER_PAYMENT_CONFIRMATION) {
-              await Get.find<OrderPaymentConfirmationController>().refreshAll();
-            }
-            if (socketOrderStatusData.state == 10 &&
-                Get.currentRoute == Routes.ORDER_DETAIL) {
-              Get.back();
-              await Get.find<HomeController>().refreshAll();
-              final SnackBar snackBar = SnackBar(
-                behavior: SnackBarBehavior.fixed,
-                backgroundColor: themeColorServices.sematicColorRed400.value,
-                content: Text(
-                  "Pelanggan membatalkan pesanan",
-                  style: typographyServices.bodySmallRegular.value.copyWith(
-                    color: themeColorServices.neutralsColorGrey0.value,
-                  ),
-                ),
+          switch (method) {
+            case 'OK':
+              break;
+            case 'ORDER_STATUS':
+              // print(dataJson);
+              var socketOrderStatusData = SocketOrderStatusData.fromJson(
+                dataJson['data'],
               );
-              rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-            }
-            if (socketOrderStatusData.state == 10 &&
-                Get.currentRoute != Routes.ORDER_DETAIL) {
-              await Get.find<HomeController>().refreshAll();
-            }
-            break;
-          default:
-            break;
+              var homeController = Get.find<HomeController>();
+              if (Get.currentRoute == Routes.HOME &&
+                  socketOrderStatusData.state == 2) {
+                await Future.wait([
+                  homeController.refreshAll(),
+                  homeController.showDialogOrderConfirmation(
+                    socketOrderStatusData: socketOrderStatusData,
+                  ),
+                ]);
+              }
+
+              if (socketOrderStatusData.state == 8 &&
+                  Get.currentRoute == Routes.ORDER_PAYMENT_CONFIRMATION) {
+                await Get.find<OrderPaymentConfirmationController>()
+                    .refreshAll();
+              }
+              if (socketOrderStatusData.state == 10 &&
+                  Get.currentRoute == Routes.ORDER_DETAIL) {
+                Get.back();
+                await Get.find<HomeController>().refreshAll();
+                final SnackBar snackBar = SnackBar(
+                  behavior: SnackBarBehavior.fixed,
+                  backgroundColor: themeColorServices.sematicColorRed400.value,
+                  content: Text(
+                    "Pelanggan membatalkan pesanan",
+                    style: typographyServices.bodySmallRegular.value.copyWith(
+                      color: themeColorServices.neutralsColorGrey0.value,
+                    ),
+                  ),
+                );
+                rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+              }
+              if (socketOrderStatusData.state == 10 &&
+                  Get.currentRoute != Routes.ORDER_DETAIL) {
+                await Get.find<HomeController>().refreshAll();
+              }
+              break;
+            default:
+              break;
+          }
         }
       },
       onError: (error) {
         print('Error: $error');
         isSocketClose.value = true;
-        socket.destroy();
+        socket?.destroy();
       },
       onDone: () {
         print('Server closed connection');
         isSocketClose.value = true;
-        socket.destroy();
+        socket?.destroy();
       },
     );
 
@@ -113,14 +122,14 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
   Future<void> closeWebsocket() async {
     WidgetsBinding.instance.removeObserver(this);
-    await socket.close();
+    await socket?.close();
     isSocketClose.value = true;
   }
 
   Future<void> schedulerDataSocket() async {
     await sendHeartBeat();
 
-    schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
+    schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 3), (
       timer,
     ) async {
       await sendHeartBeat();
@@ -171,14 +180,14 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
         "msg": "SUCCESS",
       };
 
-      print(jsonEncode(dataUser));
-      print(jsonEncode(dataLocation));
+      // print(jsonEncode(dataUser));
+      // print(jsonEncode(dataLocation));
 
-      socket.add(convertJsonToPacket(dataUser));
-      socket.add(convertJsonToPacket(dataLocation));
+      socket?.add(convertJsonToPacket(dataUser));
+      socket?.add(convertJsonToPacket(dataLocation));
 
       if (isSocketClose.value == false) {
-        await socket.flush();
+        await socket?.flush();
       }
     }
   }

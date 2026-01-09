@@ -15,7 +15,7 @@ class OrderPaymentDetailView extends GetView<OrderPaymentDetailController> {
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Detail Pembayaran",
+            controller.languageServices.language.value.paymentDetails ?? "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: true,
@@ -138,8 +138,18 @@ class OrderPaymentDetailView extends GetView<OrderPaymentDetailController> {
                             children: [
                               Text(
                                 controller.orderDetail.value.payManner == 1
-                                    ? "Pembayaran Online"
-                                    : "Pembayaran Cash",
+                                    ? controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .onlinePayment ??
+                                          "-"
+                                    : controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .cashPayment ??
+                                          "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -181,7 +191,12 @@ class OrderPaymentDetailView extends GetView<OrderPaymentDetailController> {
                                   ),
                                   SizedBox(width: 8),
                                   Text(
-                                    "Expense Detail",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .expenseDetail ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .captionLargeRegular
@@ -209,7 +224,12 @@ class OrderPaymentDetailView extends GetView<OrderPaymentDetailController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Collected by drivers",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .collectedByDrivers ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .captionLargeRegular
@@ -253,7 +273,12 @@ class OrderPaymentDetailView extends GetView<OrderPaymentDetailController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Surcharge",
+                                    controller
+                                            .languageServices
+                                            .language
+                                            .value
+                                            .surcharge ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .captionLargeRegular

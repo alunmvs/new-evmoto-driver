@@ -15,7 +15,8 @@ class AccountUpdateMobilePhoneVerificationOtpView
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Ubah Nomor Telepon",
+            controller.languageServices.language.value.changeMobileNumber ??
+                "-",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -43,7 +44,12 @@ class AccountUpdateMobilePhoneVerificationOtpView
                     children: [
                       SizedBox(height: 16),
                       Text(
-                        "Verifikasi Kode",
+                        controller
+                                .languageServices
+                                .language
+                                .value
+                                .verificationCode ??
+                            "-",
                         style: controller
                             .typographyServices
                             .bodyLargeRegular
@@ -147,7 +153,12 @@ class AccountUpdateMobilePhoneVerificationOtpView
                                 ),
                               ),
                               child: Text(
-                                "Kirim ulang kode",
+                                controller
+                                        .languageServices
+                                        .language
+                                        .value
+                                        .resendVerificationCode ??
+                                    "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -176,7 +187,12 @@ class AccountUpdateMobilePhoneVerificationOtpView
                             ),
                           ),
                           child: Text(
-                            "Lanjutkan",
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .buttonNext ??
+                                "-",
                             style: controller
                                 .typographyServices
                                 .bodySmallBold
