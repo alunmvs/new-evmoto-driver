@@ -790,7 +790,7 @@ class AccountView extends GetView<AccountController> {
                           SizedBox(height: 16),
                           GestureDetector(
                             onTap: () async {
-                              await controller.onTapLogout();
+                              await controller.onTapManageAccount();
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -820,6 +820,10 @@ class AccountView extends GetView<AccountController> {
                                                 "assets/icons/icon_account_logout.svg",
                                                 width: 19.02,
                                                 height: 18.33,
+                                                color: controller
+                                                    .themeColorServices
+                                                    .sematicColorRed400
+                                                    .value,
                                               ),
                                             ],
                                           ),
@@ -827,16 +831,17 @@ class AccountView extends GetView<AccountController> {
                                         SizedBox(width: 16),
                                         Expanded(
                                           child: Text(
-                                            controller
-                                                    .languageServices
-                                                    .language
-                                                    .value
-                                                    .logout ??
-                                                "-",
+                                            "Kelola Akun",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
-                                                .value,
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .sematicColorRed400
+                                                      .value,
+                                                ),
                                           ),
                                         ),
                                         SizedBox(width: 16),
