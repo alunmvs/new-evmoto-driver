@@ -48,10 +48,6 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-
-        manifestPlaceholders["JPUSH_PKGNAME"] = "com.evmoto.driver.app"
-        manifestPlaceholders["JPUSH_APPKEY"] = "a9c733989e650330102962d5"
-        manifestPlaceholders["JPUSH_CHANNEL"] = "developer-default"
         manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
     }
 
