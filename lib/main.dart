@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
+import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
@@ -54,6 +55,7 @@ Future<void> main() async {
   Get.put(ApiServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);
   Get.put(FirebaseRemoteConfigServices(), permanent: true);
+  Get.put(FirebasePushNotificationServices(), permanent: true);
 
   runApp(
     GetMaterialApp(
