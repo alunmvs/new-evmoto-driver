@@ -814,7 +814,7 @@ class AccountController extends GetxController {
   }
 
   Future<void> onTapSuccessDeleteAccountDialog() async {
-    await Get.dialog(
+    Get.dialog(
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
