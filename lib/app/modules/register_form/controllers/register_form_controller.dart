@@ -61,6 +61,9 @@ class RegisterFormController extends GetxController {
     "place_of_employment_id": FormControl<int>(
       validators: <Validator>[Validators.required],
     ),
+    "referral_code": FormControl<String>(
+      validators: <Validator>[Validators.minLength(8), Validators.maxLength(8)],
+    ),
   });
 
   final provinceCitiesList = <ProvinceCities>[].obs;
@@ -263,6 +266,7 @@ class RegisterFormController extends GetxController {
         type: generateType(),
         driverContactAddress: generateDriverContactAddress(),
         driverContactAddress_: generateDriverContactAddress_(),
+        usedReferralCode: formGroup.control("referral_code").value,
       );
       Get.offAllNamed(Routes.REGISTER_FORM_COMPLETED);
     } catch (e) {

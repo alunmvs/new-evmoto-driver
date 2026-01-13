@@ -49,6 +49,8 @@ abstract class Routes {
   static const HISTORY_BALANCE_WITHDRAW = _Paths.HISTORY_BALANCE_WITHDRAW;
   static const HISTORY_BALANCE_RECHARGE = _Paths.HISTORY_BALANCE_RECHARGE;
   static const ORDER_CALL = _Paths.ORDER_CALL;
+  static const ACCOUNT_REFERRAL_CODE = _Paths.ACCOUNT_REFERRAL_CODE;
+  static const REGISTER_FORM_SCAN_QR = _Paths.REGISTER_FORM_SCAN_QR;
 }
 
 abstract class _Paths {
@@ -99,4 +101,6 @@ abstract class _Paths {
   static const HISTORY_BALANCE_WITHDRAW = '/history-balance-withdraw';
   static const HISTORY_BALANCE_RECHARGE = '/history-balance-recharge';
   static const ORDER_CALL = '/order-call';
+  static const ACCOUNT_REFERRAL_CODE = '/account-referral-code';
+  static const REGISTER_FORM_SCAN_QR = '/register-form-scan-qr';
 }

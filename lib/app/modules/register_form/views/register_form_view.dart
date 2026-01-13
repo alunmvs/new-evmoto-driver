@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/register_form_controller.dart';
@@ -2007,6 +2008,152 @@ class RegisterFormView extends GetView<RegisterFormController> {
                           ),
                         ],
                         SizedBox(height: 16),
+                        Divider(
+                          height: 0,
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey200
+                              .value,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          "Kode Referral",
+                          style: controller
+                              .typographyServices
+                              .bodyLargeRegular
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .thirdTextColor
+                                    .value,
+                              ),
+                        ),
+
+                        SizedBox(height: 4),
+                        ReactiveTextField(
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value,
+                          cursorErrorColor:
+                              controller.themeColorServices.primaryBlue.value,
+                          formControlName: 'referral_code',
+                          keyboardType: TextInputType.text,
+                          maxLength: 8,
+                          validationMessages: {
+                            ValidationMessage.minLength: (error) =>
+                                "Kode referral harus terdiri dari 8 huruf",
+                            ValidationMessage.maxLength: (error) =>
+                                "Kode referral harus terdiri dari 8 huruf",
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          decoration: InputDecoration(
+                            counterText: '',
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 0,
+                              vertical: 12,
+                            ),
+                            prefix: SizedBox(width: 12),
+                            hintText: "Masukkan kode referral",
+                            hintStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .neutralsColorGrey400
+                                      .value,
+                                ),
+                            suffixIcon: GestureDetector(
+                              onTap: () async {
+                                var result = await Get.toNamed(
+                                  Routes.REGISTER_FORM_SCAN_QR,
+                                );
+
+                                if (result != null) {
+                                  controller.formGroup
+                                          .control("referral_code")
+                                          .value =
+                                      result;
+                                }
+                              },
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/icons/icon_scan_qr.svg",
+                                      width: 13.5,
+                                      height: 13.5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            errorStyle: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .sematicColorRed500
+                                    .value,
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey400
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: controller
+                                    .themeColorServices
+                                    .primaryBlue
+                                    .value,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

@@ -108,6 +108,7 @@ class RegisterRepository {
     String? driverContactAddress_,
     String? driveCardImgUrl,
     String? name,
+    required String? usedReferralCode,
   }) async {
     try {
       var url =
@@ -130,6 +131,7 @@ class RegisterRepository {
         "driverContactAddress_": driverContactAddress_,
         "driveCardImgUrl": driveCardImgUrl,
         "name": name,
+        "usedReferralCode": usedReferralCode,
       });
 
       var dio = apiServices.dio;

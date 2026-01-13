@@ -14,6 +14,8 @@ import '../modules/account_my_evaluation/bindings/account_my_evaluation_binding.
 import '../modules/account_my_evaluation/views/account_my_evaluation_view.dart';
 import '../modules/account_other_setting/bindings/account_other_setting_binding.dart';
 import '../modules/account_other_setting/views/account_other_setting_view.dart';
+import '../modules/account_referral_code/bindings/account_referral_code_binding.dart';
+import '../modules/account_referral_code/views/account_referral_code_view.dart';
 import '../modules/account_service/bindings/account_service_binding.dart';
 import '../modules/account_service/views/account_service_view.dart';
 import '../modules/account_update_mobile_phone/bindings/account_update_mobile_phone_binding.dart';
@@ -70,6 +72,8 @@ import '../modules/register_form/bindings/register_form_binding.dart';
 import '../modules/register_form/views/register_form_view.dart';
 import '../modules/register_form_completed/bindings/register_form_completed_binding.dart';
 import '../modules/register_form_completed/views/register_form_completed_view.dart';
+import '../modules/register_form_scan_qr/bindings/register_form_scan_qr_binding.dart';
+import '../modules/register_form_scan_qr/views/register_form_scan_qr_view.dart';
 import '../modules/register_verification_otp/bindings/register_verification_otp_binding.dart';
 import '../modules/register_verification_otp/views/register_verification_otp_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
@@ -302,6 +306,16 @@ class AppPages {
       name: _Paths.ORDER_CALL,
       page: () => const OrderCallView(),
       binding: OrderCallBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT_REFERRAL_CODE,
+      page: () => const AccountReferralCodeView(),
+      binding: AccountReferralCodeBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER_FORM_SCAN_QR,
+      page: () => const RegisterFormScanQrView(),
+      binding: RegisterFormScanQrBinding(),
     ),
   ];
 }

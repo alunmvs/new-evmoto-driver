@@ -579,6 +579,73 @@ class AccountView extends GetView<AccountController> {
                               children: [
                                 GestureDetector(
                                   onTap: () async {
+                                    Get.toNamed(Routes.ACCOUNT_REFERRAL_CODE);
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: EdgeInsets.all(16),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 22,
+                                          height: 22,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_referral.svg",
+                                                width: 18,
+                                                height: 15.5,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(width: 16),
+                                        Expanded(
+                                          child: Text(
+                                            "Kode Referral",
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallBold
+                                                .value,
+                                          ),
+                                        ),
+                                        SizedBox(width: 16),
+                                        SizedBox(
+                                          width: 19,
+                                          height: 19,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_arrow_right.svg",
+                                                width: 4.75,
+                                                height: 9.5,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  child: Divider(
+                                    height: 0,
+                                    color: Color(0XFFE8E8E8),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
                                     await controller.onTapShareAppLink(
                                       context: context,
                                     );
