@@ -5,6 +5,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
+import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
@@ -19,6 +21,14 @@ import 'package:slide_countdown/slide_countdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountController extends GetxController {
+  final OtpRepository otpRepository;
+  final UserRepository userRepository;
+
+  AccountController({
+    required this.otpRepository,
+    required this.userRepository,
+  });
+
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final socketServices = Get.find<SocketServices>();
@@ -547,10 +557,15 @@ class AccountController extends GetxController {
   }
 
   Future<void> onTapValidateOtpDeleteAccount() async {
-    // send otp code
     final otpCode = "".obs;
     final errorMessage = "".obs;
     final isButtonResendEnable = false.obs;
+
+    await otpRepository.requestOTP(
+      phone: homeController.userInfo.value.phone,
+      language: languageServices.languageCodeSystem.value,
+      type: 6,
+    );
 
     await Get.bottomSheet(
       Obx(
@@ -670,7 +685,15 @@ class AccountController extends GetxController {
                             child: ElevatedButton(
                               onPressed: isButtonResendEnable.value
                                   ? () async {
-                                      // await requestOtp();
+                                      await otpRepository.requestOTP(
+                                        phone:
+                                            homeController.userInfo.value.phone,
+                                        language: languageServices
+                                            .languageCodeSystem
+                                            .value,
+                                        type: 6,
+                                      );
+                                      isButtonResendEnable.value = false;
                                     }
                                   : null,
                               style: ElevatedButton.styleFrom(
@@ -703,7 +726,36 @@ class AccountController extends GetxController {
                               ? null
                               : () async {
                                   Get.close(1);
+                                  await userRepository.deleteAccount(
+                                    otpCode: otpCode.value,
+                                  );
                                   await onTapSuccessDeleteAccountDialog();
+
+                                  var storage = FlutterSecureStorage();
+                                  await storage.deleteAll();
+                                  await socketServices.closeWebsocket();
+
+                                  Get.offAllNamed(Routes.LOGIN);
+
+                                  var snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.fixed,
+                                    backgroundColor: themeColorServices
+                                        .sematicColorGreen400
+                                        .value,
+                                    content: Text(
+                                      "Berhasil menghapus akun",
+                                      style: typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(
+                                            color: themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                    ),
+                                  );
+                                  rootScaffoldMessengerKey.currentState
+                                      ?.showSnackBar(snackBar);
                                 },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -762,7 +814,7 @@ class AccountController extends GetxController {
   }
 
   Future<void> onTapSuccessDeleteAccountDialog() async {
-    Get.dialog(
+    await Get.dialog(
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
