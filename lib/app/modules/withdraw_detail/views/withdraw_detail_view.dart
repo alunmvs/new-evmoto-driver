@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/widgets/dashed_line.dart';
 
 import '../controllers/withdraw_detail_controller.dart';
@@ -38,53 +39,146 @@ class WithdrawDetailView extends GetView<WithdrawDetailController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 16),
-                  Center(
-                    child: Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        color: Color(0XFFD9EBFF),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Color(0XFF3A99FF),
-                              borderRadius: BorderRadius.circular(9999),
+                  if (controller.historyBalanceWithdraw.value.state == 1) ...[
+                    Center(
+                      child: Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          color: Color(0XFFD9EBFF),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Color(0XFF3A99FF),
+                                borderRadius: BorderRadius.circular(9999),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_hourglass.svg",
+                                    width: 22,
+                                    height: 22,
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: Row(
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Center(
+                      child: SizedBox(
+                        width: 247,
+                        child: Text(
+                          "Penarikan Dana Anda Sedang Diproses",
+                          style: controller
+                              .typographyServices
+                              .bodyLargeBold
+                              .value
+                              .copyWith(color: Color(0XFF2C5951)),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                  if (controller.historyBalanceWithdraw.value.state == 2) ...[
+                    Center(
+                      child: Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          color: Color(0XFFCAEDDB),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SvgPicture.asset(
-                                  "assets/icons/icon_hourglass.svg",
-                                  width: 22,
-                                  height: 22,
+                                  "assets/icons/icon_withdraw_success.svg",
+                                  width: 40,
+                                  height: 40,
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  Center(
-                    child: SizedBox(
-                      width: 247,
-                      child: Text(
-                        "Penarikan Dana Anda Sedang Diproses",
-                        style:
-                            controller.typographyServices.bodyLargeBold.value,
-                        textAlign: TextAlign.center,
+                    SizedBox(height: 16),
+                    Center(
+                      child: SizedBox(
+                        width: 247,
+                        child: Text(
+                          "Selamat!\nPenarikan Dana berhasil",
+                          style: controller
+                              .typographyServices
+                              .bodyLargeBold
+                              .value
+                              .copyWith(color: Color(0XFF2C5951)),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                  ),
+                  ],
+                  if (controller.historyBalanceWithdraw.value.state == 3) ...[
+                    Center(
+                      child: Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          color: Color(0XFFFFD8D5),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/icon_withdraw_rejected.svg",
+                                  width: 40,
+                                  height: 40,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Center(
+                      child: SizedBox(
+                        width: 247,
+                        child: Text(
+                          "Penarikan Dana Anda\nGagal Diproses",
+                          style: controller
+                              .typographyServices
+                              .bodyLargeBold
+                              .value
+                              .copyWith(color: Color(0XFF2C5951)),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
                   SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -129,11 +223,22 @@ class WithdrawDetailView extends GetView<WithdrawDetailController> {
                                 ),
                                 SizedBox(height: 4),
                                 Text(
-                                  "Rp 56.500",
+                                  NumberFormat.currency(
+                                    locale: 'id_ID',
+                                    symbol: 'Rp',
+                                    decimalDigits: 0,
+                                  ).format(
+                                    controller
+                                            .historyBalanceWithdraw
+                                            .value
+                                            .money ??
+                                        0.0,
+                                  ),
                                   style: controller
                                       .typographyServices
                                       .headingLargeBold
-                                      .value,
+                                      .value
+                                      .copyWith(color: Color(0XFF34A853)),
                                 ),
                                 SizedBox(height: 16),
                                 Row(
@@ -182,7 +287,17 @@ class WithdrawDetailView extends GetView<WithdrawDetailController> {
                                           ),
                                     ),
                                     Text(
-                                      "Rp50.000",
+                                      NumberFormat.currency(
+                                        locale: 'id_ID',
+                                        symbol: 'Rp',
+                                        decimalDigits: 0,
+                                      ).format(
+                                        controller
+                                                .historyBalanceWithdraw
+                                                .value
+                                                .money ??
+                                            0.0,
+                                      ),
                                       style: controller
                                           .typographyServices
                                           .captionLargeRegular
@@ -203,7 +318,7 @@ class WithdrawDetailView extends GetView<WithdrawDetailController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Biaya Admin BCA",
+                                      "Biaya Admin",
                                       style: controller
                                           .typographyServices
                                           .captionLargeRegular
@@ -214,44 +329,17 @@ class WithdrawDetailView extends GetView<WithdrawDetailController> {
                                           ),
                                     ),
                                     Text(
-                                      "Rp6.500",
-                                      style: controller
-                                          .typographyServices
-                                          .captionLargeRegular
-                                          .value
-                                          .copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: controller
-                                                .themeColorServices
-                                                .textColor
-                                                .value,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      controller
-                                              .languageServices
-                                              .language
-                                              .value
-                                              .otherFee ??
-                                          "-",
-                                      style: controller
-                                          .typographyServices
-                                          .captionLargeRegular
-                                          .value
-                                          .copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: Color(0XFF7D7D7D),
-                                          ),
-                                    ),
-                                    Text(
-                                      "Rp0",
+                                      NumberFormat.currency(
+                                        locale: 'id_ID',
+                                        symbol: 'Rp',
+                                        decimalDigits: 0,
+                                      ).format(
+                                        controller
+                                                .historyBalanceWithdraw
+                                                .value
+                                                .adminFee ??
+                                            0.0,
+                                      ),
                                       style: controller
                                           .typographyServices
                                           .captionLargeRegular
@@ -289,7 +377,21 @@ class WithdrawDetailView extends GetView<WithdrawDetailController> {
                                       ),
                                 ),
                                 Text(
-                                  "Rp56.500",
+                                  NumberFormat.currency(
+                                    locale: 'id_ID',
+                                    symbol: 'Rp',
+                                    decimalDigits: 0,
+                                  ).format(
+                                    controller
+                                            .historyBalanceWithdraw
+                                            .value
+                                            .money! +
+                                        (controller
+                                                .historyBalanceWithdraw
+                                                .value
+                                                .adminFee ??
+                                            0.0),
+                                  ),
                                   style: controller
                                       .typographyServices
                                       .bodySmallRegular
@@ -309,36 +411,76 @@ class WithdrawDetailView extends GetView<WithdrawDetailController> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Padding(
-                    padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Color(0XFFE1E1E1),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/icon_alert_circle_grey.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                          SizedBox(width: 16),
-                          Expanded(
-                            child: Text(
-                              "Penarikan dana kamu sedang diproses oleh Admin. Mohon ditunggu!",
-                              style: controller
-                                  .typographyServices
-                                  .captionLargeRegular
-                                  .value,
+                  if (controller.historyBalanceWithdraw.value.state == 1) ...[
+                    SizedBox(height: 16),
+                    Padding(
+                      padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Color(0XFFE1E1E1),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_alert_circle_grey.svg",
+                              width: 20,
+                              height: 20,
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                "Penarikan dana kamu sedang diproses oleh Admin. Mohon ditunggu!",
+                                style: controller
+                                    .typographyServices
+                                    .captionLargeRegular
+                                    .value,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+                  ],
+                  if (controller.historyBalanceWithdraw.value.state == 3 &&
+                      controller.historyBalanceWithdraw.value.remark !=
+                          null) ...[
+                    SizedBox(height: 16),
+                    Padding(
+                      padding: EdgeInsetsGeometry.symmetric(horizontal: 16),
+                      child: Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Color(0XFFE1E1E1),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/icon_alert_circle_grey.svg",
+                              width: 20,
+                              height: 20,
+                            ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                controller
+                                        .historyBalanceWithdraw
+                                        .value
+                                        .remark ??
+                                    "-",
+                                style: controller
+                                    .typographyServices
+                                    .captionLargeRegular
+                                    .value,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
         bottomNavigationBar: controller.isFetch.value

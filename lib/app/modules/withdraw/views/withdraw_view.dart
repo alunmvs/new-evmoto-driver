@@ -252,27 +252,37 @@ class WithdrawView extends GetView<WithdrawController> {
                                   ),
                                 ),
                               ],
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Riwayat Tarik Dana",
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .textColor
-                                                .value,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.HISTORY_BALANCE_WITHDRAW);
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Riwayat Tarik Dana",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .textColor
+                                                    .value,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -605,6 +615,7 @@ class WithdrawView extends GetView<WithdrawController> {
                       onTap: () async {
                         await Get.toNamed(
                           Routes.ADD_EDIT_WITHDRAW_BANK_ACCOUNT,
+                          arguments: {"is_edit": false},
                         );
                         await controller.getBankAccountList();
                       },
@@ -664,17 +675,19 @@ class WithdrawView extends GetView<WithdrawController> {
                                     .value,
                               ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            controller.isEditDeleteActive.value =
-                                !controller.isEditDeleteActive.value;
-                          },
-                          child: SvgPicture.asset(
-                            "assets/icons/icon_three_dots_vertical.svg",
-                            width: 22,
-                            height: 22,
+                        if (controller.bankAccountList.isNotEmpty) ...[
+                          GestureDetector(
+                            onTap: () {
+                              controller.isEditDeleteActive.value =
+                                  !controller.isEditDeleteActive.value;
+                            },
+                            child: SvgPicture.asset(
+                              "assets/icons/icon_three_dots_vertical.svg",
+                              width: 22,
+                              height: 22,
+                            ),
                           ),
-                        ),
+                        ],
                       ],
                     ),
                   ),
@@ -772,12 +785,12 @@ class WithdrawView extends GetView<WithdrawController> {
                                       children: [
                                         Row(
                                           children: [
-                                            SizedBox(
-                                              height: 35,
-                                              width: 35,
-                                              child: Placeholder(),
-                                            ),
-                                            SizedBox(width: 16),
+                                            // SizedBox(
+                                            //   height: 35,
+                                            //   width: 35,
+                                            //   child: Placeholder(),
+                                            // ),
+                                            // SizedBox(width: 16),
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment:
@@ -870,33 +883,46 @@ class WithdrawView extends GetView<WithdrawController> {
                                   SizedBox(height: 8),
                                   Row(
                                     children: [
-                                      Container(
-                                        padding: EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: Color(0XFFEEEEEE),
-                                          border: Border.all(
-                                            color: Color(0XFFD1D1D1),
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              "Edit",
-                                              style: controller
-                                                  .typographyServices
-                                                  .captionLargeRegular
-                                                  .value,
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await Get.toNamed(
+                                            Routes
+                                                .ADD_EDIT_WITHDRAW_BANK_ACCOUNT,
+                                            arguments: {
+                                              "is_edit": true,
+                                              "bank_account": bankAccount,
+                                            },
+                                          );
+                                          await controller.getBankAccountList();
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: Color(0XFFEEEEEE),
+                                            border: Border.all(
+                                              color: Color(0XFFD1D1D1),
                                             ),
-                                            SizedBox(width: 4),
-                                            SvgPicture.asset(
-                                              "assets/icons/icon_edit.svg",
-                                              width: 16,
-                                              height: 16,
+                                            borderRadius: BorderRadius.circular(
+                                              8,
                                             ),
-                                          ],
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "Edit",
+                                                style: controller
+                                                    .typographyServices
+                                                    .captionLargeRegular
+                                                    .value,
+                                              ),
+                                              SizedBox(width: 4),
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_edit.svg",
+                                                width: 16,
+                                                height: 16,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                       SizedBox(width: 8),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/history_balance_withdraw_controller.dart';
 
 class HistoryBalanceWithdrawView
@@ -77,82 +79,256 @@ class HistoryBalanceWithdrawView
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 16),
+                        if (controller.historyBalanceWithdrawList.isEmpty) ...[
+                          Column(
+                            children: [
+                              SizedBox(height: 16 * 2),
+                              SvgPicture.asset(
+                                "assets/images/img_history_activity_not_found.svg",
+                                height: 80,
+                                width: 80,
+                              ),
+                              SizedBox(height: 16),
+                              Center(
+                                child: Text(
+                                  "Tidak Memiliki Riwayat Penarikan Dana",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallBold
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .textColor
+                                            .value,
+                                      ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Center(
+                                child: Text(
+                                  "Anda belum pernah melakukan penarikan dana.",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .textColor
+                                            .value,
+                                      ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                         for (var historyBalanceWithdraw
                             in controller.historyBalanceWithdrawList) ...[
-                          Container(
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: controller
-                                  .themeColorServices
-                                  .neutralsColorGrey0
-                                  .value,
-                              border: Border.all(color: Color(0XFFEEEEEE)),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 30,
-                                      height: 30,
-                                      child: Placeholder(),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Expanded(
-                                      child: Column(
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed(
+                                Routes.WITHDRAW_DETAIL,
+                                arguments: {
+                                  "history_balance_withdraw":
+                                      historyBalanceWithdraw,
+                                },
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey0
+                                    .value,
+                                border: Border.all(color: Color(0XFFEEEEEE)),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      // SizedBox(
+                                      //   width: 30,
+                                      //   height: 30,
+                                      //   child: Placeholder(),
+                                      // ),
+                                      // SizedBox(width: 8),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Andrew Setia Kawan",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodySmallBold
+                                                  .value
+                                                  .copyWith(
+                                                    color: Color(0XFF272727),
+                                                  ),
+                                            ),
+                                            Text(
+                                              "****** 50373",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodySmallRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: Color(0XFFB3B3B3),
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.end,
                                         children: [
-                                          Text("Andrew Setia Kawan"),
-                                          Text("****** 50373"),
+                                          Text(
+                                            NumberFormat.currency(
+                                              locale: 'id_ID',
+                                              symbol: '-  Rp',
+                                              decimalDigits: 0,
+                                            ).format(
+                                              historyBalanceWithdraw.money,
+                                            ),
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallBold
+                                                .value
+                                                .copyWith(
+                                                  color: Color(0XFFE11C0B),
+                                                ),
+                                          ),
+                                          Text(
+                                            historyBalanceWithdraw.createTime!,
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color: Color(0XFFB3B3B3),
+                                                ),
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
+                                    ],
+                                  ),
+                                  SizedBox(height: 8),
+                                  Divider(height: 0, color: Color(0XFFEEEEEE)),
+                                  SizedBox(height: 8),
+                                  if (historyBalanceWithdraw.state == 1) ...[
+                                    Row(
                                       children: [
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: '-Rp',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            historyBalanceWithdraw.money,
+                                        SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_withdraw_in_progress.svg",
+                                                width: 11.67,
+                                                height: 15,
+                                              ),
+                                            ],
                                           ),
-                                          style: controller
-                                              .typographyServices
-                                              .bodySmallRegular
-                                              .value,
                                         ),
+                                        SizedBox(width: 8),
                                         Text(
-                                          historyBalanceWithdraw.createTime!,
+                                          "Masih dalam proses admin",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
-                                              .value,
+                                              .value
+                                              .copyWith(
+                                                color: Color(0XFFB3B3B3),
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                         ),
                                       ],
                                     ),
                                   ],
-                                ),
-                                SizedBox(height: 8),
-                                Divider(height: 0, color: Color(0XFFEEEEEE)),
-                                SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Text(
-                                      historyBalanceWithdraw.state.toString(),
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value,
+                                  if (historyBalanceWithdraw.state == 2) ...[
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_withdraw_success.svg",
+                                                width: 18,
+                                                height: 18,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "Dana telah berhasil ditarik",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: Color(0XFF34A853),
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                      ],
                                     ),
                                   ],
-                                ),
-                              ],
+                                  if (historyBalanceWithdraw.state == 3) ...[
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              SvgPicture.asset(
+                                                "assets/icons/icon_withdraw_rejected.svg",
+                                                width: 18,
+                                                height: 18,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "Penarikan dana gagal",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: Color(0XFFE11C0B),
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(height: 16),

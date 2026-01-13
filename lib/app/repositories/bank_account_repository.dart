@@ -134,6 +134,50 @@ class BankAccountRepository {
     }
   }
 
+  Future<void> updateBankAccount({
+    required int id,
+    String? bankCode,
+    String? bank,
+    String? code,
+    String? name,
+    int? language,
+  }) async {
+    try {
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/updateBankCard";
+
+      var formData = FormData.fromMap({
+        "id": id,
+        "language": language,
+        "bankCode": bankCode,
+        "bank": bank,
+        "code": code,
+        "name": name,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> deleteBankAccountById({int? id, int? language}) async {
     try {
       var url =

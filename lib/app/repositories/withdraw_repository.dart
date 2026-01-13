@@ -21,7 +21,13 @@ class WithdrawRepository {
       var url =
           "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/withdrawal/withdrawal";
 
-      var formData = FormData.fromMap({"language": language});
+      var formData = FormData.fromMap({
+        "language": language,
+        "code": code,
+        "money": money,
+        "name": name,
+        "bankName": bankName,
+      });
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
@@ -121,6 +127,28 @@ class WithdrawRepository {
       }
 
       return RevenueStatistics.fromJson(response.data);
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<double> getAdminFeeByBankCode({required String bankCode}) async {
+    try {
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/api/system-parameter/get/bank_fee_$bankCode";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.get(url, options: Options(headers: headers));
+
+      return double.parse(response.data['data']);
     } on DioException catch (e) {
       rethrow;
     }

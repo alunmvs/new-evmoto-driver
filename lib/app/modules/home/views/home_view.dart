@@ -1592,13 +1592,13 @@ class HomeView extends GetView<HomeController> {
                                                               ),
                                                               child: GestureDetector(
                                                                 onTap: () async {
-                                                                  // await Get.toNamed(
-                                                                  //   Routes
-                                                                  //       .WITHDRAW,
-                                                                  // );
+                                                                  await Get.toNamed(
+                                                                    Routes
+                                                                        .WITHDRAW,
+                                                                  );
 
-                                                                  // await controller
-                                                                  //     .refreshAll();
+                                                                  await controller
+                                                                      .refreshAll();
                                                                 },
                                                                 child: Container(
                                                                   color: Colors

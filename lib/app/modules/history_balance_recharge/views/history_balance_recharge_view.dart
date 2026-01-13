@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -31,6 +32,51 @@ class HistoryBalanceRechargeView
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 16),
+                if (controller.historyBalanceRechargeList.isEmpty) ...[
+                  Column(
+                    children: [
+                      SizedBox(height: 16 * 2),
+                      SvgPicture.asset(
+                        "assets/images/img_history_activity_not_found.svg",
+                        height: 80,
+                        width: 80,
+                      ),
+                      SizedBox(height: 16),
+                      Center(
+                        child: Text(
+                          "Tidak Memiliki Riwayat Isi Ulang Saldo",
+                          style: controller
+                              .typographyServices
+                              .bodySmallBold
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .textColor
+                                    .value,
+                              ),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Center(
+                        child: Text(
+                          "Anda belum pernah melakukan isi ulang saldo.",
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .textColor
+                                    .value,
+                              ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
                 for (var historyBalanceRecharge
                     in controller.historyBalanceRechargeList) ...[
                   Container(
@@ -42,8 +88,8 @@ class HistoryBalanceRechargeView
                     ),
                     child: Row(
                       children: [
-                        SizedBox(height: 30, width: 30, child: Placeholder()),
-                        SizedBox(width: 8),
+                        // SizedBox(height: 30, width: 30, child: Placeholder()),
+                        // SizedBox(width: 8),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

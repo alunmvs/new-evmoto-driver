@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/withdraw_amount_controller.dart';
@@ -253,27 +254,37 @@ class WithdrawAmountView extends GetView<WithdrawAmountController> {
                                   ),
                                 ),
                               ],
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Riwayat Tarik Dana",
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .textColor
-                                                .value,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.HISTORY_BALANCE_WITHDRAW);
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Riwayat Tarik Dana",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .textColor
+                                                    .value,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -629,12 +640,12 @@ class WithdrawAmountView extends GetView<WithdrawAmountController> {
                           ),
                           child: Row(
                             children: [
-                              SizedBox(
-                                width: 35,
-                                height: 35,
-                                child: Placeholder(),
-                              ),
-                              SizedBox(width: 16),
+                              // SizedBox(
+                              //   width: 35,
+                              //   height: 35,
+                              //   child: Placeholder(),
+                              // ),
+                              // SizedBox(width: 16),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
