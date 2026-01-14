@@ -10,16 +10,30 @@ class ApiServices extends GetxService {
   @override
   Future<void> onInit() async {
     super.onInit();
+    // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    //     (client) {
+    //       client.findProxy = (uri) {
+    //         return "PROXY 192.168.18.121:8888";
+    //       };
+
+    //       client.badCertificateCallback =
+    //           (X509Certificate cert, String host, int port) => true;
+
+    //       return client;
+    //     };
+
     dio.interceptors.add(
       InterceptorsWrapper(
         onResponse: (response, handler) async {
           if (response.data != null) {
             if (response.data is Map<String, dynamic>) {
               if (response.data['code'] == 600) {
-                var storage = FlutterSecureStorage();
-                await storage.deleteAll();
-                await Get.find<SocketServices>().closeWebsocket();
-                Get.offAllNamed(Routes.LOGIN);
+                if (Get.currentRoute != Routes.LOGIN) {
+                  var storage = FlutterSecureStorage();
+                  await storage.deleteAll();
+                  await Get.find<SocketServices>().closeWebsocket();
+                  Get.offAllNamed(Routes.LOGIN);
+                }
               }
             }
           }
