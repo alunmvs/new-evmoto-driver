@@ -293,40 +293,64 @@ class WithdrawAmountController extends GetxController {
                             height: 46,
                             child: ElevatedButton(
                               onPressed: () async {
-                                await withdrawRepository.requestWithdrawal(
-                                  bankName: selectedBankAccount.value.bank!,
-                                  code: selectedBankAccount.value.code!,
-                                  language:
-                                      languageServices.languageCodeSystem.value,
-                                  money: withdrawAmount,
-                                  name: selectedBankAccount.value.name!,
-                                );
+                                try {
+                                  await withdrawRepository.requestWithdrawal(
+                                    bankName: selectedBankAccount.value.bank!,
+                                    code: selectedBankAccount.value.code!,
+                                    language: languageServices
+                                        .languageCodeSystem
+                                        .value,
+                                    money: withdrawAmount,
+                                    name: selectedBankAccount.value.name!,
+                                  );
 
-                                Get.close(1);
-                                Get.back();
-                                Get.back();
+                                  Get.close(1);
+                                  Get.back();
+                                  Get.back();
 
-                                var snackBar = SnackBar(
-                                  behavior: SnackBarBehavior.fixed,
-                                  backgroundColor: themeColorServices
-                                      .sematicColorGreen400
-                                      .value,
-                                  content: Text(
-                                    "Berhasil pengajuan penarikan dana",
-                                    style: typographyServices
-                                        .bodySmallRegular
-                                        .value
-                                        .copyWith(
-                                          color: themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                        ),
-                                  ),
-                                );
-                                rootScaffoldMessengerKey.currentState
-                                    ?.showSnackBar(snackBar);
+                                  var snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.fixed,
+                                    backgroundColor: themeColorServices
+                                        .sematicColorGreen400
+                                        .value,
+                                    content: Text(
+                                      "Berhasil pengajuan penarikan dana",
+                                      style: typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(
+                                            color: themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                    ),
+                                  );
+                                  rootScaffoldMessengerKey.currentState
+                                      ?.showSnackBar(snackBar);
 
-                                Get.toNamed(Routes.HISTORY_BALANCE_WITHDRAW);
+                                  Get.toNamed(Routes.HISTORY_BALANCE_WITHDRAW);
+                                } catch (e) {
+                                  Get.close(1);
+                                  final SnackBar snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.fixed,
+                                    backgroundColor: themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                    content: Text(
+                                      e.toString(),
+                                      style: typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(
+                                            color: themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                    ),
+                                  );
+                                  rootScaffoldMessengerKey.currentState
+                                      ?.showSnackBar(snackBar);
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
