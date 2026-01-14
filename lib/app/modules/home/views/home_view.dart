@@ -1166,54 +1166,50 @@ class HomeView extends GetView<HomeController> {
                                                                   width: 8,
                                                                 ),
                                                                 Expanded(
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Text(
-                                                                        controller.languageServices.language.value.homeYourBalance ??
-                                                                            "-",
-                                                                        style: controller
-                                                                            .typographyServices
-                                                                            .captionSmallRegular
-                                                                            .value
-                                                                            .copyWith(
-                                                                              color: controller.themeColorServices.neutralsColorGrey500.value,
-                                                                            ),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            2,
-                                                                      ),
-                                                                      Text(
-                                                                        NumberFormat.currency(
-                                                                          locale:
-                                                                              'id_ID',
-                                                                          symbol:
-                                                                              'Rp ',
-                                                                          decimalDigits:
-                                                                              0,
-                                                                        ).format(
-                                                                          controller
-                                                                              .userInfo
+                                                                  child: SingleChildScrollView(
+                                                                    scrollDirection:
+                                                                        Axis.horizontal,
+                                                                    child: Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Text(
+                                                                          controller.languageServices.language.value.homeYourBalance ??
+                                                                              "-",
+                                                                          style: controller
+                                                                              .typographyServices
+                                                                              .captionSmallRegular
                                                                               .value
-                                                                              .balance,
-                                                                          // 999999999999,
+                                                                              .copyWith(
+                                                                                color: controller.themeColorServices.neutralsColorGrey500.value,
+                                                                              ),
                                                                         ),
-                                                                        style: controller
-                                                                            .typographyServices
-                                                                            .bodySmallBold
-                                                                            .value
-                                                                            .copyWith(
-                                                                              color: controller.themeColorServices.neutralsColorGrey800.value,
-                                                                            ),
-                                                                        maxLines:
-                                                                            1,
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                      ),
-                                                                    ],
+                                                                        SizedBox(
+                                                                          height:
+                                                                              2,
+                                                                        ),
+                                                                        Text(
+                                                                          NumberFormat.currency(
+                                                                            locale:
+                                                                                'id_ID',
+                                                                            symbol:
+                                                                                'Rp ',
+                                                                            decimalDigits:
+                                                                                0,
+                                                                          ).format(
+                                                                            controller.userInfo.value.balance,
+                                                                          ),
+                                                                          style: controller
+                                                                              .typographyServices
+                                                                              .bodySmallBold
+                                                                              .value
+                                                                              .copyWith(
+                                                                                color: controller.themeColorServices.neutralsColorGrey800.value,
+                                                                              ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ],
@@ -1402,9 +1398,9 @@ class HomeView extends GetView<HomeController> {
                                                                       SvgPicture.asset(
                                                                         "assets/icons/icon_add_circle.svg",
                                                                         width:
-                                                                            16,
+                                                                            18,
                                                                         height:
-                                                                            16,
+                                                                            18,
                                                                       ),
                                                                       SizedBox(
                                                                         height:
@@ -1601,9 +1597,9 @@ class HomeView extends GetView<HomeController> {
                                                                       SvgPicture.asset(
                                                                         "assets/icons/icon_withdraw.svg",
                                                                         width:
-                                                                            16,
+                                                                            19,
                                                                         height:
-                                                                            16,
+                                                                            19,
                                                                       ),
                                                                       SizedBox(
                                                                         height:
@@ -1799,9 +1795,9 @@ class HomeView extends GetView<HomeController> {
                                                                       SvgPicture.asset(
                                                                         "assets/icons/icon_others.svg",
                                                                         width:
-                                                                            16,
+                                                                            18,
                                                                         height:
-                                                                            16,
+                                                                            18,
                                                                       ),
                                                                       SizedBox(
                                                                         height:
