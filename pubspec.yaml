@@ -87,6 +87,7 @@ dependencies:
   camera: ^0.11.3
   google_mlkit_barcode_scanning: ^0.14.1
   google_mlkit_commons: ^0.11.0
+  pub_semver: ^2.2.0
 
 dev_dependencies:
   get_cli: ^1.9.1

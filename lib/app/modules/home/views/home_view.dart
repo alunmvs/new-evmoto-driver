@@ -477,7 +477,8 @@ class HomeView extends GetView<HomeController> {
                                                                                     symbol: '',
                                                                                     decimalDigits: 0,
                                                                                   ).format(
-                                                                                    controller.vehicleStatistics.value.dayNum,
+                                                                                    controller.vehicleStatistics.value.dayNum ??
+                                                                                        0,
                                                                                   ),
                                                                                   style: controller.typographyServices.bodyLargeBold.value.copyWith(
                                                                                     color: controller.themeColorServices.textColor.value,
@@ -512,7 +513,8 @@ class HomeView extends GetView<HomeController> {
                                                                                     symbol: '',
                                                                                     decimalDigits: 0,
                                                                                   ).format(
-                                                                                    controller.vehicleStatistics.value.mouthNum,
+                                                                                    controller.vehicleStatistics.value.mouthNum ??
+                                                                                        0,
                                                                                   ),
                                                                                   style: controller.typographyServices.bodyLargeBold.value.copyWith(
                                                                                     color: controller.themeColorServices.textColor.value,
@@ -542,9 +544,11 @@ class HomeView extends GetView<HomeController> {
                                                                             child: Column(
                                                                               children: [
                                                                                 Text(
-                                                                                  controller.vehicleStatistics.value.score!.toStringAsFixed(
-                                                                                    1,
-                                                                                  ),
+                                                                                  (controller.vehicleStatistics.value.score ??
+                                                                                          0.0)
+                                                                                      .toStringAsFixed(
+                                                                                        1,
+                                                                                      ),
                                                                                   style: controller.typographyServices.bodyLargeBold.value.copyWith(
                                                                                     color: controller.themeColorServices.textColor.value,
                                                                                   ),
@@ -2794,7 +2798,7 @@ class HomeView extends GetView<HomeController> {
                                                             ),
                                                             SizedBox(height: 4),
                                                             Text(
-                                                              "${NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0).format(controller.vehicleStatistics.value.dayNum)} ${controller.languageServices.language.value.order ?? "-"}",
+                                                              "${NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0).format(controller.vehicleStatistics.value.dayNum ?? 0)} ${controller.languageServices.language.value.order ?? "-"}",
                                                               style: controller
                                                                   .typographyServices
                                                                   .bodyLargeBold
@@ -2853,7 +2857,7 @@ class HomeView extends GetView<HomeController> {
                                                             ),
                                                             SizedBox(height: 4),
                                                             Text(
-                                                              "${NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0).format(controller.vehicleStatistics.value.mouthNum)} ${controller.languageServices.language.value.order ?? "-"}",
+                                                              "${NumberFormat.currency(locale: 'id_ID', symbol: '', decimalDigits: 0).format(controller.vehicleStatistics.value.mouthNum ?? 0)} ${controller.languageServices.language.value.order ?? "-"}",
                                                               style: controller
                                                                   .typographyServices
                                                                   .bodyLargeBold

@@ -126,11 +126,12 @@ class AccountView extends GetView<AccountController> {
                                   .value,
                             ),
                             Text(
-                              controller
-                                  .homeController
-                                  .vehicleStatistics
-                                  .value
-                                  .dayNum
+                              (controller
+                                          .homeController
+                                          .vehicleStatistics
+                                          .value
+                                          .dayNum ??
+                                      0)
                                   .toString(),
                               style: controller
                                   .typographyServices
@@ -156,11 +157,12 @@ class AccountView extends GetView<AccountController> {
                                   .value,
                             ),
                             Text(
-                              controller
-                                  .homeController
-                                  .vehicleStatistics
-                                  .value
-                                  .score!
+                              (controller
+                                          .homeController
+                                          .vehicleStatistics
+                                          .value
+                                          .score ??
+                                      0.0)
                                   .toStringAsFixed(1),
                               style: controller
                                   .typographyServices
