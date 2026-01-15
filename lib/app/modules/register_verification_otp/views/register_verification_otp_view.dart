@@ -36,8 +36,8 @@ class RegisterVerificationOtpView
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 16),
-                      SvgPicture.asset(
-                        "assets/logos/logo_evmoto.svg",
+                      Image.asset(
+                        "assets/logos/logo_evmoto.png",
                         width: 95.46,
                         height: 29.56,
                       ),
