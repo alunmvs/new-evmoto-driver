@@ -55,7 +55,9 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
       socket?.listen(
         (data) async {
+          // print(data);
           var dataJson = convertBytesToJson(bytes: data);
+          // print(dataJson);
 
           if (dataJson != null) {
             var method = dataJson['method'] ?? "";
@@ -339,8 +341,8 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
         "msg": "SUCCESS",
       };
 
-      print(jsonEncode(dataUser));
-      print(jsonEncode(dataLocation));
+      // print(jsonEncode(dataUser));
+      // print(jsonEncode(dataLocation));
 
       socket?.add(convertJsonToPacket(dataUser));
       socket?.add(convertJsonToPacket(dataLocation));
