@@ -97,7 +97,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         setupSchedulerDriverRefocusMapBound(),
       ]);
 
-      if ([7].contains(orderDetail.value.state)) {
+      if ([7, 8].contains(orderDetail.value.state)) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Get.offAndToNamed(
             Routes.ORDER_PAYMENT_CONFIRMATION,
@@ -109,7 +109,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         });
       }
 
-      if ([8, 9].contains(orderDetail.value.state)) {
+      if ([9].contains(orderDetail.value.state)) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Get.offAndToNamed(
             Routes.ORDER_DETAIL_DONE,

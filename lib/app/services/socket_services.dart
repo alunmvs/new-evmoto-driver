@@ -296,7 +296,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
       }
     } else if (isSocketClose.value == false &&
         Get.isRegistered<HomeController>() &&
-        isLocationReadyStatus == true) {
+        isLocationReadyStatus.value == true) {
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
@@ -338,6 +338,9 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
         "method": "LOCATION",
         "msg": "SUCCESS",
       };
+
+      print(jsonEncode(dataUser));
+      print(jsonEncode(dataLocation));
 
       socket?.add(convertJsonToPacket(dataUser));
       socket?.add(convertJsonToPacket(dataLocation));
