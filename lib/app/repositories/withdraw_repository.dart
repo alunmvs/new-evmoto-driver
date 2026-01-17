@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
@@ -135,7 +137,7 @@ class WithdrawRepository {
   Future<double> getAdminFeeByBankCode({required String bankCode}) async {
     try {
       var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/api/system-parameter/get/bank_fee_$bankCode";
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/orderServer/api/system-parameter";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
@@ -146,7 +148,11 @@ class WithdrawRepository {
       };
 
       var dio = apiServices.dio;
-      var response = await dio.get(url, options: Options(headers: headers));
+      var response = await dio.get(
+        url,
+        options: Options(headers: headers),
+        queryParameters: {"category": "withdrawal_bank_fee", "key": bankCode},
+      );
 
       return double.parse(response.data['data']);
     } on DioException catch (e) {
