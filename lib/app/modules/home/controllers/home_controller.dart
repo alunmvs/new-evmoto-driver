@@ -176,24 +176,28 @@ class HomeController extends GetxController
   }
 
   Future<void> getVehicleStatistics() async {
-    vehicleStatistics.value = (await vehicleRepository
-        .getVehicleStatisticsDetail(language: 2));
+    try {
+      vehicleStatistics.value = (await vehicleRepository
+          .getVehicleStatisticsDetail(language: 2));
+    } catch (e) {}
   }
 
   Future<void> getOrderGrabbingHallList() async {
-    isSeeMoreOrderGrabbingHall.value = true;
-    orderGrabbingHallPageNum.value = 1;
+    try {
+      isSeeMoreOrderGrabbingHall.value = true;
+      orderGrabbingHallPageNum.value = 1;
 
-    orderGrabbingHallList.value = (await orderRepository.getOrderList(
-      size: 10,
-      language: 2,
-      state: 3,
-      pageNum: orderGrabbingHallPageNum.value,
-    ));
+      orderGrabbingHallList.value = (await orderRepository.getOrderList(
+        size: 10,
+        language: 2,
+        state: 3,
+        pageNum: orderGrabbingHallPageNum.value,
+      ));
 
-    if (orderGrabbingHallList.isEmpty) {
-      isSeeMoreOrderGrabbingHall.value = false;
-    }
+      if (orderGrabbingHallList.isEmpty) {
+        isSeeMoreOrderGrabbingHall.value = false;
+      }
+    } catch (e) {}
   }
 
   Future<void> seeMoreOrderGrabbingHallList() async {
@@ -216,19 +220,21 @@ class HomeController extends GetxController
   }
 
   Future<void> getOrderInServiceList() async {
-    isSeeMoreOrderInService.value = true;
-    orderInServicePageNum.value = 1;
+    try {
+      isSeeMoreOrderInService.value = true;
+      orderInServicePageNum.value = 1;
 
-    orderInServiceList.value = (await orderRepository.getOrderList(
-      size: 10,
-      language: 2,
-      state: 1,
-      pageNum: orderInServicePageNum.value,
-    ));
+      orderInServiceList.value = (await orderRepository.getOrderList(
+        size: 10,
+        language: 2,
+        state: 1,
+        pageNum: orderInServicePageNum.value,
+      ));
 
-    if (orderInServiceList.isEmpty) {
-      isSeeMoreOrderInService.value = false;
-    }
+      if (orderInServiceList.isEmpty) {
+        isSeeMoreOrderInService.value = false;
+      }
+    } catch (e) {}
   }
 
   Future<void> seeMoreOrderInServiceList() async {
@@ -251,27 +257,31 @@ class HomeController extends GetxController
   }
 
   Future<void> getServiceOrderList() async {
-    serviceOrderList.value = await accountRepository.getServiceOrderList(
-      size: 999999,
-      pageNum: 1,
-      language: 2,
-    );
+    try {
+      serviceOrderList.value = await accountRepository.getServiceOrderList(
+        size: 999999,
+        pageNum: 1,
+        language: 2,
+      );
+    } catch (e) {}
   }
 
   Future<void> getOrderToBeServedList() async {
-    isSeeMoreOrderToBeServed.value = true;
-    orderToBeServedPageNum.value = 1;
+    try {
+      isSeeMoreOrderToBeServed.value = true;
+      orderToBeServedPageNum.value = 1;
 
-    orderToBeServedList.value = (await orderRepository.getOrderList(
-      size: 10,
-      language: 2,
-      state: 2,
-      pageNum: orderInServicePageNum.value,
-    ));
+      orderToBeServedList.value = (await orderRepository.getOrderList(
+        size: 10,
+        language: 2,
+        state: 2,
+        pageNum: orderInServicePageNum.value,
+      ));
 
-    if (orderToBeServedList.isEmpty) {
-      isSeeMoreOrderToBeServed.value = false;
-    }
+      if (orderToBeServedList.isEmpty) {
+        isSeeMoreOrderToBeServed.value = false;
+      }
+    } catch (e) {}
   }
 
   Future<void> seeMoreOrderToBeServedList() async {
@@ -294,7 +304,9 @@ class HomeController extends GetxController
   }
 
   Future<void> getUserInfoDetail() async {
-    userInfo.value = await userRepository.getUserInfoDetail(language: 2);
+    try {
+      userInfo.value = await userRepository.getUserInfoDetail(language: 2);
+    } catch (e) {}
   }
 
   Future<void> onSwitchStatusWork() async {
