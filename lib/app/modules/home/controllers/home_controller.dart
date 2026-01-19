@@ -1108,13 +1108,15 @@ class HomeController extends GetxController
   }
 
   Future<void> checkSoftUpdate() async {
-    var userAppVersion = jsonDecode(
-      firebaseRemoteConfigServices.remoteConfig.getString("user_app_version"),
+    var driverAppVersion = jsonDecode(
+      firebaseRemoteConfigServices.remoteConfig.getString("driver_app_version"),
     );
 
     var packageInfo = await PackageInfo.fromPlatform();
     var currentVersion = Version.parse(packageInfo.version);
-    var latestAppVersion = Version.parse(userAppVersion['latest_app_version']);
+    var latestAppVersion = Version.parse(
+      driverAppVersion['latest_app_version'],
+    );
 
     if (latestAppVersion > currentVersion) {
       await showDialogSoftUpdate();
@@ -1122,13 +1124,13 @@ class HomeController extends GetxController
   }
 
   Future<void> checkForceUpdate() async {
-    var userAppVersion = jsonDecode(
-      firebaseRemoteConfigServices.remoteConfig.getString("user_app_version"),
+    var driverAppVersion = jsonDecode(
+      firebaseRemoteConfigServices.remoteConfig.getString("driver_app_version"),
     );
 
     var packageInfo = await PackageInfo.fromPlatform();
     var currentVersion = Version.parse(packageInfo.version);
-    var minAppVersion = Version.parse(userAppVersion['min_app_version']);
+    var minAppVersion = Version.parse(driverAppVersion['min_app_version']);
 
     if (minAppVersion > currentVersion) {
       await showDialogForceUpdate();
