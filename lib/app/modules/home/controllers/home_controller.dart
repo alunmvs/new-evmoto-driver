@@ -995,107 +995,112 @@ class HomeController extends GetxController
     if (isCoachmarkDisplayed == false) {
       await Get.dialog(
         barrierDismissible: false,
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Material(
-                  color: themeColorServices.neutralsColorGrey0.value,
-                  child: Column(
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 325 / 110,
-                        child: Image.asset(
-                          "assets/images/img_coachmark.png",
-                          fit: BoxFit.cover,
+        PopScope(
+          canPop: false,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Material(
+                    color: themeColorServices.neutralsColorGrey0.value,
+                    child: Column(
+                      children: [
+                        AspectRatio(
+                          aspectRatio: 325 / 110,
+                          child: Image.asset(
+                            "assets/images/img_coachmark.png",
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              languageServices
-                                      .language
-                                      .value
-                                      .dialogCoachmarkTitle ??
-                                  "-",
-                              style: typographyServices.bodyLargeBold.value
-                                  .copyWith(
-                                    color: themeColorServices.textColor.value,
-                                  ),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              languageServices
-                                      .language
-                                      .value
-                                      .dialogCoachmarkDescription ??
-                                  "-",
-                              style: typographyServices.bodySmallRegular.value
-                                  .copyWith(
-                                    color: themeColorServices.textColor.value,
-                                  ),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 16),
-                            SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  Get.close(1);
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                languageServices
+                                        .language
+                                        .value
+                                        .dialogCoachmarkTitle ??
+                                    "-",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices.textColor.value,
+                                    ),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                languageServices
+                                        .language
+                                        .value
+                                        .dialogCoachmarkDescription ??
+                                    "-",
+                                style: typographyServices.bodySmallRegular.value
+                                    .copyWith(
+                                      color: themeColorServices.textColor.value,
+                                    ),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 16),
+                              SizedBox(
+                                width: Get.width,
+                                height: 46,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    Get.close(1);
 
-                                  isCoachmarkActive.value = true;
+                                    isCoachmarkActive.value = true;
 
-                                  ShowcaseView.get().startShowCase([
-                                    activityStatisticsGlobalKey,
-                                    buttonSeeAllMyActivityGlobalKey,
-                                    buttonOfflineOnlineGlobalKey,
-                                    balanceGlobalKey,
-                                    topUpGlobalKey,
-                                    withdrawGlobalKey,
-                                    historyGlobalKey,
-                                    menuGlobalKey,
-                                  ]);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      themeColorServices.primaryBlue.value,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
+                                    ShowcaseView.get().startShowCase([
+                                      activityStatisticsGlobalKey,
+                                      buttonSeeAllMyActivityGlobalKey,
+                                      buttonOfflineOnlineGlobalKey,
+                                      balanceGlobalKey,
+                                      topUpGlobalKey,
+                                      withdrawGlobalKey,
+                                      historyGlobalKey,
+                                      menuGlobalKey,
+                                    ]);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        themeColorServices.primaryBlue.value,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
                                   ),
-                                ),
-                                child: Text(
-                                  languageServices
-                                          .language
-                                          .value
-                                          .dialogCoachmarkButton ??
-                                      "-",
-                                  style: typographyServices.bodySmallBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
+                                  child: Text(
+                                    languageServices
+                                            .language
+                                            .value
+                                            .dialogCoachmarkButton ??
+                                        "-",
+                                    style: typographyServices
+                                        .bodySmallBold
+                                        .value
+                                        .copyWith(
+                                          color: themeColorServices
+                                              .neutralsColorGrey0
+                                              .value,
+                                        ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
