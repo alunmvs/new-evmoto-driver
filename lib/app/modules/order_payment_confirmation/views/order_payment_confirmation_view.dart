@@ -174,7 +174,10 @@ class OrderPaymentConfirmationView
                                     symbol: 'Rp ',
                                     decimalDigits: 0,
                                   ).format(
-                                    controller.orderPayment.value.orderMoney! +
+                                    controller
+                                            .orderDetail
+                                            .value
+                                            .collectionFees! +
                                         controller.subcharge.value,
                                   ),
                                   style: controller
@@ -934,7 +937,18 @@ class OrderPaymentConfirmationView
                                     symbol: 'Rp ',
                                     decimalDigits: 0,
                                   ).format(
-                                    controller.orderPayment.value.orderMoney,
+                                    // (controller
+                                    //             .orderPayment
+                                    //             .value
+                                    //             .collectionFees ??
+                                    //         0.0) +
+                                    //     (controller
+                                    //             .orderPayment
+                                    //             .value
+                                    //             .additionalCharge ??
+                                    //         0.0),
+                                    controller.orderDetail.value.payMoney ??
+                                        0.0,
                                   ),
                                   style: controller
                                       .typographyServices
