@@ -379,14 +379,17 @@ class HomeView extends GetView<HomeController> {
                                                                           CrossAxisAlignment
                                                                               .start,
                                                                       children: [
-                                                                        CircleAvatar(
-                                                                          radius:
-                                                                              35 /
-                                                                              2,
-                                                                          backgroundImage: CachedNetworkImageProvider(
-                                                                            controller.userInfo.value.avatar!,
+                                                                        if (controller.userInfo.value.avatar !=
+                                                                            null) ...[
+                                                                          CircleAvatar(
+                                                                            radius:
+                                                                                35 /
+                                                                                2,
+                                                                            backgroundImage: CachedNetworkImageProvider(
+                                                                              controller.userInfo.value.avatar!,
+                                                                            ),
                                                                           ),
-                                                                        ),
+                                                                        ],
                                                                         SizedBox(
                                                                           width:
                                                                               16,
@@ -1198,7 +1201,8 @@ class HomeView extends GetView<HomeController> {
                                                                             decimalDigits:
                                                                                 0,
                                                                           ).format(
-                                                                            controller.userInfo.value.balance,
+                                                                            controller.userInfo.value.balance ??
+                                                                                0.0,
                                                                           ),
                                                                           style: controller
                                                                               .typographyServices
