@@ -79,10 +79,11 @@ class DepositBalanceController extends GetxController {
           formGroup.control("money").value.toString().replaceAll(".", ""),
         );
 
-        var withdrawAmountMin = firebaseRemoteConfigServices.remoteConfig
-            .getInt("driver_withdraw_min");
+        var depositAmountMin = firebaseRemoteConfigServices.remoteConfig.getInt(
+          "driver_deposit_min",
+        );
 
-        if (money < withdrawAmountMin) {
+        if (money < depositAmountMin) {
           final SnackBar snackBar = SnackBar(
             behavior: SnackBarBehavior.fixed,
             backgroundColor: themeColorServices.sematicColorRed400.value,
