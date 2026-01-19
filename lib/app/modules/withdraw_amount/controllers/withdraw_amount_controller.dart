@@ -6,6 +6,7 @@ import 'package:new_evmoto_driver/app/data/models/bank_account_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/withdraw_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
@@ -20,6 +21,7 @@ class WithdrawAmountController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final homeController = Get.find<HomeController>();
 
@@ -65,6 +67,26 @@ class WithdrawAmountController extends GetxController {
       var withdrawAmount = double.parse(
         formGroup.control("money").value.toString().replaceAll(".", ""),
       );
+
+      var withdrawAmountMin = firebaseRemoteConfigServices.remoteConfig.getInt(
+        "driver_withdraw_min",
+      );
+
+      if (withdrawAmount < withdrawAmountMin) {
+        final SnackBar snackBar = SnackBar(
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: themeColorServices.sematicColorRed400.value,
+          content: Text(
+            "Minimum penarikan dana ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(withdrawAmountMin)}",
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
+          ),
+        );
+        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+        return;
+      }
+
       await Get.bottomSheet(
         isScrollControlled: true,
         Column(
@@ -277,7 +299,7 @@ class WithdrawAmountController extends GetxController {
                                     locale: 'id_ID',
                                     symbol: 'Rp',
                                     decimalDigits: 0,
-                                  ).format(withdrawAmount + adminFee.value),
+                                  ).format(withdrawAmount - adminFee.value),
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(
                                         color:
