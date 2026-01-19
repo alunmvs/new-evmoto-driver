@@ -153,7 +153,7 @@ class OnboardingIntroductionView
                                       .languageServices
                                       .language
                                       .value
-                                      .onboardingDescription1 ??
+                                      .onboardingDescription2 ??
                                   "-",
                               style: controller
                                   .typographyServices
