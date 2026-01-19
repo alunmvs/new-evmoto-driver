@@ -11,6 +11,8 @@ import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../../services/firebase_remote_config_services.dart';
+
 class DepositBalanceController extends GetxController {
   final PaymentRepository paymentRepository;
   final UserRepository userRepository;
@@ -23,6 +25,7 @@ class DepositBalanceController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final formGroup = FormGroup({
     "money": FormControl<String>(validators: <Validator>[Validators.required]),
@@ -76,7 +79,10 @@ class DepositBalanceController extends GetxController {
           formGroup.control("money").value.toString().replaceAll(".", ""),
         );
 
-        if (money < 10000) {
+        var withdrawAmountMin = firebaseRemoteConfigServices.remoteConfig
+            .getInt("driver_withdraw_min");
+
+        if (money < withdrawAmountMin) {
           final SnackBar snackBar = SnackBar(
             behavior: SnackBarBehavior.fixed,
             backgroundColor: themeColorServices.sematicColorRed400.value,
