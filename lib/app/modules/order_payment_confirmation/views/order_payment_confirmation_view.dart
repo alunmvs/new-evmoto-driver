@@ -21,8 +21,8 @@ class OrderPaymentConfirmationView
         appBar: AppBar(
           title: Text(
             controller.orderDetail.value.state == 5
-                ? "${controller.languageServices.language.value.paymentConfirmation} (Cash)"
-                : "${controller.languageServices.language.value.waitingForPayment} (Cash)",
+                ? "${controller.languageServices.language.value.paymentConfirmation} (${controller.getPaymentMethodName()})"
+                : "${controller.languageServices.language.value.waitingForPayment} (${controller.getPaymentMethodName()})",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: true,

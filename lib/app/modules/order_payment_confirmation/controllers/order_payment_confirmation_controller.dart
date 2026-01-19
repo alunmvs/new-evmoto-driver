@@ -151,4 +151,13 @@ class OrderPaymentConfirmationController extends GetxController {
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
   }
+
+  String getPaymentMethodName() {
+    if (orderDetail.value.payType == 3) {
+      return 'Cash';
+    } else if (orderDetail.value.payType == 2) {
+      return 'Saldo EVMoto';
+    }
+    return '';
+  }
 }
