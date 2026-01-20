@@ -726,9 +726,32 @@ class AccountController extends GetxController {
                               ? null
                               : () async {
                                   Get.close(1);
-                                  await userRepository.deleteAccount(
-                                    otpCode: otpCode.value,
-                                  );
+                                  try {
+                                    await userRepository.deleteAccount(
+                                      otpCode: otpCode.value,
+                                    );
+                                  } catch (e) {
+                                    final SnackBar snackBar = SnackBar(
+                                      behavior: SnackBarBehavior.fixed,
+                                      backgroundColor: themeColorServices
+                                          .sematicColorRed400
+                                          .value,
+                                      content: Text(
+                                        e.toString(),
+                                        style: typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .neutralsColorGrey0
+                                                  .value,
+                                            ),
+                                      ),
+                                    );
+                                    rootScaffoldMessengerKey.currentState
+                                        ?.showSnackBar(snackBar);
+                                    return;
+                                  }
                                   await onTapSuccessDeleteAccountDialog();
 
                                   var storage = FlutterSecureStorage();
