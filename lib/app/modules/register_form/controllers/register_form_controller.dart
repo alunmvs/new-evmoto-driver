@@ -64,6 +64,9 @@ class RegisterFormController extends GetxController {
     "referral_code": FormControl<String>(
       validators: <Validator>[Validators.minLength(8), Validators.maxLength(8)],
     ),
+    "license_plate": FormControl<String>(
+      validators: <Validator>[Validators.required],
+    ),
   });
 
   final provinceCitiesList = <ProvinceCities>[].obs;
@@ -73,6 +76,12 @@ class RegisterFormController extends GetxController {
   final idPhotoUrl = "".obs;
   final drivingLicensePhotoUrl = "".obs;
   final avatarPhotoUrl = "".obs;
+
+  // new
+  final vehicleRegistrationCertificateFrontPhotoUrl = "".obs;
+  final vehicleRegistrationCertificateBackPhotoUrl = "".obs;
+  final driverSelfieWithIdCardPhotoUrl = "".obs;
+  final policeClearanceCertificatePhotoUrl = "".obs;
 
   final uid = "".obs;
   final mobilePhone = "".obs;
@@ -176,6 +185,70 @@ class RegisterFormController extends GetxController {
     }
   }
 
+  Future<void> onTapUploadvehicleRegistrationCertificateFront() async {
+    var imagePicker = ImagePicker();
+    var image = await imagePicker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 720,
+      preferredCameraDevice: CameraDevice.rear,
+    );
+
+    if (image != null) {
+      showLoadingDialog();
+      vehicleRegistrationCertificateFrontPhotoUrl.value =
+          await uploadImageRepository.uploadImage(file: image);
+      Get.close(1);
+    }
+  }
+
+  Future<void> onTapUploadVehicleRegistrationCertificateBack() async {
+    var imagePicker = ImagePicker();
+    var image = await imagePicker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 720,
+      preferredCameraDevice: CameraDevice.rear,
+    );
+
+    if (image != null) {
+      showLoadingDialog();
+      vehicleRegistrationCertificateFrontPhotoUrl.value =
+          await uploadImageRepository.uploadImage(file: image);
+      Get.close(1);
+    }
+  }
+
+  Future<void> onTapUploadDriverSelfieWithIdCard() async {
+    var imagePicker = ImagePicker();
+    var image = await imagePicker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 720,
+      preferredCameraDevice: CameraDevice.rear,
+    );
+
+    if (image != null) {
+      showLoadingDialog();
+      driverSelfieWithIdCardPhotoUrl.value = await uploadImageRepository
+          .uploadImage(file: image);
+      Get.close(1);
+    }
+  }
+
+  Future<void> onTapUploadPoliceClearanceCertificate() async {
+    var imagePicker = ImagePicker();
+    var image = await imagePicker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 720,
+      preferredCameraDevice: CameraDevice.rear,
+    );
+
+    if (image != null) {
+      showLoadingDialog();
+      policeClearanceCertificatePhotoUrl.value = await uploadImageRepository
+          .uploadImage(file: image);
+      Get.close(1);
+    }
+  }
+
   String generateDriverContactAddress() {
     var driverContactAddress = [];
 
@@ -232,7 +305,10 @@ class RegisterFormController extends GetxController {
                 false) ||
         idPhotoUrl.value == "" ||
         drivingLicensePhotoUrl.value == "" ||
-        avatarPhotoUrl.value == "") {
+        avatarPhotoUrl.value == "" ||
+        vehicleRegistrationCertificateFrontPhotoUrl.value == "" ||
+        vehicleRegistrationCertificateBackPhotoUrl.value == "" ||
+        driverSelfieWithIdCardPhotoUrl.value == "") {
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,
