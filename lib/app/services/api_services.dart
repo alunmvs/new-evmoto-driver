@@ -1,11 +1,20 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 
 class ApiServices extends GetxService {
-  final Dio dio = Dio();
+  final Dio dio = Dio(
+    BaseOptions(
+      connectTimeout: Duration(seconds: 10),
+      sendTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 15),
+    ),
+  );
 
   @override
   Future<void> onInit() async {
