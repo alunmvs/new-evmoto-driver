@@ -756,7 +756,6 @@ class HomeController extends GetxController
                           children: [
                             ActionSlider.custom(
                               height: 60,
-                              boxShadow: [],
                               action: (actionController) async {
                                 actionController.loading();
                                 Get.back(result: true);
@@ -788,7 +787,7 @@ class HomeController extends GetxController
                                 return AnimatedContainer(
                                   duration: Duration(milliseconds: 500),
                                   padding: const EdgeInsets.all(8.0),
-                                  child: state.sliderMode == SliderMode.loading
+                                  child: state.status == SliderStatus.loading()
                                       ? CircleAvatar(
                                           backgroundColor: themeColorServices
                                               .primaryBlue
@@ -822,7 +821,7 @@ class HomeController extends GetxController
                                 );
                               },
                               backgroundBuilder: (context, state, child) {
-                                if (state.sliderMode == SliderMode.loading) {
+                                if (state.status == SliderStatus.loading()) {
                                   return Container(
                                     decoration: BoxDecoration(
                                       color: Color(0XFF2F8AEC),

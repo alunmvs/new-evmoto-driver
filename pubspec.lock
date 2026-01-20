@@ -20,11 +20,12 @@ packages:
   action_slider:
     dependency: "direct main"
     description:
-      name: action_slider
-      sha256: fad0720cde9bf06c12594c15da17dba087556a3285875a91aee3d3a64a3072e2
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.0"
+      path: "."
+      ref: HEAD
+      resolved-ref: c51d8ebca5faf3f1de8e67631c6ec4460114fdc6
+      url: "https://github.com/SplashByte/action_slider.git"
+    source: git
+    version: "0.8.0-beta.3"
   analyzer:
     dependency: transitive
     description:

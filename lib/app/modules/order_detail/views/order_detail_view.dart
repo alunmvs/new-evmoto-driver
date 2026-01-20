@@ -798,7 +798,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     2) ...[
                                   ActionSlider.custom(
                                     height: 60,
-                                    boxShadow: [],
+
                                     action: (actionController) async {
                                       actionController.loading();
                                       await controller
@@ -818,8 +818,8 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         duration: Duration(milliseconds: 500),
                                         padding: const EdgeInsets.all(8.0),
                                         child:
-                                            state.sliderMode ==
-                                                SliderMode.loading
+                                            state.status ==
+                                                SliderStatus.loading()
                                             ? CircleAvatar(
                                                 backgroundColor: controller
                                                     .themeColorServices
@@ -923,7 +923,6 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     3) ...[
                                   ActionSlider.custom(
                                     height: 60,
-                                    boxShadow: [],
                                     action: (actionController) async {
                                       actionController.loading();
                                       await controller
@@ -943,8 +942,8 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         duration: Duration(milliseconds: 500),
                                         padding: const EdgeInsets.all(8.0),
                                         child:
-                                            state.sliderMode ==
-                                                SliderMode.loading
+                                            state.status ==
+                                                SliderStatus.loading()
                                             ? CircleAvatar(
                                                 backgroundColor: controller
                                                     .themeColorServices
@@ -1048,7 +1047,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     4) ...[
                                   ActionSlider.custom(
                                     height: 60,
-                                    boxShadow: [],
+
                                     action: (actionController) async {
                                       actionController.loading();
                                       await controller.updateStateOnProgress();
@@ -1067,8 +1066,8 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         duration: Duration(milliseconds: 500),
                                         padding: const EdgeInsets.all(8.0),
                                         child:
-                                            state.sliderMode ==
-                                                SliderMode.loading
+                                            state.status ==
+                                                SliderStatus.loading()
                                             ? CircleAvatar(
                                                 backgroundColor: controller
                                                     .themeColorServices
@@ -1172,7 +1171,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     5) ...[
                                   ActionSlider.custom(
                                     height: 60,
-                                    boxShadow: [],
+
                                     action: (actionController) async {
                                       actionController.loading();
                                       await controller
@@ -1192,8 +1191,8 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         duration: Duration(milliseconds: 500),
                                         padding: const EdgeInsets.all(8.0),
                                         child:
-                                            state.sliderMode ==
-                                                SliderMode.loading
+                                            state.status ==
+                                                SliderStatus.loading()
                                             ? CircleAvatar(
                                                 backgroundColor: controller
                                                     .themeColorServices
