@@ -785,60 +785,115 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> updateStateStartOrderTrip() async {
-    await orderRepository.setOrderState(
-      orderType: orderType.value,
-      orderId: orderId.value,
-      lat: currentLatitude.value,
-      lon: currentLongitude.value,
-      language: 2,
-      state: 3,
-    );
-
-    await refreshAll();
+    try {
+      await orderRepository.setOrderState(
+        orderType: orderType.value,
+        orderId: orderId.value,
+        lat: currentLatitude.value,
+        lon: currentLongitude.value,
+        language: 2,
+        state: 3,
+      );
+    } catch (e) {
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } finally {
+      await refreshAll();
+    }
   }
 
   Future<void> updateStateArrivedOrigin() async {
-    await orderRepository.setOrderState(
-      orderType: orderType.value,
-      orderId: orderId.value,
-      lat: currentLatitude.value,
-      lon: currentLongitude.value,
-      language: 2,
-      state: 4,
-    );
-
-    await refreshAll();
+    try {
+      await orderRepository.setOrderState(
+        orderType: orderType.value,
+        orderId: orderId.value,
+        lat: currentLatitude.value,
+        lon: currentLongitude.value,
+        language: 2,
+        state: 4,
+      );
+    } catch (e) {
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } finally {
+      await refreshAll();
+    }
   }
 
   Future<void> updateStateOnProgress() async {
-    await orderRepository.setOrderState(
-      orderType: orderType.value,
-      orderId: orderId.value,
-      lat: currentLatitude.value,
-      lon: currentLongitude.value,
-      language: 2,
-      state: 5,
-    );
-
-    await refreshAll();
+    try {
+      await orderRepository.setOrderState(
+        orderType: orderType.value,
+        orderId: orderId.value,
+        lat: currentLatitude.value,
+        lon: currentLongitude.value,
+        language: 2,
+        state: 5,
+      );
+    } catch (e) {
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } finally {
+      await refreshAll();
+    }
   }
 
   Future<void> updateStateArrivedAtDestination() async {
-    await orderRepository.setOrderState(
-      orderType: orderType.value,
-      orderId: orderId.value,
-      lat: currentLatitude.value,
-      lon: currentLongitude.value,
-      language: 2,
-      state: 6,
-    );
+    try {
+      await orderRepository.setOrderState(
+        orderType: orderType.value,
+        orderId: orderId.value,
+        lat: currentLatitude.value,
+        lon: currentLongitude.value,
+        language: 2,
+        state: 6,
+      );
+      await getOrderDetail();
 
-    await getOrderDetail();
-
-    Get.toNamed(
-      Routes.ORDER_PAYMENT_CONFIRMATION,
-      arguments: {"order_id": orderId.value, "order_type": orderType.value},
-    );
+      Get.toNamed(
+        Routes.ORDER_PAYMENT_CONFIRMATION,
+        arguments: {"order_id": orderId.value, "order_type": orderType.value},
+      );
+    } catch (e) {
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } finally {}
   }
 
   Future<void> onTapRefocus() async {
