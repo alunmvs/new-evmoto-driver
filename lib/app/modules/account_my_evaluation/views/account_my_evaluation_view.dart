@@ -219,7 +219,8 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Nama User",
+                                            ratingAndReviewData.customerName ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold
