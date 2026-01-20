@@ -162,7 +162,9 @@ class HistoryBalanceWithdrawView
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Andrew Setia Kawan",
+                                              historyBalanceWithdraw
+                                                      .accountHolderName ??
+                                                  "-",
                                               style: controller
                                                   .typographyServices
                                                   .bodySmallBold
@@ -172,7 +174,10 @@ class HistoryBalanceWithdrawView
                                                   ),
                                             ),
                                             Text(
-                                              "****** 50373",
+                                              controller.maskFirst6(
+                                                historyBalanceWithdraw
+                                                    .accountNumber!,
+                                              ),
                                               style: controller
                                                   .typographyServices
                                                   .bodySmallRegular

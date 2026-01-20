@@ -68,4 +68,15 @@ class HistoryBalanceWithdrawController extends GetxController {
 
     this.historyBalanceWithdrawList.addAll(historyBalanceWithdrawList);
   }
+
+  String maskFirst6(String value) {
+    if (value.length <= 6) {
+      return '*' * value.length;
+    }
+
+    String maskedPart = '*' * 6;
+    String visiblePart = value.substring(6);
+
+    return "$maskedPart $visiblePart";
+  }
 }

@@ -385,7 +385,7 @@ class WithdrawDetailView extends GetView<WithdrawDetailController> {
                                     controller
                                             .historyBalanceWithdraw
                                             .value
-                                            .money! +
+                                            .money! -
                                         (controller
                                                 .historyBalanceWithdraw
                                                 .value
