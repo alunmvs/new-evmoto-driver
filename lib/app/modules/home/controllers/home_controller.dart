@@ -132,14 +132,17 @@ class HomeController extends GetxController
   }
 
   Future<void> requestLocation() async {
-    var isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    var permission = await Geolocator.requestPermission();
+    try {
+      var isLocationServiceEnabled =
+          await Geolocator.isLocationServiceEnabled();
+      var permission = await Geolocator.requestPermission();
 
-    if (isLocationServiceEnabled == false ||
-        (permission == LocationPermission.denied ||
-            permission == LocationPermission.deniedForever)) {
-      return;
-    }
+      if (isLocationServiceEnabled == false ||
+          (permission == LocationPermission.denied ||
+              permission == LocationPermission.deniedForever)) {
+        return;
+      }
+    } catch (e) {}
   }
 
   Future<String> getDeviceId() async {
