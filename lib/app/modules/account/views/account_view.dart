@@ -32,12 +32,14 @@ class AccountView extends GetView<AccountController> {
             children: [
               SizedBox(height: 40),
               SizedBox(height: 16),
-              CircleAvatar(
-                radius: 46 / 2,
-                backgroundImage: CachedNetworkImageProvider(
-                  controller.homeController.userInfo.value.avatar!,
+              if (controller.homeController.userInfo.value.avatar != null) ...[
+                CircleAvatar(
+                  radius: 46 / 2,
+                  backgroundImage: CachedNetworkImageProvider(
+                    controller.homeController.userInfo.value.avatar!,
+                  ),
                 ),
-              ),
+              ],
               SizedBox(height: 8),
               Text(
                 controller.homeController.userInfo.value.name ?? "-",

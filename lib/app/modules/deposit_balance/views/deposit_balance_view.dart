@@ -426,12 +426,7 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              controller
-                                      .languageServices
-                                      .language
-                                      .value
-                                      .minimumRechargeBalance ??
-                                  "-",
+                              "${controller.languageServices.language.value.minimumRechargeBalance!} ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(controller.firebaseRemoteConfigServices.remoteConfig.getInt("driver_deposit_min"))}",
                               style: controller
                                   .typographyServices
                                   .bodySmallRegular

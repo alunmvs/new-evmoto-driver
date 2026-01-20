@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_driver/app/repositories/payment_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
@@ -88,7 +89,7 @@ class DepositBalanceController extends GetxController {
             behavior: SnackBarBehavior.fixed,
             backgroundColor: themeColorServices.sematicColorRed400.value,
             content: Text(
-              languageServices.language.value.minimumRechargeBalance ?? "-",
+              "${languageServices.language.value.minimumRechargeBalance!} ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(depositAmountMin)}",
               style: typographyServices.bodySmallRegular.value.copyWith(
                 color: themeColorServices.neutralsColorGrey0.value,
               ),

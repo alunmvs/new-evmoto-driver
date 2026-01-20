@@ -209,7 +209,7 @@ class WithdrawView extends GetView<WithdrawController> {
                                                 ),
                                           ),
                                           Text(
-                                            "Minimal penarikan Rp10.000",
+                                            "Minimal penarikan ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(controller.firebaseRemoteConfigServices.remoteConfig.getInt("driver_withdraw_min"))}",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -452,7 +452,7 @@ class WithdrawView extends GetView<WithdrawController> {
                                                 ),
                                           ),
                                           Text(
-                                            "Minimal penarikan Rp10.000",
+                                            "Minimal penarikan ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(controller.firebaseRemoteConfigServices.remoteConfig.getInt("driver_withdraw_min"))}",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
