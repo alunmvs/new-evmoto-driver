@@ -786,7 +786,6 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     2) ...[
                                   ActionSlider.custom(
                                     height: 60,
-
                                     action: (actionController) async {
                                       actionController.loading();
                                       await controller
@@ -1035,7 +1034,6 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     4) ...[
                                   ActionSlider.custom(
                                     height: 60,
-
                                     action: (actionController) async {
                                       actionController.loading();
                                       await controller.updateStateOnProgress();
@@ -1159,7 +1157,6 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                     5) ...[
                                   ActionSlider.custom(
                                     height: 60,
-
                                     action: (actionController) async {
                                       actionController.loading();
                                       await controller

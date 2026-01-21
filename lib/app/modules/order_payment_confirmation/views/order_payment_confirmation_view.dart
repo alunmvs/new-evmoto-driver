@@ -124,7 +124,7 @@ class OrderPaymentConfirmationView
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (controller.orderDetail.value.state == 5) ...[
+                      if (controller.orderDetail.value.state == 6) ...[
                         SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -697,7 +697,7 @@ class OrderPaymentConfirmationView
                           ),
                         ),
                       ],
-                      if (controller.orderDetail.value.state != 5) ...[
+                      if (controller.orderDetail.value.state != 6) ...[
                         Container(
                           padding: EdgeInsets.all(16),
                           width: MediaQuery.of(context).size.width,
@@ -1116,7 +1116,7 @@ class OrderPaymentConfirmationView
               ),
         bottomNavigationBar: controller.isFetch.value
             ? null
-            : (controller.orderDetail.value.state != 5 &&
+            : (controller.orderDetail.value.state != 6 &&
                   controller.orderDetail.value.state != 8)
             ? null
             : BottomAppBar(
@@ -1126,17 +1126,13 @@ class OrderPaymentConfirmationView
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (controller.orderDetail.value.state == 5) ...[
+                    if (controller.orderDetail.value.state == 6) ...[
                       LoaderElevatedButton(
                         onPressed: () async {
-                          await controller.onTapConfirmPayment();
+                          await controller.onTapCompleteOrderDirect();
                         },
                         child: Text(
-                          controller
-                                  .languageServices
-                                  .language
-                                  .value
-                                  .paymentConfirmation ??
+                          controller.languageServices.language.value.finished ??
                               "-",
                           style: controller
                               .typographyServices

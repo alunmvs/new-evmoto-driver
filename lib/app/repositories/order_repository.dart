@@ -271,6 +271,50 @@ class OrderRepository {
     }
   }
 
+  Future<void> completeOrderDirect({
+    required int orderType,
+    required String orderId,
+    required int language,
+    required int payType,
+    int? additionalCharge,
+    String? surchargeDescription,
+  }) async {
+    try {
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/api/taxi/completeOrderDirect";
+
+      var formData = {
+        "orderType": orderType,
+        "orderId": orderId,
+        "payType": payType,
+        "language": language,
+        "additionalCharge": additionalCharge,
+        "surchargeDescription": surchargeDescription,
+      };
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/x-www-form-urlencoded",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> confirmOrderPayment({
     required int orderType,
     required String orderId,

@@ -152,6 +152,57 @@ class OrderPaymentConfirmationController extends GetxController {
     }
   }
 
+  Future<void> onTapCompleteOrderDirect() async {
+    try {
+      await orderRepository.completeOrderDirect(
+        orderType: orderType.value,
+        orderId: orderId.value,
+        language: languageServices.languageCodeSystem.value,
+        payType: orderDetail.value.payType!,
+        additionalCharge: formGroup.control("additional_charge").value == null
+            ? 0
+            : int.tryParse(
+                    formGroup
+                        .control("additional_charge")
+                        .value
+                        .toString()
+                        .replaceAll("Rp", "")
+                        .replaceAll(".", ""),
+                  ) ??
+                  0,
+        surchargeDescription: formGroup.control("surcharge_description").value,
+      );
+
+      Get.back();
+      Get.back();
+      Get.find<HomeController>().refreshAll();
+
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorGreen400.value,
+        content: Text(
+          "Pesanan berhasil diselesaikan",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } catch (e) {
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    }
+  }
+
   String getPaymentMethodName() {
     if (orderDetail.value.payType == 3) {
       return 'Cash';

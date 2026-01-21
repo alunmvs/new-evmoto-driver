@@ -197,28 +197,46 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     markers.clear();
     polylines.clear();
     polylinesCoordinate.clear();
-    driverCurrentLocationTimer?.cancel();
-    driverCurrentLocationTimer = null;
-    refocusMapBoundsTimer?.cancel();
-    refocusMapBoundsTimer = null;
+    try {
+      driverCurrentLocationTimer?.cancel();
+      driverCurrentLocationTimer = null;
+    } catch (e) {}
+    try {
+      refocusMapBoundsTimer?.cancel();
+      refocusMapBoundsTimer = null;
+    } catch (e) {}
 
-    await requestLocation();
-    await getOrderDetail();
+    try {
+      await requestLocation();
+      await getOrderDetail();
 
-    if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
-      await setupGoogleMapsPickUpCustomer();
+      if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
+        await setupGoogleMapsPickUpCustomer();
+      }
+
+      if (orderDetail.value.state == 4 ||
+          orderDetail.value.state == 5 ||
+          orderDetail.value.state == 6) {
+        await setupGoogleMapOriginToDestination();
+      }
+
+      await Future.wait([
+        setupSchedulerDriverCurrentLocation(),
+        setupSchedulerDriverRefocusMapBound(),
+      ]);
+    } catch (e) {
+      var snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          "Terdapat error pada aplikasi",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
-
-    if (orderDetail.value.state == 4 ||
-        orderDetail.value.state == 5 ||
-        orderDetail.value.state == 6) {
-      await setupGoogleMapOriginToDestination();
-    }
-
-    await Future.wait([
-      setupSchedulerDriverCurrentLocation(),
-      setupSchedulerDriverRefocusMapBound(),
-    ]);
   }
 
   Future<void> joinFirestoreChatRooms() async {
