@@ -6,6 +6,7 @@ import 'package:new_evmoto_driver/app/repositories/payment_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DepositBalancePaymentWebviewController extends GetxController {
@@ -106,31 +107,21 @@ class DepositBalancePaymentWebviewController extends GetxController {
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Get.close(1);
-                                  Get.back();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                child: Text(
-                                  "Batalkan",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                ),
+                            child: LoaderElevatedButton(
+                              onPressed: () async {
+                                Get.close(1);
+                                Get.back();
+                              },
+                              buttonColor:
+                                  themeColorServices.sematicColorRed400.value,
+                              child: Text(
+                                "Batalkan",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
+                                    ),
                               ),
                             ),
                           ),

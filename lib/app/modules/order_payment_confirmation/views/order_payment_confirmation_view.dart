@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -1126,65 +1127,43 @@ class OrderPaymentConfirmationView
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (controller.orderDetail.value.state == 5) ...[
-                      SizedBox(
-                        height: 46,
-                        width: MediaQuery.of(context).size.width,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller.onTapConfirmPayment();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                controller.themeColorServices.primaryBlue.value,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Text(
-                            controller
-                                    .languageServices
-                                    .language
-                                    .value
-                                    .paymentConfirmation ??
-                                "-",
-                            style: controller
-                                .typographyServices
-                                .bodySmallBold
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          await controller.onTapConfirmPayment();
+                        },
+                        child: Text(
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .paymentConfirmation ??
+                              "-",
+                          style: controller
+                              .typographyServices
+                              .bodySmallBold
+                              .value
+                              .copyWith(color: Colors.white),
                         ),
                       ),
                     ],
                     if (controller.orderDetail.value.state == 8 &&
                         controller.orderDetail.value.driverConfirm != 2) ...[
-                      SizedBox(
-                        height: 46,
-                        width: MediaQuery.of(context).size.width,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller.onTapConfirmCashReceived();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                controller.themeColorServices.primaryBlue.value,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Text(
-                            controller
-                                    .languageServices
-                                    .language
-                                    .value
-                                    .paymentReceived ??
-                                "-",
-                            style: controller
-                                .typographyServices
-                                .bodySmallBold
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          await controller.onTapConfirmCashReceived();
+                        },
+                        child: Text(
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .paymentReceived ??
+                              "-",
+                          style: controller
+                              .typographyServices
+                              .bodySmallBold
+                              .value
+                              .copyWith(color: Colors.white),
                         ),
                       ),
                     ],

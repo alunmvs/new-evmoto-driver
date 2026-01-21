@@ -19,6 +19,7 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_driver/app/utils/location_helper.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -1075,78 +1076,68 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  try {
-                                    await orderRepository.cancelOrder(
-                                      orderType: orderType.value,
-                                      orderId: orderId.value,
-                                      language: 2,
-                                    );
-                                    Get.close(1);
-                                    Get.back();
-                                    Get.find<HomeController>().refreshAll();
+                            child: LoaderElevatedButton(
+                              onPressed: () async {
+                                try {
+                                  await orderRepository.cancelOrder(
+                                    orderType: orderType.value,
+                                    orderId: orderId.value,
+                                    language: 2,
+                                  );
+                                  Get.close(1);
+                                  Get.back();
+                                  Get.find<HomeController>().refreshAll();
 
-                                    final SnackBar snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorGreen400
+                                  final SnackBar snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.fixed,
+                                    backgroundColor: themeColorServices
+                                        .sematicColorGreen400
+                                        .value,
+                                    content: Text(
+                                      "Berhasil membatalkan pesanan",
+                                      style: typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(
+                                            color: themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                    ),
+                                  );
+                                  rootScaffoldMessengerKey.currentState
+                                      ?.showSnackBar(snackBar);
+                                } catch (e) {
+                                  final SnackBar snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.fixed,
+                                    backgroundColor: themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                    content: Text(
+                                      e.toString(),
+                                      style: typographyServices
+                                          .bodySmallBold
+                                          .value
+                                          .copyWith(
+                                            color: themeColorServices
+                                                .neutralsColorGrey0
+                                                .value,
+                                          ),
+                                    ),
+                                  );
+                                  rootScaffoldMessengerKey.currentState
+                                      ?.showSnackBar(snackBar);
+                                }
+                              },
+                              buttonColor: themeColorServices.redColor.value,
+                              child: Text(
+                                "Batalkan",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
                                           .value,
-                                      content: Text(
-                                        "Berhasil membatalkan pesanan",
-                                        style: typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
-                                    );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
-                                  } catch (e) {
-                                    final SnackBar snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorRed400
-                                          .value,
-                                      content: Text(
-                                        e.toString(),
-                                        style: typographyServices
-                                            .bodySmallBold
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
-                                    );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      themeColorServices.redColor.value,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                child: Text(
-                                  "Batalkan",
-                                  style: typographyServices.bodyLargeBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
-                                            .value,
-                                      ),
-                                ),
+                                    ),
                               ),
                             ),
                           ),

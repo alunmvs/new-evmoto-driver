@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 
 import '../controllers/account_service_controller.dart';
 
@@ -148,29 +149,14 @@ class AccountServiceView extends GetView<AccountServiceController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 46,
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await controller.onTapSave();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              controller.themeColorServices.primaryBlue.value,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: Text(
-                          controller.languageServices.language.value.save ??
-                              "-",
-                          style: controller
-                              .typographyServices
-                              .bodySmallBold
-                              .value
-                              .copyWith(color: Colors.white),
-                        ),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        await controller.onTapSave();
+                      },
+                      child: Text(
+                        controller.languageServices.language.value.save ?? "-",
+                        style: controller.typographyServices.bodySmallBold.value
+                            .copyWith(color: Colors.white),
                       ),
                     ),
                   ],

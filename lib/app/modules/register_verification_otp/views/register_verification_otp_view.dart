@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pinput/pinput.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import '../controllers/register_verification_otp_controller.dart';
@@ -218,35 +219,24 @@ class RegisterVerificationOtpView
                         ],
                       ),
                       SizedBox(height: 16 * 2),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: 46,
-                        child: ElevatedButton(
-                          onPressed: controller.otpCode.value.length != 4
-                              ? null
-                              : () async {
-                                  await controller.onTapNext();
-                                },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                controller.themeColorServices.primaryBlue.value,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Text(
-                            controller
-                                    .languageServices
-                                    .language
-                                    .value
-                                    .buttonNext ??
-                                "-",
-                            style: controller
-                                .typographyServices
-                                .bodySmallBold
-                                .value
-                                .copyWith(color: Colors.white),
-                          ),
+                      LoaderElevatedButton(
+                        onPressed: controller.otpCode.value.length != 4
+                            ? null
+                            : () async {
+                                await controller.onTapNext();
+                              },
+                        child: Text(
+                          controller
+                                  .languageServices
+                                  .language
+                                  .value
+                                  .buttonNext ??
+                              "-",
+                          style: controller
+                              .typographyServices
+                              .bodySmallBold
+                              .value
+                              .copyWith(color: Colors.white),
                         ),
                       ),
                     ],

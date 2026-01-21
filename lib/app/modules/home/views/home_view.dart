@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/modules/account/views/account_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/order_card_home_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -3054,43 +3055,25 @@ class HomeView extends GetView<HomeController> {
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 16,
                                             ),
-                                            child: SizedBox(
-                                              height: 46,
-                                              width: MediaQuery.of(
-                                                context,
-                                              ).size.width,
-                                              child: ElevatedButton(
-                                                onPressed: () async {
-                                                  await controller
-                                                      .onTapSaveServiceOrder();
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: controller
-                                                      .themeColorServices
-                                                      .primaryBlue
-                                                      .value,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          16,
-                                                        ),
-                                                  ),
-                                                ),
-                                                child: Text(
-                                                  controller
-                                                          .languageServices
-                                                          .language
-                                                          .value
-                                                          .save ??
-                                                      "-",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .bodySmallBold
-                                                      .value
-                                                      .copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                ),
+                                            child: LoaderElevatedButton(
+                                              onPressed: () async {
+                                                await controller
+                                                    .onTapSaveServiceOrder();
+                                              },
+                                              child: Text(
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .save ??
+                                                    "-",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallBold
+                                                    .value
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                    ),
                                               ),
                                             ),
                                           ),

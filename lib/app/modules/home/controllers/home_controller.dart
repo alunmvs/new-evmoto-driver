@@ -27,6 +27,7 @@ import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -1050,48 +1051,35 @@ class HomeController extends GetxController
                                 textAlign: TextAlign.center,
                               ),
                               SizedBox(height: 16),
-                              SizedBox(
-                                width: Get.width,
-                                height: 46,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    Get.close(1);
+                              LoaderElevatedButton(
+                                onPressed: () async {
+                                  Get.close(1);
 
-                                    isCoachmarkActive.value = true;
+                                  isCoachmarkActive.value = true;
 
-                                    ShowcaseView.get().startShowCase([
-                                      activityStatisticsGlobalKey,
-                                      buttonSeeAllMyActivityGlobalKey,
-                                      buttonOfflineOnlineGlobalKey,
-                                      balanceGlobalKey,
-                                      topUpGlobalKey,
-                                      withdrawGlobalKey,
-                                      historyGlobalKey,
-                                      menuGlobalKey,
-                                    ]);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        themeColorServices.primaryBlue.value,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    languageServices
-                                            .language
-                                            .value
-                                            .dialogCoachmarkButton ??
-                                        "-",
-                                    style: typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(
-                                          color: themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                        ),
-                                  ),
+                                  ShowcaseView.get().startShowCase([
+                                    activityStatisticsGlobalKey,
+                                    buttonSeeAllMyActivityGlobalKey,
+                                    buttonOfflineOnlineGlobalKey,
+                                    balanceGlobalKey,
+                                    topUpGlobalKey,
+                                    withdrawGlobalKey,
+                                    historyGlobalKey,
+                                    menuGlobalKey,
+                                  ]);
+                                },
+                                child: Text(
+                                  languageServices
+                                          .language
+                                          .value
+                                          .dialogCoachmarkButton ??
+                                      "-",
+                                  style: typographyServices.bodySmallBold.value
+                                      .copyWith(
+                                        color: themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
                                 ),
                               ),
                             ],
@@ -1181,25 +1169,14 @@ class HomeController extends GetxController
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 16),
-                      SizedBox(
-                        height: 46,
-                        width: Get.width,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await onTapUpdateVersion();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                themeColorServices.primaryBlue.value,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Text(
-                            "Update Sekarang",
-                            style: typographyServices.bodyLargeBold.value
-                                .copyWith(color: Colors.white),
-                          ),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          await onTapUpdateVersion();
+                        },
+                        child: Text(
+                          "Update Sekarang",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(color: Colors.white),
                         ),
                       ),
                       SizedBox(height: 16),
@@ -1255,24 +1232,14 @@ class HomeController extends GetxController
                     textAlign: TextAlign.center,
                   ),
                   Spacer(),
-                  SizedBox(
-                    height: 46,
-                    width: Get.width,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        await onTapUpdateVersion();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: themeColorServices.primaryBlue.value,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      child: Text(
-                        "Update Sekarang",
-                        style: typographyServices.bodyLargeBold.value.copyWith(
-                          color: Colors.white,
-                        ),
+                  LoaderElevatedButton(
+                    onPressed: () async {
+                      await onTapUpdateVersion();
+                    },
+                    child: Text(
+                      "Update Sekarang",
+                      style: typographyServices.bodyLargeBold.value.copyWith(
+                        color: Colors.white,
                       ),
                     ),
                   ),

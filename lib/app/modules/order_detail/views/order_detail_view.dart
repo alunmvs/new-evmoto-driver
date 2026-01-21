@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/utils/location_helper.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 
 import '../controllers/order_detail_controller.dart';
 
@@ -69,47 +70,34 @@ class OrderDetailView extends GetView<OrderDetailController> {
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 16),
-                          SizedBox(
-                            width: Get.width,
-                            height: 46,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                await checkAndEnableLocation();
-                                controller.isLocationReadyStatus.value =
-                                    await isLocationReady();
-                                if (controller.isLocationReadyStatus.value ==
-                                    true) {
-                                  await controller.onInit();
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: controller
-                                    .themeColorServices
-                                    .primaryBlue
-                                    .value,
-                                side: BorderSide(
-                                  color: controller
-                                      .themeColorServices
-                                      .primaryBlue
-                                      .value,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: Text(
-                                "Aktifkan Lokasi",
-                                style: controller
-                                    .typographyServices
-                                    .bodySmallBold
-                                    .value
-                                    .copyWith(
-                                      color: controller
-                                          .themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
-                                    ),
-                              ),
+                          LoaderElevatedButton(
+                            onPressed: () async {
+                              await checkAndEnableLocation();
+                              controller.isLocationReadyStatus.value =
+                                  await isLocationReady();
+                              if (controller.isLocationReadyStatus.value ==
+                                  true) {
+                                await controller.onInit();
+                              }
+                            },
+                            borderSide: BorderSide(
+                              color: controller
+                                  .themeColorServices
+                                  .primaryBlue
+                                  .value,
+                            ),
+                            child: Text(
+                              "Aktifkan Lokasi",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
                             ),
                           ),
                         ],

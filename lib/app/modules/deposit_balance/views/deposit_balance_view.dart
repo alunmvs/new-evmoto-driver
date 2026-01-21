@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/deposit_balance_controller.dart';
@@ -448,26 +449,14 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 46,
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await controller.onTapSubmit();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        controller.themeColorServices.primaryBlue.value,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Text(
-                    controller.languageServices.language.value.rechargeNow ??
-                        "-",
-                    style: controller.typographyServices.bodyLargeBold.value
-                        .copyWith(color: Colors.white),
-                  ),
+              LoaderElevatedButton(
+                onPressed: () async {
+                  await controller.onTapSubmit();
+                },
+                child: Text(
+                  controller.languageServices.language.value.rechargeNow ?? "-",
+                  style: controller.typographyServices.bodyLargeBold.value
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ],

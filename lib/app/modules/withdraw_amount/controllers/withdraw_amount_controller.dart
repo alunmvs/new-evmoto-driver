@@ -10,6 +10,7 @@ import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.d
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -310,86 +311,74 @@ class WithdrawAmountController extends GetxController {
                             ),
                           ),
                           SizedBox(height: 16 * 2),
-                          SizedBox(
-                            width: Get.width,
-                            height: 46,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                try {
-                                  await withdrawRepository.requestWithdrawal(
-                                    bankName: selectedBankAccount.value.bank!,
-                                    code: selectedBankAccount.value.code!,
-                                    language: languageServices
-                                        .languageCodeSystem
-                                        .value,
-                                    money: withdrawAmount,
-                                    name: selectedBankAccount.value.name!,
-                                  );
+                          LoaderElevatedButton(
+                            onPressed: () async {
+                              try {
+                                await withdrawRepository.requestWithdrawal(
+                                  bankName: selectedBankAccount.value.bank!,
+                                  code: selectedBankAccount.value.code!,
+                                  language:
+                                      languageServices.languageCodeSystem.value,
+                                  money: withdrawAmount,
+                                  name: selectedBankAccount.value.name!,
+                                );
 
-                                  Get.close(1);
-                                  Get.back();
-                                  Get.back();
+                                Get.close(1);
+                                Get.back();
+                                Get.back();
 
-                                  var snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorGreen400
-                                        .value,
-                                    content: Text(
-                                      "Berhasil pengajuan penarikan dana",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
-                                  );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
+                                var snackBar = SnackBar(
+                                  behavior: SnackBarBehavior.fixed,
+                                  backgroundColor: themeColorServices
+                                      .sematicColorGreen400
+                                      .value,
+                                  content: Text(
+                                    "Berhasil pengajuan penarikan dana",
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: themeColorServices
+                                              .neutralsColorGrey0
+                                              .value,
+                                        ),
+                                  ),
+                                );
+                                rootScaffoldMessengerKey.currentState
+                                    ?.showSnackBar(snackBar);
 
-                                  Get.toNamed(Routes.HISTORY_BALANCE_WITHDRAW);
-                                } catch (e) {
-                                  Get.close(1);
-                                  final SnackBar snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorRed400
+                                Get.toNamed(Routes.HISTORY_BALANCE_WITHDRAW);
+                              } catch (e) {
+                                Get.close(1);
+                                final SnackBar snackBar = SnackBar(
+                                  behavior: SnackBarBehavior.fixed,
+                                  backgroundColor: themeColorServices
+                                      .sematicColorRed400
+                                      .value,
+                                  content: Text(
+                                    e.toString(),
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: themeColorServices
+                                              .neutralsColorGrey0
+                                              .value,
+                                        ),
+                                  ),
+                                );
+                                rootScaffoldMessengerKey.currentState
+                                    ?.showSnackBar(snackBar);
+                              }
+                            },
+                            child: Text(
+                              "Konfirmasi",
+                              style: typographyServices.bodySmallBold.value
+                                  .copyWith(
+                                    color: themeColorServices
+                                        .neutralsColorGrey0
                                         .value,
-                                    content: Text(
-                                      e.toString(),
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
-                                  );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    themeColorServices.primaryBlue.value,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: Text(
-                                "Konfirmasi",
-                                style: typographyServices.bodySmallBold.value
-                                    .copyWith(
-                                      color: themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
-                                    ),
-                              ),
+                                  ),
                             ),
                           ),
                           SizedBox(height: 16),

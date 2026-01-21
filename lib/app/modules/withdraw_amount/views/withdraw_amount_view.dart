@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/withdraw_amount_controller.dart';
@@ -843,28 +844,14 @@ class WithdrawAmountView extends GetView<WithdrawAmountController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 46,
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await controller.onTapSubmit();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              controller.themeColorServices.primaryBlue.value,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: Text(
-                          "Lanjutkan",
-                          style: controller
-                              .typographyServices
-                              .bodySmallBold
-                              .value
-                              .copyWith(color: Colors.white),
-                        ),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        await controller.onTapSubmit();
+                      },
+                      child: Text(
+                        "Lanjutkan",
+                        style: controller.typographyServices.bodySmallBold.value
+                            .copyWith(color: Colors.white),
                       ),
                     ),
                   ],

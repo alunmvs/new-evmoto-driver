@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 
 class OrderCardHomeSubView extends GetView<HomeController> {
   final Order order;
@@ -234,33 +235,19 @@ class OrderCardHomeSubView extends GetView<HomeController> {
               Row(
                 children: [
                   Expanded(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 46,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await controller.onTapGrabDialog(order: order);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              controller.themeColorServices.primaryBlue.value,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: Text(
-                          "Ambil",
-                          style: controller
-                              .typographyServices
-                              .bodySmallBold
-                              .value
-                              .copyWith(
-                                color: controller
-                                    .themeColorServices
-                                    .neutralsColorGrey0
-                                    .value,
-                              ),
-                        ),
+                    child: LoaderElevatedButton(
+                      onPressed: () async {
+                        await controller.onTapGrabDialog(order: order);
+                      },
+                      child: Text(
+                        "Ambil",
+                        style: controller.typographyServices.bodySmallBold.value
+                            .copyWith(
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey0
+                                  .value,
+                            ),
                       ),
                     ),
                   ),

@@ -13,6 +13,7 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pinput/pinput.dart';
@@ -144,73 +145,49 @@ class AccountController extends GetxController {
                       ),
                     ),
                     SizedBox(height: 16),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          var storage = FlutterSecureStorage();
-                          await storage.deleteAll();
-                          await socketServices.closeWebsocket();
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        var storage = FlutterSecureStorage();
+                        await storage.deleteAll();
+                        await socketServices.closeWebsocket();
 
-                          Get.offAllNamed(Routes.LOGIN);
+                        Get.offAllNamed(Routes.LOGIN);
 
-                          var snackBar = SnackBar(
-                            behavior: SnackBarBehavior.fixed,
-                            backgroundColor:
-                                themeColorServices.sematicColorGreen400.value,
-                            content: Text(
-                              "Berhasil keluar akun",
-                              style: typographyServices.bodySmallRegular.value
-                                  .copyWith(
-                                    color: themeColorServices
-                                        .neutralsColorGrey0
-                                        .value,
-                                  ),
-                            ),
-                          );
-                          rootScaffoldMessengerKey.currentState?.showSnackBar(
-                            snackBar,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: themeColorServices.primaryBlue.value,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                        var snackBar = SnackBar(
+                          behavior: SnackBarBehavior.fixed,
+                          backgroundColor:
+                              themeColorServices.sematicColorGreen400.value,
+                          content: Text(
+                            "Berhasil keluar akun",
+                            style: typographyServices.bodySmallRegular.value
+                                .copyWith(
+                                  color: themeColorServices
+                                      .neutralsColorGrey0
+                                      .value,
+                                ),
                           ),
-                          elevation: 0,
-                        ),
-                        child: Text(
-                          "Keluar Sekarang",
-                          style: typographyServices.bodyLargeBold.value
-                              .copyWith(
-                                color:
-                                    themeColorServices.neutralsColorGrey0.value,
-                              ),
+                        );
+                        rootScaffoldMessengerKey.currentState?.showSnackBar(
+                          snackBar,
+                        );
+                      },
+                      child: Text(
+                        "Keluar Sekarang",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: themeColorServices.neutralsColorGrey0.value,
                         ),
                       ),
                     ),
                     SizedBox(height: 8),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          Get.close(1);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0XFFD9D9D9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: Text(
-                          "Batalkan",
-                          style: typographyServices.bodyLargeBold.value
-                              .copyWith(
-                                color: themeColorServices.textColor.value,
-                              ),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        Get.close(1);
+                      },
+                      buttonColor: Color(0XFFD9D9D9),
+                      child: Text(
+                        "Batalkan",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: themeColorServices.textColor.value,
                         ),
                       ),
                     ),
@@ -277,53 +254,29 @@ class AccountController extends GetxController {
                       ),
                     ),
                     SizedBox(height: 16),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          Get.close(1);
-                          await onTapValidateOtpDeleteAccount();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              themeColorServices.sematicColorRed400.value,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: Text(
-                          "Hapus Sekarang",
-                          style: typographyServices.bodyLargeBold.value
-                              .copyWith(
-                                color:
-                                    themeColorServices.neutralsColorGrey0.value,
-                              ),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        Get.close(1);
+                        await onTapValidateOtpDeleteAccount();
+                      },
+                      buttonColor: themeColorServices.sematicColorRed400.value,
+                      child: Text(
+                        "Hapus Sekarang",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: themeColorServices.neutralsColorGrey0.value,
                         ),
                       ),
                     ),
                     SizedBox(height: 8),
-                    SizedBox(
-                      width: Get.width,
-                      height: 46,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          Get.close(1);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0XFFD9D9D9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: Text(
-                          "Batalkan",
-                          style: typographyServices.bodyLargeBold.value
-                              .copyWith(
-                                color: themeColorServices.textColor.value,
-                              ),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        Get.close(1);
+                      },
+                      buttonColor: Color(0XFFD9D9D9),
+                      child: Text(
+                        "Batalkan",
+                        style: typographyServices.bodyLargeBold.value.copyWith(
+                          color: themeColorServices.textColor.value,
                         ),
                       ),
                     ),
@@ -718,55 +671,23 @@ class AccountController extends GetxController {
                         ],
                       ),
                       SizedBox(height: 16 * 3),
-                      SizedBox(
-                        width: Get.width,
-                        height: 46,
-                        child: ElevatedButton(
-                          onPressed: otpCode.value.length != 4
-                              ? null
-                              : () async {
-                                  Get.close(1);
-                                  try {
-                                    await userRepository.deleteAccount(
-                                      otpCode: otpCode.value,
-                                    );
-                                  } catch (e) {
-                                    final SnackBar snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorRed400
-                                          .value,
-                                      content: Text(
-                                        e.toString(),
-                                        style: typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
-                                    );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
-                                    return;
-                                  }
-                                  await onTapSuccessDeleteAccountDialog();
-
-                                  var storage = FlutterSecureStorage();
-                                  await storage.deleteAll();
-                                  await socketServices.closeWebsocket();
-
-                                  Get.offAllNamed(Routes.LOGIN);
-
-                                  var snackBar = SnackBar(
+                      LoaderElevatedButton(
+                        onPressed: otpCode.value.length != 4
+                            ? null
+                            : () async {
+                                Get.close(1);
+                                try {
+                                  await userRepository.deleteAccount(
+                                    otpCode: otpCode.value,
+                                  );
+                                } catch (e) {
+                                  final SnackBar snackBar = SnackBar(
                                     behavior: SnackBarBehavior.fixed,
                                     backgroundColor: themeColorServices
-                                        .sematicColorGreen400
+                                        .sematicColorRed400
                                         .value,
                                     content: Text(
-                                      "Berhasil menghapus akun",
+                                      e.toString(),
                                       style: typographyServices
                                           .bodySmallRegular
                                           .value
@@ -779,48 +700,57 @@ class AccountController extends GetxController {
                                   );
                                   rootScaffoldMessengerKey.currentState
                                       ?.showSnackBar(snackBar);
-                                },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                themeColorServices.primaryBlue.value,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 0,
-                          ),
-                          child: Text(
-                            "Konfirmasi OTP",
-                            style: typographyServices.bodyLargeBold.value
-                                .copyWith(
-                                  color: themeColorServices
-                                      .neutralsColorGrey0
+                                  return;
+                                }
+                                await onTapSuccessDeleteAccountDialog();
+
+                                var storage = FlutterSecureStorage();
+                                await storage.deleteAll();
+                                await socketServices.closeWebsocket();
+
+                                Get.offAllNamed(Routes.LOGIN);
+
+                                var snackBar = SnackBar(
+                                  behavior: SnackBarBehavior.fixed,
+                                  backgroundColor: themeColorServices
+                                      .sematicColorGreen400
                                       .value,
-                                ),
-                          ),
+                                  content: Text(
+                                    "Berhasil menghapus akun",
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(
+                                          color: themeColorServices
+                                              .neutralsColorGrey0
+                                              .value,
+                                        ),
+                                  ),
+                                );
+                                rootScaffoldMessengerKey.currentState
+                                    ?.showSnackBar(snackBar);
+                              },
+                        child: Text(
+                          "Konfirmasi OTP",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color:
+                                    themeColorServices.neutralsColorGrey0.value,
+                              ),
                         ),
                       ),
                       SizedBox(height: 8),
-                      SizedBox(
-                        width: Get.width,
-                        height: 46,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            Get.close(1);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0XFFD9D9D9),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            elevation: 0,
-                          ),
-                          child: Text(
-                            "Batalkan",
-                            style: typographyServices.bodyLargeBold.value
-                                .copyWith(
-                                  color: themeColorServices.textColor.value,
-                                ),
-                          ),
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        buttonColor: Color(0XFFD9D9D9),
+                        child: Text(
+                          "Batalkan",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(
+                                color: themeColorServices.textColor.value,
+                              ),
                         ),
                       ),
                       SizedBox(height: 16),

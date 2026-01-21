@@ -16,6 +16,7 @@ import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/location_helper.dart';
 import 'package:new_evmoto_driver/app/utils/socket_helper.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -224,34 +225,23 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
                             ),
                           ),
                           SizedBox(height: 16),
-                          SizedBox(
-                            width: Get.width,
-                            height: 46,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                await checkAndEnableLocation();
-                                isLocationReadyStatus.value =
-                                    await isLocationReady();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    themeColorServices.primaryBlue.value,
-                                side: BorderSide(
-                                  color: themeColorServices.primaryBlue.value,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: Text(
-                                "Aktifkan Lokasi",
-                                style: typographyServices.bodySmallBold.value
-                                    .copyWith(
-                                      color: themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
-                                    ),
-                              ),
+                          LoaderElevatedButton(
+                            onPressed: () async {
+                              await checkAndEnableLocation();
+                              isLocationReadyStatus.value =
+                                  await isLocationReady();
+                            },
+                            borderSide: BorderSide(
+                              color: themeColorServices.primaryBlue.value,
+                            ),
+                            child: Text(
+                              "Aktifkan Lokasi",
+                              style: typographyServices.bodySmallBold.value
+                                  .copyWith(
+                                    color: themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
                             ),
                           ),
                           SizedBox(height: 8),

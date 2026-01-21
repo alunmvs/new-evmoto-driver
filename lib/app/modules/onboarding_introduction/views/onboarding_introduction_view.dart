@@ -3,6 +3,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 
 import '../controllers/onboarding_introduction_controller.dart';
 
@@ -273,26 +274,14 @@ class OnboardingIntroductionView
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 46,
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    controller.onTapNext();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        controller.themeColorServices.primaryBlue.value,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Text(
-                    controller.languageServices.language.value.buttonNext ??
-                        "-",
-                    style: controller.typographyServices.bodySmallBold.value
-                        .copyWith(color: Colors.white),
-                  ),
+              LoaderElevatedButton(
+                onPressed: () async {
+                  controller.onTapNext();
+                },
+                child: Text(
+                  controller.languageServices.language.value.buttonNext ?? "-",
+                  style: controller.typographyServices.bodySmallBold.value
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ],
