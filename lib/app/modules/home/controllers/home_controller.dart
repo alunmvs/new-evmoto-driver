@@ -310,6 +310,7 @@ class HomeController extends GetxController
   Future<void> getUserInfoDetail() async {
     try {
       userInfo.value = await userRepository.getUserInfoDetail(language: 2);
+      userInfo.refresh();
     } catch (e) {}
   }
 

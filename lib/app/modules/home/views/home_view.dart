@@ -1193,25 +1193,20 @@ class HomeView extends GetView<HomeController> {
                                                                           height:
                                                                               2,
                                                                         ),
-                                                                        Text(
-                                                                          NumberFormat.currency(
-                                                                            locale:
-                                                                                'id_ID',
-                                                                            symbol:
-                                                                                'Rp ',
-                                                                            decimalDigits:
-                                                                                0,
-                                                                          ).format(
-                                                                            controller.userInfo.value.balance ??
-                                                                                0.0,
+                                                                        Obx(
+                                                                          () => Text(
+                                                                            NumberFormat.currency(
+                                                                              locale: 'id_ID',
+                                                                              symbol: 'Rp ',
+                                                                              decimalDigits: 0,
+                                                                            ).format(
+                                                                              controller.userInfo.value.balance ??
+                                                                                  0.0,
+                                                                            ),
+                                                                            style: controller.typographyServices.bodySmallBold.value.copyWith(
+                                                                              color: controller.themeColorServices.neutralsColorGrey800.value,
+                                                                            ),
                                                                           ),
-                                                                          style: controller
-                                                                              .typographyServices
-                                                                              .bodySmallBold
-                                                                              .value
-                                                                              .copyWith(
-                                                                                color: controller.themeColorServices.neutralsColorGrey800.value,
-                                                                              ),
                                                                         ),
                                                                       ],
                                                                     ),
@@ -1387,10 +1382,12 @@ class HomeView extends GetView<HomeController> {
                                                               ),
                                                               child: GestureDetector(
                                                                 onTap: () async {
+                                                                  print("ok-1");
                                                                   await Get.toNamed(
                                                                     Routes
                                                                         .DEPOSIT_BALANCE,
                                                                   );
+                                                                  print("ok-2");
 
                                                                   await controller
                                                                       .refreshAll();
@@ -3120,8 +3117,9 @@ class HomeView extends GetView<HomeController> {
                           children: [
                             Expanded(
                               child: GestureDetector(
-                                onTap: () {
+                                onTap: () async {
                                   controller.selectedIndex.value = 0;
+                                  await controller.refreshAll();
                                 },
                                 child: Container(
                                   color: Colors.transparent,
@@ -3468,8 +3466,9 @@ class HomeView extends GetView<HomeController> {
                             ),
                             Expanded(
                               child: GestureDetector(
-                                onTap: () {
+                                onTap: () async {
                                   controller.selectedIndex.value = 1;
+                                  await controller.refreshAll();
                                 },
                                 child: Container(
                                   color: Colors.transparent,
