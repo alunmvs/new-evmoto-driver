@@ -938,25 +938,25 @@ class HomeController extends GetxController
     required ActionSliderController actionController,
     required SocketOrderStatusData socketOrderStatusData,
   }) async {
+    actionController.loading();
+    Get.back(result: true);
     try {
-      actionController.loading();
-      Get.back(result: true);
       await orderRepository.grabOrder(
         orderType: socketOrderStatusData.orderType!,
         orderId: socketOrderStatusData.orderId.toString(),
         language: 2,
       );
-      await Get.toNamed(
-        Routes.ORDER_DETAIL,
-        arguments: {
-          "order_id": socketOrderStatusData.orderId,
-          "order_type": socketOrderStatusData.orderType,
-        },
-      );
-      await refreshAll();
-      actionController.success();
-      actionController.reset();
     } catch (e) {}
+    await Get.toNamed(
+      Routes.ORDER_DETAIL,
+      arguments: {
+        "order_id": socketOrderStatusData.orderId,
+        "order_type": socketOrderStatusData.orderType,
+      },
+    );
+    await refreshAll();
+    actionController.success();
+    actionController.reset();
   }
 
   Future<void> onTapSaveServiceOrder() async {
