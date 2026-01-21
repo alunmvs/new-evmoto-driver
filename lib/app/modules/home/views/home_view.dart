@@ -857,10 +857,12 @@ class HomeView extends GetView<HomeController> {
                                                       ],
                                                     ),
                                                     child: GestureDetector(
-                                                      onTap: () {
-                                                        Get.toNamed(
+                                                      onTap: () async {
+                                                        await Get.toNamed(
                                                           Routes.ACTIVITY,
                                                         );
+                                                        await controller
+                                                            .refreshAll();
                                                       },
                                                       child: Container(
                                                         padding: EdgeInsets.all(
@@ -1382,12 +1384,10 @@ class HomeView extends GetView<HomeController> {
                                                               ),
                                                               child: GestureDetector(
                                                                 onTap: () async {
-                                                                  print("ok-1");
                                                                   await Get.toNamed(
                                                                     Routes
                                                                         .DEPOSIT_BALANCE,
                                                                   );
-                                                                  print("ok-2");
 
                                                                   await controller
                                                                       .refreshAll();
@@ -1783,11 +1783,13 @@ class HomeView extends GetView<HomeController> {
                                                                 ],
                                                               ),
                                                               child: GestureDetector(
-                                                                onTap: () {
-                                                                  Get.toNamed(
+                                                                onTap: () async {
+                                                                  await Get.toNamed(
                                                                     Routes
                                                                         .HISTORY_BALANCE_ALL,
                                                                   );
+                                                                  await controller
+                                                                      .refreshAll();
                                                                 },
                                                                 child: Container(
                                                                   color: Colors

@@ -349,10 +349,11 @@ class HomeController extends GetxController
         language: 2,
       );
 
-      Get.toNamed(
+      await Get.toNamed(
         Routes.ORDER_DETAIL,
         arguments: {"order_id": order.id, "order_type": order.type},
       );
+      await refreshAll();
     } catch (e) {
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
@@ -759,27 +760,10 @@ class HomeController extends GetxController
                             ActionSlider.custom(
                               height: 60,
                               action: (actionController) async {
-                                actionController.loading();
-                                Get.back(result: true);
-                                try {
-                                  await orderRepository.grabOrder(
-                                    orderType: socketOrderStatusData.orderType!,
-                                    orderId: socketOrderStatusData.orderId
-                                        .toString(),
-                                    language: 2,
-                                  );
-                                } catch (e) {}
-                                Get.toNamed(
-                                  Routes.ORDER_DETAIL,
-                                  arguments: {
-                                    "order_id": socketOrderStatusData.orderId,
-                                    "order_type":
-                                        socketOrderStatusData.orderType,
-                                  },
+                                await onSlideOrderConfirmation(
+                                  actionController: actionController,
+                                  socketOrderStatusData: socketOrderStatusData,
                                 );
-                                refreshAll();
-                                actionController.success();
-                                actionController.reset();
                               },
                               toggleMargin: EdgeInsetsGeometry.all(0),
                               outerBackgroundBuilder: (context, state, child) {
@@ -948,6 +932,31 @@ class HomeController extends GetxController
         timerDuration.cancel();
       } catch (e) {}
     }
+  }
+
+  Future<void> onSlideOrderConfirmation({
+    required ActionSliderController actionController,
+    required SocketOrderStatusData socketOrderStatusData,
+  }) async {
+    try {
+      actionController.loading();
+      Get.back(result: true);
+      await orderRepository.grabOrder(
+        orderType: socketOrderStatusData.orderType!,
+        orderId: socketOrderStatusData.orderId.toString(),
+        language: 2,
+      );
+      await Get.toNamed(
+        Routes.ORDER_DETAIL,
+        arguments: {
+          "order_id": socketOrderStatusData.orderId,
+          "order_type": socketOrderStatusData.orderType,
+        },
+      );
+      await refreshAll();
+      actionController.success();
+      actionController.reset();
+    } catch (e) {}
   }
 
   Future<void> onTapSaveServiceOrder() async {
