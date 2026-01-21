@@ -76,8 +76,6 @@ class RegisterFormController extends GetxController {
   final idPhotoUrl = "".obs;
   final drivingLicensePhotoUrl = "".obs;
   final avatarPhotoUrl = "".obs;
-
-  // new
   final vehicleRegistrationCertificateFrontPhotoUrl = "".obs;
   final vehicleRegistrationCertificateBackPhotoUrl = "".obs;
   final driverSelfieWithIdCardPhotoUrl = "".obs;
@@ -343,6 +341,13 @@ class RegisterFormController extends GetxController {
         driverContactAddress: generateDriverContactAddress(),
         driverContactAddress_: generateDriverContactAddress_(),
         usedReferralCode: formGroup.control("referral_code").value,
+        licensePlate: formGroup.control("license_plate").value,
+        selfieWithIdCardImg: driverSelfieWithIdCardPhotoUrl.value,
+        skckImg: policeClearanceCertificatePhotoUrl.value == ""
+            ? null
+            : policeClearanceCertificatePhotoUrl.value,
+        stnkBackImg: vehicleRegistrationCertificateBackPhotoUrl.value,
+        stnkFrontImg: vehicleRegistrationCertificateFrontPhotoUrl.value,
       );
       Get.offAllNamed(Routes.REGISTER_FORM_COMPLETED);
     } catch (e) {

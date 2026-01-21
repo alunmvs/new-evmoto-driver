@@ -109,6 +109,11 @@ class RegisterRepository {
     String? driveCardImgUrl,
     String? name,
     required String? usedReferralCode,
+    required String? stnkFrontImg,
+    required String? stnkBackImg,
+    required String? selfieWithIdCardImg,
+    required String? skckImg,
+    required String? licensePlate,
   }) async {
     try {
       var url =
@@ -132,6 +137,11 @@ class RegisterRepository {
         "driveCardImgUrl": driveCardImgUrl,
         "name": name,
         "usedReferralCode": usedReferralCode,
+        "stnkFrontImg": stnkFrontImg,
+        "stnkBackImg": stnkBackImg,
+        "selfieWithIdCardImg": selfieWithIdCardImg,
+        "skckImg": skckImg,
+        "licensePlate": licensePlate,
       });
 
       var dio = apiServices.dio;
