@@ -149,143 +149,144 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
   Future<void> sendHeartBeat() async {
     if (isLocationReadyStatus.value == false) {
-      if (Get.isDialogOpen == false) {
-        await Get.dialog(
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Material(
-                    color: themeColorServices.neutralsColorGrey0.value,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Persetujuan Akses Lokasi",
-                                style: typographyServices.bodyLargeBold.value
-                                    .copyWith(
-                                      color: themeColorServices.textColor.value,
-                                    ),
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  Get.close(1);
-                                  isLocationReadyStatus.value =
-                                      await isLocationReady();
-                                },
-                                child: Container(
-                                  width: 24,
-                                  height: 24,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/icon_close.svg",
-                                        width: 12,
-                                        height: 12,
-                                        color:
-                                            themeColorServices.textColor.value,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          Text(
-                            "Lokasi digunakan untuk menampilkan fitur dan layanan berdasarkan posisi Anda saat ini.",
-                            style: typographyServices.bodySmallRegular.value
-                                .copyWith(
-                                  color: themeColorServices.textColor.value,
-                                ),
-                          ),
-                          SizedBox(height: 8),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: AspectRatio(
-                              aspectRatio: 304.5 / 125,
-                              child: Image.asset(
-                                "assets/images/img_location_required_1.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          LoaderElevatedButton(
-                            onPressed: () async {
-                              await checkAndEnableLocation();
-                              isLocationReadyStatus.value =
-                                  await isLocationReady();
-                            },
-                            borderSide: BorderSide(
-                              color: themeColorServices.primaryBlue.value,
-                            ),
-                            child: Text(
-                              "Aktifkan Lokasi",
-                              style: typographyServices.bodySmallBold.value
-                                  .copyWith(
-                                    color: themeColorServices
-                                        .neutralsColorGrey0
-                                        .value,
-                                  ),
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          SizedBox(
-                            height: 46,
-                            width: Get.width,
-                            child: OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(
-                                  color: themeColorServices
-                                      .neutralsColorGrey300
-                                      .value,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              onPressed: () async {
-                                Get.close(1);
-                                isLocationReadyStatus.value =
-                                    await isLocationReady();
-                              },
-                              child: Text(
-                                "Batalkan",
-                                style: typographyServices.bodySmallBold.value
-                                    .copyWith(
-                                      color: themeColorServices
-                                          .neutralsColorGrey400
-                                          .value,
-                                    ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          barrierDismissible: false,
-        );
-      }
+      // if (Get.isDialogOpen == false) {
+      //   await Get.dialog(
+      //     Column(
+      //       mainAxisAlignment: MainAxisAlignment.end,
+      //       crossAxisAlignment: CrossAxisAlignment.center,
+      //       children: [
+      //         Padding(
+      //           padding: const EdgeInsets.all(16),
+      //           child: ClipRRect(
+      //             borderRadius: BorderRadius.circular(16),
+      //             child: Material(
+      //               color: themeColorServices.neutralsColorGrey0.value,
+      //               child: Padding(
+      //                 padding: const EdgeInsets.all(16),
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: [
+      //                     Row(
+      //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                       children: [
+      //                         Text(
+      //                           "Persetujuan Akses Lokasi",
+      //                           style: typographyServices.bodyLargeBold.value
+      //                               .copyWith(
+      //                                 color: themeColorServices.textColor.value,
+      //                               ),
+      //                         ),
+      //                         GestureDetector(
+      //                           onTap: () async {
+      //                             Get.close(1);
+      //                             isLocationReadyStatus.value =
+      //                                 await isLocationReady();
+      //                           },
+      //                           child: Container(
+      //                             width: 24,
+      //                             height: 24,
+      //                             decoration: BoxDecoration(
+      //                               color: Colors.transparent,
+      //                             ),
+      //                             child: Row(
+      //                               mainAxisAlignment: MainAxisAlignment.center,
+      //                               crossAxisAlignment:
+      //                                   CrossAxisAlignment.center,
+      //                               children: [
+      //                                 SvgPicture.asset(
+      //                                   "assets/icons/icon_close.svg",
+      //                                   width: 12,
+      //                                   height: 12,
+      //                                   color:
+      //                                       themeColorServices.textColor.value,
+      //                                 ),
+      //                               ],
+      //                             ),
+      //                           ),
+      //                         ),
+      //                       ],
+      //                     ),
+      //                     SizedBox(height: 16),
+      //                     Text(
+      //                       "Lokasi digunakan untuk menampilkan fitur dan layanan berdasarkan posisi Anda saat ini.",
+      //                       style: typographyServices.bodySmallRegular.value
+      //                           .copyWith(
+      //                             color: themeColorServices.textColor.value,
+      //                           ),
+      //                     ),
+      //                     SizedBox(height: 8),
+      //                     ClipRRect(
+      //                       borderRadius: BorderRadius.circular(16),
+      //                       child: AspectRatio(
+      //                         aspectRatio: 304.5 / 125,
+      //                         child: Image.asset(
+      //                           "assets/images/img_location_required_1.png",
+      //                           fit: BoxFit.cover,
+      //                         ),
+      //                       ),
+      //                     ),
+      //                     SizedBox(height: 16),
+      //                     LoaderElevatedButton(
+      //                       onPressed: () async {
+      //                         await checkAndEnableLocation();
+      //                         isLocationReadyStatus.value =
+      //                             await isLocationReady();
+      //                       },
+      //                       borderSide: BorderSide(
+      //                         color: themeColorServices.primaryBlue.value,
+      //                       ),
+      //                       child: Text(
+      //                         "Aktifkan Lokasi",
+      //                         style: typographyServices.bodySmallBold.value
+      //                             .copyWith(
+      //                               color: themeColorServices
+      //                                   .neutralsColorGrey0
+      //                                   .value,
+      //                             ),
+      //                       ),
+      //                     ),
+      //                     SizedBox(height: 8),
+      //                     SizedBox(
+      //                       height: 46,
+      //                       width: Get.width,
+      //                       child: OutlinedButton(
+      //                         style: OutlinedButton.styleFrom(
+      //                           side: BorderSide(
+      //                             color: themeColorServices
+      //                                 .neutralsColorGrey300
+      //                                 .value,
+      //                           ),
+      //                           shape: RoundedRectangleBorder(
+      //                             borderRadius: BorderRadius.circular(16),
+      //                           ),
+      //                         ),
+      //                         onPressed: () async {
+      //                           Get.close(1);
+      //                           isLocationReadyStatus.value =
+      //                               await isLocationReady();
+      //                         },
+      //                         child: Text(
+      //                           "Batalkan",
+      //                           style: typographyServices.bodySmallBold.value
+      //                               .copyWith(
+      //                                 color: themeColorServices
+      //                                     .neutralsColorGrey400
+      //                                     .value,
+      //                               ),
+      //                         ),
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //     barrierDismissible: false,
+      //   );
+      // }
     } else if (isSocketClose.value == false &&
         Get.isRegistered<HomeController>() &&
         isLocationReadyStatus.value == true) {
