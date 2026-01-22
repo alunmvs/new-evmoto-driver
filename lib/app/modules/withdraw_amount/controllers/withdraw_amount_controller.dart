@@ -64,6 +64,8 @@ class WithdrawAmountController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
+    formGroup.markAllAsTouched();
+
     if (formGroup.valid) {
       var withdrawAmount = double.parse(
         formGroup.control("money").value.toString().replaceAll(".", ""),
@@ -392,6 +394,18 @@ class WithdrawAmountController extends GetxController {
           ],
         ),
       );
+    } else {
+      var snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          "Harap lengkapi data yang dibutuhkan",
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
   }
 }
