@@ -381,16 +381,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
     }
 
-    final basePadding = Get.width * 0.1;
-    double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-        .abs();
-    double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
-        .abs();
-    double areaFactor = (latDiff + lngDiff) * 80000;
-    var dynamicPadding = (basePadding + areaFactor).clamp(60, 250);
-
     await googleMapController.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+      CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
     );
   }
 
@@ -667,16 +659,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           );
         }
 
-        final basePadding = Get.width * 0.1;
-        double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-            .abs();
-        double lngDiff =
-            (bounds.northeast.longitude - bounds.southwest.longitude).abs();
-        double areaFactor = (latDiff + lngDiff) * 80000;
-        var dynamicPadding = (basePadding + areaFactor).clamp(60, 250);
-
         await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
       }
 
@@ -768,16 +752,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           );
         }
 
-        final basePadding = Get.width * 0.1;
-        double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-            .abs();
-        double lngDiff =
-            (bounds.northeast.longitude - bounds.southwest.longitude).abs();
-        double areaFactor = (latDiff + lngDiff) * 80000;
-        var dynamicPadding = (basePadding + areaFactor).clamp(60, 250);
-
         await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
       }
     }
@@ -949,22 +925,16 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         );
       }
 
-      final basePadding = Get.width * 0.1;
-      double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-          .abs();
-      double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
-          .abs();
-      double areaFactor = (latDiff + lngDiff) * 80000;
-      var dynamicPadding = (basePadding + areaFactor).clamp(60, 250);
-
       await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
+        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
       );
     } else {
       LatLngBounds bounds;
 
-      var originLatitude = double.parse(currentLatitude.value);
-      var originLongitude = double.parse(currentLongitude.value);
+      // var originLatitude = double.parse(currentLatitude.value);
+      // var originLongitude = double.parse(currentLongitude.value);
+      var originLatitude = -6.2455389;
+      var originLongitude = 106.8079792;
       var destinationLatitude = this.orderDetail.value.endLat!;
       var destinationLongitude = this.orderDetail.value.endLon!;
 
@@ -990,17 +960,12 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           northeast: LatLng(destinationLatitude, destinationLongitude),
         );
       }
-      final basePadding = Get.width * 0.1;
-      double latDiff = (bounds.northeast.latitude - bounds.southwest.latitude)
-          .abs();
-      double lngDiff = (bounds.northeast.longitude - bounds.southwest.longitude)
-          .abs();
-      double areaFactor = (latDiff + lngDiff) * 80000;
-      var dynamicPadding = (basePadding + areaFactor).clamp(60, 250);
 
-      await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, dynamicPadding.toDouble()),
-      );
+      try {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+        );
+      } catch (e) {}
     }
   }
 
