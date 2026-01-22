@@ -986,7 +986,7 @@ class AccountView extends GetView<AccountController> {
                                     borderRadius: BorderRadius.circular(9999),
                                   ),
                                   child: Text(
-                                    "${controller.languageServices.language.value.appVersion ?? "-"} v.${controller.packageVersion.value}",
+                                    "${controller.languageServices.language.value.appVersion ?? "-"} v.${controller.packageVersion.value}+${controller.buildNumber.value}",
                                     style: controller
                                         .typographyServices
                                         .captionSmallBold
