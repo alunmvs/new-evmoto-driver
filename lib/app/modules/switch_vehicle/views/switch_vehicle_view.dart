@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/my_vehicle_model.dart';
-import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../controllers/switch_vehicle_controller.dart';
@@ -109,18 +108,28 @@ class SwitchVehicleView extends GetView<SwitchVehicleController> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(
-                                      controller.myVehicle.value.car ?? "-",
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallBold
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
-                                          ),
+                                    Expanded(
+                                      child: Text(
+                                        controller.myVehicle.value.car ??
+                                            "Saat ini akses kendaraan anda belum tersedia, Silahkan hubungi layanan kami!",
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallBold
+                                            .value
+                                            .copyWith(
+                                              color:
+                                                  controller
+                                                          .myVehicle
+                                                          .value
+                                                          .car ==
+                                                      null
+                                                  ? Color(0XFFCFCFCF)
+                                                  : controller
+                                                        .themeColorServices
+                                                        .primaryBlue
+                                                        .value,
+                                            ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -205,6 +214,7 @@ class SwitchVehicleView extends GetView<SwitchVehicleController> {
                               ),
                             ],
                           ),
+                          SizedBox(height: 16),
                         ],
                       ],
                     ),
