@@ -287,7 +287,7 @@ class OrderDetailDoneView extends GetView<OrderDetailDoneController> {
                                           .typographyServices
                                           .bodySmallRegular
                                           .value
-                                          .copyWith(color: Color(0XFFB3B3B3)),
+                                          .copyWith(color: Color(0XFF7D7D7D)),
                                     ),
                                     Text(
                                       NumberFormat.currency(
@@ -318,6 +318,91 @@ class OrderDetailDoneView extends GetView<OrderDetailDoneController> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(width: 16),
+                                        Text(
+                                          "Pendapatan Pengemudi",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: Color(0XFFB3B3B3),
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      NumberFormat.currency(
+                                        locale: 'id_ID',
+                                        symbol: 'Rp ',
+                                        decimalDigits: 0,
+                                      ).format(
+                                        controller
+                                                .orderDetail
+                                                .value
+                                                .collectionFees! -
+                                            (controller
+                                                    .orderDetail
+                                                    .value
+                                                    .platformFee ??
+                                                0),
+                                      ),
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFB3B3B3)),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 4),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(width: 16),
+                                        Text(
+                                          "Biaya platform",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: Color(0XFFB3B3B3),
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      NumberFormat.currency(
+                                        locale: 'id_ID',
+                                        symbol: 'Rp ',
+                                        decimalDigits: 0,
+                                      ).format(
+                                        controller
+                                            .orderDetail
+                                            .value
+                                            .platformFee,
+                                      ),
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFB3B3B3)),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
                                     Text(
                                       controller
                                               .languageServices
@@ -329,7 +414,7 @@ class OrderDetailDoneView extends GetView<OrderDetailDoneController> {
                                           .typographyServices
                                           .bodySmallRegular
                                           .value
-                                          .copyWith(color: Color(0XFFB3B3B3)),
+                                          .copyWith(color: Color(0XFF7D7D7D)),
                                     ),
                                     Text(
                                       controller

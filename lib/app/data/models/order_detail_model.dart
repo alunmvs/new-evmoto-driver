@@ -75,6 +75,7 @@ class OrderDetail {
   int? userId;
   String? userHeadImg;
   int? payType;
+  double? platformFee;
 
   OrderDetail({
     this.orderId,
@@ -153,6 +154,7 @@ class OrderDetail {
     this.userId,
     this.userHeadImg,
     this.payType,
+    this.platformFee,
   });
 
   OrderDetail.fromJson(Map<String, dynamic> json) {
@@ -231,6 +233,7 @@ class OrderDetail {
     userId = json['userId'];
     userHeadImg = json['userHeadImg'];
     payType = json['payType'];
+    platformFee = json['platformFee'];
   }
 
   Map<String, dynamic> toJson() {
@@ -310,6 +313,7 @@ class OrderDetail {
     data['userId'] = this.userId;
     data['userHeadImg'] = this.userHeadImg;
     data['payType'] = this.payType;
+    data['platformFee'] = this.platformFee;
     return data;
   }
 }
