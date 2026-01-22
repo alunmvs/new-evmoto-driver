@@ -18,6 +18,7 @@ class Order {
   double? ordersMileage;
   double? passengersFrom;
   double? orderMoney;
+  double? totalOrderCost;
 
   Order({
     this.id,
@@ -39,6 +40,7 @@ class Order {
     this.ordersMileage,
     this.passengersFrom,
     this.orderMoney,
+    this.totalOrderCost,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -61,6 +63,7 @@ class Order {
     ordersMileage = json['ordersMileage'];
     passengersFrom = json['passengersFrom'];
     orderMoney = json['orderMoney'];
+    totalOrderCost = json['totalOrderCost'];
   }
 
   Map<String, dynamic> toJson() {
@@ -84,6 +87,7 @@ class Order {
     data['ordersMileage'] = this.ordersMileage;
     data['passengersFrom'] = this.passengersFrom;
     data['orderMoney'] = this.orderMoney;
+    data['totalOrderCost'] = this.totalOrderCost;
     return data;
   }
 }

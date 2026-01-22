@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
@@ -388,7 +389,13 @@ class ActivityView extends GetView<ActivityController> {
                                                     ),
                                                   ],
                                                   Text(
-                                                    "Rp0",
+                                                    NumberFormat.currency(
+                                                      locale: 'id_ID',
+                                                      symbol: 'Rp ',
+                                                      decimalDigits: 0,
+                                                    ).format(
+                                                      allOrder.orderMoney,
+                                                    ),
                                                     style: controller
                                                         .typographyServices
                                                         .captionLargeBold
@@ -708,7 +715,13 @@ class ActivityView extends GetView<ActivityController> {
                                                     ),
                                                   ],
                                                   Text(
-                                                    "Rp0",
+                                                    NumberFormat.currency(
+                                                      locale: 'id_ID',
+                                                      symbol: 'Rp ',
+                                                      decimalDigits: 0,
+                                                    ).format(
+                                                      toBePaid.orderMoney,
+                                                    ),
                                                     style: controller
                                                         .typographyServices
                                                         .captionLargeBold
@@ -1027,7 +1040,13 @@ class ActivityView extends GetView<ActivityController> {
                                                     ),
                                                   ],
                                                   Text(
-                                                    "Rp0",
+                                                    NumberFormat.currency(
+                                                      locale: 'id_ID',
+                                                      symbol: 'Rp ',
+                                                      decimalDigits: 0,
+                                                    ).format(
+                                                      cancelOrder.orderMoney,
+                                                    ),
                                                     style: controller
                                                         .typographyServices
                                                         .captionLargeBold
