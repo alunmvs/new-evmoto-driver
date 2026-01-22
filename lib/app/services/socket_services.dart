@@ -1,22 +1,19 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_driver/app/modules/order_detail/controllers/order_detail_controller.dart';
 import 'package:new_evmoto_driver/app/modules/order_payment_confirmation/controllers/order_payment_confirmation_controller.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/location_helper.dart';
 import 'package:new_evmoto_driver/app/utils/socket_helper.dart';
-import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -84,25 +81,39 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
                 if (socketOrderStatusData.state == 8 &&
                     Get.currentRoute == Routes.ORDER_PAYMENT_CONFIRMATION) {
-                  await Get.find<OrderPaymentConfirmationController>()
-                      .refreshAll();
+                  var orderPaymentConfirmationController =
+                      Get.find<OrderPaymentConfirmationController>();
+
+                  if (orderPaymentConfirmationController.orderId.value ==
+                      socketOrderStatusData.orderId.toString()) {
+                    await orderPaymentConfirmationController.refreshAll();
+                  }
                 }
                 if (socketOrderStatusData.state == 10 &&
                     Get.currentRoute == Routes.ORDER_DETAIL) {
-                  Get.back();
-                  await Get.find<HomeController>().refreshAll();
-                  final SnackBar snackBar = SnackBar(
-                    behavior: SnackBarBehavior.fixed,
-                    backgroundColor:
-                        themeColorServices.sematicColorRed400.value,
-                    content: Text(
-                      "Pelanggan membatalkan pesanan",
-                      style: typographyServices.bodySmallRegular.value.copyWith(
-                        color: themeColorServices.neutralsColorGrey0.value,
+                  var orderDetailController = Get.find<OrderDetailController>();
+
+                  if (orderDetailController.orderId.value ==
+                      socketOrderStatusData.orderId.toString()) {
+                    Get.back();
+                    await Get.find<HomeController>().refreshAll();
+                    final SnackBar snackBar = SnackBar(
+                      behavior: SnackBarBehavior.fixed,
+                      backgroundColor:
+                          themeColorServices.sematicColorRed400.value,
+                      content: Text(
+                        "Pelanggan membatalkan pesanan",
+                        style: typographyServices.bodySmallRegular.value
+                            .copyWith(
+                              color:
+                                  themeColorServices.neutralsColorGrey0.value,
+                            ),
                       ),
-                    ),
-                  );
-                  rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+                    );
+                    rootScaffoldMessengerKey.currentState?.showSnackBar(
+                      snackBar,
+                    );
+                  }
                 }
                 if (socketOrderStatusData.state == 10 &&
                     Get.currentRoute != Routes.ORDER_DETAIL) {
