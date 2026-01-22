@@ -188,6 +188,11 @@ class OrderPaymentConfirmationController extends GetxController {
         ),
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+
+      Get.toNamed(
+        Routes.ORDER_DETAIL_DONE,
+        arguments: {"order_id": orderId.value, "order_type": orderType.value},
+      );
     } catch (e) {
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
