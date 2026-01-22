@@ -783,6 +783,119 @@ class OrderDetailView extends GetView<OrderDetailController> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 if (controller.orderDetail.value.state ==
+                                    1) ...[
+                                  ActionSlider.custom(
+                                    height: 60,
+                                    action: (actionController) async {
+                                      actionController.loading();
+                                      await controller.updateStateGrabOrder();
+                                      actionController.success();
+                                      actionController.reset();
+                                    },
+                                    toggleMargin: EdgeInsetsGeometry.all(0),
+                                    outerBackgroundBuilder:
+                                        (context, state, child) {
+                                          return Container(
+                                            color: Colors.transparent,
+                                          );
+                                        },
+                                    foregroundBuilder: (context, state, child) {
+                                      return AnimatedContainer(
+                                        duration: Duration(milliseconds: 500),
+                                        padding: const EdgeInsets.all(8.0),
+                                        child:
+                                            state.status ==
+                                                SliderStatus.loading()
+                                            ? CircleAvatar(
+                                                backgroundColor: controller
+                                                    .themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                                child: Center(
+                                                  child: SizedBox(
+                                                    width: 24.5,
+                                                    height: 24.5,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey0
+                                                              .value,
+                                                        ),
+                                                  ),
+                                                ),
+                                              )
+                                            : CircleAvatar(
+                                                backgroundColor:
+                                                    state.position >= 0.5
+                                                    ? Color(0XFF2579D4)
+                                                    : controller
+                                                          .themeColorServices
+                                                          .primaryBlue
+                                                          .value,
+                                                child: Center(
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/icon_arrow_slide_right.svg",
+                                                    width: 24.5,
+                                                    height: 24.5,
+                                                  ),
+                                                ),
+                                              ),
+                                      );
+                                    },
+                                    backgroundBuilder: (context, state, child) {
+                                      return AnimatedContainer(
+                                        duration: Duration(milliseconds: 500),
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: state.position >= 0.5
+                                              ? Color(0XFF2F8AEC)
+                                              : Color(0XFFF1F1F1),
+                                          borderRadius: BorderRadius.circular(
+                                            9999,
+                                          ),
+                                          border: Border.all(
+                                            color: state.position >= 0.5
+                                                ? Color(0XFF0573EA)
+                                                : controller
+                                                      .themeColorServices
+                                                      .neutralsColorGrey300
+                                                      .value,
+                                            width: state.position >= 0.5
+                                                ? 5
+                                                : 1,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              state.position >= 0.5
+                                                  ? "Orderan sudah diambil"
+                                                  : "Swipe untuk mulai orderan",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: state.position >= 0.5
+                                                        ? Colors.white
+                                                        : controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey400
+                                                              .value,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                                if (controller.orderDetail.value.state ==
                                     2) ...[
                                   ActionSlider.custom(
                                     height: 60,

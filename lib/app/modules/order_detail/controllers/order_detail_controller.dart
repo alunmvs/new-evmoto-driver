@@ -83,7 +83,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       WidgetsBinding.instance.addObserver(this);
       isFetch.value = false;
 
-      if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
+      if (orderDetail.value.state == 1 ||
+          orderDetail.value.state == 2 ||
+          orderDetail.value.state == 3) {
         await setupGoogleMapsPickUpCustomer();
       }
 
@@ -1170,5 +1172,29 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         ),
       ),
     );
+  }
+
+  Future<void> updateStateGrabOrder() async {
+    try {
+      await orderRepository.grabOrder(
+        orderType: orderType.value,
+        orderId: orderDetail.value.orderId.toString(),
+        language: 2,
+      );
+    } catch (e) {
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          e.toString(),
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
+          ),
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    } finally {
+      await refreshAll();
+    }
   }
 }
