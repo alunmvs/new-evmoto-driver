@@ -2679,7 +2679,7 @@ class HomeView extends GetView<HomeController> {
                                                         );
                                                       },
                                                   onChanged: (value) async {
-                                                    controller
+                                                    await controller
                                                         .onSwitchStatusWork();
                                                   },
                                                   customTextBuilder: (context, local, global) {
@@ -3030,20 +3030,22 @@ class HomeView extends GetView<HomeController> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    controller
-                                                        .errorInfoBottomSheet
-                                                        .value,
-                                                    style: controller
-                                                        .typographyServices
-                                                        .captionLargeRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .redColor
-                                                              .value,
-                                                        ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      controller
+                                                          .errorInfoBottomSheet
+                                                          .value,
+                                                      style: controller
+                                                          .typographyServices
+                                                          .captionLargeRegular
+                                                          .value
+                                                          .copyWith(
+                                                            color: controller
+                                                                .themeColorServices
+                                                                .redColor
+                                                                .value,
+                                                          ),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
