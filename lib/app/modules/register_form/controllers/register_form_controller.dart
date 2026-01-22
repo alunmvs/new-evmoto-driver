@@ -183,7 +183,7 @@ class RegisterFormController extends GetxController {
     }
   }
 
-  Future<void> onTapUploadvehicleRegistrationCertificateFront() async {
+  Future<void> onTapUploadVehicleRegistrationCertificateFront() async {
     var imagePicker = ImagePicker();
     var image = await imagePicker.pickImage(
       source: ImageSource.camera,
@@ -209,7 +209,7 @@ class RegisterFormController extends GetxController {
 
     if (image != null) {
       showLoadingDialog();
-      vehicleRegistrationCertificateFrontPhotoUrl.value =
+      vehicleRegistrationCertificateBackPhotoUrl.value =
           await uploadImageRepository.uploadImage(file: image);
       Get.close(1);
     }
@@ -220,7 +220,7 @@ class RegisterFormController extends GetxController {
     var image = await imagePicker.pickImage(
       source: ImageSource.camera,
       maxWidth: 720,
-      preferredCameraDevice: CameraDevice.rear,
+      preferredCameraDevice: CameraDevice.front,
     );
 
     if (image != null) {

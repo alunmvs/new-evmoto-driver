@@ -1598,7 +1598,7 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             child: GestureDetector(
                               onTap: () async {
                                 await controller
-                                    .onTapUploadvehicleRegistrationCertificateFront();
+                                    .onTapUploadVehicleRegistrationCertificateFront();
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -1691,7 +1691,7 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                             GestureDetector(
                                               onTap: () async {
                                                 await controller
-                                                    .onTapUploadvehicleRegistrationCertificateFront();
+                                                    .onTapUploadVehicleRegistrationCertificateFront();
                                               },
                                               child: Text(
                                                 controller
