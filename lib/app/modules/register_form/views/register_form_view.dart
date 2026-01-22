@@ -3019,9 +3019,7 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ValidationMessage.maxLength: (error) =>
                                 "Kode referral harus terdiri dari 8 huruf",
                           },
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
+                          inputFormatters: [UpperCaseTextFormatter()],
                           decoration: InputDecoration(
                             counterText: '',
                             contentPadding: EdgeInsets.symmetric(
@@ -3047,10 +3045,19 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                 );
 
                                 if (result != null) {
-                                  controller.formGroup
-                                          .control("referral_code")
-                                          .value =
-                                      result;
+                                  if (result.toString().length > 8) {
+                                    controller.formGroup
+                                        .control("referral_code")
+                                        .value = result.toString().substring(
+                                      0,
+                                      8,
+                                    );
+                                  } else {
+                                    controller.formGroup
+                                            .control("referral_code")
+                                            .value =
+                                        result;
+                                  }
                                 }
                               },
                               child: Container(
@@ -3154,6 +3161,19 @@ class RegisterFormView extends GetView<RegisterFormController> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    return newValue.copyWith(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
     );
   }
 }
