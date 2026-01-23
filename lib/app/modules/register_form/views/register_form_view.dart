@@ -3001,7 +3001,6 @@ class RegisterFormView extends GetView<RegisterFormController> {
                                     .value,
                               ),
                         ),
-
                         SizedBox(height: 4),
                         ReactiveTextField(
                           style: controller
@@ -3019,7 +3018,12 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ValidationMessage.maxLength: (error) =>
                                 "Kode referral harus terdiri dari 8 huruf",
                           },
-                          inputFormatters: [UpperCaseTextFormatter()],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[a-zA-Z0-9]'),
+                            ),
+                            UpperCaseTextFormatter(),
+                          ],
                           decoration: InputDecoration(
                             counterText: '',
                             contentPadding: EdgeInsets.symmetric(
