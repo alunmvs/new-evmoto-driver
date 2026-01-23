@@ -3434,7 +3434,7 @@ class HomeView extends GetView<HomeController> {
                                             );
                                           },
                                       onChanged: (value) async {
-                                        controller.onSwitchStatusWork();
+                                        await controller.onSwitchStatusWork();
                                       },
                                       customTextBuilder:
                                           (context, local, global) {
