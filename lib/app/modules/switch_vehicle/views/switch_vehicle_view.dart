@@ -110,8 +110,15 @@ class SwitchVehicleView extends GetView<SwitchVehicleController> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        controller.myVehicle.value.car ??
-                                            "Saat ini akses kendaraan anda belum tersedia, Silahkan hubungi layanan kami!",
+                                        controller.myVehicle.value.car ==
+                                                    null ||
+                                                controller
+                                                        .myVehicle
+                                                        .value
+                                                        .car ==
+                                                    ""
+                                            ? "Saat ini akses kendaraan anda belum tersedia, Silahkan hubungi layanan kami!"
+                                            : controller.myVehicle.value.car!,
                                         style: controller
                                             .typographyServices
                                             .bodySmallBold
