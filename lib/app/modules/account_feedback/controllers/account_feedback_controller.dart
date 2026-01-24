@@ -66,7 +66,7 @@ class AccountFeedbackController extends GetxController {
       behavior: SnackBarBehavior.fixed,
       backgroundColor: themeColorServices.sematicColorGreen400.value,
       content: Text(
-        "Berhasil mengirimkan feedback",
+        "Masukan anda berhasil terkirim!",
         style: typographyServices.bodySmallRegular.value.copyWith(
           color: themeColorServices.neutralsColorGrey0.value,
         ),
