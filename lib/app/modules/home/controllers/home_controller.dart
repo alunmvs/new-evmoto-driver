@@ -177,6 +177,11 @@ class HomeController extends GetxController
     ]);
 
     workStatus.value = vehicleStatistics.value.work ?? 2;
+
+    if (userInfo.value.balance == 0 && workStatus.value == 1) {
+      await userRepository.stopWork(language: 2);
+      workStatus.value = 2;
+    }
   }
 
   Future<void> getVehicleStatistics() async {

@@ -17,8 +17,9 @@ class AccountReferralCodeController extends GetxController {
   final homeController = Get.find<HomeController>();
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    await homeController.getUserInfoDetail();
   }
 
   @override
