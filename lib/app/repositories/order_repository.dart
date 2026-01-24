@@ -4,6 +4,7 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 
@@ -50,7 +51,12 @@ class OrderRepository {
       var orderList = <Order>[];
 
       for (var order in response.data['data']) {
-        orderList.add(Order.fromJson(order));
+        var orderObj = Order.fromJson(order);
+        orderObj.orderUser = await getOrderUserDetail(
+          orderType: orderObj.type!,
+          orderId: orderObj.id.toString(),
+        );
+        orderList.add(orderObj);
       }
 
       return orderList;
@@ -430,6 +436,44 @@ class OrderRepository {
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<OrderUser> getOrderUserDetail({
+    required int orderType,
+    required String orderId,
+  }) async {
+    try {
+      var url =
+          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/orderServer/api/order/queryOrderUserName";
+
+      var formData = FormData.fromMap({
+        "orderType": orderType,
+        "orderId": orderId,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "x-www-form-urlencoded",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      return OrderUser.fromJson(response.data['data']);
     } on DioException catch (e) {
       rethrow;
     }

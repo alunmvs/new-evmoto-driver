@@ -1,3 +1,5 @@
+import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
+
 class Order {
   int? id;
   int? type;
@@ -19,6 +21,8 @@ class Order {
   double? passengersFrom;
   double? orderMoney;
   double? totalOrderCost;
+  OrderUser? orderUser;
+  int? historyNum;
 
   Order({
     this.id,
@@ -41,6 +45,8 @@ class Order {
     this.passengersFrom,
     this.orderMoney,
     this.totalOrderCost,
+    this.orderUser,
+    this.historyNum,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -64,6 +70,8 @@ class Order {
     passengersFrom = json['passengersFrom'];
     orderMoney = json['orderMoney'];
     totalOrderCost = json['totalOrderCost'];
+    orderUser = json['orderUser'];
+    historyNum = json['historyNum'];
   }
 
   Map<String, dynamic> toJson() {
@@ -88,6 +96,8 @@ class Order {
     data['passengersFrom'] = this.passengersFrom;
     data['orderMoney'] = this.orderMoney;
     data['totalOrderCost'] = this.totalOrderCost;
+    data['orderUser'] = this.orderUser;
+    data['historyNum'] = this.historyNum;
     return data;
   }
 }

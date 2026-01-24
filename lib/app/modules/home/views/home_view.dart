@@ -1871,43 +1871,42 @@ class HomeView extends GetView<HomeController> {
                                                           .typographyServices
                                                           .bodySmallBold
                                                           .value,
-                                                  isScrollable: true,
+                                                  // isScrollable: true,
                                                   controller:
                                                       controller.tabController,
-                                                  tabAlignment:
-                                                      TabAlignment.start,
+                                                  // tabAlignment:
+                                                  //     TabAlignment.start,
                                                   overlayColor:
                                                       WidgetStateProperty.all(
                                                         Colors.transparent,
                                                       ),
                                                   onTap: (value) async {
                                                     switch (value) {
+                                                      // case 0:
+                                                      //   await Future.wait([
+                                                      //     controller
+                                                      //         .getUserInfoDetail(),
+                                                      //     controller
+                                                      //         .getVehicleStatistics(),
+                                                      //     controller
+                                                      //         .getOrderGrabbingHallList(),
+                                                      //   ]);
+
+                                                      //   controller
+                                                      //           .workStatus
+                                                      //           .value =
+                                                      //       controller
+                                                      //           .vehicleStatistics
+                                                      //           .value
+                                                      //           .work ??
+                                                      //       2;
+                                                      //   break;
                                                       case 0:
                                                         await Future.wait([
                                                           controller
                                                               .getUserInfoDetail(),
                                                           controller
                                                               .getVehicleStatistics(),
-                                                          controller
-                                                              .getOrderGrabbingHallList(),
-                                                        ]);
-
-                                                        controller
-                                                                .workStatus
-                                                                .value =
-                                                            controller
-                                                                .vehicleStatistics
-                                                                .value
-                                                                .work ??
-                                                            2;
-                                                        break;
-                                                      case 1:
-                                                        await Future.wait([
-                                                          controller
-                                                              .getUserInfoDetail(),
-                                                          controller
-                                                              .getVehicleStatistics(),
-
                                                           controller
                                                               .getOrderInServiceList(),
                                                         ]);
@@ -1921,7 +1920,7 @@ class HomeView extends GetView<HomeController> {
                                                                 .work ??
                                                             2;
                                                         break;
-                                                      case 2:
+                                                      case 1:
                                                         await Future.wait([
                                                           controller
                                                               .getUserInfoDetail(),
@@ -1945,126 +1944,74 @@ class HomeView extends GetView<HomeController> {
                                                     }
                                                   },
                                                   tabs: [
+                                                    // Tab(
+                                                    //   child: Stack(
+                                                    //     children: [
+                                                    //       Row(
+                                                    //         children: [
+                                                    //           Text(
+                                                    //             controller
+                                                    //                     .languageServices
+                                                    //                     .language
+                                                    //                     .value
+                                                    //                     .acceptOrder ??
+                                                    //                 "-",
+                                                    //             style: controller
+                                                    //                 .typographyServices
+                                                    //                 .bodySmallBold
+                                                    //                 .value,
+                                                    //           ),
+                                                    //           if (controller
+                                                    //               .orderGrabbingHallList
+                                                    //               .isNotEmpty) ...[
+                                                    //             SizedBox(
+                                                    //               width: 10,
+                                                    //             ),
+                                                    //           ],
+                                                    //         ],
+                                                    //       ),
+                                                    //       if (controller
+                                                    //           .orderGrabbingHallList
+                                                    //           .isNotEmpty) ...[
+                                                    //         Positioned(
+                                                    //           top: 0,
+                                                    //           right: 0,
+                                                    //           child: Container(
+                                                    //             padding:
+                                                    //                 const EdgeInsets.all(
+                                                    //                   4,
+                                                    //                 ),
+                                                    //             decoration: BoxDecoration(
+                                                    //               color: controller
+                                                    //                   .themeColorServices
+                                                    //                   .redColor
+                                                    //                   .value,
+                                                    //               shape: BoxShape
+                                                    //                   .circle,
+                                                    //             ),
+                                                    //             constraints:
+                                                    //                 const BoxConstraints(
+                                                    //                   minWidth:
+                                                    //                       5,
+                                                    //                   minHeight:
+                                                    //                       5,
+                                                    //                 ),
+                                                    //           ),
+                                                    //         ),
+                                                    //       ],
+                                                    //     ],
+                                                    //   ),
+                                                    // ),
                                                     Tab(
                                                       child: Stack(
                                                         children: [
                                                           Row(
-                                                            children: [
-                                                              Text(
-                                                                controller
-                                                                        .languageServices
-                                                                        .language
-                                                                        .value
-                                                                        .acceptOrder ??
-                                                                    "-",
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .bodySmallBold
-                                                                    .value,
-                                                              ),
-                                                              if (controller
-                                                                  .orderGrabbingHallList
-                                                                  .isNotEmpty) ...[
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                              ],
-                                                            ],
-                                                          ),
-                                                          if (controller
-                                                              .orderGrabbingHallList
-                                                              .isNotEmpty) ...[
-                                                            Positioned(
-                                                              top: 0,
-                                                              right: 0,
-                                                              child: Container(
-                                                                padding:
-                                                                    const EdgeInsets.all(
-                                                                      4,
-                                                                    ),
-                                                                decoration: BoxDecoration(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .redColor
-                                                                      .value,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                constraints:
-                                                                    const BoxConstraints(
-                                                                      minWidth:
-                                                                          5,
-                                                                      minHeight:
-                                                                          5,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Tab(
-                                                      child: Stack(
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                controller
-                                                                        .languageServices
-                                                                        .language
-                                                                        .value
-                                                                        .inService ??
-                                                                    "-",
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .bodySmallBold
-                                                                    .value,
-                                                              ),
-                                                              if (controller
-                                                                  .orderInServiceList
-                                                                  .isNotEmpty) ...[
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                              ],
-                                                            ],
-                                                          ),
-                                                          if (controller
-                                                              .orderInServiceList
-                                                              .isNotEmpty) ...[
-                                                            Positioned(
-                                                              top: 0,
-                                                              right: 0,
-                                                              child: Container(
-                                                                padding:
-                                                                    const EdgeInsets.all(
-                                                                      4,
-                                                                    ),
-                                                                decoration: BoxDecoration(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .redColor
-                                                                      .value,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                constraints:
-                                                                    const BoxConstraints(
-                                                                      minWidth:
-                                                                          5,
-                                                                      minHeight:
-                                                                          5,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Tab(
-                                                      child: Stack(
-                                                        children: [
-                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
                                                             children: [
                                                               Text(
                                                                 controller
@@ -2119,6 +2066,70 @@ class HomeView extends GetView<HomeController> {
                                                         ],
                                                       ),
                                                     ),
+                                                    Tab(
+                                                      child: Stack(
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                controller
+                                                                        .languageServices
+                                                                        .language
+                                                                        .value
+                                                                        .inService ??
+                                                                    "-",
+                                                                style: controller
+                                                                    .typographyServices
+                                                                    .bodySmallBold
+                                                                    .value,
+                                                              ),
+                                                              if (controller
+                                                                  .orderInServiceList
+                                                                  .isNotEmpty) ...[
+                                                                SizedBox(
+                                                                  width: 10,
+                                                                ),
+                                                              ],
+                                                            ],
+                                                          ),
+                                                          if (controller
+                                                              .orderInServiceList
+                                                              .isNotEmpty) ...[
+                                                            Positioned(
+                                                              top: 0,
+                                                              right: 0,
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets.all(
+                                                                      4,
+                                                                    ),
+                                                                decoration: BoxDecoration(
+                                                                  color: controller
+                                                                      .themeColorServices
+                                                                      .redColor
+                                                                      .value,
+                                                                  shape: BoxShape
+                                                                      .circle,
+                                                                ),
+                                                                constraints:
+                                                                    const BoxConstraints(
+                                                                      minWidth:
+                                                                          5,
+                                                                      minHeight:
+                                                                          5,
+                                                                    ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
                                               ],
@@ -2135,6 +2146,130 @@ class HomeView extends GetView<HomeController> {
                           body: TabBarView(
                             controller: controller.tabController,
                             children: [
+                              // Builder(
+                              //   builder: (context) => Obx(
+                              //     () => SmartRefresher(
+                              //       header: MaterialClassicHeader(
+                              //         color: controller
+                              //             .themeColorServices
+                              //             .primaryBlue
+                              //             .value,
+                              //       ),
+                              //       footer: ClassicFooter(
+                              //         loadStyle: LoadStyle.HideAlways,
+                              //         textStyle: controller
+                              //             .typographyServices
+                              //             .bodySmallRegular
+                              //             .value
+                              //             .copyWith(
+                              //               color: controller
+                              //                   .themeColorServices
+                              //                   .primaryBlue
+                              //                   .value,
+                              //             ),
+                              //         canLoadingIcon: null,
+                              //         loadingIcon: null,
+                              //         idleIcon: null,
+                              //         noMoreIcon: null,
+                              //         failedIcon: null,
+                              //       ),
+                              //       enablePullDown: true,
+                              //       enablePullUp: controller
+                              //           .isSeeMoreOrderGrabbingHall
+                              //           .value,
+                              //       onRefresh: () async {
+                              //         await Future.wait([
+                              //           controller.getUserInfoDetail(),
+                              //           controller.getVehicleStatistics(),
+                              //           controller.getOrderGrabbingHallList(),
+                              //         ]);
+                              //         controller
+                              //             .orderGrabbingHallRefreshController
+                              //             .refreshCompleted();
+                              //       },
+                              //       onLoading: () async {
+                              //         await Future.wait([
+                              //           controller
+                              //               .seeMoreOrderGrabbingHallList(),
+                              //         ]);
+                              //         controller
+                              //             .orderGrabbingHallRefreshController
+                              //             .loadComplete();
+                              //       },
+                              //       controller: controller
+                              //           .orderGrabbingHallRefreshController,
+                              //       child: CustomScrollView(
+                              //         slivers: [
+                              //           SliverOverlapInjector(
+                              //             handle:
+                              //                 NestedScrollView.sliverOverlapAbsorberHandleFor(
+                              //                   context,
+                              //                 ),
+                              //           ),
+                              //           SliverToBoxAdapter(
+                              //             child: Padding(
+                              //               padding: EdgeInsets.symmetric(
+                              //                 horizontal: 16,
+                              //               ),
+                              //               child: Column(
+                              //                 children: [
+                              //                   SizedBox(height: 16),
+                              //                   if (controller
+                              //                       .orderGrabbingHallList
+                              //                       .isEmpty) ...[
+                              //                     SizedBox(height: 16 * 3),
+                              //                     SvgPicture.asset(
+                              //                       "assets/images/img_history_activity_not_found.svg",
+                              //                       height: 80,
+                              //                       width: 80,
+                              //                     ),
+                              //                     SizedBox(height: 16),
+                              //                     Text(
+                              //                       controller
+                              //                               .languageServices
+                              //                               .language
+                              //                               .value
+                              //                               .noOrderTitle ??
+                              //                           "-",
+                              //                       style: controller
+                              //                           .typographyServices
+                              //                           .bodyLargeBold
+                              //                           .value,
+                              //                       textAlign: TextAlign.center,
+                              //                     ),
+                              //                     SizedBox(height: 8),
+                              //                     Text(
+                              //                       controller
+                              //                               .languageServices
+                              //                               .language
+                              //                               .value
+                              //                               .noOrderAcceptOrderDescription ??
+                              //                           "-",
+                              //                       style: controller
+                              //                           .typographyServices
+                              //                           .bodySmallRegular
+                              //                           .value,
+                              //                       textAlign: TextAlign.center,
+                              //                     ),
+                              //                   ],
+                              //                   for (var orderGrabbingHall
+                              //                       in controller
+                              //                           .orderGrabbingHallList) ...[
+                              //                     OrderCardHomeSubView(
+                              //                       order: orderGrabbingHall,
+                              //                     ),
+                              //                     SizedBox(height: 16),
+                              //                   ],
+                              //                   SizedBox(height: 16),
+                              //                 ],
+                              //               ),
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                               Builder(
                                 builder: (context) => Obx(
                                   () => SmartRefresher(
@@ -2164,29 +2299,28 @@ class HomeView extends GetView<HomeController> {
                                     ),
                                     enablePullDown: true,
                                     enablePullUp: controller
-                                        .isSeeMoreOrderGrabbingHall
+                                        .isSeeMoreOrderToBeServed
                                         .value,
                                     onRefresh: () async {
                                       await Future.wait([
                                         controller.getUserInfoDetail(),
                                         controller.getVehicleStatistics(),
-                                        controller.getOrderGrabbingHallList(),
+                                        controller.getOrderToBeServedList(),
                                       ]);
                                       controller
-                                          .orderGrabbingHallRefreshController
+                                          .orderToBeServedRefreshController
                                           .refreshCompleted();
                                     },
                                     onLoading: () async {
                                       await Future.wait([
-                                        controller
-                                            .seeMoreOrderGrabbingHallList(),
+                                        controller.seeMoreOrderToBeServedList(),
                                       ]);
                                       controller
-                                          .orderGrabbingHallRefreshController
+                                          .orderToBeServedRefreshController
                                           .loadComplete();
                                     },
                                     controller: controller
-                                        .orderGrabbingHallRefreshController,
+                                        .orderToBeServedRefreshController,
                                     child: CustomScrollView(
                                       slivers: [
                                         SliverOverlapInjector(
@@ -2204,7 +2338,7 @@ class HomeView extends GetView<HomeController> {
                                               children: [
                                                 SizedBox(height: 16),
                                                 if (controller
-                                                    .orderGrabbingHallList
+                                                    .orderToBeServedList
                                                     .isEmpty) ...[
                                                   SizedBox(height: 16 * 3),
                                                   SvgPicture.asset(
@@ -2232,7 +2366,7 @@ class HomeView extends GetView<HomeController> {
                                                             .languageServices
                                                             .language
                                                             .value
-                                                            .noOrderAcceptOrderDescription ??
+                                                            .noOrderWaitingDescription ??
                                                         "-",
                                                     style: controller
                                                         .typographyServices
@@ -2241,11 +2375,11 @@ class HomeView extends GetView<HomeController> {
                                                     textAlign: TextAlign.center,
                                                   ),
                                                 ],
-                                                for (var orderGrabbingHall
+                                                for (var orderToBeServed
                                                     in controller
-                                                        .orderGrabbingHallList) ...[
+                                                        .orderToBeServedList) ...[
                                                   OrderCardHomeSubView(
-                                                    order: orderGrabbingHall,
+                                                    order: orderToBeServed,
                                                   ),
                                                   SizedBox(height: 16),
                                                 ],
@@ -2367,129 +2501,6 @@ class HomeView extends GetView<HomeController> {
                                                         .orderInServiceList) ...[
                                                   OrderCardHomeSubView(
                                                     order: orderInService,
-                                                  ),
-                                                  SizedBox(height: 16),
-                                                ],
-                                                SizedBox(height: 16),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Builder(
-                                builder: (context) => Obx(
-                                  () => SmartRefresher(
-                                    header: MaterialClassicHeader(
-                                      color: controller
-                                          .themeColorServices
-                                          .primaryBlue
-                                          .value,
-                                    ),
-                                    footer: ClassicFooter(
-                                      loadStyle: LoadStyle.HideAlways,
-                                      textStyle: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
-                                          ),
-                                      canLoadingIcon: null,
-                                      loadingIcon: null,
-                                      idleIcon: null,
-                                      noMoreIcon: null,
-                                      failedIcon: null,
-                                    ),
-                                    enablePullDown: true,
-                                    enablePullUp: controller
-                                        .isSeeMoreOrderToBeServed
-                                        .value,
-                                    onRefresh: () async {
-                                      await Future.wait([
-                                        controller.getUserInfoDetail(),
-                                        controller.getVehicleStatistics(),
-                                        controller.getOrderToBeServedList(),
-                                      ]);
-                                      controller
-                                          .orderToBeServedRefreshController
-                                          .refreshCompleted();
-                                    },
-                                    onLoading: () async {
-                                      await Future.wait([
-                                        controller.seeMoreOrderToBeServedList(),
-                                      ]);
-                                      controller
-                                          .orderToBeServedRefreshController
-                                          .loadComplete();
-                                    },
-                                    controller: controller
-                                        .orderToBeServedRefreshController,
-                                    child: CustomScrollView(
-                                      slivers: [
-                                        SliverOverlapInjector(
-                                          handle:
-                                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                                context,
-                                              ),
-                                        ),
-                                        SliverToBoxAdapter(
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 16,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(height: 16),
-                                                if (controller
-                                                    .orderToBeServedList
-                                                    .isEmpty) ...[
-                                                  SizedBox(height: 16 * 3),
-                                                  SvgPicture.asset(
-                                                    "assets/images/img_history_activity_not_found.svg",
-                                                    height: 80,
-                                                    width: 80,
-                                                  ),
-                                                  SizedBox(height: 16),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .noOrderTitle ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodyLargeBold
-                                                        .value,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                  SizedBox(height: 8),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .noOrderWaitingDescription ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodySmallRegular
-                                                        .value,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ],
-                                                for (var orderToBeServed
-                                                    in controller
-                                                        .orderToBeServedList) ...[
-                                                  OrderCardHomeSubView(
-                                                    order: orderToBeServed,
                                                   ),
                                                   SizedBox(height: 16),
                                                 ],

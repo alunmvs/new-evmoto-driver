@@ -57,7 +57,7 @@ class OrderCardHomeSubView extends GetView<HomeController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        order.user ?? "-",
+                        order.orderUser?.name ?? "-",
                         style: controller
                             .typographyServices
                             .bodySmallRegular
@@ -67,33 +67,44 @@ class OrderCardHomeSubView extends GetView<HomeController> {
                                   controller.themeColorServices.textColor.value,
                             ),
                       ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/icon_star.svg",
-                            width: 9.17,
-                            height: 10,
-                            color: controller
-                                .themeColorServices
-                                .sematicColorYellow400
-                                .value,
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            "5.0 (0)",
-                            style: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(
-                                  color: controller
-                                      .themeColorServices
-                                      .textColor
-                                      .value,
-                                ),
-                          ),
-                        ],
+                      Text(
+                        "(${order.historyNum})",
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
+                            .value
+                            .copyWith(
+                              color:
+                                  controller.themeColorServices.textColor.value,
+                            ),
                       ),
+                      // Row(
+                      //   children: [
+                      //     SvgPicture.asset(
+                      //       "assets/icons/icon_star.svg",
+                      //       width: 9.17,
+                      //       height: 10,
+                      //       color: controller
+                      //           .themeColorServices
+                      //           .sematicColorYellow400
+                      //           .value,
+                      //     ),
+                      //     SizedBox(width: 4),
+                      //     Text(
+                      //       "5.0 (0)",
+                      //       style: controller
+                      //           .typographyServices
+                      //           .bodySmallRegular
+                      //           .value
+                      //           .copyWith(
+                      //             color: controller
+                      //                 .themeColorServices
+                      //                 .textColor
+                      //                 .value,
+                      //           ),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),

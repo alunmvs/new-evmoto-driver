@@ -261,9 +261,9 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                             children: [
                                                               Text(
                                                                 controller
-                                                                        .orderDetail
+                                                                        .orderUser
                                                                         .value
-                                                                        .user ??
+                                                                        .name ??
                                                                     "-",
                                                                 style: controller
                                                                     .typographyServices
@@ -276,57 +276,70 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                                           .value,
                                                                     ),
                                                               ),
-                                                              SizedBox(
-                                                                height: 4,
-                                                              ),
-                                                              Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  SizedBox(
-                                                                    width: 16,
-                                                                    height: 16,
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        SvgPicture.asset(
-                                                                          "assets/icons/icon_star.svg",
-                                                                          width:
-                                                                              15,
-                                                                          height:
-                                                                              15,
-                                                                          color: controller
-                                                                              .themeColorServices
-                                                                              .sematicColorYellow400
-                                                                              .value,
-                                                                        ),
-                                                                      ],
+                                                              Text(
+                                                                "(${controller.orderDetail.value.historyNum})",
+                                                                style: controller
+                                                                    .typographyServices
+                                                                    .bodySmallRegular
+                                                                    .value
+                                                                    .copyWith(
+                                                                      color: controller
+                                                                          .themeColorServices
+                                                                          .textColor
+                                                                          .value,
                                                                     ),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 4,
-                                                                  ),
-                                                                  Text(
-                                                                    "5.0 (0)",
-                                                                    style: controller
-                                                                        .typographyServices
-                                                                        .bodySmallRegular
-                                                                        .value
-                                                                        .copyWith(
-                                                                          color: controller
-                                                                              .themeColorServices
-                                                                              .textColor
-                                                                              .value,
-                                                                        ),
-                                                                  ),
-                                                                ],
                                                               ),
+                                                              // SizedBox(
+                                                              //   height: 4,
+                                                              // ),
+                                                              // Row(
+                                                              //   crossAxisAlignment:
+                                                              //       CrossAxisAlignment
+                                                              //           .start,
+                                                              //   children: [
+                                                              //     SizedBox(
+                                                              //       width: 16,
+                                                              //       height: 16,
+                                                              //       child: Row(
+                                                              //         mainAxisAlignment:
+                                                              //             MainAxisAlignment
+                                                              //                 .center,
+                                                              //         crossAxisAlignment:
+                                                              //             CrossAxisAlignment
+                                                              //                 .center,
+                                                              //         children: [
+                                                              //           SvgPicture.asset(
+                                                              //             "assets/icons/icon_star.svg",
+                                                              //             width:
+                                                              //                 15,
+                                                              //             height:
+                                                              //                 15,
+                                                              //             color: controller
+                                                              //                 .themeColorServices
+                                                              //                 .sematicColorYellow400
+                                                              //                 .value,
+                                                              //           ),
+                                                              //         ],
+                                                              //       ),
+                                                              //     ),
+                                                              //     SizedBox(
+                                                              //       width: 4,
+                                                              //     ),
+                                                              //     Text(
+                                                              //       "5.0 (0)",
+                                                              //       style: controller
+                                                              //           .typographyServices
+                                                              //           .bodySmallRegular
+                                                              //           .value
+                                                              //           .copyWith(
+                                                              //             color: controller
+                                                              //                 .themeColorServices
+                                                              //                 .textColor
+                                                              //                 .value,
+                                                              //           ),
+                                                              //     ),
+                                                              //   ],
+                                                              // ),
                                                             ],
                                                           ),
                                                         ],

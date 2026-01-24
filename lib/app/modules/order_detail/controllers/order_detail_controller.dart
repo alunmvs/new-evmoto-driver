@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/open_maps_repository.dart';
@@ -55,6 +56,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   final orderId = "".obs;
   final orderType = 0.obs;
   final orderDetail = OrderDetail().obs;
+  final orderUser = OrderUser().obs;
 
   final isInformationShow = false.obs;
 
@@ -78,7 +80,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
     if (isLocationReadyStatus.value == true) {
       await requestLocation();
-      await getOrderDetail();
+      await Future.wait([getOrderDetail(), getOrderUserDetail()]);
       await joinFirestoreChatRooms();
       WidgetsBinding.instance.addObserver(this);
       isFetch.value = false;
@@ -291,6 +293,13 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       orderType: orderType.value,
       orderId: orderId.value,
       language: 2,
+    );
+  }
+
+  Future<void> getOrderUserDetail() async {
+    orderUser.value = await orderRepository.getOrderUserDetail(
+      orderType: orderType.value,
+      orderId: orderId.value,
     );
   }
 

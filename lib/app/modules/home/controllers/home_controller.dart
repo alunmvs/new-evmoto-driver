@@ -105,7 +105,7 @@ class HomeController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    tabController = TabController(length: 3, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
     await requestLocation();
     await refreshAll();
     isFetch.value = false;
@@ -170,7 +170,7 @@ class HomeController extends GetxController
     await Future.wait([
       getUserInfoDetail(),
       getVehicleStatistics(),
-      getOrderGrabbingHallList(),
+      // getOrderGrabbingHallList(),
       getOrderInServiceList(),
       getOrderToBeServedList(),
       getServiceOrderList(),
@@ -446,6 +446,10 @@ class HomeController extends GetxController
         orderId: socketOrderStatusData.orderId.toString(),
         language: 2,
       );
+      var orderUserData = await orderRepository.getOrderUserDetail(
+        orderType: socketOrderStatusData.orderType!,
+        orderId: socketOrderStatusData.orderId.toString(),
+      );
 
       var initialCameraPosition = CameraPosition(
         target: LatLng(orderData.startLat!, orderData.startLon!),
@@ -581,7 +585,7 @@ class HomeController extends GetxController
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        orderData.user ?? "-",
+                                        orderUserData.name ?? "-",
                                         style: typographyServices
                                             .bodySmallRegular
                                             .value
@@ -591,30 +595,41 @@ class HomeController extends GetxController
                                                   .value,
                                             ),
                                       ),
-                                      Row(
-                                        children: [
-                                          SvgPicture.asset(
-                                            "assets/icons/icon_star.svg",
-                                            width: 9.17,
-                                            height: 10,
-                                            color: themeColorServices
-                                                .sematicColorYellow400
-                                                .value,
-                                          ),
-                                          SizedBox(width: 4),
-                                          Text(
-                                            "5.0 (0)",
-                                            style: typographyServices
-                                                .bodySmallRegular
-                                                .value
-                                                .copyWith(
-                                                  color: themeColorServices
-                                                      .textColor
-                                                      .value,
-                                                ),
-                                          ),
-                                        ],
+                                      Text(
+                                        "(${orderData.historyNum})",
+                                        style: typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .textColor
+                                                  .value,
+                                            ),
                                       ),
+                                      // Row(
+                                      //   children: [
+                                      //     SvgPicture.asset(
+                                      //       "assets/icons/icon_star.svg",
+                                      //       width: 9.17,
+                                      //       height: 10,
+                                      //       color: themeColorServices
+                                      //           .sematicColorYellow400
+                                      //           .value,
+                                      //     ),
+                                      //     SizedBox(width: 4),
+                                      //     Text(
+                                      //       "5.0 (0)",
+                                      //       style: typographyServices
+                                      //           .bodySmallRegular
+                                      //           .value
+                                      //           .copyWith(
+                                      //             color: themeColorServices
+                                      //                 .textColor
+                                      //                 .value,
+                                      //           ),
+                                      //     ),
+                                      //   ],
+                                      // ),
                                     ],
                                   ),
                                 ),
