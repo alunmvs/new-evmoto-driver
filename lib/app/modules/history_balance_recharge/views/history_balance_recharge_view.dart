@@ -105,7 +105,8 @@ class HistoryBalanceRechargeView
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "BCA Virtual Account",
+                                      historyBalanceRecharge.paymentMethod ??
+                                          "-",
                                       style: controller
                                           .typographyServices
                                           .bodySmallBold
