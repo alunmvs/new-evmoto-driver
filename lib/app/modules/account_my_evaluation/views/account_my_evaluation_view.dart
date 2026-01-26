@@ -209,6 +209,7 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                                   index: controller.selectedIndex.value,
                                 )) ...[
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     mainAxisAlignment:
