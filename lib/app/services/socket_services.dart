@@ -55,7 +55,6 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
         (data) async {
           // print(data);
           var dataJson = convertBytesToJson(bytes: data);
-          // print(dataJson);
 
           if (dataJson != null) {
             var method = dataJson['method'] ?? "";
@@ -64,13 +63,27 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
               case 'OK':
                 break;
               case 'ORDER_STATUS':
-                // print(dataJson);
                 var socketOrderStatusData = SocketOrderStatusData.fromJson(
                   dataJson['data'],
                 );
                 var homeController = Get.find<HomeController>();
-                if (Get.currentRoute == Routes.HOME &&
-                    socketOrderStatusData.state == 1) {
+
+                if (socketOrderStatusData.state == 1) {
+                  if (Get.currentRoute == Routes.ORDER_DETAIL) {
+                    var orderDetailController =
+                        Get.find<OrderDetailController>();
+
+                    if (orderDetailController.orderId.value !=
+                        socketOrderStatusData.orderId.toString()) {
+                      await Future.wait([
+                        homeController.refreshAll(),
+                        homeController.showDialogOrderConfirmation(
+                          socketOrderStatusData: socketOrderStatusData,
+                        ),
+                      ]);
+                    }
+                  }
+                } else {
                   await Future.wait([
                     homeController.refreshAll(),
                     homeController.showDialogOrderConfirmation(
