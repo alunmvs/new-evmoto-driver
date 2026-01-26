@@ -394,7 +394,7 @@ class ActivityView extends GetView<ActivityController> {
                                                       symbol: 'Rp ',
                                                       decimalDigits: 0,
                                                     ).format(
-                                                      allOrder.orderMoney,
+                                                      allOrder.totalOrderCost,
                                                     ),
                                                     style: controller
                                                         .typographyServices
@@ -720,7 +720,7 @@ class ActivityView extends GetView<ActivityController> {
                                                       symbol: 'Rp ',
                                                       decimalDigits: 0,
                                                     ).format(
-                                                      toBePaid.orderMoney,
+                                                      toBePaid.totalOrderCost,
                                                     ),
                                                     style: controller
                                                         .typographyServices
@@ -1044,7 +1044,8 @@ class ActivityView extends GetView<ActivityController> {
                                                       symbol: 'Rp ',
                                                       decimalDigits: 0,
                                                     ).format(
-                                                      cancelOrder.orderMoney,
+                                                      cancelOrder
+                                                          .totalOrderCost,
                                                     ),
                                                     style: controller
                                                         .typographyServices
