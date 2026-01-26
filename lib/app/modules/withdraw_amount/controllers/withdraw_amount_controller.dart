@@ -399,7 +399,7 @@ class WithdrawAmountController extends GetxController {
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,
         content: Text(
-          "Harap lengkapi data yang dibutuhkan",
+          "Harap mengisi nominal penarikan dana",
           style: typographyServices.bodySmallRegular.value.copyWith(
             color: themeColorServices.neutralsColorGrey0.value,
           ),
