@@ -348,6 +348,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         .coordinates!
         .map((p) => LatLng(p[1], p[0]))
         .toList();
+    polylinesCoordinate.value = polylineCoordinates;
 
     polylines.clear();
 
@@ -455,6 +456,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         .coordinates!
         .map((p) => LatLng(p[1], p[0]))
         .toList();
+    polylinesCoordinate.value = polylineCoordinates;
 
     polylines.clear();
     isFetch.value = true;
@@ -934,16 +936,27 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         );
       }
 
-      await googleMapController.animateCamera(
-        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+      var movementDirection = compareLatLng(
+        originLat: originLatitude,
+        originLng: originLongitude,
+        destLat: destinationLatitude,
+        destLng: destinationLongitude,
       );
+
+      if (movementDirection == MovementDirection.vertical) {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+        );
+      } else {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+        );
+      }
     } else {
       LatLngBounds bounds;
 
-      // var originLatitude = double.parse(currentLatitude.value);
-      // var originLongitude = double.parse(currentLongitude.value);
-      var originLatitude = -6.2455389;
-      var originLongitude = 106.8079792;
+      var originLatitude = double.parse(currentLatitude.value);
+      var originLongitude = double.parse(currentLongitude.value);
       var destinationLatitude = this.orderDetail.value.endLat!;
       var destinationLongitude = this.orderDetail.value.endLon!;
 
@@ -970,11 +983,38 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         );
       }
 
-      try {
+      var movementDirection = compareLatLng(
+        originLat: originLatitude,
+        originLng: originLongitude,
+        destLat: destinationLatitude,
+        destLng: destinationLongitude,
+      );
+
+      if (movementDirection == MovementDirection.vertical) {
+        await googleMapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+        );
+      } else {
         await googleMapController.animateCamera(
           CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
         );
-      } catch (e) {}
+      }
+    }
+  }
+
+  MovementDirection compareLatLng({
+    required double originLat,
+    required double originLng,
+    required double destLat,
+    required double destLng,
+  }) {
+    final double deltaLat = (destLat - originLat).abs();
+    final double deltaLng = (destLng - originLng).abs();
+
+    if (deltaLat > deltaLng) {
+      return MovementDirection.vertical;
+    } else {
+      return MovementDirection.horizontal;
     }
   }
 
@@ -1172,3 +1212,5 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     }
   }
 }
+
+enum MovementDirection { vertical, horizontal }

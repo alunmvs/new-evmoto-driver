@@ -18,6 +18,7 @@ Map<String, dynamic> getClosestPointIndex(
       points[i].latitude,
       points[i].longitude,
     );
+
     if (distance < minDistance) {
       minDistance = distance;
       index = i;
