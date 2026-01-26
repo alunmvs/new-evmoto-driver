@@ -33,7 +33,7 @@ class OpenMapsRepository {
 
       return OpenMapDirection.fromJson(response.data);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

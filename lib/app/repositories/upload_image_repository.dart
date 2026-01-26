@@ -25,7 +25,7 @@ class UploadImageRepository {
 
       return response.data["url"];
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 

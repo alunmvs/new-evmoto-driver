@@ -802,7 +802,6 @@ class ActivityView extends GetView<ActivityController> {
                               ),
                             ),
                           ),
-
                           SmartRefresher(
                             header: MaterialClassicHeader(
                               color: controller

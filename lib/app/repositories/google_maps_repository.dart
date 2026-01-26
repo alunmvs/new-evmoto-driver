@@ -34,7 +34,7 @@ class GoogleMapsRepository {
 
       return result;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -65,7 +65,7 @@ class GoogleMapsRepository {
 
       return result;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -98,7 +98,7 @@ class GoogleMapsRepository {
 
       return result;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

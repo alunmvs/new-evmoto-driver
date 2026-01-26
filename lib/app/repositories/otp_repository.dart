@@ -25,7 +25,7 @@ class OtpRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -47,7 +47,7 @@ class OtpRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

@@ -55,7 +55,7 @@ class HistoryBalanceRepository {
 
       return historyBalanceWithdrawList;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -101,7 +101,7 @@ class HistoryBalanceRepository {
 
       return HistoryBalanceRevenue.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -149,7 +149,7 @@ class HistoryBalanceRepository {
 
       return historyBalanceRechargeList;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

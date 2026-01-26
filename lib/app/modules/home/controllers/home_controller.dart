@@ -27,6 +27,7 @@ import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
+import 'package:new_evmoto_driver/app/utils/error_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -61,7 +62,7 @@ class HomeController extends GetxController
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
 
-  late TabController tabController;
+  TabController? tabController;
 
   final orderGrabbingHallRefreshController = RefreshController();
   final orderGrabbingHallList = <Order>[].obs;
@@ -104,21 +105,32 @@ class HomeController extends GetxController
   @override
   Future<void> onInit() async {
     super.onInit();
-    isFetch.value = true;
-    tabController = TabController(length: 2, vsync: this);
-    await requestLocation();
-    await refreshAll();
-    isFetch.value = false;
+    try {
+      isFetch.value = true;
+      tabController ??= TabController(length: 2, vsync: this);
+      await requestLocation();
+      await refreshAll();
+      isFetch.value = false;
 
-    ShowcaseView.register();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await checkForceUpdate();
-      await checkSoftUpdate();
+      ShowcaseView.register();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await checkForceUpdate();
+        await checkSoftUpdate();
 
-      await displayCoachmark();
-      await Future.wait([socketServices.setupWebsocket()]);
-      await firebasePushNotificationServices.requestPermission();
-    });
+        await displayCoachmark();
+        await Future.wait([socketServices.setupWebsocket()]);
+        await firebasePushNotificationServices.requestPermission();
+      });
+    } catch (e) {
+      if (e.toString() ==
+          "Tidak ada koneksi internet. Periksa jaringan Anda.") {
+        await showNoConnectivityInternetDialog(
+          onRetry: () async {
+            await onInit();
+          },
+        );
+      }
+    }
   }
 
   @override
@@ -185,28 +197,24 @@ class HomeController extends GetxController
   }
 
   Future<void> getVehicleStatistics() async {
-    try {
-      vehicleStatistics.value = (await vehicleRepository
-          .getVehicleStatisticsDetail(language: 2));
-    } catch (e) {}
+    vehicleStatistics.value = (await vehicleRepository
+        .getVehicleStatisticsDetail(language: 2));
   }
 
   Future<void> getOrderGrabbingHallList() async {
-    try {
-      isSeeMoreOrderGrabbingHall.value = true;
-      orderGrabbingHallPageNum.value = 1;
+    isSeeMoreOrderGrabbingHall.value = true;
+    orderGrabbingHallPageNum.value = 1;
 
-      orderGrabbingHallList.value = (await orderRepository.getOrderList(
-        size: 10,
-        language: 2,
-        state: 3,
-        pageNum: orderGrabbingHallPageNum.value,
-      ));
+    orderGrabbingHallList.value = (await orderRepository.getOrderList(
+      size: 10,
+      language: 2,
+      state: 3,
+      pageNum: orderGrabbingHallPageNum.value,
+    ));
 
-      if (orderGrabbingHallList.isEmpty) {
-        isSeeMoreOrderGrabbingHall.value = false;
-      }
-    } catch (e) {}
+    if (orderGrabbingHallList.isEmpty) {
+      isSeeMoreOrderGrabbingHall.value = false;
+    }
   }
 
   Future<void> seeMoreOrderGrabbingHallList() async {
@@ -229,21 +237,19 @@ class HomeController extends GetxController
   }
 
   Future<void> getOrderInServiceList() async {
-    try {
-      isSeeMoreOrderInService.value = true;
-      orderInServicePageNum.value = 1;
+    isSeeMoreOrderInService.value = true;
+    orderInServicePageNum.value = 1;
 
-      orderInServiceList.value = (await orderRepository.getOrderList(
-        size: 10,
-        language: 2,
-        state: 1,
-        pageNum: orderInServicePageNum.value,
-      ));
+    orderInServiceList.value = (await orderRepository.getOrderList(
+      size: 10,
+      language: 2,
+      state: 1,
+      pageNum: orderInServicePageNum.value,
+    ));
 
-      if (orderInServiceList.isEmpty) {
-        isSeeMoreOrderInService.value = false;
-      }
-    } catch (e) {}
+    if (orderInServiceList.isEmpty) {
+      isSeeMoreOrderInService.value = false;
+    }
   }
 
   Future<void> seeMoreOrderInServiceList() async {
@@ -266,31 +272,27 @@ class HomeController extends GetxController
   }
 
   Future<void> getServiceOrderList() async {
-    try {
-      serviceOrderList.value = await accountRepository.getServiceOrderList(
-        size: 999999,
-        pageNum: 1,
-        language: 2,
-      );
-    } catch (e) {}
+    serviceOrderList.value = await accountRepository.getServiceOrderList(
+      size: 999999,
+      pageNum: 1,
+      language: 2,
+    );
   }
 
   Future<void> getOrderToBeServedList() async {
-    try {
-      isSeeMoreOrderToBeServed.value = true;
-      orderToBeServedPageNum.value = 1;
+    isSeeMoreOrderToBeServed.value = true;
+    orderToBeServedPageNum.value = 1;
 
-      orderToBeServedList.value = (await orderRepository.getOrderList(
-        size: 10,
-        language: 2,
-        state: 2,
-        pageNum: orderInServicePageNum.value,
-      ));
+    orderToBeServedList.value = (await orderRepository.getOrderList(
+      size: 10,
+      language: 2,
+      state: 2,
+      pageNum: orderInServicePageNum.value,
+    ));
 
-      if (orderToBeServedList.isEmpty) {
-        isSeeMoreOrderToBeServed.value = false;
-      }
-    } catch (e) {}
+    if (orderToBeServedList.isEmpty) {
+      isSeeMoreOrderToBeServed.value = false;
+    }
   }
 
   Future<void> seeMoreOrderToBeServedList() async {
@@ -313,10 +315,8 @@ class HomeController extends GetxController
   }
 
   Future<void> getUserInfoDetail() async {
-    try {
-      userInfo.value = await userRepository.getUserInfoDetail(language: 2);
-      userInfo.refresh();
-    } catch (e) {}
+    userInfo.value = await userRepository.getUserInfoDetail(language: 2);
+    userInfo.refresh();
   }
 
   Future<void> onSwitchStatusWork() async {
@@ -328,22 +328,31 @@ class HomeController extends GetxController
         await userRepository.stopWork(language: 2);
         workStatus.value = 2;
       }
-    } catch (e) {
-      errorInfoBottomSheet.value = e.toString();
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-    }
 
-    await getVehicleStatistics();
+      await getVehicleStatistics();
+    } catch (e) {
+      if (e.toString() ==
+          "Tidak ada koneksi internet. Periksa jaringan Anda.") {
+        await showNoConnectivityInternetDialog(
+          onRetry: () async {
+            await onSwitchStatusWork();
+          },
+        );
+      } else {
+        errorInfoBottomSheet.value = e.toString();
+        final SnackBar snackBar = SnackBar(
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: themeColorServices.sematicColorRed400.value,
+          content: Text(
+            errorInfoBottomSheet.value,
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
+          ),
+        );
+        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      }
+    }
   }
 
   Future<void> onTapGrabDialog({required Order order}) async {

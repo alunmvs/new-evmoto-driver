@@ -33,7 +33,7 @@ class SystemImageRepository {
 
       return result;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

@@ -50,7 +50,7 @@ class WithdrawRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -94,7 +94,7 @@ class WithdrawRepository {
 
       return withdrawalHistoryList;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -130,7 +130,7 @@ class WithdrawRepository {
 
       return RevenueStatistics.fromJson(response.data);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -156,7 +156,7 @@ class WithdrawRepository {
 
       return double.parse(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

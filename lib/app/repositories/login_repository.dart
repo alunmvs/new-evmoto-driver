@@ -31,7 +31,7 @@ class LoginRepository {
 
       return response.data['data']['token'];
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

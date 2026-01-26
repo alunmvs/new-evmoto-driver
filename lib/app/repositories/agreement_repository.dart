@@ -28,7 +28,7 @@ class AgreementRepository {
 
       return Agreement.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

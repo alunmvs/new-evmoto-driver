@@ -49,7 +49,7 @@ class PaymentRepository {
 
       return DepositBalance.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -83,7 +83,7 @@ class PaymentRepository {
         options: Options(headers: headers),
       );
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

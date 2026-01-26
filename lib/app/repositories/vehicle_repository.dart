@@ -40,7 +40,7 @@ class VehicleRepository {
 
       return VehicleStatistics.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -72,7 +72,7 @@ class VehicleRepository {
 
       return MyVehicle.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -105,7 +105,7 @@ class VehicleRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

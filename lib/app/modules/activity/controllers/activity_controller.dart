@@ -5,6 +5,7 @@ import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/error_helper.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 class ActivityController extends GetxController
@@ -17,7 +18,7 @@ class ActivityController extends GetxController
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
 
-  late TabController tabController;
+  TabController? tabController;
 
   final allOrderRefreshController = RefreshController();
   final allOrderList = <Order>[].obs;
@@ -40,9 +41,17 @@ class ActivityController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    tabController = TabController(length: 3, vsync: this);
-    await refreshAll();
-    isFetch.value = false;
+    tabController ??= TabController(length: 3, vsync: this);
+    try {
+      await refreshAll();
+      isFetch.value = false;
+    } catch (e) {
+      await showNoConnectivityInternetDialog(
+        onRetry: () async {
+          await onInit();
+        },
+      );
+    }
   }
 
   @override

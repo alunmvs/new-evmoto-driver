@@ -32,7 +32,7 @@ class RegisterRepository {
 
       return results;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -58,7 +58,7 @@ class RegisterRepository {
 
       return results;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -87,7 +87,7 @@ class RegisterRepository {
       }
       return RegisteredDriver.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -151,7 +151,7 @@ class RegisterRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }
