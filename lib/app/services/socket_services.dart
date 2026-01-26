@@ -120,6 +120,9 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
                   await Get.find<HomeController>().refreshAll();
                 }
                 break;
+              case 'DRIVER_WORK_STATUS':
+                var homeController = Get.find<HomeController>();
+                await homeController.refreshAll();
               default:
                 break;
             }

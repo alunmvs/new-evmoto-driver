@@ -42,16 +42,8 @@ class ActivityController extends GetxController
     super.onInit();
     isFetch.value = true;
     tabController ??= TabController(length: 3, vsync: this);
-    try {
-      await refreshAll();
-      isFetch.value = false;
-    } catch (e) {
-      await showNoConnectivityInternetDialog(
-        onRetry: () async {
-          await onInit();
-        },
-      );
-    }
+    await refreshAll();
+    isFetch.value = false;
   }
 
   @override

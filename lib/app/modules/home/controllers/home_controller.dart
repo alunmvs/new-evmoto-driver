@@ -105,32 +105,21 @@ class HomeController extends GetxController
   @override
   Future<void> onInit() async {
     super.onInit();
-    try {
-      isFetch.value = true;
-      tabController ??= TabController(length: 2, vsync: this);
-      await requestLocation();
-      await refreshAll();
-      isFetch.value = false;
+    isFetch.value = true;
+    tabController ??= TabController(length: 2, vsync: this);
+    await requestLocation();
+    await refreshAll();
+    isFetch.value = false;
 
-      ShowcaseView.register();
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await checkForceUpdate();
-        await checkSoftUpdate();
+    ShowcaseView.register();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await checkForceUpdate();
+      await checkSoftUpdate();
 
-        await displayCoachmark();
-        await Future.wait([socketServices.setupWebsocket()]);
-        await firebasePushNotificationServices.requestPermission();
-      });
-    } catch (e) {
-      if (e.toString() ==
-          "Tidak ada koneksi internet. Periksa jaringan Anda.") {
-        await showNoConnectivityInternetDialog(
-          onRetry: () async {
-            await onInit();
-          },
-        );
-      }
-    }
+      await displayCoachmark();
+      await Future.wait([socketServices.setupWebsocket()]);
+      await firebasePushNotificationServices.requestPermission();
+    });
   }
 
   @override
@@ -331,27 +320,18 @@ class HomeController extends GetxController
 
       await getVehicleStatistics();
     } catch (e) {
-      if (e.toString() ==
-          "Tidak ada koneksi internet. Periksa jaringan Anda.") {
-        await showNoConnectivityInternetDialog(
-          onRetry: () async {
-            await onSwitchStatusWork();
-          },
-        );
-      } else {
-        errorInfoBottomSheet.value = e.toString();
-        final SnackBar snackBar = SnackBar(
-          behavior: SnackBarBehavior.fixed,
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          content: Text(
-            errorInfoBottomSheet.value,
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
+      errorInfoBottomSheet.value = e.toString();
+      final SnackBar snackBar = SnackBar(
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: themeColorServices.sematicColorRed400.value,
+        content: Text(
+          errorInfoBottomSheet.value,
+          style: typographyServices.bodySmallRegular.value.copyWith(
+            color: themeColorServices.neutralsColorGrey0.value,
           ),
-        );
-        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-      }
+        ),
+      );
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
   }
 

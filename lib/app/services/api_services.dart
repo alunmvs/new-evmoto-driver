@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
+import 'package:new_evmoto_driver/app/utils/error_helper.dart';
 
 class ApiServices extends GetxService {
   final Dio dio = Dio(
@@ -56,14 +56,15 @@ class ApiServices extends GetxService {
     dio.interceptors.add(
       RetryInterceptor(
         dio: dio,
-        retries: 3,
-        retryDelays: [
-          Duration(seconds: 2),
-          Duration(seconds: 4),
-          Duration(seconds: 8),
-        ],
-        retryEvaluator: (error, attempt) {
-          return true;
+        retries: 999999999,
+        retryEvaluator: (error, attempt) async {
+          if (error.type == DioExceptionType.connectionError ||
+              error.error is SocketException) {
+            await showNoConnectivityInternetDialog(onRetry: () async {});
+            return true;
+          }
+
+          return false;
         },
       ),
     );
