@@ -82,14 +82,14 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
                         ),
                       ]);
                     }
+                  } else {
+                    await Future.wait([
+                      homeController.refreshAll(),
+                      homeController.showDialogOrderConfirmation(
+                        socketOrderStatusData: socketOrderStatusData,
+                      ),
+                    ]);
                   }
-                } else {
-                  await Future.wait([
-                    homeController.refreshAll(),
-                    homeController.showDialogOrderConfirmation(
-                      socketOrderStatusData: socketOrderStatusData,
-                    ),
-                  ]);
                 }
 
                 if (socketOrderStatusData.state == 8 &&
