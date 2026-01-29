@@ -184,6 +184,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
             "driverIsOnline": true,
             "driverLastSeen": FieldValue.serverTimestamp(),
           }, SetOptions(merge: true));
+      await refreshAll();
     } else if (state == AppLifecycleState.paused) {
       await FirebaseFirestore.instance
           .collection('evmoto_order_chat_participants')
