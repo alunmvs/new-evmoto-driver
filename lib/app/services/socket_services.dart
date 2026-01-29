@@ -136,6 +136,56 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
               case 'DRIVER_WORK_STATUS':
                 var homeController = Get.find<HomeController>();
                 await homeController.refreshAll();
+                break;
+              case 'DRIVER_BALANCE_OK':
+                var homeController = Get.find<HomeController>();
+
+                if (homeController.vehicleStatistics.value.work != 1) {
+                  await homeController.userRepository.startWork(
+                    language: 2,
+                    type: 1,
+                  );
+                  homeController.workStatus.value = 1;
+
+                  await homeController.getVehicleStatistics();
+
+                  final SnackBar snackBar = SnackBar(
+                    behavior: SnackBarBehavior.fixed,
+                    backgroundColor:
+                        themeColorServices.sematicColorGreen400.value,
+                    content: Text(
+                      dataJson["data"]["message"],
+                      style: typographyServices.bodySmallRegular.value.copyWith(
+                        color: themeColorServices.neutralsColorGrey0.value,
+                      ),
+                    ),
+                  );
+                  rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+                }
+                break;
+              case 'DRIVER_BALANCE_LOW':
+                var homeController = Get.find<HomeController>();
+
+                if (homeController.vehicleStatistics.value.work != 2) {
+                  await homeController.userRepository.stopWork(language: 2);
+                  homeController.workStatus.value = 2;
+
+                  await homeController.getVehicleStatistics();
+
+                  final SnackBar snackBar = SnackBar(
+                    behavior: SnackBarBehavior.fixed,
+                    backgroundColor:
+                        themeColorServices.sematicColorRed400.value,
+                    content: Text(
+                      dataJson["data"]["message"],
+                      style: typographyServices.bodySmallRegular.value.copyWith(
+                        color: themeColorServices.neutralsColorGrey0.value,
+                      ),
+                    ),
+                  );
+                  rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+                }
+                break;
               default:
                 break;
             }
