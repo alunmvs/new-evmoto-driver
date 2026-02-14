@@ -102,7 +102,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         setupSchedulerDriverRefocusMapBound(),
       ]);
 
-      if ([7, 8].contains(orderDetail.value.state)) {
+      if ([6, 7, 8].contains(orderDetail.value.state)) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Get.offAndToNamed(
             Routes.ORDER_PAYMENT_CONFIRMATION,
@@ -150,6 +150,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   @override
   Future<void> onClose() async {
     super.onClose();
+
+    WidgetsBinding.instance.removeObserver(this);
 
     await FirebaseFirestore.instance
         .collection('evmoto_order_chat_participants')
@@ -199,6 +201,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> refreshAll() async {
+    WidgetsBinding.instance.removeObserver(this);
+
     markers.clear();
     polylines.clear();
     polylinesCoordinate.clear();
@@ -242,6 +246,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
+
+    WidgetsBinding.instance.addObserver(this);
   }
 
   Future<void> joinFirestoreChatRooms() async {
@@ -569,6 +575,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> setupSchedulerDriverRefocusMapBound() async {
+    await onTapRefocus();
     refocusMapBoundsTimer = Timer.periodic(Duration(seconds: 5), (timer) async {
       await onTapRefocus();
     });
