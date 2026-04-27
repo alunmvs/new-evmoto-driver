@@ -7,6 +7,9 @@ class FirebaseRemoteConfigServices extends GetxService {
   @override
   Future<void> onInit() async {
     super.onInit();
+  }
+
+  Future<void> manualOnInit() async {
     await remoteConfig.setConfigSettings(
       RemoteConfigSettings(
         fetchTimeout: Duration(seconds: 30),

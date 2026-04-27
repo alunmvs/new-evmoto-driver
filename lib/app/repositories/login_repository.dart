@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 class LoginRepository {
   final apiServices = Get.find<ApiServices>();
@@ -13,8 +14,7 @@ class LoginRepository {
     int? language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/account/base/driver/driverLogin";
+      var url = "$baseUrl/account/base/driver/driverLogin";
 
       var formData = FormData.fromMap({
         "phone": phone,

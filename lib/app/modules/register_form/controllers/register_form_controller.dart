@@ -13,6 +13,7 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
+import 'package:new_evmoto_driver/app/utils/image_upload_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -58,6 +59,10 @@ class RegisterFormController extends GetxController {
       validators: <Validator>[],
       value: false,
     ),
+    "is_ecgo_driver": FormControl<bool?>(
+      validators: <Validator>[Validators.required],
+      value: null,
+    ),
     "place_of_employment_id": FormControl<int>(
       validators: <Validator>[Validators.required],
     ),
@@ -78,8 +83,13 @@ class RegisterFormController extends GetxController {
   final avatarPhotoUrl = "".obs;
   final vehicleRegistrationCertificateFrontPhotoUrl = "".obs;
   final vehicleRegistrationCertificateBackPhotoUrl = "".obs;
-  final driverSelfieWithIdCardPhotoUrl = "".obs;
+
   final policeClearanceCertificatePhotoUrl = "".obs;
+
+  final driverSelfieKtpPhotoUrl = "".obs;
+  final placeOfEmployment = "".obs;
+
+  final isECGODriver = Rx<bool?>(null);
 
   final uid = "".obs;
   final mobilePhone = "".obs;
@@ -133,12 +143,7 @@ class RegisterFormController extends GetxController {
   }
 
   Future<void> onTapUploadIdPhoto() async {
-    var imagePicker = ImagePicker();
-    var image = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 720,
-      preferredCameraDevice: CameraDevice.rear,
-    );
+    var image = await onTapImageUpload(title: 'Foto ID KTP');
 
     if (image != null) {
       showLoadingDialog();
@@ -148,13 +153,7 @@ class RegisterFormController extends GetxController {
   }
 
   Future<void> onTapUploadDriverLicense() async {
-    var imagePicker = ImagePicker();
-
-    var image = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 720,
-      preferredCameraDevice: CameraDevice.rear,
-    );
+    var image = await onTapImageUpload(title: 'Foto SIM');
 
     if (image != null) {
       showLoadingDialog();
@@ -166,13 +165,7 @@ class RegisterFormController extends GetxController {
   }
 
   Future<void> onTapUploadAvatar() async {
-    var imagePicker = ImagePicker();
-
-    var image = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 720,
-      preferredCameraDevice: CameraDevice.front,
-    );
+    var image = await onTapImageUpload(title: 'Foto Avatar');
 
     if (image != null) {
       showLoadingDialog();
@@ -183,13 +176,20 @@ class RegisterFormController extends GetxController {
     }
   }
 
+  Future<void> onTapDriverSelfieWithKtp() async {
+    var image = await onTapImageUpload(title: 'Driver Selfie dengan KTP');
+
+    if (image != null) {
+      showLoadingDialog();
+      driverSelfieKtpPhotoUrl.value = await uploadImageRepository.uploadImage(
+        file: image,
+      );
+      Get.close(1);
+    }
+  }
+
   Future<void> onTapUploadVehicleRegistrationCertificateFront() async {
-    var imagePicker = ImagePicker();
-    var image = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 720,
-      preferredCameraDevice: CameraDevice.rear,
-    );
+    var image = await onTapImageUpload(title: 'Foto STNK Depan');
 
     if (image != null) {
       showLoadingDialog();
@@ -200,12 +200,7 @@ class RegisterFormController extends GetxController {
   }
 
   Future<void> onTapUploadVehicleRegistrationCertificateBack() async {
-    var imagePicker = ImagePicker();
-    var image = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 720,
-      preferredCameraDevice: CameraDevice.rear,
-    );
+    var image = await onTapImageUpload(title: 'Foto STNK Belakang');
 
     if (image != null) {
       showLoadingDialog();
@@ -215,29 +210,8 @@ class RegisterFormController extends GetxController {
     }
   }
 
-  Future<void> onTapUploadDriverSelfieWithIdCard() async {
-    var imagePicker = ImagePicker();
-    var image = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 720,
-      preferredCameraDevice: CameraDevice.front,
-    );
-
-    if (image != null) {
-      showLoadingDialog();
-      driverSelfieWithIdCardPhotoUrl.value = await uploadImageRepository
-          .uploadImage(file: image);
-      Get.close(1);
-    }
-  }
-
   Future<void> onTapUploadPoliceClearanceCertificate() async {
-    var imagePicker = ImagePicker();
-    var image = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 720,
-      preferredCameraDevice: CameraDevice.rear,
-    );
+    var image = await onTapImageUpload(title: 'Foto SKCK');
 
     if (image != null) {
       showLoadingDialog();
@@ -306,7 +280,7 @@ class RegisterFormController extends GetxController {
         avatarPhotoUrl.value == "" ||
         vehicleRegistrationCertificateFrontPhotoUrl.value == "" ||
         vehicleRegistrationCertificateBackPhotoUrl.value == "" ||
-        driverSelfieWithIdCardPhotoUrl.value == "") {
+        driverSelfieKtpPhotoUrl.value == "") {
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
         backgroundColor: themeColorServices.sematicColorRed400.value,
@@ -324,6 +298,7 @@ class RegisterFormController extends GetxController {
 
     try {
       await registerRepository.updateDriver(
+        isEcgo: isECGODriver.value == true ? 1 : 0,
         idCardImgUrl1: idPhotoUrl.value,
         idCardImgUrl2: "",
         driveCardImgUrl: drivingLicensePhotoUrl.value,
@@ -334,7 +309,8 @@ class RegisterFormController extends GetxController {
         password: md5.convert(utf8.encode("123456789")).toString(),
         phone: "62${mobilePhone.value}",
         uid: uid.value,
-        placeOfEmployment: formGroup.control("place_of_employment_id").value,
+        placeOfEmployment: placeOfEmployment.value,
+        placeOfEmploymentId: formGroup.control("place_of_employment_id").value,
         getDriverLicenseDate: formGroup.control("driving_experience").value,
         language: languageServices.languageCodeSystem.value,
         type: generateType(),
@@ -342,12 +318,15 @@ class RegisterFormController extends GetxController {
         driverContactAddress_: generateDriverContactAddress_(),
         usedReferralCode: formGroup.control("referral_code").value,
         licensePlate: formGroup.control("license_plate").value,
-        selfieWithIdCardImg: driverSelfieWithIdCardPhotoUrl.value,
+        selfieWithIdCardImg: driverSelfieKtpPhotoUrl.value,
         skckImg: policeClearanceCertificatePhotoUrl.value == ""
             ? null
             : policeClearanceCertificatePhotoUrl.value,
         stnkBackImg: vehicleRegistrationCertificateBackPhotoUrl.value,
         stnkFrontImg: vehicleRegistrationCertificateFrontPhotoUrl.value,
+        networkCarlssueImg: policeClearanceCertificatePhotoUrl.value == ""
+            ? null
+            : policeClearanceCertificatePhotoUrl.value,
       );
       Get.offAllNamed(Routes.REGISTER_FORM_COMPLETED);
     } catch (e) {

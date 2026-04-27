@@ -7,6 +7,7 @@ import 'package:new_evmoto_driver/app/data/models/language_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageServices extends GetxService {
+  final languageGeocoding = "id".obs;
   final languageCode = "ID".obs;
   final languageCodeSystem = 2.obs;
   final language = Language().obs;

@@ -7,6 +7,7 @@ import 'package:new_evmoto_driver/app/data/models/revenue_statistics_model.dart'
 import 'package:new_evmoto_driver/app/data/models/withdrawal_history_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 class WithdrawRepository {
   final apiServices = Get.find<ApiServices>();
@@ -20,8 +21,7 @@ class WithdrawRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/withdrawal/withdrawal";
+      var url = "$baseUrl/driver/api/withdrawal/withdrawal";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -60,8 +60,7 @@ class WithdrawRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/withdrawal/withdrawal";
+      var url = "$baseUrl/driver/api/withdrawal/withdrawal";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -104,8 +103,7 @@ class WithdrawRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/api/driver/queryTotalRevenue";
+      var url = "$baseUrl/payment/api/driver/queryTotalRevenue";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -136,8 +134,7 @@ class WithdrawRepository {
 
   Future<double> getAdminFeeByBankCode({required String bankCode}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/orderServer/api/system-parameter";
+      var url = "$baseUrl/orderServer/api/system-parameter";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

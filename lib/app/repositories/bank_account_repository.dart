@@ -5,6 +5,7 @@ import 'package:new_evmoto_driver/app/data/models/bank_account_model.dart';
 import 'package:new_evmoto_driver/app/data/models/bank_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 class BankAccountRepository {
   final apiServices = Get.find<ApiServices>();
@@ -12,8 +13,7 @@ class BankAccountRepository {
 
   Future<List<Bank>> getBankList({int? language}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/base/withdrawal/getBankList";
+      var url = "$baseUrl/driver/base/withdrawal/getBankList";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -53,8 +53,7 @@ class BankAccountRepository {
     int? pageNum,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/queryBankCard";
+      var url = "$baseUrl/driver/api/bankCard/queryBankCard";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -100,8 +99,7 @@ class BankAccountRepository {
     int? language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/saveBankCard";
+      var url = "$baseUrl/driver/api/bankCard/saveBankCard";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -143,8 +141,7 @@ class BankAccountRepository {
     int? language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/updateBankCard";
+      var url = "$baseUrl/driver/api/bankCard/updateBankCard";
 
       var formData = FormData.fromMap({
         "id": id,
@@ -180,8 +177,7 @@ class BankAccountRepository {
 
   Future<void> deleteBankAccountById({int? id, int? language}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/delBankCard";
+      var url = "$baseUrl/driver/api/bankCard/delBankCard";
 
       var formData = FormData.fromMap({"language": language, "id": id});
 

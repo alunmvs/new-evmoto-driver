@@ -1989,419 +1989,419 @@ class RegisterFormView extends GetView<RegisterFormController> {
                           ),
                         ],
                         SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Text(
-                              "Foto Selfie dengan KTP",
-                              style: controller
-                                  .typographyServices
-                                  .bodyLargeRegular
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .thirdTextColor
-                                        .value,
-                                  ),
-                            ),
-                            SizedBox(width: 4),
-                            Text(
-                              "*",
-                              style: controller
-                                  .typographyServices
-                                  .bodyLargeBold
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .sematicColorRed400
-                                        .value,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 4),
-                        if (controller.driverSelfieWithIdCardPhotoUrl.value ==
-                            "") ...[
-                          AspectRatio(
-                            aspectRatio: 342 / 215,
-                            child: GestureDetector(
-                              onTap: () async {
-                                await controller
-                                    .onTapUploadDriverSelfieWithIdCard();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  border: Border.all(
-                                    color: controller.isFormValid.value == true
-                                        ? controller
-                                              .themeColorServices
-                                              .neutralsColorGrey400
-                                              .value
-                                        : controller
-                                              .themeColorServices
-                                              .sematicColorRed500
-                                              .value,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    "assets/icons/icon_image_upload.svg",
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          if (controller.isFormValid.value == false) ...[
-                            SizedBox(height: 4),
-                            Text(
-                              controller
-                                      .languageServices
-                                      .language
-                                      .value
-                                      .formValidationRequired ??
-                                  "-",
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallRegular
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .sematicColorRed500
-                                        .value,
-                                  ),
-                            ),
-                          ],
-                        ],
-                        if (controller.driverSelfieWithIdCardPhotoUrl.value !=
-                            "") ...[
-                          AspectRatio(
-                            aspectRatio: 342 / 215,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: CachedNetworkImage(
-                                      imageUrl: controller
-                                          .driverSelfieWithIdCardPhotoUrl
-                                          .value,
-                                      width: MediaQuery.of(context).size.width,
-                                      fit: BoxFit.fitHeight,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: controller
-                                            .themeColorServices
-                                            .imageUploadMenuBackgroundColor
-                                            .value,
-                                      ),
-                                      child: IntrinsicHeight(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () async {
-                                                await controller
-                                                    .onTapUploadDriverSelfieWithIdCard();
-                                              },
-                                              child: Text(
-                                                controller
-                                                        .languageServices
-                                                        .language
-                                                        .value
-                                                        .updatePhoto ??
-                                                    "-",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodyLargeRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .textColor
-                                                          .value,
-                                                    ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 8),
-                                            VerticalDivider(
-                                              width: 0,
-                                              color: controller
-                                                  .themeColorServices
-                                                  .imageUploadVerticalDividerColor
-                                                  .value,
-                                            ),
-                                            SizedBox(width: 8),
-                                            GestureDetector(
-                                              onTap: () {
-                                                controller
-                                                        .driverSelfieWithIdCardPhotoUrl
-                                                        .value =
-                                                    "";
-                                              },
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    "assets/icons/icon_delete.svg",
-                                                    width: 16,
-                                                    height: 16,
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .redColor
-                                                        .value,
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .delete ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodyLargeRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .redColor
-                                                              .value,
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                        SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Text(
-                              "Lampiran SKCK",
-                              style: controller
-                                  .typographyServices
-                                  .bodyLargeRegular
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .thirdTextColor
-                                        .value,
-                                  ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 4),
-                        if (controller
-                                .policeClearanceCertificatePhotoUrl
-                                .value ==
-                            "") ...[
-                          AspectRatio(
-                            aspectRatio: 342 / 215,
-                            child: GestureDetector(
-                              onTap: () async {
-                                await controller
-                                    .onTapUploadPoliceClearanceCertificate();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  border: Border.all(
-                                    color: controller.isFormValid.value == true
-                                        ? controller
-                                              .themeColorServices
-                                              .neutralsColorGrey400
-                                              .value
-                                        : controller
-                                              .themeColorServices
-                                              .sematicColorRed500
-                                              .value,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    "assets/icons/icon_image_upload.svg",
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          if (controller.isFormValid.value == false) ...[
-                            SizedBox(height: 4),
-                            Text(
-                              controller
-                                      .languageServices
-                                      .language
-                                      .value
-                                      .formValidationRequired ??
-                                  "-",
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallRegular
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .sematicColorRed500
-                                        .value,
-                                  ),
-                            ),
-                          ],
-                        ],
-                        if (controller
-                                .policeClearanceCertificatePhotoUrl
-                                .value !=
-                            "") ...[
-                          AspectRatio(
-                            aspectRatio: 342 / 215,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: CachedNetworkImage(
-                                      imageUrl: controller
-                                          .policeClearanceCertificatePhotoUrl
-                                          .value,
-                                      width: MediaQuery.of(context).size.width,
-                                      fit: BoxFit.fitHeight,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    left: 0,
-                                    right: 0,
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: controller
-                                            .themeColorServices
-                                            .imageUploadMenuBackgroundColor
-                                            .value,
-                                      ),
-                                      child: IntrinsicHeight(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () async {
-                                                await controller
-                                                    .onTapUploadPoliceClearanceCertificate();
-                                              },
-                                              child: Text(
-                                                controller
-                                                        .languageServices
-                                                        .language
-                                                        .value
-                                                        .updatePhoto ??
-                                                    "-",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodyLargeRegular
-                                                    .value
-                                                    .copyWith(
-                                                      color: controller
-                                                          .themeColorServices
-                                                          .textColor
-                                                          .value,
-                                                    ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 8),
-                                            VerticalDivider(
-                                              width: 0,
-                                              color: controller
-                                                  .themeColorServices
-                                                  .imageUploadVerticalDividerColor
-                                                  .value,
-                                            ),
-                                            SizedBox(width: 8),
-                                            GestureDetector(
-                                              onTap: () {
-                                                controller
-                                                        .policeClearanceCertificatePhotoUrl
-                                                        .value =
-                                                    "";
-                                              },
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    "assets/icons/icon_delete.svg",
-                                                    width: 16,
-                                                    height: 16,
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .redColor
-                                                        .value,
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .delete ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodyLargeRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .redColor
-                                                              .value,
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                        // Row(
+                        //   children: [
+                        //     Text(
+                        //       "Foto Selfie dengan KTP",
+                        //       style: controller
+                        //           .typographyServices
+                        //           .bodyLargeRegular
+                        //           .value
+                        //           .copyWith(
+                        //             color: controller
+                        //                 .themeColorServices
+                        //                 .thirdTextColor
+                        //                 .value,
+                        //           ),
+                        //     ),
+                        //     SizedBox(width: 4),
+                        //     Text(
+                        //       "*",
+                        //       style: controller
+                        //           .typographyServices
+                        //           .bodyLargeBold
+                        //           .value
+                        //           .copyWith(
+                        //             color: controller
+                        //                 .themeColorServices
+                        //                 .sematicColorRed400
+                        //                 .value,
+                        //           ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // SizedBox(height: 4),
+                        // if (controller.driverSelfieWithIdCardPhotoUrl.value ==
+                        //     "") ...[
+                        //   AspectRatio(
+                        //     aspectRatio: 342 / 215,
+                        //     child: GestureDetector(
+                        //       onTap: () async {
+                        //         await controller
+                        //             .onTapUploadDriverSelfieWithIdCard();
+                        //       },
+                        //       child: Container(
+                        //         decoration: BoxDecoration(
+                        //           color: Colors.transparent,
+                        //           border: Border.all(
+                        //             color: controller.isFormValid.value == true
+                        //                 ? controller
+                        //                       .themeColorServices
+                        //                       .neutralsColorGrey400
+                        //                       .value
+                        //                 : controller
+                        //                       .themeColorServices
+                        //                       .sematicColorRed500
+                        //                       .value,
+                        //           ),
+                        //           borderRadius: BorderRadius.circular(8),
+                        //         ),
+                        //         child: Center(
+                        //           child: SvgPicture.asset(
+                        //             "assets/icons/icon_image_upload.svg",
+                        //             width: 24,
+                        //             height: 24,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        //   if (controller.isFormValid.value == false) ...[
+                        //     SizedBox(height: 4),
+                        //     Text(
+                        //       controller
+                        //               .languageServices
+                        //               .language
+                        //               .value
+                        //               .formValidationRequired ??
+                        //           "-",
+                        //       style: controller
+                        //           .typographyServices
+                        //           .bodySmallRegular
+                        //           .value
+                        //           .copyWith(
+                        //             color: controller
+                        //                 .themeColorServices
+                        //                 .sematicColorRed500
+                        //                 .value,
+                        //           ),
+                        //     ),
+                        //   ],
+                        // ],
+                        // if (controller.driverSelfieWithIdCardPhotoUrl.value !=
+                        //     "") ...[
+                        //   AspectRatio(
+                        //     aspectRatio: 342 / 215,
+                        //     child: ClipRRect(
+                        //       borderRadius: BorderRadius.circular(8),
+                        //       child: Stack(
+                        //         children: [
+                        //           ClipRRect(
+                        //             borderRadius: BorderRadius.circular(8),
+                        //             child: CachedNetworkImage(
+                        //               imageUrl: controller
+                        //                   .driverSelfieWithIdCardPhotoUrl
+                        //                   .value,
+                        //               width: MediaQuery.of(context).size.width,
+                        //               fit: BoxFit.fitHeight,
+                        //             ),
+                        //           ),
+                        //           Positioned(
+                        //             bottom: 0,
+                        //             left: 0,
+                        //             right: 0,
+                        //             child: Container(
+                        //               width: MediaQuery.of(context).size.width,
+                        //               padding: EdgeInsets.symmetric(
+                        //                 vertical: 10,
+                        //               ),
+                        //               decoration: BoxDecoration(
+                        //                 color: controller
+                        //                     .themeColorServices
+                        //                     .imageUploadMenuBackgroundColor
+                        //                     .value,
+                        //               ),
+                        //               child: IntrinsicHeight(
+                        //                 child: Row(
+                        //                   mainAxisAlignment:
+                        //                       MainAxisAlignment.center,
+                        //                   children: [
+                        //                     GestureDetector(
+                        //                       onTap: () async {
+                        //                         await controller
+                        //                             .onTapUploadDriverSelfieWithIdCard();
+                        //                       },
+                        //                       child: Text(
+                        //                         controller
+                        //                                 .languageServices
+                        //                                 .language
+                        //                                 .value
+                        //                                 .updatePhoto ??
+                        //                             "-",
+                        //                         style: controller
+                        //                             .typographyServices
+                        //                             .bodyLargeRegular
+                        //                             .value
+                        //                             .copyWith(
+                        //                               color: controller
+                        //                                   .themeColorServices
+                        //                                   .textColor
+                        //                                   .value,
+                        //                             ),
+                        //                       ),
+                        //                     ),
+                        //                     SizedBox(width: 8),
+                        //                     VerticalDivider(
+                        //                       width: 0,
+                        //                       color: controller
+                        //                           .themeColorServices
+                        //                           .imageUploadVerticalDividerColor
+                        //                           .value,
+                        //                     ),
+                        //                     SizedBox(width: 8),
+                        //                     GestureDetector(
+                        //                       onTap: () {
+                        //                         controller
+                        //                                 .driverSelfieWithIdCardPhotoUrl
+                        //                                 .value =
+                        //                             "";
+                        //                       },
+                        //                       child: Row(
+                        //                         mainAxisSize: MainAxisSize.min,
+                        //                         children: [
+                        //                           SvgPicture.asset(
+                        //                             "assets/icons/icon_delete.svg",
+                        //                             width: 16,
+                        //                             height: 16,
+                        //                             color: controller
+                        //                                 .themeColorServices
+                        //                                 .redColor
+                        //                                 .value,
+                        //                           ),
+                        //                           SizedBox(width: 5),
+                        //                           Text(
+                        //                             controller
+                        //                                     .languageServices
+                        //                                     .language
+                        //                                     .value
+                        //                                     .delete ??
+                        //                                 "-",
+                        //                             style: controller
+                        //                                 .typographyServices
+                        //                                 .bodyLargeRegular
+                        //                                 .value
+                        //                                 .copyWith(
+                        //                                   color: controller
+                        //                                       .themeColorServices
+                        //                                       .redColor
+                        //                                       .value,
+                        //                                 ),
+                        //                           ),
+                        //                         ],
+                        //                       ),
+                        //                     ),
+                        //                   ],
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ],
+                        // SizedBox(height: 16),
+                        // Row(
+                        //   children: [
+                        //     Text(
+                        //       "Foto SKCK",
+                        //       style: controller
+                        //           .typographyServices
+                        //           .bodyLargeRegular
+                        //           .value
+                        //           .copyWith(
+                        //             color: controller
+                        //                 .themeColorServices
+                        //                 .thirdTextColor
+                        //                 .value,
+                        //           ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // SizedBox(height: 4),
+                        // if (controller
+                        //         .policeClearanceCertificatePhotoUrl
+                        //         .value ==
+                        //     "") ...[
+                        //   AspectRatio(
+                        //     aspectRatio: 342 / 215,
+                        //     child: GestureDetector(
+                        //       onTap: () async {
+                        //         await controller
+                        //             .onTapUploadPoliceClearanceCertificate();
+                        //       },
+                        //       child: Container(
+                        //         decoration: BoxDecoration(
+                        //           color: Colors.transparent,
+                        //           border: Border.all(
+                        //             color: controller.isFormValid.value == true
+                        //                 ? controller
+                        //                       .themeColorServices
+                        //                       .neutralsColorGrey400
+                        //                       .value
+                        //                 : controller
+                        //                       .themeColorServices
+                        //                       .sematicColorRed500
+                        //                       .value,
+                        //           ),
+                        //           borderRadius: BorderRadius.circular(8),
+                        //         ),
+                        //         child: Center(
+                        //           child: SvgPicture.asset(
+                        //             "assets/icons/icon_image_upload.svg",
+                        //             width: 24,
+                        //             height: 24,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        //   if (controller.isFormValid.value == false) ...[
+                        //     SizedBox(height: 4),
+                        //     Text(
+                        //       controller
+                        //               .languageServices
+                        //               .language
+                        //               .value
+                        //               .formValidationRequired ??
+                        //           "-",
+                        //       style: controller
+                        //           .typographyServices
+                        //           .bodySmallRegular
+                        //           .value
+                        //           .copyWith(
+                        //             color: controller
+                        //                 .themeColorServices
+                        //                 .sematicColorRed500
+                        //                 .value,
+                        //           ),
+                        //     ),
+                        //   ],
+                        // ],
+                        // if (controller
+                        //         .policeClearanceCertificatePhotoUrl
+                        //         .value !=
+                        //     "") ...[
+                        //   AspectRatio(
+                        //     aspectRatio: 342 / 215,
+                        //     child: ClipRRect(
+                        //       borderRadius: BorderRadius.circular(8),
+                        //       child: Stack(
+                        //         children: [
+                        //           ClipRRect(
+                        //             borderRadius: BorderRadius.circular(8),
+                        //             child: CachedNetworkImage(
+                        //               imageUrl: controller
+                        //                   .policeClearanceCertificatePhotoUrl
+                        //                   .value,
+                        //               width: MediaQuery.of(context).size.width,
+                        //               fit: BoxFit.fitHeight,
+                        //             ),
+                        //           ),
+                        //           Positioned(
+                        //             bottom: 0,
+                        //             left: 0,
+                        //             right: 0,
+                        //             child: Container(
+                        //               width: MediaQuery.of(context).size.width,
+                        //               padding: EdgeInsets.symmetric(
+                        //                 vertical: 10,
+                        //               ),
+                        //               decoration: BoxDecoration(
+                        //                 color: controller
+                        //                     .themeColorServices
+                        //                     .imageUploadMenuBackgroundColor
+                        //                     .value,
+                        //               ),
+                        //               child: IntrinsicHeight(
+                        //                 child: Row(
+                        //                   mainAxisAlignment:
+                        //                       MainAxisAlignment.center,
+                        //                   children: [
+                        //                     GestureDetector(
+                        //                       onTap: () async {
+                        //                         await controller
+                        //                             .onTapUploadPoliceClearanceCertificate();
+                        //                       },
+                        //                       child: Text(
+                        //                         controller
+                        //                                 .languageServices
+                        //                                 .language
+                        //                                 .value
+                        //                                 .updatePhoto ??
+                        //                             "-",
+                        //                         style: controller
+                        //                             .typographyServices
+                        //                             .bodyLargeRegular
+                        //                             .value
+                        //                             .copyWith(
+                        //                               color: controller
+                        //                                   .themeColorServices
+                        //                                   .textColor
+                        //                                   .value,
+                        //                             ),
+                        //                       ),
+                        //                     ),
+                        //                     SizedBox(width: 8),
+                        //                     VerticalDivider(
+                        //                       width: 0,
+                        //                       color: controller
+                        //                           .themeColorServices
+                        //                           .imageUploadVerticalDividerColor
+                        //                           .value,
+                        //                     ),
+                        //                     SizedBox(width: 8),
+                        //                     GestureDetector(
+                        //                       onTap: () {
+                        //                         controller
+                        //                                 .policeClearanceCertificatePhotoUrl
+                        //                                 .value =
+                        //                             "";
+                        //                       },
+                        //                       child: Row(
+                        //                         mainAxisSize: MainAxisSize.min,
+                        //                         children: [
+                        //                           SvgPicture.asset(
+                        //                             "assets/icons/icon_delete.svg",
+                        //                             width: 16,
+                        //                             height: 16,
+                        //                             color: controller
+                        //                                 .themeColorServices
+                        //                                 .redColor
+                        //                                 .value,
+                        //                           ),
+                        //                           SizedBox(width: 5),
+                        //                           Text(
+                        //                             controller
+                        //                                     .languageServices
+                        //                                     .language
+                        //                                     .value
+                        //                                     .delete ??
+                        //                                 "-",
+                        //                             style: controller
+                        //                                 .typographyServices
+                        //                                 .bodyLargeRegular
+                        //                                 .value
+                        //                                 .copyWith(
+                        //                                   color: controller
+                        //                                       .themeColorServices
+                        //                                       .redColor
+                        //                                       .value,
+                        //                                 ),
+                        //                           ),
+                        //                         ],
+                        //                       ),
+                        //                     ),
+                        //                   ],
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ],
                         SizedBox(height: 16),
                         Row(
                           children: [
@@ -2687,6 +2687,10 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             for (var openCity in controller.openCityList) ...[
                               DropdownMenuItem(
                                 value: openCity.id,
+                                onTap: () {
+                                  controller.placeOfEmployment.value =
+                                      openCity.name ?? "";
+                                },
                                 child: Text(
                                   openCity.name ?? "-",
                                   style: controller
@@ -2787,6 +2791,563 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Apakah Anda ECGO Driver?",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        ReactiveRadioListTile<bool?>(
+                          value: true,
+                          formControlName: 'is_ecgo_driver',
+                          title: Text(
+                            "Ya",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value,
+                          ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          contentPadding: EdgeInsets.all(0),
+                          // checkColor: controller
+                          //     .themeColorServices
+                          //     .neutralsColorGrey0
+                          //     .value,
+                          // side: BorderSide(
+                          //   color: controller.isFormValid.value == true
+                          //       ? controller
+                          //             .themeColorServices
+                          //             .neutralsColorGrey400
+                          //             .value
+                          //       : controller
+                          //             .themeColorServices
+                          //             .sematicColorRed500
+                          //             .value,
+                          // ),
+                          fillColor: controller.isFormValid.value == true
+                              ? (controller.isECGODriver.value == true
+                                    ? WidgetStatePropertyAll(
+                                        controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                      )
+                                    : WidgetStatePropertyAll(
+                                        controller
+                                            .themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                      ))
+                              : WidgetStatePropertyAll(
+                                  controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                          onChanged: (control) {
+                            controller.isECGODriver.value =
+                                control.value ?? false;
+                          },
+                          activeColor:
+                              controller.themeColorServices.primaryBlue.value,
+                        ),
+                        ReactiveRadioListTile<bool?>(
+                          value: false,
+                          formControlName: 'is_ecgo_driver',
+                          title: Text(
+                            "Tidak",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value,
+                          ),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          contentPadding: EdgeInsets.all(0),
+                          // checkColor: controller
+                          //     .themeColorServices
+                          //     .neutralsColorGrey0
+                          //     .value,
+                          // side: BorderSide(
+                          //   color: controller.isFormValid.value == true
+                          //       ? controller
+                          //             .themeColorServices
+                          //             .neutralsColorGrey400
+                          //             .value
+                          //       : controller
+                          //             .themeColorServices
+                          //             .sematicColorRed500
+                          //             .value,
+                          // ),
+                          onChanged: (control) {
+                            controller.isECGODriver.value =
+                                control.value ?? false;
+                          },
+                          fillColor: controller.isFormValid.value == true
+                              ? (controller.isECGODriver.value == false
+                                    ? WidgetStatePropertyAll(
+                                        controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                      )
+                                    : WidgetStatePropertyAll(
+                                        controller
+                                            .themeColorServices
+                                            .neutralsColorGrey400
+                                            .value,
+                                      ))
+                              : WidgetStatePropertyAll(
+                                  controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                          activeColor:
+                              controller.themeColorServices.primaryBlue.value,
+                        ),
+                        if (controller.isFormValid.value == false) ...[
+                          SizedBox(height: 4),
+                          Text(
+                            controller
+                                    .languageServices
+                                    .language
+                                    .value
+                                    .formValidationRequired ??
+                                "-",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value
+                                .copyWith(
+                                  color: controller
+                                      .themeColorServices
+                                      .sematicColorRed500
+                                      .value,
+                                ),
+                          ),
+                        ],
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Text(
+                              "Foto SKCK",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        if (controller
+                                .policeClearanceCertificatePhotoUrl
+                                .value ==
+                            "") ...[
+                          AspectRatio(
+                            aspectRatio: 342 / 88,
+                            child: GestureDetector(
+                              onTap: () async {
+                                await controller
+                                    .onTapUploadPoliceClearanceCertificate();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border.all(
+                                    color: controller.isFormValid.value == true
+                                        ? controller
+                                              .themeColorServices
+                                              .neutralsColorGrey400
+                                              .value
+                                        : controller
+                                              .themeColorServices
+                                              .sematicColorRed500
+                                              .value,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    "assets/icons/icon_image_upload.svg",
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          if (controller.isFormValid.value == false) ...[
+                            SizedBox(height: 4),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formValidationRequired ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed500
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ],
+                        if (controller
+                                .policeClearanceCertificatePhotoUrl
+                                .value !=
+                            "") ...[
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: AspectRatio(
+                                    aspectRatio: 86 / 108,
+                                    child: CachedNetworkImage(
+                                      imageUrl: controller
+                                          .policeClearanceCertificatePhotoUrl
+                                          .value,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                flex: 9,
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await controller
+                                              .onTapUploadPoliceClearanceCertificate();
+                                        },
+                                        child: Text(
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .updatePhoto ??
+                                              "-",
+                                          style: controller
+                                              .typographyServices
+                                              .bodyLargeRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .textColor
+                                                    .value,
+                                              ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      VerticalDivider(
+                                        width: 0,
+                                        color: controller
+                                            .themeColorServices
+                                            .imageUploadVerticalDividerColor
+                                            .value,
+                                      ),
+                                      SizedBox(width: 8),
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller
+                                                  .driverSelfieKtpPhotoUrl
+                                                  .value =
+                                              "";
+                                        },
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_delete.svg",
+                                              width: 16,
+                                              height: 16,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .redColor
+                                                  .value,
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .delete ??
+                                                  "-",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .redColor
+                                                        .value,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+
+                        SizedBox(height: 16),
+
+                        Row(
+                          children: [
+                            Text(
+                              "Driver Selfie dengan KTP",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .thirdTextColor
+                                        .value,
+                                  ),
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "*",
+                              style: controller
+                                  .typographyServices
+                                  .bodyLargeBold
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed400
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 4),
+                        if (controller.driverSelfieKtpPhotoUrl.value == "") ...[
+                          AspectRatio(
+                            aspectRatio: 342 / 88,
+                            child: GestureDetector(
+                              onTap: () async {
+                                await controller.onTapDriverSelfieWithKtp();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  border: Border.all(
+                                    color: controller.isFormValid.value == true
+                                        ? controller
+                                              .themeColorServices
+                                              .neutralsColorGrey400
+                                              .value
+                                        : controller
+                                              .themeColorServices
+                                              .sematicColorRed500
+                                              .value,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    "assets/icons/icon_image_upload.svg",
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          if (controller.isFormValid.value == false) ...[
+                            SizedBox(height: 4),
+                            Text(
+                              controller
+                                      .languageServices
+                                      .language
+                                      .value
+                                      .formValidationRequired ??
+                                  "-",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .sematicColorRed500
+                                        .value,
+                                  ),
+                            ),
+                          ],
+                        ],
+                        if (controller.driverSelfieKtpPhotoUrl.value != "") ...[
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: AspectRatio(
+                                    aspectRatio: 86 / 108,
+                                    child: CachedNetworkImage(
+                                      imageUrl: controller
+                                          .driverSelfieKtpPhotoUrl
+                                          .value,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                flex: 9,
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await controller
+                                              .onTapDriverSelfieWithKtp();
+                                        },
+                                        child: Text(
+                                          controller
+                                                  .languageServices
+                                                  .language
+                                                  .value
+                                                  .updatePhoto ??
+                                              "-",
+                                          style: controller
+                                              .typographyServices
+                                              .bodyLargeRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .textColor
+                                                    .value,
+                                              ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      VerticalDivider(
+                                        width: 0,
+                                        color: controller
+                                            .themeColorServices
+                                            .imageUploadVerticalDividerColor
+                                            .value,
+                                      ),
+                                      SizedBox(width: 8),
+                                      GestureDetector(
+                                        onTap: () {
+                                          controller
+                                                  .driverSelfieKtpPhotoUrl
+                                                  .value =
+                                              "";
+                                        },
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/icon_delete.svg",
+                                              width: 16,
+                                              height: 16,
+                                              color: controller
+                                                  .themeColorServices
+                                                  .redColor
+                                                  .value,
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              controller
+                                                      .languageServices
+                                                      .language
+                                                      .value
+                                                      .delete ??
+                                                  "-",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .redColor
+                                                        .value,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                         SizedBox(height: 16),
                         Row(
                           children: [
@@ -2979,164 +3540,164 @@ class RegisterFormView extends GetView<RegisterFormController> {
                             ],
                           ),
                         ],
-                        SizedBox(height: 16),
-                        Divider(
-                          height: 0,
-                          color: controller
-                              .themeColorServices
-                              .neutralsColorGrey200
-                              .value,
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          "Kode Referral",
-                          style: controller
-                              .typographyServices
-                              .bodyLargeRegular
-                              .value
-                              .copyWith(
-                                color: controller
-                                    .themeColorServices
-                                    .thirdTextColor
-                                    .value,
-                              ),
-                        ),
-                        SizedBox(height: 4),
-                        ReactiveTextField(
-                          style: controller
-                              .typographyServices
-                              .bodySmallRegular
-                              .value,
-                          cursorErrorColor:
-                              controller.themeColorServices.primaryBlue.value,
-                          formControlName: 'referral_code',
-                          keyboardType: TextInputType.text,
-                          maxLength: 8,
-                          validationMessages: {
-                            ValidationMessage.minLength: (error) =>
-                                "Kode referral harus terdiri dari 8 huruf",
-                            ValidationMessage.maxLength: (error) =>
-                                "Kode referral harus terdiri dari 8 huruf",
-                          },
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                              RegExp(r'[a-zA-Z0-9]'),
-                            ),
-                            UpperCaseTextFormatter(),
-                          ],
-                          decoration: InputDecoration(
-                            counterText: '',
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 0,
-                              vertical: 12,
-                            ),
-                            prefix: SizedBox(width: 12),
-                            hintText: "Masukkan kode referral",
-                            hintStyle: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(
-                                  color: controller
-                                      .themeColorServices
-                                      .neutralsColorGrey400
-                                      .value,
-                                ),
-                            suffixIcon: GestureDetector(
-                              onTap: () async {
-                                var result = await Get.toNamed(
-                                  Routes.REGISTER_FORM_SCAN_QR,
-                                );
+                        SizedBox(height: 16 * 2),
+                        // Divider(
+                        //   height: 0,
+                        //   color: controller
+                        //       .themeColorServices
+                        //       .neutralsColorGrey200
+                        //       .value,
+                        // ),
+                        // SizedBox(height: 16),
+                        // Text(
+                        //   "Kode Referral",
+                        //   style: controller
+                        //       .typographyServices
+                        //       .bodyLargeRegular
+                        //       .value
+                        //       .copyWith(
+                        //         color: controller
+                        //             .themeColorServices
+                        //             .thirdTextColor
+                        //             .value,
+                        //       ),
+                        // ),
+                        // SizedBox(height: 4),
+                        // ReactiveTextField(
+                        //   style: controller
+                        //       .typographyServices
+                        //       .bodySmallRegular
+                        //       .value,
+                        //   cursorErrorColor:
+                        //       controller.themeColorServices.primaryBlue.value,
+                        //   formControlName: 'referral_code',
+                        //   keyboardType: TextInputType.text,
+                        //   maxLength: 8,
+                        //   validationMessages: {
+                        //     ValidationMessage.minLength: (error) =>
+                        //         "Kode referral harus terdiri dari 8 huruf",
+                        //     ValidationMessage.maxLength: (error) =>
+                        //         "Kode referral harus terdiri dari 8 huruf",
+                        //   },
+                        //   inputFormatters: [
+                        //     FilteringTextInputFormatter.allow(
+                        //       RegExp(r'[a-zA-Z0-9]'),
+                        //     ),
+                        //     UpperCaseTextFormatter(),
+                        //   ],
+                        //   decoration: InputDecoration(
+                        //     counterText: '',
+                        //     contentPadding: EdgeInsets.symmetric(
+                        //       horizontal: 0,
+                        //       vertical: 12,
+                        //     ),
+                        //     prefix: SizedBox(width: 12),
+                        //     hintText: "Masukkan kode referral",
+                        //     hintStyle: controller
+                        //         .typographyServices
+                        //         .bodySmallRegular
+                        //         .value
+                        //         .copyWith(
+                        //           color: controller
+                        //               .themeColorServices
+                        //               .neutralsColorGrey400
+                        //               .value,
+                        //         ),
+                        //     suffixIcon: GestureDetector(
+                        //       onTap: () async {
+                        //         var result = await Get.toNamed(
+                        //           Routes.REGISTER_FORM_SCAN_QR,
+                        //         );
 
-                                if (result != null) {
-                                  if (result.toString().length > 8) {
-                                    controller.formGroup
-                                        .control("referral_code")
-                                        .value = result.toString().substring(
-                                      0,
-                                      8,
-                                    );
-                                  } else {
-                                    controller.formGroup
-                                            .control("referral_code")
-                                            .value =
-                                        result;
-                                  }
-                                }
-                              },
-                              child: Container(
-                                color: Colors.transparent,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                      "assets/icons/icon_scan_qr.svg",
-                                      width: 13.5,
-                                      height: 13.5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            errorStyle: controller
-                                .typographyServices
-                                .bodySmallRegular
-                                .value
-                                .copyWith(
-                                  color: controller
-                                      .themeColorServices
-                                      .sematicColorRed500
-                                      .value,
-                                ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: controller
-                                    .themeColorServices
-                                    .neutralsColorGrey400
-                                    .value,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: controller
-                                    .themeColorServices
-                                    .sematicColorRed500
-                                    .value,
-                              ),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                color: controller
-                                    .themeColorServices
-                                    .sematicColorRed500
-                                    .value,
-                              ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: controller
-                                    .themeColorServices
-                                    .neutralsColorGrey400
-                                    .value,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: controller
-                                    .themeColorServices
-                                    .primaryBlue
-                                    .value,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                        ),
+                        //         if (result != null) {
+                        //           if (result.toString().length > 8) {
+                        //             controller.formGroup
+                        //                 .control("referral_code")
+                        //                 .value = result.toString().substring(
+                        //               0,
+                        //               8,
+                        //             );
+                        //           } else {
+                        //             controller.formGroup
+                        //                     .control("referral_code")
+                        //                     .value =
+                        //                 result;
+                        //           }
+                        //         }
+                        //       },
+                        //       child: Container(
+                        //         color: Colors.transparent,
+                        //         child: Row(
+                        //           mainAxisSize: MainAxisSize.min,
+                        //           mainAxisAlignment: MainAxisAlignment.center,
+                        //           crossAxisAlignment: CrossAxisAlignment.center,
+                        //           children: [
+                        //             SvgPicture.asset(
+                        //               "assets/icons/icon_scan_qr.svg",
+                        //               width: 13.5,
+                        //               height: 13.5,
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     errorStyle: controller
+                        //         .typographyServices
+                        //         .bodySmallRegular
+                        //         .value
+                        //         .copyWith(
+                        //           color: controller
+                        //               .themeColorServices
+                        //               .sematicColorRed500
+                        //               .value,
+                        //         ),
+                        //     enabledBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(
+                        //         color: controller
+                        //             .themeColorServices
+                        //             .neutralsColorGrey400
+                        //             .value,
+                        //       ),
+                        //       borderRadius: BorderRadius.circular(8),
+                        //     ),
+                        //     focusedErrorBorder: OutlineInputBorder(
+                        //       borderRadius: BorderRadius.circular(8),
+                        //       borderSide: BorderSide(
+                        //         color: controller
+                        //             .themeColorServices
+                        //             .sematicColorRed500
+                        //             .value,
+                        //       ),
+                        //     ),
+                        //     errorBorder: OutlineInputBorder(
+                        //       borderRadius: BorderRadius.circular(8),
+                        //       borderSide: BorderSide(
+                        //         color: controller
+                        //             .themeColorServices
+                        //             .sematicColorRed500
+                        //             .value,
+                        //       ),
+                        //     ),
+                        //     border: OutlineInputBorder(
+                        //       borderSide: BorderSide(
+                        //         color: controller
+                        //             .themeColorServices
+                        //             .neutralsColorGrey400
+                        //             .value,
+                        //       ),
+                        //       borderRadius: BorderRadius.circular(8),
+                        //     ),
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(
+                        //         color: controller
+                        //             .themeColorServices
+                        //             .primaryBlue
+                        //             .value,
+                        //       ),
+                        //       borderRadius: BorderRadius.circular(8),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

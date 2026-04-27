@@ -6,6 +6,7 @@ import 'package:new_evmoto_driver/app/data/models/history_balance_revenue_model.
 import 'package:new_evmoto_driver/app/data/models/history_balance_withdraw_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 class HistoryBalanceRepository {
   final apiServices = Get.find<ApiServices>();
@@ -17,8 +18,7 @@ class HistoryBalanceRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/api/pubWithdrawal/queryDriverPubWithdrawal";
+      var url = "$baseUrl/payment/api/pubWithdrawal/queryDriverPubWithdrawal";
 
       var formData = FormData.fromMap({
         "size": size,
@@ -68,8 +68,7 @@ class HistoryBalanceRepository {
     int? type,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/api/driver/queryTotalRevenue";
+      var url = "$baseUrl/payment/api/driver/queryTotalRevenue";
 
       var formData = FormData.fromMap({
         "size": size,
@@ -111,8 +110,7 @@ class HistoryBalanceRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/payment/api/rechargeRecord/queryDriverRechargeRecord";
+      var url = "$baseUrl/payment/api/rechargeRecord/queryDriverRechargeRecord";
 
       var formData = FormData.fromMap({
         "size": size,

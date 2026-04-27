@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 class OtpRepository {
   final apiServices = Get.find<ApiServices>();
@@ -9,8 +10,7 @@ class OtpRepository {
 
   Future<void> requestOTP({String? phone, int? language, int? type}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/account/base/driver/queryCaptcha";
+      var url = "$baseUrl/account/base/driver/queryCaptcha";
 
       var formData = FormData.fromMap({
         "phone": phone,
@@ -31,8 +31,7 @@ class OtpRepository {
 
   Future<void> checkOTP({String? phone, int? language, String? code}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/account/base/driver/checkCaptcha";
+      var url = "$baseUrl/account/base/driver/checkCaptcha";
 
       var formData = FormData.fromMap({
         "phone": phone,

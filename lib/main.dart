@@ -11,10 +11,12 @@ import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
+import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:new_evmoto_driver/app/services/user_services.dart';
 
 import 'app/routes/app_pages.dart';
 
@@ -53,9 +55,12 @@ Future<void> main() async {
   Get.put(TypographyServices(), permanent: true);
   Get.put(LanguageServices(), permanent: true);
   Get.put(ApiServices(), permanent: true);
-  Get.put(SocketServices(), permanent: true);
   Get.put(FirebaseRemoteConfigServices(), permanent: true);
+  await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
+  Get.put(SocketServices(), permanent: true);
   Get.put(FirebasePushNotificationServices(), permanent: true);
+  Get.put(LocationServices(), permanent: true);
+  Get.put(UserServices(), permanent: true);
 
   runApp(
     GetMaterialApp(

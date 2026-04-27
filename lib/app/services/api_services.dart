@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
+import 'package:dio_curl_logger/dio_curl_logger.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -20,17 +22,21 @@ class ApiServices extends GetxService {
   @override
   Future<void> onInit() async {
     super.onInit();
-    // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-    //     (client) {
-    //       client.findProxy = (uri) {
-    //         return "PROXY 192.168.18.158:8888";
-    //       };
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (client) {
+          client.findProxy = (uri) {
+            return "PROXY 192.168.0.144:8888";
+          };
 
-    //       client.badCertificateCallback =
-    //           (X509Certificate cert, String host, int port) => true;
+          client.badCertificateCallback =
+              (X509Certificate cert, String host, int port) => true;
 
-    //       return client;
-    //     };
+          return client;
+        };
+
+    dio.interceptors.add(
+      CurlLoggingInterceptor(showRequestLog: true, showResponseLog: true),
+    );
 
     dio.interceptors.add(
       InterceptorsWrapper(

@@ -1,4 +1,7 @@
 class Language {
+  String? criticalErrorTitle;
+  String? criticalErrorDescription;
+  String? criticalErrorButton;
   String? loginTitle;
   String? loginSubtitle;
   String? mobilePhone;
@@ -225,8 +228,17 @@ class Language {
   String? successSaveChanges;
   String? formValidationMobileMaxLength;
   String? mobileNumberSuccessChanged;
+  String? locationAccessConsent;
+  String? needExactLocation;
+  String? enableLocation;
 
   Language({
+    this.locationAccessConsent,
+    this.needExactLocation,
+    this.enableLocation,
+    this.criticalErrorTitle,
+    this.criticalErrorDescription,
+    this.criticalErrorButton,
     this.loginTitle,
     this.loginSubtitle,
     this.mobilePhone,
@@ -456,6 +468,12 @@ class Language {
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    criticalErrorTitle =
+        json['critical_error_title'] ?? "(Translate Not Found)";
+    criticalErrorDescription =
+        json['critical_error_description'] ?? "(Translate Not Found)";
+    criticalErrorButton =
+        json['critical_error_button'] ?? "(Translate Not Found)";
     loginTitle = json['login_title'];
     loginSubtitle = json['login_subtitle'];
     mobilePhone = json['mobile_phone'];
@@ -687,6 +705,10 @@ class Language {
     successSaveChanges = json['success_save_changes'];
     formValidationMobileMaxLength = json['form_validation_mobile_max_length'];
     mobileNumberSuccessChanged = json['mobile_number_success_changed'];
+    locationAccessConsent =
+        json['location_access_consent'] ?? "(Translate Not Found)";
+    needExactLocation = json['need_exact_location'] ?? "(Translate Not Found)";
+    enableLocation = json['enable_location'] ?? "(Translate Not Found)";
   }
 
   Map<String, dynamic> toJson() {

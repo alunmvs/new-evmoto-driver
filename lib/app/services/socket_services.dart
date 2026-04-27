@@ -10,6 +10,7 @@ import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.d
 import 'package:new_evmoto_driver/app/modules/order_detail/controllers/order_detail_controller.dart';
 import 'package:new_evmoto_driver/app/modules/order_payment_confirmation/controllers/order_payment_confirmation_controller.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/location_helper.dart';
@@ -23,6 +24,7 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final isLocationReadyStatus = false.obs;
 
@@ -48,13 +50,25 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
   Future<void> setupWebsocket() async {
     if (isSocketClose.value == true) {
-      socket = await Socket.connect("api-dev.evmotoapp.com", 8888);
+      print("ok-11");
+      print(
+        firebaseRemoteConfigServices.remoteConfig.getString(
+          'driver_websocket_url',
+        ),
+      );
+      socket = await Socket.connect(
+        firebaseRemoteConfigServices.remoteConfig.getString(
+          'driver_websocket_url',
+        ),
+        8888,
+      );
       isSocketClose.value = false;
+      print("ok-22");
 
       socket?.listen(
         (data) async {
-          // print(data);
           var dataJson = convertBytesToJson(bytes: data);
+          print(dataJson);
 
           if (dataJson != null) {
             var method = dataJson['method'] ?? "";
@@ -209,7 +223,9 @@ class SocketServices extends GetxService with WidgetsBindingObserver {
 
   Future<void> closeWebsocket() async {
     WidgetsBinding.instance.removeObserver(this);
-    await socket?.close();
+    try {
+      await socket?.close();
+    } catch (e) {}
     isSocketClose.value = true;
   }
 

@@ -73,11 +73,13 @@ class HomeController extends GetxController
   final orderInServiceList = <Order>[].obs;
   final orderInServicePageNum = 1.obs;
   final isSeeMoreOrderInService = true.obs;
+  final isOrderInServiceListNotEmpty = false.obs;
 
   final orderToBeServedRefreshController = RefreshController();
   final orderToBeServedList = <Order>[].obs;
   final orderToBeServedPageNum = 1.obs;
   final isSeeMoreOrderToBeServed = true.obs;
+  final isOrderToBeServedListNotEmpty = false.obs;
 
   final serviceOrderList = <ServiceOrder>[].obs;
 
@@ -106,7 +108,7 @@ class HomeController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    tabController ??= TabController(length: 2, vsync: this);
+    tabController ??= TabController(length: 3, vsync: this);
     await requestLocation();
     await refreshAll();
     isFetch.value = false;
@@ -171,7 +173,7 @@ class HomeController extends GetxController
     await Future.wait([
       getUserInfoDetail(),
       getVehicleStatistics(),
-      // getOrderGrabbingHallList(),
+      getOrderGrabbingHallList(),
       getOrderInServiceList(),
       getOrderToBeServedList(),
       getServiceOrderList(),
@@ -201,6 +203,7 @@ class HomeController extends GetxController
       pageNum: orderGrabbingHallPageNum.value,
     ));
 
+    isOrderToBeServedListNotEmpty.value = orderGrabbingHallList.isNotEmpty;
     if (orderGrabbingHallList.isEmpty) {
       isSeeMoreOrderGrabbingHall.value = false;
     }
@@ -236,6 +239,7 @@ class HomeController extends GetxController
       pageNum: orderInServicePageNum.value,
     ));
 
+    isOrderInServiceListNotEmpty.value = orderInServiceList.isNotEmpty;
     if (orderInServiceList.isEmpty) {
       isSeeMoreOrderInService.value = false;
     }
@@ -278,6 +282,8 @@ class HomeController extends GetxController
       state: 2,
       pageNum: orderInServicePageNum.value,
     ));
+
+    orderToBeServedList.refresh();
 
     if (orderToBeServedList.isEmpty) {
       isSeeMoreOrderToBeServed.value = false;
