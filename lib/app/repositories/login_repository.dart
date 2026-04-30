@@ -34,4 +34,31 @@ class LoginRepository {
       throw e.message.toString();
     }
   }
+
+  Future<String> loginByMobileNumberOtp({
+    String? phone,
+    String? otp,
+    int? language,
+  }) async {
+    try {
+      var url = "$baseUrl/account/base/driver/driverLoginByOtp";
+
+      var formData = FormData.fromMap({
+        "phone": phone,
+        "code": otp,
+        "language": language,
+      });
+
+      var dio = apiServices.dio;
+      var response = await dio.post(url, data: formData);
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      return response.data['data']['token'];
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
 }

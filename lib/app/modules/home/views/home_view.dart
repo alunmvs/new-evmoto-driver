@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/modules/account/views/account_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/order_card_home_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
-import 'package:new_evmoto_driver/app/widgets/loading_dialog.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -422,22 +423,72 @@ class HomeView extends GetView<HomeController> {
                                                                           width:
                                                                               16,
                                                                         ),
-                                                                        Text(
-                                                                          DateFormat(
-                                                                            'MM/dd\nEEEE',
-                                                                            controller.languageServices.languageCode.value,
-                                                                          ).format(
-                                                                            DateTime.now(),
+                                                                        GestureDetector(
+                                                                          onTap: () async {
+                                                                            await Get.toNamed(
+                                                                              Routes.CHAT_LIST,
+                                                                            );
+                                                                            await controller.refreshAll();
+                                                                          },
+                                                                          child: Badge(
+                                                                            isLabelVisible:
+                                                                                controller.isSendbirdInit.value ==
+                                                                                    false ||
+                                                                                controller.totalUnreadMessageCount.value >
+                                                                                    0,
+                                                                            label:
+                                                                                controller.isSendbirdInit.value ==
+                                                                                    false
+                                                                                ? LoadingAnimationWidget.staggeredDotsWave(
+                                                                                    color: Colors.white,
+                                                                                    size: 8,
+                                                                                  )
+                                                                                : Text(
+                                                                                    controller.totalUnreadMessageCount.value >
+                                                                                            99
+                                                                                        ? "99+"
+                                                                                        : controller.totalUnreadMessageCount.value.toString(),
+                                                                                    style: controller.typographyServices.captionSmallRegular.value,
+                                                                                  ),
+                                                                            backgroundColor: Color(
+                                                                              0XFF17CC8C,
+                                                                            ),
+                                                                            child: SvgPicture.asset(
+                                                                              'assets/icons/icon_chat_filled.svg',
+                                                                            ),
                                                                           ),
-                                                                          style: controller.typographyServices.bodySmallBold.value.copyWith(
-                                                                            color:
-                                                                                controller.themeColorServices.textColor.value,
-                                                                            fontWeight:
-                                                                                FontWeight.w600,
-                                                                          ),
-                                                                          textAlign:
-                                                                              TextAlign.right,
                                                                         ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              16,
+                                                                        ),
+                                                                        GestureDetector(
+                                                                          onTap: () async {
+                                                                            await Get.toNamed(
+                                                                              Routes.NOTIFICATION,
+                                                                            );
+                                                                            await controller.refreshAll();
+                                                                          },
+                                                                          child: SvgPicture.asset(
+                                                                            'assets/icons/icon_notification_filled.svg',
+                                                                          ),
+                                                                        ),
+                                                                        // Text(
+                                                                        //   DateFormat(
+                                                                        //     'MM/dd\nEEEE',
+                                                                        //     controller.languageServices.languageCode.value,
+                                                                        //   ).format(
+                                                                        //     DateTime.now(),
+                                                                        //   ),
+                                                                        //   style: controller.typographyServices.bodySmallBold.value.copyWith(
+                                                                        //     color:
+                                                                        //         controller.themeColorServices.textColor.value,
+                                                                        //     fontWeight:
+                                                                        //         FontWeight.w600,
+                                                                        //   ),
+                                                                        //   textAlign:
+                                                                        //       TextAlign.right,
+                                                                        // ),
                                                                       ],
                                                                     ),
                                                                   ),
@@ -1833,694 +1884,221 @@ class HomeView extends GetView<HomeController> {
                                           ),
                                         ),
                                       ),
-                                      SliverPersistentHeader(
-                                        pinned: true,
-                                        delegate: _PinnedHeaderDelegate(
-                                          minHeight: 50,
-                                          maxHeight: 50,
-                                          child: Container(
-                                            color: controller
-                                                .themeColorServices
-                                                .backgroundColor
-                                                .value,
-                                            child: Column(
-                                              children: [
-                                                TabBar(
-                                                  labelColor: controller
-                                                      .themeColorServices
-                                                      .textColor
-                                                      .value,
-                                                  indicatorColor: controller
-                                                      .themeColorServices
-                                                      .primaryBlue
-                                                      .value,
-                                                  unselectedLabelColor:
-                                                      controller
-                                                          .themeColorServices
-                                                          .textColor
-                                                          .value,
-                                                  dividerColor: controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey200
-                                                      .value,
-                                                  labelStyle: controller
-                                                      .typographyServices
-                                                      .bodySmallBold
-                                                      .value,
-                                                  unselectedLabelStyle:
-                                                      controller
-                                                          .typographyServices
-                                                          .bodySmallBold
-                                                          .value,
-                                                  isScrollable: true,
-                                                  controller:
-                                                      controller.tabController,
-                                                  tabAlignment:
-                                                      TabAlignment.start,
-                                                  overlayColor:
-                                                      WidgetStateProperty.all(
-                                                        Colors.transparent,
-                                                      ),
-                                                  onTap: (value) async {
-                                                    Get.dialog(
-                                                      LoadingDialog(),
-                                                      barrierDismissible: true,
-                                                    );
-                                                    switch (value) {
-                                                      case 0:
-                                                        await Future.wait([
-                                                          controller
-                                                              .getUserInfoDetail(),
-                                                          controller
-                                                              .getVehicleStatistics(),
-                                                          controller
-                                                              .getOrderGrabbingHallList(),
-                                                        ]);
-
-                                                        controller
-                                                                .workStatus
-                                                                .value =
-                                                            controller
-                                                                .vehicleStatistics
-                                                                .value
-                                                                .work ??
-                                                            2;
-                                                        break;
-                                                      case 1:
-                                                        await Future.wait([
-                                                          controller
-                                                              .getUserInfoDetail(),
-                                                          controller
-                                                              .getVehicleStatistics(),
-                                                          controller
-                                                              .getOrderInServiceList(),
-                                                        ]);
-
-                                                        controller
-                                                                .workStatus
-                                                                .value =
-                                                            controller
-                                                                .vehicleStatistics
-                                                                .value
-                                                                .work ??
-                                                            2;
-                                                        break;
-                                                      case 2:
-                                                        await Future.wait([
-                                                          controller
-                                                              .getUserInfoDetail(),
-                                                          controller
-                                                              .getVehicleStatistics(),
-                                                          controller
-                                                              .getOrderToBeServedList(),
-                                                        ]);
-
-                                                        controller
-                                                                .workStatus
-                                                                .value =
-                                                            controller
-                                                                .vehicleStatistics
-                                                                .value
-                                                                .work ??
-                                                            2;
-                                                        break;
-                                                      default:
-                                                        break;
-                                                    }
-                                                    Get.close(1);
-                                                  },
-                                                  tabs: [
-                                                    Tab(
-                                                      child: Stack(
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                controller
-                                                                        .languageServices
-                                                                        .language
-                                                                        .value
-                                                                        .acceptOrder ??
-                                                                    "-",
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .bodySmallBold
-                                                                    .value,
-                                                              ),
-                                                              if (controller
-                                                                  .orderGrabbingHallList
-                                                                  .isNotEmpty) ...[
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                              ],
-                                                            ],
-                                                          ),
-                                                          if (controller
-                                                              .orderGrabbingHallList
-                                                              .isNotEmpty) ...[
-                                                            Positioned(
-                                                              top: 0,
-                                                              right: 0,
-                                                              child: Container(
-                                                                padding:
-                                                                    const EdgeInsets.all(
-                                                                      4,
-                                                                    ),
-                                                                decoration: BoxDecoration(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .redColor
-                                                                      .value,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                constraints:
-                                                                    const BoxConstraints(
-                                                                      minWidth:
-                                                                          5,
-                                                                      minHeight:
-                                                                          5,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Tab(
-                                                      child: Stack(
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                controller
-                                                                        .languageServices
-                                                                        .language
-                                                                        .value
-                                                                        .waiting ??
-                                                                    "-",
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .bodySmallBold
-                                                                    .value,
-                                                              ),
-                                                              if (controller
-                                                                  .isOrderToBeServedListNotEmpty
-                                                                  .value) ...[
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                              ],
-                                                            ],
-                                                          ),
-                                                          if (controller
-                                                              .isOrderToBeServedListNotEmpty
-                                                              .value) ...[
-                                                            Positioned(
-                                                              top: 0,
-                                                              right: 0,
-                                                              child: Container(
-                                                                padding:
-                                                                    const EdgeInsets.all(
-                                                                      4,
-                                                                    ),
-                                                                decoration: BoxDecoration(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .redColor
-                                                                      .value,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                constraints:
-                                                                    const BoxConstraints(
-                                                                      minWidth:
-                                                                          5,
-                                                                      minHeight:
-                                                                          5,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Tab(
-                                                      child: Stack(
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                controller
-                                                                        .languageServices
-                                                                        .language
-                                                                        .value
-                                                                        .inService ??
-                                                                    "-",
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .bodySmallBold
-                                                                    .value,
-                                                              ),
-                                                              if (controller
-                                                                  .isOrderInServiceListNotEmpty
-                                                                  .value) ...[
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                              ],
-                                                            ],
-                                                          ),
-                                                          if (controller
-                                                              .isOrderInServiceListNotEmpty
-                                                              .value) ...[
-                                                            Positioned(
-                                                              top: 0,
-                                                              right: 0,
-                                                              child: Container(
-                                                                padding:
-                                                                    const EdgeInsets.all(
-                                                                      4,
-                                                                    ),
-                                                                decoration: BoxDecoration(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .redColor
-                                                                      .value,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                constraints:
-                                                                    const BoxConstraints(
-                                                                      minWidth:
-                                                                          5,
-                                                                      minHeight:
-                                                                          5,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 ),
                               ),
                             ];
                           },
-                          body: TabBarView(
-                            controller: controller.tabController,
-                            children: [
-                              Builder(
-                                builder: (context) => Obx(
-                                  () => SmartRefresher(
-                                    header: MaterialClassicHeader(
-                                      color: controller
-                                          .themeColorServices
-                                          .primaryBlue
-                                          .value,
-                                    ),
-                                    footer: ClassicFooter(
-                                      loadStyle: LoadStyle.HideAlways,
-                                      textStyle: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
+                          body: Builder(
+                            builder: (context) => Obx(
+                              () => SmartRefresher(
+                                header: MaterialClassicHeader(
+                                  color: controller
+                                      .themeColorServices
+                                      .primaryBlue
+                                      .value,
+                                ),
+                                footer: ClassicFooter(
+                                  loadStyle: LoadStyle.HideAlways,
+                                  textStyle: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .primaryBlue
+                                            .value,
+                                      ),
+                                  canLoadingIcon: null,
+                                  loadingIcon: null,
+                                  idleIcon: null,
+                                  noMoreIcon: null,
+                                  failedIcon: null,
+                                ),
+                                enablePullDown: true,
+                                enablePullUp: false,
+                                onRefresh: () async {
+                                  await Future.wait([
+                                    controller.getUserInfoDetail(),
+                                    controller.getWorking(),
+                                  ]);
+                                  controller.orderGrabbingHallRefreshController
+                                      .refreshCompleted();
+                                },
+                                // onLoading: () async {
+                                //   await Future.wait([
+                                //     controller.seeMoreOrderGrabbingHallList(),
+                                //   ]);
+                                //   controller.orderGrabbingHallRefreshController
+                                //       .loadComplete();
+                                // },
+                                controller: controller
+                                    .orderGrabbingHallRefreshController,
+                                child: CustomScrollView(
+                                  slivers: [
+                                    SliverOverlapInjector(
+                                      handle:
+                                          NestedScrollView.sliverOverlapAbsorberHandleFor(
+                                            context,
                                           ),
-                                      canLoadingIcon: null,
-                                      loadingIcon: null,
-                                      idleIcon: null,
-                                      noMoreIcon: null,
-                                      failedIcon: null,
                                     ),
-                                    enablePullDown: true,
-                                    enablePullUp: controller
-                                        .isSeeMoreOrderGrabbingHall
-                                        .value,
-                                    onRefresh: () async {
-                                      await Future.wait([
-                                        controller.getUserInfoDetail(),
-                                        controller.getVehicleStatistics(),
-                                        controller.getOrderGrabbingHallList(),
-                                      ]);
-                                      controller
-                                          .orderGrabbingHallRefreshController
-                                          .refreshCompleted();
-                                    },
-                                    onLoading: () async {
-                                      await Future.wait([
-                                        controller
-                                            .seeMoreOrderGrabbingHallList(),
-                                      ]);
-                                      controller
-                                          .orderGrabbingHallRefreshController
-                                          .loadComplete();
-                                    },
-                                    controller: controller
-                                        .orderGrabbingHallRefreshController,
-                                    child: CustomScrollView(
-                                      slivers: [
-                                        SliverOverlapInjector(
-                                          handle:
-                                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                                context,
-                                              ),
+                                    SliverToBoxAdapter(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16,
                                         ),
-                                        SliverToBoxAdapter(
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 16,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(height: 16),
-                                                if (controller
-                                                    .orderGrabbingHallList
-                                                    .isEmpty) ...[
-                                                  SizedBox(height: 16 * 3),
-                                                  SvgPicture.asset(
-                                                    "assets/images/img_history_activity_not_found.svg",
-                                                    height: 80,
-                                                    width: 80,
-                                                  ),
-                                                  SizedBox(height: 16),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .noOrderTitle ??
-                                                        "-",
+                                        child: Column(
+                                          children: [
+                                            SizedBox(height: 16),
+                                            if (controller.working.value.id ==
+                                                null) ...[
+                                              SizedBox(height: 16 * 3),
+                                              SvgPicture.asset(
+                                                "assets/images/img_history_activity_not_found.svg",
+                                                height: 80,
+                                                width: 80,
+                                              ),
+                                              SizedBox(height: 16),
+                                              Text(
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .noOrderTitle ??
+                                                    "-",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodyLargeBold
+                                                    .value,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(height: 8),
+                                              Text(
+                                                controller
+                                                        .languageServices
+                                                        .language
+                                                        .value
+                                                        .noOrderAcceptOrderDescription ??
+                                                    "-",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value,
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(height: 16),
+                                              SizedBox(
+                                                width: 150,
+                                                child: LoaderElevatedButton(
+                                                  child: Text(
+                                                    "Refresh",
                                                     style: controller
                                                         .typographyServices
                                                         .bodyLargeBold
-                                                        .value,
-                                                    textAlign: TextAlign.center,
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .neutralsColorGrey0
+                                                              .value,
+                                                        ),
                                                   ),
-                                                  SizedBox(height: 8),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .noOrderAcceptOrderDescription ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodySmallRegular
-                                                        .value,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ],
-                                                for (var orderGrabbingHall
-                                                    in controller
-                                                        .orderGrabbingHallList) ...[
-                                                  OrderCardHomeSubView(
-                                                    order: orderGrabbingHall,
-                                                  ),
-                                                  SizedBox(height: 16),
-                                                ],
-                                                SizedBox(height: 16),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Builder(
-                                builder: (context) => Obx(
-                                  () => SmartRefresher(
-                                    header: MaterialClassicHeader(
-                                      color: controller
-                                          .themeColorServices
-                                          .primaryBlue
-                                          .value,
-                                    ),
-                                    footer: ClassicFooter(
-                                      loadStyle: LoadStyle.HideAlways,
-                                      textStyle: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
-                                          ),
-                                      canLoadingIcon: null,
-                                      loadingIcon: null,
-                                      idleIcon: null,
-                                      noMoreIcon: null,
-                                      failedIcon: null,
-                                    ),
-                                    enablePullDown: true,
-                                    enablePullUp: controller
-                                        .isSeeMoreOrderToBeServed
-                                        .value,
-                                    onRefresh: () async {
-                                      await Future.wait([
-                                        controller.getUserInfoDetail(),
-                                        controller.getVehicleStatistics(),
-                                        controller.getOrderToBeServedList(),
-                                      ]);
-                                      controller
-                                          .orderToBeServedRefreshController
-                                          .refreshCompleted();
-                                    },
-                                    onLoading: () async {
-                                      await Future.wait([
-                                        controller.seeMoreOrderToBeServedList(),
-                                      ]);
-                                      controller
-                                          .orderToBeServedRefreshController
-                                          .loadComplete();
-                                    },
-                                    controller: controller
-                                        .orderToBeServedRefreshController,
-                                    child: CustomScrollView(
-                                      slivers: [
-                                        SliverOverlapInjector(
-                                          handle:
-                                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                                context,
+                                                  onPressed: () async {
+                                                    await controller
+                                                        .getWorking();
+                                                  },
+                                                ),
                                               ),
-                                        ),
-                                        SliverToBoxAdapter(
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 16,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(height: 16),
-                                                if (controller
-                                                    .orderToBeServedList
-                                                    .isEmpty) ...[
-                                                  SizedBox(height: 16 * 3),
-                                                  SvgPicture.asset(
-                                                    "assets/images/img_history_activity_not_found.svg",
-                                                    height: 80,
-                                                    width: 80,
-                                                  ),
-                                                  SizedBox(height: 16),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .noOrderTitle ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodyLargeBold
-                                                        .value,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                  SizedBox(height: 8),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .noOrderWaitingDescription ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodySmallRegular
-                                                        .value,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ],
-                                                for (var orderToBeServed
-                                                    in controller
-                                                        .orderToBeServedList) ...[
-                                                  OrderCardHomeSubView(
-                                                    order: orderToBeServed,
-                                                  ),
-                                                  SizedBox(height: 16),
-                                                ],
-                                                SizedBox(height: 16),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Builder(
-                                builder: (context) => Obx(
-                                  () => SmartRefresher(
-                                    header: MaterialClassicHeader(
-                                      color: controller
-                                          .themeColorServices
-                                          .primaryBlue
-                                          .value,
-                                    ),
-                                    footer: ClassicFooter(
-                                      loadStyle: LoadStyle.HideAlways,
-                                      textStyle: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
-                                          ),
-                                      canLoadingIcon: null,
-                                      loadingIcon: null,
-                                      idleIcon: null,
-                                      noMoreIcon: null,
-                                      failedIcon: null,
-                                    ),
-                                    enablePullDown: true,
-                                    enablePullUp: controller
-                                        .isSeeMoreOrderInService
-                                        .value,
-                                    onRefresh: () async {
-                                      await Future.wait([
-                                        controller.getUserInfoDetail(),
-                                        controller.getVehicleStatistics(),
-                                        controller.getOrderInServiceList(),
-                                      ]);
-                                      controller.orderInServiceRefreshController
-                                          .refreshCompleted();
-                                    },
-                                    onLoading: () async {
-                                      await Future.wait([
-                                        controller.seeMoreOrderInServiceList(),
-                                      ]);
-                                      controller.orderInServiceRefreshController
-                                          .loadComplete();
-                                    },
-                                    controller: controller
-                                        .orderInServiceRefreshController,
-                                    child: CustomScrollView(
-                                      slivers: [
-                                        SliverOverlapInjector(
-                                          handle:
-                                              NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                                context,
+                                            ],
+                                            if (controller.working.value.id !=
+                                                null) ...[
+                                              OrderCardHomeSubView(
+                                                order: Order(
+                                                  // name: controller
+                                                  //     .working
+                                                  //     .value
+                                                  //     .name,
+                                                  //     historyNum: controller.working.value,
+                                                  startAddress: controller
+                                                      .working
+                                                      .value
+                                                      .startAddress,
+                                                  endAddress: controller
+                                                      .working
+                                                      .value
+                                                      .endAddress,
+                                                  orderMoney: controller
+                                                      .working
+                                                      .value
+                                                      .orderMoney,
+                                                  id: controller
+                                                      .working
+                                                      .value
+                                                      .id,
+                                                  type: controller
+                                                      .working
+                                                      .value
+                                                      .type,
+                                                ),
                                               ),
+                                            ],
+                                            // if (controller
+                                            //     .orderGrabbingHallList
+                                            //     .isEmpty) ...[
+                                            //   SizedBox(height: 16 * 3),
+                                            //   SvgPicture.asset(
+                                            //     "assets/images/img_history_activity_not_found.svg",
+                                            //     height: 80,
+                                            //     width: 80,
+                                            //   ),
+                                            //   SizedBox(height: 16),
+                                            //   Text(
+                                            //     controller
+                                            //             .languageServices
+                                            //             .language
+                                            //             .value
+                                            //             .noOrderTitle ??
+                                            //         "-",
+                                            //     style: controller
+                                            //         .typographyServices
+                                            //         .bodyLargeBold
+                                            //         .value,
+                                            //     textAlign: TextAlign.center,
+                                            //   ),
+                                            //   SizedBox(height: 8),
+                                            //   Text(
+                                            //     controller
+                                            //             .languageServices
+                                            //             .language
+                                            //             .value
+                                            //             .noOrderAcceptOrderDescription ??
+                                            //         "-",
+                                            //     style: controller
+                                            //         .typographyServices
+                                            //         .bodySmallRegular
+                                            //         .value,
+                                            //     textAlign: TextAlign.center,
+                                            //   ),
+                                            // ],
+                                            // for (var orderGrabbingHall
+                                            //     in controller
+                                            //         .orderGrabbingHallList) ...[
+                                            //   OrderCardHomeSubView(
+                                            //     order: orderGrabbingHall,
+                                            //   ),
+                                            //   SizedBox(height: 16),
+                                            // ],
+                                            SizedBox(height: 16),
+                                          ],
                                         ),
-                                        SliverToBoxAdapter(
-                                          child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 16,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(height: 16),
-                                                if (controller
-                                                    .orderInServiceList
-                                                    .isEmpty) ...[
-                                                  SizedBox(height: 16 * 3),
-                                                  SvgPicture.asset(
-                                                    "assets/images/img_history_activity_not_found.svg",
-                                                    height: 80,
-                                                    width: 80,
-                                                  ),
-                                                  SizedBox(height: 16),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .noOrderTitle ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodyLargeBold
-                                                        .value,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                  SizedBox(height: 8),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .noOrderInServiceDescription ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodySmallRegular
-                                                        .value,
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ],
-                                                for (var orderInService
-                                                    in controller
-                                                        .orderInServiceList) ...[
-                                                  OrderCardHomeSubView(
-                                                    order: orderInService,
-                                                  ),
-                                                  SizedBox(height: 16),
-                                                ],
-                                                SizedBox(height: 16),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),

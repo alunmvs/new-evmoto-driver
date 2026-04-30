@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:action_slider/action_slider.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,24 +16,32 @@ import 'package:new_evmoto_driver/app/data/models/service_order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_driver/app/data/models/vehicle_statistics_model.dart';
+import 'package:new_evmoto_driver/app/data/models/versioning_server_model.dart';
+import 'package:new_evmoto_driver/app/data/models/working_model.dart';
 import 'package:new_evmoto_driver/app/repositories/account_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/vehicle_repository.dart';
+import 'package:new_evmoto_driver/app/repositories/versioning_server_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
+import 'package:new_evmoto_driver/app/services/location_services.dart';
+import 'package:new_evmoto_driver/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/services/user_services.dart';
+import 'package:new_evmoto_driver/app/services/voice_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
-import 'package:new_evmoto_driver/app/utils/error_helper.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
+import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -43,14 +52,17 @@ class HomeController extends GetxController
   final OrderRepository orderRepository;
   final UserRepository userRepository;
   final AccountRepository accountRepository;
+  final VersioningServerRepository versioningServerRepository;
 
   HomeController({
     required this.vehicleRepository,
     required this.orderRepository,
     required this.userRepository,
     required this.accountRepository,
+    required this.versioningServerRepository,
   });
 
+  final userServices = Get.find<UserServices>();
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final socketServices = Get.find<SocketServices>();
@@ -58,6 +70,9 @@ class HomeController extends GetxController
   final firebasePushNotificationServices =
       Get.find<FirebasePushNotificationServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
+  final voiceServices = Get.find<VoiceServices>();
+  final locationServices = Get.find<LocationServices>();
+  final sendbirdChatServices = Get.find<SendbirdChatServices>();
 
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
@@ -102,6 +117,16 @@ class HomeController extends GetxController
   final lastPressedBackDateTime = DateTime.now().obs;
   final errorInfoBottomSheet = "".obs;
 
+  final working = Working().obs;
+  final versioningServer = VersioningServer().obs;
+
+  // sendbird SDK
+  final isSendbirdInit = false.obs;
+
+  // notification
+  final totalUnreadMessageCount = 0.obs;
+  final isFetchTotalUnreadMessageCount = false.obs;
+
   final isFetch = false.obs;
 
   @override
@@ -109,18 +134,24 @@ class HomeController extends GetxController
     super.onInit();
     isFetch.value = true;
     tabController ??= TabController(length: 3, vsync: this);
+
+    if (locationServices.isPermissionLocationAllow.value == false) {
+      await locationServices.requestLocation();
+    }
+
     await requestLocation();
     await refreshAll();
+    await Future.wait([sendbirdChatServices.initialize()]);
+    isSendbirdInit.value = true;
     isFetch.value = false;
 
     ShowcaseView.register();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await checkForceUpdate();
-      await checkSoftUpdate();
+      await checkAppVersioning(isShowVersionNewestConfirmationDialog: false);
 
       await displayCoachmark();
-      await Future.wait([socketServices.setupWebsocket()]);
       await firebasePushNotificationServices.requestPermission();
+      await setHomeControllerRegistered();
     });
   }
 
@@ -169,15 +200,24 @@ class HomeController extends GetxController
     return packageInfo.version;
   }
 
+  Future<void> getWorking() async {
+    working.value =
+        (await orderRepository.getWorking(
+          language: languageServices.languageCodeSystem.value,
+        )) ??
+        Working();
+  }
+
   Future<void> refreshAll() async {
     await Future.wait([
       getUserInfoDetail(),
       getVehicleStatistics(),
-      getOrderGrabbingHallList(),
-      getOrderInServiceList(),
-      getOrderToBeServedList(),
-      getServiceOrderList(),
+      userServices.getUserInfo(),
+      voiceServices.manualOnInit(),
+      getWorking(),
     ]);
+
+    await Future.wait([getTotalUnreadSendbirdChat()]);
 
     workStatus.value = vehicleStatistics.value.work ?? 2;
 
@@ -879,6 +919,9 @@ class HomeController extends GetxController
                                                               .neutralsColorGrey400
                                                               .value,
                                                         ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
                                                   Obx(
                                                     () => Text(
@@ -956,8 +999,7 @@ class HomeController extends GetxController
     actionController.loading();
     Get.back(result: true);
     try {
-      await orderRepository.grabOrder(
-        orderType: socketOrderStatusData.orderType!,
+      await orderRepository.orderPushConfirm(
         orderId: socketOrderStatusData.orderId.toString(),
         language: 2,
       );
@@ -1301,5 +1343,346 @@ class HomeController extends GetxController
         throw 'Unable launch url update app version';
       }
     }
+  }
+
+  // New
+  Future<void> checkAppVersioning({
+    required bool isShowVersionNewestConfirmationDialog,
+  }) async {
+    try {
+      versioningServer.value = await versioningServerRepository
+          .getVersioningServer(type: 2);
+
+      if (versioningServer.value.version == null) {
+        if (isShowVersionNewestConfirmationDialog == true) {
+          Get.dialog(
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Material(
+                      color: themeColorServices.neutralsColorGrey0.value,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 16),
+                            Container(
+                              width: 42,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                color: Color(0XFFDDFFE6),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/icon_checkmark_circle.svg",
+                                    width: 26,
+                                    height: 26,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              languageServices
+                                      .language
+                                      .value
+                                      .usingLatestVersion ??
+                                  "-",
+                              style: typographyServices.bodyLargeBold.value,
+                            ),
+                            SizedBox(height: 16),
+                            LoaderElevatedButton(
+                              child: Text(
+                                languageServices.language.value.back ?? "-",
+                                style: typographyServices.bodyLargeBold.value
+                                    .copyWith(color: Colors.white),
+                              ),
+                              onPressed: () async {
+                                Get.close(1);
+                              },
+                            ),
+                            SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        return;
+      }
+
+      if (versioningServer.value.version != null) {
+        var packageInfo = await PackageInfo.fromPlatform();
+        var currentVersion = Version.parse(packageInfo.version);
+        var serverVersion = Version.parse(versioningServer.value.version!);
+
+        if (currentVersion < serverVersion) {
+          var prefs = await SharedPreferences.getInstance();
+          var lastUpdateLaterClickAt = prefs.getString(
+            "last_update_later_click_at",
+          );
+
+          var isShow = false;
+
+          if (isShowVersionNewestConfirmationDialog == true) {
+            isShow = true;
+          } else {
+            if (lastUpdateLaterClickAt != null) {
+              var lastUpdateLaterClickAtDateTime =
+                  DateTime.fromMillisecondsSinceEpoch(
+                    int.parse(lastUpdateLaterClickAt),
+                  );
+
+              if (isSameDay(lastUpdateLaterClickAtDateTime, DateTime.now())) {
+                isShow = false;
+              } else {
+                isShow = true;
+              }
+            } else {
+              isShow = true;
+            }
+          }
+
+          if (isShow == true) {
+            await Get.dialog(
+              PopScope(
+                canPop: false,
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Material(
+                          color: themeColorServices.neutralsColorGrey0.value,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(height: 24),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  child: Image.asset(
+                                    "assets/images/img_soft_update.png",
+                                    width: Get.width * 169.25 / 375,
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                                Text(
+                                  languageServices
+                                          .language
+                                          .value
+                                          .appUpdateAvailable ??
+                                      "-",
+                                  style: typographyServices.bodyLargeBold.value,
+                                  textAlign: TextAlign.center,
+                                ),
+                                if (versioningServer.value.content != null &&
+                                    versioningServer.value.content != '') ...[
+                                  SizedBox(height: 8),
+                                  Text(
+                                    versioningServer.value.content ?? "-",
+                                    style: typographyServices
+                                        .bodySmallRegular
+                                        .value
+                                        .copyWith(color: Color(0XFFB3B3B3)),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                                SizedBox(height: 16),
+                                LoaderElevatedButton(
+                                  onPressed: () async {
+                                    await onTapUpdateVersion();
+                                  },
+                                  child: Text(
+                                    languageServices.language.value.updateNow ??
+                                        "-",
+                                    style: typographyServices
+                                        .bodyLargeBold
+                                        .value
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ),
+                                if (versioningServer.value.mandatory == 0) ...[
+                                  SizedBox(height: 10),
+                                  SizedBox(
+                                    height: 46,
+                                    width: Get.width,
+                                    child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                        side: BorderSide(
+                                          color: Color(0XFFDBDBDB),
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        Get.close(1);
+
+                                        var prefs =
+                                            await SharedPreferences.getInstance();
+                                        await prefs.setString(
+                                          "last_update_later_click_at",
+                                          DateTime.now().millisecondsSinceEpoch
+                                              .toString(),
+                                        );
+                                      },
+                                      child: Text(
+                                        languageServices
+                                                .language
+                                                .value
+                                                .updateLater ??
+                                            "-",
+                                        style: typographyServices
+                                            .bodyLargeBold
+                                            .value
+                                            .copyWith(color: Color(0XFFAFAFAF)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                SizedBox(height: 16),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              barrierDismissible: false,
+            );
+          }
+        } else {
+          if (isShowVersionNewestConfirmationDialog == true) {
+            Get.dialog(
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Material(
+                        color: themeColorServices.neutralsColorGrey0.value,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 16),
+                              Container(
+                                width: 42,
+                                height: 42,
+                                decoration: BoxDecoration(
+                                  color: Color(0XFFDDFFE6),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/icons/icon_checkmark_circle.svg",
+                                      width: 26,
+                                      height: 26,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                languageServices
+                                        .language
+                                        .value
+                                        .usingLatestVersion ??
+                                    "-",
+                                style: typographyServices.bodyLargeBold.value,
+                              ),
+                              SizedBox(height: 16),
+                              LoaderElevatedButton(
+                                child: Text(
+                                  languageServices.language.value.back ?? "-",
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(color: Colors.white),
+                                ),
+                                onPressed: () async {
+                                  Get.close(1);
+                                },
+                              ),
+                              SizedBox(height: 16),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+        }
+      }
+    } on DioException catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.error.toString());
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
+    }
+  }
+
+  bool isSameDay(DateTime a, DateTime b) {
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
+  Future<void> getTotalUnreadSendbirdChat() async {
+    totalUnreadMessageCount.value = 0;
+    if (sendbirdChatServices.isSuccessInitialize.value == true) {
+      if (isFetchTotalUnreadMessageCount.value == false) {
+        isFetchTotalUnreadMessageCount.value = true;
+        try {
+          var query = GroupChannelListQuery();
+          var channelList = await query.next();
+
+          for (var channel in channelList) {
+            for (var member in channel.members) {
+              if (member.userId == "user_${userServices.userInfo.value.id}") {
+                totalUnreadMessageCount.value += channel.unreadMessageCount;
+              }
+            }
+          }
+        } catch (e) {}
+        isFetchTotalUnreadMessageCount.value = false;
+      }
+    }
+  }
+
+  Future<void> setHomeControllerRegistered() async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('home_controller_registered', true);
   }
 }

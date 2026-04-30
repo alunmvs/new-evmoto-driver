@@ -79,12 +79,12 @@ class RegisterVerificationOtpController extends GetxController {
         language: languageServices.languageCodeSystem.value,
         code: otpCode.value,
       );
-      registeredDriver.value = (await registerRepository.registerDriver(
-        code: otpCode.value,
-        language: languageServices.languageCodeSystem.value,
-        password: "123456789",
-        phone: "62${mobilePhone.value}",
-      ))!;
+      registeredDriver.value = (await registerRepository
+          .registerDriverNoPassword(
+            code: otpCode.value,
+            language: languageServices.languageCodeSystem.value,
+            phone: "62${mobilePhone.value}",
+          ))!;
 
       Get.toNamed(
         Routes.REGISTER_FORM,

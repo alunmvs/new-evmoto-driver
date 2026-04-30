@@ -189,10 +189,7 @@ class OrderPaymentConfirmationView
                                       symbol: 'Rp ',
                                       decimalDigits: 0,
                                     ).format(
-                                      controller
-                                              .orderDetail
-                                              .value
-                                              .collectionFees! +
+                                      controller.orderDetail.value.orderMoney! +
                                           controller.subcharge.value,
                                     ),
                                     style: controller

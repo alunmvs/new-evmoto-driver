@@ -1,4 +1,6 @@
 class Language {
+  String? noMessageYetStartConverstation;
+  String? tripHasEnded;
   String? criticalErrorTitle;
   String? criticalErrorDescription;
   String? criticalErrorButton;
@@ -231,8 +233,25 @@ class Language {
   String? locationAccessConsent;
   String? needExactLocation;
   String? enableLocation;
+  String? usingLatestVersion;
+  String? back;
+  String? updateLater;
+  String? updateNow;
+  String? appUpdateAvailable;
+  String? message;
+  String? noMessageYet;
+  String? conversationWillAppear;
 
   Language({
+    this.noMessageYetStartConverstation,
+    this.tripHasEnded,
+    this.noMessageYet,
+    this.message,
+    this.appUpdateAvailable,
+    this.updateNow,
+    this.updateLater,
+    this.back,
+    this.usingLatestVersion,
     this.locationAccessConsent,
     this.needExactLocation,
     this.enableLocation,
@@ -465,9 +484,24 @@ class Language {
     this.successSaveChanges,
     this.formValidationMobileMaxLength,
     this.mobileNumberSuccessChanged,
+    this.conversationWillAppear,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
+    noMessageYetStartConverstation =
+        json['no_message_yet_start_converstation'] ?? "(Translate Not Found)";
+    tripHasEnded = json['trip_has_ended'] ?? "(Translate Not Found)";
+    conversationWillAppear =
+        json['conversation_will_appear'] ?? "(Translate Not Found)";
+    noMessageYet = json['no_message_yet'] ?? "(Translate Not Found)";
+    message = json['message'] ?? "(Translate Not Found)";
+    appUpdateAvailable =
+        json['app_update_available'] ?? "(Translate Not Found)";
+    updateNow = json['update_now'] ?? "(Translate Not Found)";
+    updateLater = json['update_later'] ?? "(Translate Not Found)";
+    back = json['back'] ?? "(Translate Not Found)";
+    usingLatestVersion =
+        json['using_latest_version'] ?? "(Translate Not Found)";
     criticalErrorTitle =
         json['critical_error_title'] ?? "(Translate Not Found)";
     criticalErrorDescription =

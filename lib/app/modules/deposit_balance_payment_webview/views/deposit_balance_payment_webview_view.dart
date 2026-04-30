@@ -7,10 +7,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gallery_saver_plus/gallery_saver.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../controllers/deposit_balance_payment_webview_controller.dart';
 
@@ -20,106 +20,185 @@ class DepositBalancePaymentWebviewView
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        if (didPop == false) {
-          await controller.showDialogBackButton();
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor:
-              controller.themeColorServices.neutralsColorGrey0.value,
-          surfaceTintColor:
-              controller.themeColorServices.neutralsColorGrey0.value,
-          leading: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () async {
-                  await controller.showDialogBackButton();
-                },
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color:
-                        controller.themeColorServices.neutralsColorGrey0.value,
-                    border: Border.all(
+    return Obx(
+      () => PopScope(
+        canPop: controller.rechargeStatusCompleted.value,
+        onPopInvokedWithResult: (didPop, result) async {
+          if (didPop == false &&
+              controller.rechargeStatusCompleted.value == false) {
+            await controller.showDialogBackButton();
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            backgroundColor:
+                controller.themeColorServices.neutralsColorGrey0.value,
+            surfaceTintColor:
+                controller.themeColorServices.neutralsColorGrey0.value,
+            leading: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    await controller.showDialogBackButton();
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
                       color: controller
                           .themeColorServices
-                          .neutralsColorGrey300
+                          .neutralsColorGrey0
                           .value,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
+                      border: Border.all(
                         color: controller
                             .themeColorServices
-                            .overlayDark200
-                            .value
-                            .withValues(alpha: 0.3),
-                        blurRadius: 32,
-                        spreadRadius: -6,
-                        offset: Offset(0, -1),
+                            .neutralsColorGrey300
+                            .value,
                       ),
-                    ],
-                  ),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/icon_back.svg",
-                          width: 18,
-                          height: 18,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: controller
+                              .themeColorServices
+                              .overlayDark200
+                              .value
+                              .withValues(alpha: 0.3),
+                          blurRadius: 32,
+                          spreadRadius: -6,
+                          offset: Offset(0, -1),
                         ),
                       ],
                     ),
+                    child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/icon_back.svg",
+                            width: 18,
+                            height: 18,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
-        body: InAppWebView(
-          initialUrlRequest: URLRequest(
-            url: WebUri(controller.redirectUrl.value),
-          ),
-          initialSettings: InAppWebViewSettings(
-            javaScriptEnabled: true,
-            useOnDownloadStart: true,
-          ),
-          onWebViewCreated: (controller) {
-            this.controller.webViewController = controller;
+          backgroundColor:
+              controller.themeColorServices.neutralsColorGrey0.value,
+          body: InAppWebView(
+            initialUrlRequest: URLRequest(
+              url: WebUri(controller.redirectUrl.value),
+            ),
+            initialSettings: InAppWebViewSettings(
+              javaScriptEnabled: true,
+              useOnDownloadStart: true,
+            ),
+            onWebViewCreated: (controller) {
+              this.controller.webViewController = controller;
 
-            controller.addJavaScriptHandler(
-              handlerName: 'saveBlob',
-              callback: (args) async {
-                final base64Data = args[0];
-                final mimeType = args[1];
-                await _saveFile(base64Data, mimeType);
-              },
-            );
-          },
-          onLoadStop: (controller, url) async {
-            await controller.evaluateJavascript(
-              source: '''
-(function () {
-  document.addEventListener('click', function (e) {
+              controller.addJavaScriptHandler(
+                handlerName: 'saveBlob',
+                callback: (args) async {
+                  final base64Data = args[0];
+                  final mimeType = args[1];
+                  await _saveFile(base64Data, mimeType);
+                },
+              );
+            },
+            onDownloadStartRequest:
+                (localController, downloadStartRequest) async {
+                  final url = downloadStartRequest.url.toString();
+
+                  if (url.startsWith("data:image")) {
+                    if (controller.isLoadingDownloadBlob.value == false) {
+                      controller.isLoadingDownloadBlob.value = true;
+                      try {
+                        final base64Data = url.split(",").last;
+
+                        final bytes = base64Decode(base64Data);
+
+                        final dir = await getApplicationDocumentsDirectory();
+                        final file = File("${dir.path}/download.png");
+
+                        await file.writeAsBytes(bytes);
+
+                        final success = await GallerySaver.saveImage(file.path);
+
+                        if (success == true) {
+                          var snackBar = SnackBar(
+                            behavior: SnackBarBehavior.fixed,
+                            backgroundColor: controller
+                                .themeColorServices
+                                .sematicColorGreen400
+                                .value,
+                            content: Text(
+                              "Berhasil menyimpan gambar pada gallery",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey0
+                                        .value,
+                                  ),
+                            ),
+                          );
+                          rootScaffoldMessengerKey.currentState?.showSnackBar(
+                            snackBar,
+                          );
+                        }
+
+                        await file.delete();
+                      } catch (e) {}
+                    } else {
+                      var snackBar = SnackBar(
+                        behavior: SnackBarBehavior.fixed,
+                        backgroundColor: controller
+                            .themeColorServices
+                            .sematicColorRed400
+                            .value,
+                        content: Text(
+                          "Tidak memiliki akses menyimpan gambar ke gallery",
+                          style: controller
+                              .typographyServices
+                              .bodySmallRegular
+                              .value
+                              .copyWith(
+                                color: controller
+                                    .themeColorServices
+                                    .neutralsColorGrey0
+                                    .value,
+                              ),
+                        ),
+                      );
+                      rootScaffoldMessengerKey.currentState?.showSnackBar(
+                        snackBar,
+                      );
+                    }
+                  }
+                },
+            onLoadStop: (controller, url) async {
+              await controller.evaluateJavascript(
+                source: '''
+    (function () {
+      document.addEventListener('click', function (e) {
     const a = e.target.closest('a');
     if (!a) return;
-
+    
     if (a.href.startsWith('blob:')) {
       e.preventDefault();
-
+    
       fetch(a.href)
         .then(res => res.blob())
         .then(blob => {
@@ -131,79 +210,111 @@ class DepositBalancePaymentWebviewView
           reader.readAsDataURL(blob);
         });
     }
-  }, true);
-})();
-''',
-            );
-          },
-          shouldOverrideUrlLoading:
-              (webviewController, navigationAction) async {
-                final uri = navigationAction.request.url!;
+      }, true);
+    })();
+    ''',
+              );
+            },
+            shouldOverrideUrlLoading:
+                (webviewController, navigationAction) async {
+                  final uri = navigationAction.request.url!;
 
-                if (uri.scheme == "intent" ||
-                    !["http", "https"].contains(uri.scheme)) {
-                  await controller.handleIntent(uri.toString());
-                  return NavigationActionPolicy.CANCEL;
-                }
+                  if (uri.scheme == "intent" ||
+                      !["http", "https"].contains(uri.scheme)) {
+                    await controller.handleIntent(uri.toString());
+                    return NavigationActionPolicy.CANCEL;
+                  }
 
-                if (uri.queryParameters['action'].toString() == "back") {
-                  await controller.showDialogBackButton();
-                  return NavigationActionPolicy.CANCEL;
-                }
+                  if (uri.queryParameters['action'].toString() == "back") {
+                    await controller.showDialogBackButton();
+                    return NavigationActionPolicy.CANCEL;
+                  }
 
-                if (uri.queryParameters['transaction_status'].toString() ==
-                    "settlement") {
-                  Get.back();
-                  Get.back();
-                  final SnackBar snackBar = SnackBar(
-                    behavior: SnackBarBehavior.fixed,
-                    backgroundColor: controller
-                        .themeColorServices
-                        .sematicColorGreen400
-                        .value,
-                    content: Text(
-                      "Saldo berhasil ditambah",
-                      style: controller
-                          .typographyServices
-                          .bodySmallRegular
-                          .value
-                          .copyWith(
-                            color: controller
-                                .themeColorServices
-                                .neutralsColorGrey0
-                                .value,
-                          ),
-                    ),
-                  );
-                  rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-                  return NavigationActionPolicy.CANCEL;
-                } else if (uri.queryParameters['action'].toString() ==
-                    "abandoned") {
-                  Get.back();
-                  final SnackBar snackBar = SnackBar(
-                    behavior: SnackBarBehavior.fixed,
-                    backgroundColor:
-                        controller.themeColorServices.sematicColorRed400.value,
-                    content: Text(
-                      "Transaksi kedaluwarsa",
-                      style: controller
-                          .typographyServices
-                          .bodySmallRegular
-                          .value
-                          .copyWith(
-                            color: controller
-                                .themeColorServices
-                                .neutralsColorGrey0
-                                .value,
-                          ),
-                    ),
-                  );
-                  rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-                  return NavigationActionPolicy.CANCEL;
-                }
+                  if (uri.queryParameters['transaction_status'].toString() ==
+                      "settlement") {
+                    Get.back();
+                    Get.back();
+                    final SnackBar snackBar = SnackBar(
+                      behavior: SnackBarBehavior.fixed,
+                      backgroundColor: controller
+                          .themeColorServices
+                          .sematicColorGreen400
+                          .value,
+                      content: Text(
+                        "Saldo berhasil ditambah",
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
+                            .value
+                            .copyWith(
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey0
+                                  .value,
+                            ),
+                      ),
+                    );
+                    rootScaffoldMessengerKey.currentState?.showSnackBar(
+                      snackBar,
+                    );
+                    return NavigationActionPolicy.CANCEL;
+                  } else if (uri.queryParameters['action'].toString() ==
+                      "abandoned") {
+                    Get.back();
+                    final SnackBar snackBar = SnackBar(
+                      behavior: SnackBarBehavior.fixed,
+                      backgroundColor: controller
+                          .themeColorServices
+                          .sematicColorRed400
+                          .value,
+                      content: Text(
+                        "Transaksi kedaluwarsa",
+                        style: controller
+                            .typographyServices
+                            .bodySmallRegular
+                            .value
+                            .copyWith(
+                              color: controller
+                                  .themeColorServices
+                                  .neutralsColorGrey0
+                                  .value,
+                            ),
+                      ),
+                    );
+                    rootScaffoldMessengerKey.currentState?.showSnackBar(
+                      snackBar,
+                    );
+                    return NavigationActionPolicy.CANCEL;
+                  }
 
-                return NavigationActionPolicy.ALLOW;
-              },
+                  return NavigationActionPolicy.ALLOW;
+                },
+          ),
+          bottomNavigationBar: controller.rechargeStatusCompleted.value == false
+              ? null
+              : BottomAppBar(
+                  height: 78,
+                  color: controller.themeColorServices.neutralsColorGrey0.value,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      LoaderElevatedButton(
+                        onPressed: () async {
+                          Get.back();
+                        },
+                        child: Text(
+                          "OK",
+                          style: controller
+                              .typographyServices
+                              .bodySmallBold
+                              .value
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
         ),
       ),
     );

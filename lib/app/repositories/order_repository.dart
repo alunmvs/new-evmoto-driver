@@ -5,6 +5,7 @@ import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
+import 'package:new_evmoto_driver/app/data/models/working_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/environment.dart';
@@ -12,6 +13,37 @@ import 'package:new_evmoto_driver/environment.dart';
 class OrderRepository {
   final apiServices = Get.find<ApiServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
+
+  Future<Working?> getWorking({required int language}) async {
+    try {
+      var url = "$baseUrl/orderServer/order/working";
+
+      var formData = FormData.fromMap({"language": language});
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      // if (response.data['code'] != 200) {
+      //   throw response.data['msg'];
+      // }
+
+      return Working.fromJson(response.data['data'] ?? {});
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
 
   Future<List<Order>> getOrderList({
     required int size,
@@ -112,6 +144,41 @@ class OrderRepository {
     }
   }
 
+  Future<void> orderPushConfirm({
+    required String orderId,
+    required int language,
+  }) async {
+    try {
+      var url = "$baseUrl/orderServer/push/confirm";
+
+      var formData = FormData.fromMap({
+        "language": language,
+        "orderId": orderId,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
+
   Future<void> grabOrder({
     required int orderType,
     required String orderId,
@@ -124,6 +191,41 @@ class OrderRepository {
         "language": language,
         "orderType": orderType,
         "orderId": orderId,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
+
+  Future<void> cashCollected({
+    required String orderId,
+    required int language,
+  }) async {
+    try {
+      var url = "$baseUrl/account/driver/pay/confirm";
+
+      var formData = FormData.fromMap({
+        "orderId": orderId,
+        "language": language,
       });
 
       var storage = FlutterSecureStorage();

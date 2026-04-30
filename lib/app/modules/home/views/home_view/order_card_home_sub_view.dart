@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
-import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 
 class OrderCardHomeSubView extends GetView<HomeController> {
   final Order order;
@@ -20,7 +19,7 @@ class OrderCardHomeSubView extends GetView<HomeController> {
           Routes.ORDER_DETAIL,
           arguments: {"order_id": order.id, "order_type": order.type},
         );
-        await controller.refreshAll();
+        // await controller.refreshAll();
       },
       child: Container(
         padding: EdgeInsets.all(16),
@@ -33,84 +32,84 @@ class OrderCardHomeSubView extends GetView<HomeController> {
         ),
         child: Column(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 27,
-                  height: 27,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/icon_passenger.svg",
-                        width: 11.7,
-                        height: 14.17,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 6),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        order.orderUser?.name ?? "-",
-                        style: controller
-                            .typographyServices
-                            .bodySmallRegular
-                            .value
-                            .copyWith(
-                              color:
-                                  controller.themeColorServices.textColor.value,
-                            ),
-                      ),
-                      Text(
-                        "(${order.historyNum})",
-                        style: controller
-                            .typographyServices
-                            .bodySmallRegular
-                            .value
-                            .copyWith(
-                              color:
-                                  controller.themeColorServices.textColor.value,
-                            ),
-                      ),
-                      // Row(
-                      //   children: [
-                      //     SvgPicture.asset(
-                      //       "assets/icons/icon_star.svg",
-                      //       width: 9.17,
-                      //       height: 10,
-                      //       color: controller
-                      //           .themeColorServices
-                      //           .sematicColorYellow400
-                      //           .value,
-                      //     ),
-                      //     SizedBox(width: 4),
-                      //     Text(
-                      //       "5.0 (0)",
-                      //       style: controller
-                      //           .typographyServices
-                      //           .bodySmallRegular
-                      //           .value
-                      //           .copyWith(
-                      //             color: controller
-                      //                 .themeColorServices
-                      //                 .textColor
-                      //                 .value,
-                      //           ),
-                      //     ),
-                      //   ],
-                      // ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     SizedBox(
+            //       width: 27,
+            //       height: 27,
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //           SvgPicture.asset(
+            //             "assets/icons/icon_passenger.svg",
+            //             width: 11.7,
+            //             height: 14.17,
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     SizedBox(width: 6),
+            //     Expanded(
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           Text(
+            //             order.orderUser?.name ?? "-",
+            //             style: controller
+            //                 .typographyServices
+            //                 .bodySmallRegular
+            //                 .value
+            //                 .copyWith(
+            //                   color:
+            //                       controller.themeColorServices.textColor.value,
+            //                 ),
+            //           ),
+            //           Text(
+            //             "(${order.historyNum})",
+            //             style: controller
+            //                 .typographyServices
+            //                 .bodySmallRegular
+            //                 .value
+            //                 .copyWith(
+            //                   color:
+            //                       controller.themeColorServices.textColor.value,
+            //                 ),
+            //           ),
+            //           // Row(
+            //           //   children: [
+            //           //     SvgPicture.asset(
+            //           //       "assets/icons/icon_star.svg",
+            //           //       width: 9.17,
+            //           //       height: 10,
+            //           //       color: controller
+            //           //           .themeColorServices
+            //           //           .sematicColorYellow400
+            //           //           .value,
+            //           //     ),
+            //           //     SizedBox(width: 4),
+            //           //     Text(
+            //           //       "5.0 (0)",
+            //           //       style: controller
+            //           //           .typographyServices
+            //           //           .bodySmallRegular
+            //           //           .value
+            //           //           .copyWith(
+            //           //             color: controller
+            //           //                 .themeColorServices
+            //           //                 .textColor
+            //           //                 .value,
+            //           //           ),
+            //           //     ),
+            //           //   ],
+            //           // ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(height: 8),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -241,30 +240,30 @@ class OrderCardHomeSubView extends GetView<HomeController> {
                 ),
               ],
             ),
-            if (order.state == 1) ...[
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: LoaderElevatedButton(
-                      onPressed: () async {
-                        await controller.onTapGrabDialog(order: order);
-                      },
-                      child: Text(
-                        "Ambil",
-                        style: controller.typographyServices.bodySmallBold.value
-                            .copyWith(
-                              color: controller
-                                  .themeColorServices
-                                  .neutralsColorGrey0
-                                  .value,
-                            ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            // if (order.state == 1) ...[
+            //   SizedBox(height: 16),
+            //   Row(
+            //     children: [
+            //       Expanded(
+            //         child: LoaderElevatedButton(
+            //           onPressed: () async {
+            //             await controller.onTapGrabDialog(order: order);
+            //           },
+            //           child: Text(
+            //             "Ambil",
+            //             style: controller.typographyServices.bodySmallBold.value
+            //                 .copyWith(
+            //                   color: controller
+            //                       .themeColorServices
+            //                       .neutralsColorGrey0
+            //                       .value,
+            //                 ),
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ],
           ],
         ),
       ),

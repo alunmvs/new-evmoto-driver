@@ -35,6 +35,8 @@ class WithdrawAmountController extends GetxController {
   final selectedBankAccount = BankAccount().obs;
   final adminFee = 0.0.obs;
 
+  final canRequestFocus = true.obs;
+
   final isFetch = false.obs;
 
   @override
@@ -64,6 +66,8 @@ class WithdrawAmountController extends GetxController {
   }
 
   Future<void> onTapSubmit() async {
+    canRequestFocus.value = false;
+    await Future.delayed(Duration(milliseconds: 100));
     formGroup.markAllAsTouched();
 
     if (formGroup.valid) {
@@ -87,6 +91,7 @@ class WithdrawAmountController extends GetxController {
           ),
         );
         rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+        canRequestFocus.value = true;
         return;
       }
 
@@ -412,5 +417,7 @@ class WithdrawAmountController extends GetxController {
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
+
+    canRequestFocus.value = true;
   }
 }

@@ -714,6 +714,8 @@ class WithdrawAmountView extends GetView<WithdrawAmountController> {
                           ),
                           SizedBox(height: 16),
                           ReactiveTextField(
+                            autofocus: false,
+                            canRequestFocus: controller.canRequestFocus.value,
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular

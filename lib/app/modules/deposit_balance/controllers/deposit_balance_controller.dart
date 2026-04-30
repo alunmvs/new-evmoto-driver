@@ -98,18 +98,19 @@ class DepositBalanceController extends GetxController {
           rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
           return;
         }
-        var depositBalance = await paymentRepository.depositBalance(
+        var depositBalance = await paymentRepository.rechargeDriver(
           language: 2,
-          payType: 1,
           money: double.parse(
             formGroup.control("money").value.toString().replaceAll(".", ""),
           ),
-          type: 2,
         );
 
         await Get.toNamed(
           Routes.DEPOSIT_BALANCE_PAYMENT_WEBVIEW,
-          arguments: {"redirect_url": depositBalance.redirectUrl},
+          arguments: {
+            "redirect_url": depositBalance.redirectUrl,
+            "order_id": depositBalance.orderId,
+          },
         );
 
         await getUserInfoDetail();

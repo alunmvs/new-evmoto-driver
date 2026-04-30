@@ -42,6 +42,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class FirebasePushNotificationServices extends GetxService {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final fcmToken = "".obs;
+  final apnsToken = "".obs;
 
   @override
   Future<void> onInit() async {
@@ -82,12 +84,11 @@ class FirebasePushNotificationServices extends GetxService {
   Future<void> initTokens() async {
     if (Platform.isIOS) {
       final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-      if (apnsToken != null) {}
+      this.apnsToken.value = apnsToken ?? "";
     }
 
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-
-    print("ini fcm token $fcmToken");
+    var fcmToken = await FirebaseMessaging.instance.getToken();
+    this.fcmToken.value = fcmToken ?? "";
   }
 
   Future<void> initListeners() async {

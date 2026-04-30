@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -15,16 +15,20 @@ import 'package:new_evmoto_driver/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
+import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
-import 'package:new_evmoto_driver/app/utils/location_helper.dart';
+import 'package:new_evmoto_driver/app/utils/time_process_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:new_evmoto_driver/app/data/models/open_map_direction_model.dart'
+    as direction_model;
 
-class OrderDetailController extends GetxController with WidgetsBindingObserver {
+class OrderDetailController extends GetxController {
   final OrderRepository orderRepository;
   final GoogleMapsRepository googleMapsRepository;
   final OpenMapsRepository openMapsRepository;
@@ -60,13 +64,36 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
   final isInformationShow = false.obs;
 
-  late Timer? driverCurrentLocationTimer;
-  late Timer? refocusMapBoundsTimer;
+  Timer? driverCurrentLocationTimer;
+  Timer? refocusMapBoundsTimer;
 
   final isSchedulerDriverCurrentLocationIsProcess = false.obs;
   final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
 
-  final isLocationReadyStatus = false.obs;
+  final locationServices = Get.find<LocationServices>();
+
+  final driverToOriginDirection = direction_model.OpenMapDirection().obs;
+  final driverToDestinationDirection = direction_model.OpenMapDirection().obs;
+  final originToDestinationDirection = direction_model.OpenMapDirection().obs;
+
+  // debug purposes
+  final distanceFromRoute = 0.0.obs;
+  final distanceFromNearestRoute = 0.0.obs;
+  final totalHitAPIGetDirectionDriverToOrigin = 0.obs;
+  final totalHitAPIGetDirectionDriverToDestination = 0.obs;
+  final totalRefreshStatus = 0.obs;
+
+  final isDriverToOriginDirectionVisible = true.obs;
+  final isDriverToDestinationDirectionVisible = true.obs;
+  final isOriginToDestinationDirectionVisible = true.obs;
+  final isMarkerDriverVisible = true.obs;
+  final isMarkerOriginVisible = true.obs;
+  final isMarkerDestinationVisible = true.obs;
+  final isPinLocationWaitingForDriverHide = true.obs;
+
+  final state = 0.obs;
+  final previousState = 0.obs;
+
   final isFetch = false.obs;
 
   @override
@@ -76,70 +103,122 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     orderId.value = Get.arguments['order_id'].toString();
     orderType.value = Get.arguments['order_type'];
 
-    isLocationReadyStatus.value = await isLocationReady();
+    // if (locationServices.isPermissionLocationAllow.value == true) {
+    await Future.wait([getOrderDetail(), getOrderUserDetail()]);
+    await Future.wait([getAllRoutingCache()]);
+    isFetch.value = false;
 
-    if (isLocationReadyStatus.value == true) {
-      await requestLocation();
-      await Future.wait([getOrderDetail(), getOrderUserDetail()]);
-      await joinFirestoreChatRooms();
-      WidgetsBinding.instance.addObserver(this);
-      isFetch.value = false;
+    await Future.wait([updateVisibility()]);
+    await Future.wait([
+      setupAllMarkers(),
+      setupAllRouting(),
+      updateCameraAutoFocus(),
+    ]);
 
-      if (orderDetail.value.state == 1 ||
-          orderDetail.value.state == 2 ||
-          orderDetail.value.state == 3) {
-        await setupGoogleMapsPickUpCustomer();
-      }
-
-      if (orderDetail.value.state == 4 ||
-          orderDetail.value.state == 5 ||
-          orderDetail.value.state == 6) {
-        await setupGoogleMapOriginToDestination();
-      }
-
-      await Future.wait([
-        setupSchedulerDriverCurrentLocation(),
-        setupSchedulerDriverRefocusMapBound(),
-      ]);
-
-      if ([6, 7, 8].contains(orderDetail.value.state)) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Get.offAndToNamed(
-            Routes.ORDER_PAYMENT_CONFIRMATION,
-            arguments: {
-              "order_id": orderId.value,
-              "order_type": orderType.value,
-            },
-          );
-        });
-      }
-
-      if ([9].contains(orderDetail.value.state)) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Get.offAndToNamed(
-            Routes.ORDER_DETAIL_DONE,
-            arguments: {
-              "order_id": orderId.value,
-              "order_type": orderType.value,
-            },
-          );
-        });
-      }
-
-      if (orderDetail.value.state == 10) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Get.offAndToNamed(
-            Routes.ORDER_DETAIL_CANCEL,
-            arguments: {
-              "order_id": orderId.value,
-              "order_type": orderType.value,
-            },
-          );
-        });
-      }
-    } else {
-      isFetch.value = false;
+    if ([2, 3, 4, 5, 6, 7, 8].contains(orderDetail.value.state)) {
+      await updateDriverPositionReducedPolyline();
+      await updateDriverPositionReroutingOffRoute();
     }
+
+    ever(locationServices.currentLatitude, (value) async {
+      await handleSocketDriverPosition();
+    });
+
+    ever(state, (value) async {
+      await measureTime(
+        "[Essentials] Get Order Ride Detail & Get Order Ride Server Detail",
+        () => Future.wait([getOrderDetail(), getOrderUserDetail()]),
+      );
+
+      if (value == 1) {}
+
+      if (value == 2) {
+        if (locationServices.currentLatitude.value == null) {
+          await locationServices.currentLatitude.stream.firstWhere(
+            (value) => value != null,
+          );
+          await getAllRoutingCache();
+        }
+      }
+
+      await measureTime(
+        "[Essentials] Get All Routing Cache",
+        () => Future.wait([getAllRoutingCache()]),
+      );
+
+      await updateVisibility();
+      await Future.wait([
+        setupAllMarkers(),
+        setupAllRouting(),
+        updateCameraAutoFocus(),
+      ]);
+      // await Future.wait([checkReceiveInvoice()]);
+
+      if ([2, 3, 4, 5, 6, 7, 8].contains(state.value)) {
+        await updateDriverPositionReducedPolyline();
+        await updateDriverPositionReroutingOffRoute();
+      }
+
+      previousState.value = value;
+    });
+
+    await checkSendInvoice();
+
+    // if (orderDetail.value.state == 1 ||
+    //     orderDetail.value.state == 2 ||
+    //     orderDetail.value.state == 3) {
+    //   await setupGoogleMapsPickUpCustomer();
+    // }
+
+    // if (orderDetail.value.state == 4 ||
+    //     orderDetail.value.state == 5 ||
+    //     orderDetail.value.state == 6) {
+    //   await setupGoogleMapOriginToDestination();
+    // }
+
+    // await Future.wait([
+    //   setupSchedulerDriverCurrentLocation(),
+    //   setupSchedulerDriverRefocusMapBound(),
+    // ]);
+
+    // if ([6, 7, 8].contains(orderDetail.value.state)) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     Get.offAndToNamed(
+    //       Routes.ORDER_PAYMENT_CONFIRMATION,
+    //       arguments: {
+    //         "order_id": orderId.value,
+    //         "order_type": orderType.value,
+    //       },
+    //     );
+    //   });
+    // }
+
+    // if ([9].contains(orderDetail.value.state)) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     Get.offAndToNamed(
+    //       Routes.ORDER_DETAIL_DONE,
+    //       arguments: {
+    //         "order_id": orderId.value,
+    //         "order_type": orderType.value,
+    //       },
+    //     );
+    //   });
+    // }
+
+    // if (orderDetail.value.state == 10) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     Get.offAndToNamed(
+    //       Routes.ORDER_DETAIL_CANCEL,
+    //       arguments: {
+    //         "order_id": orderId.value,
+    //         "order_type": orderType.value,
+    //       },
+    //     );
+    //   });
+    // }
+    // } else {
+    //   isFetch.value = false;
+    // }
   }
 
   @override
@@ -150,18 +229,6 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   @override
   Future<void> onClose() async {
     super.onClose();
-
-    WidgetsBinding.instance.removeObserver(this);
-
-    await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_participants')
-        .doc(orderDetail.value.orderId.toString())
-        .set({
-          "driverId": orderDetail.value.driverId,
-          "driverName": homeController.userInfo.value.name,
-          "driverIsOnline": false,
-          "driverLastSeen": FieldValue.serverTimestamp(),
-        }, SetOptions(merge: true));
 
     try {
       googleMapController.dispose();
@@ -174,35 +241,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     } catch (e) {}
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.resumed) {
-      await FirebaseFirestore.instance
-          .collection('evmoto_order_chat_participants')
-          .doc(orderDetail.value.orderId.toString())
-          .set({
-            "driverId": orderDetail.value.driverId,
-            "driverName": homeController.userInfo.value.name,
-            "driverIsOnline": true,
-            "driverLastSeen": FieldValue.serverTimestamp(),
-          }, SetOptions(merge: true));
-      await refreshAll();
-    } else if (state == AppLifecycleState.paused) {
-      await FirebaseFirestore.instance
-          .collection('evmoto_order_chat_participants')
-          .doc(orderDetail.value.orderId.toString())
-          .set({
-            "driverId": orderDetail.value.driverId,
-            "driverName": homeController.userInfo.value.name,
-            "driverIsOnline": false,
-            "driverLastSeen": FieldValue.serverTimestamp(),
-          }, SetOptions(merge: true));
-    }
-  }
-
   Future<void> refreshAll() async {
-    WidgetsBinding.instance.removeObserver(this);
-
     markers.clear();
     polylines.clear();
     polylinesCoordinate.clear();
@@ -246,30 +285,6 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
-
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  Future<void> joinFirestoreChatRooms() async {
-    FirebaseFirestore.instance
-        .collection('evmoto_order_chat_participants')
-        .doc(orderDetail.value.orderId.toString())
-        .snapshots()
-        .listen((event) {
-          evmotoOrderChatParticipants.value =
-              EvmotoOrderChatParticipants.fromJson(event.data()!);
-        });
-
-    await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_participants')
-        .doc(orderDetail.value.orderId.toString())
-        .set({
-          "driverId": orderDetail.value.driverId,
-          "driverName": homeController.userInfo.value.name,
-          "driverIsOnline": true,
-          "driverLastSeen": FieldValue.serverTimestamp(),
-          "driverJoinedAt": FieldValue.serverTimestamp(),
-        }, SetOptions(merge: true));
   }
 
   Future<void> requestLocation() async {
@@ -301,6 +316,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       orderId: orderId.value,
       language: 2,
     );
+
+    state.value = orderDetail.value.state ?? 0;
   }
 
   Future<void> getOrderUserDetail() async {
@@ -805,9 +822,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       await orderRepository.setOrderState(
         orderType: orderType.value,
         orderId: orderId.value,
-        lat: currentLatitude.value,
-        lon: currentLongitude.value,
-        language: 2,
+        lat: locationServices.currentLatitude.value.toString(),
+        lon: locationServices.currentLongitude.value.toString(),
+        language: languageServices.languageCodeSystem.value,
         state: 3,
       );
     } catch (e) {
@@ -823,7 +840,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } finally {
-      await refreshAll();
+      state.value = 3;
     }
   }
 
@@ -832,9 +849,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       await orderRepository.setOrderState(
         orderType: orderType.value,
         orderId: orderId.value,
-        lat: currentLatitude.value,
-        lon: currentLongitude.value,
-        language: 2,
+        lat: locationServices.currentLatitude.value.toString(),
+        lon: locationServices.currentLongitude.value.toString(),
+        language: languageServices.languageCodeSystem.value,
         state: 4,
       );
     } catch (e) {
@@ -850,7 +867,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } finally {
-      await refreshAll();
+      state.value = 4;
     }
   }
 
@@ -859,9 +876,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       await orderRepository.setOrderState(
         orderType: orderType.value,
         orderId: orderId.value,
-        lat: currentLatitude.value,
-        lon: currentLongitude.value,
-        language: 2,
+        lat: locationServices.currentLatitude.value.toString(),
+        lon: locationServices.currentLongitude.value.toString(),
+        language: languageServices.languageCodeSystem.value,
         state: 5,
       );
     } catch (e) {
@@ -877,7 +894,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } finally {
-      await refreshAll();
+      state.value = 5;
     }
   }
 
@@ -886,13 +903,15 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       await orderRepository.setOrderState(
         orderType: orderType.value,
         orderId: orderId.value,
-        lat: currentLatitude.value,
-        lon: currentLongitude.value,
-        language: 2,
+        lat: locationServices.currentLatitude.value.toString(),
+        lon: locationServices.currentLongitude.value.toString(),
+        language: languageServices.languageCodeSystem.value,
         state: 6,
       );
-      await getOrderDetail();
 
+      state.value = 6;
+
+      Get.back();
       Get.toNamed(
         Routes.ORDER_PAYMENT_CONFIRMATION,
         arguments: {"order_id": orderId.value, "order_type": orderType.value},
@@ -1218,6 +1237,662 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     } finally {
       await refreshAll();
     }
+  }
+
+  // driverToOriginDirection & originToDestinationDirection
+  Future<void> getAllRoutingCache({
+    bool forceUpdateDriverToOrigin = false,
+    bool forceUpdateDriverToDestination = false,
+  }) async {
+    var prefs = await SharedPreferences.getInstance();
+
+    var driverToOriginDirectionCache = prefs.getString(
+      'order_${orderDetail.value.orderId}_driver_to_origin_direction_cache_${orderDetail.value.driverId}',
+    );
+    var driverToDestinationDirectionCache = prefs.getString(
+      'order_${orderDetail.value.orderId}_driver_to_destination_direction_cache_${orderDetail.value.driverId}',
+    );
+
+    var totalHitAPIGetDirectionDriverToOrigin =
+        prefs.getInt(
+          'order_${orderDetail.value.orderId}_driver_to_origin_total_hit_api_${orderDetail.value.driverId}',
+        ) ??
+        0;
+
+    var totalHitAPIGetDirectionDriverToDestination =
+        prefs.getInt(
+          'order_${orderDetail.value.orderId}_driver_to_destination_total_hit_api_${orderDetail.value.driverId}',
+        ) ??
+        0;
+    // var originToDestinationCache = prefs.getString(
+    //   'order_${orderRideDetail.value.orderId}_origin_to_destination_direction_cache',
+    // );
+
+    if ([2, 3, 4].contains(orderDetail.value.state)) {
+      if (locationServices.currentLatitude.value.toString() != "") {
+        if (driverToOriginDirectionCache == null ||
+            forceUpdateDriverToOrigin == true) {
+          driverToOriginDirection.value = await openMapsRepository.getDirection(
+            originLatitude: locationServices.currentLatitude.value.toString(),
+            originLongitude: locationServices.currentLongitude.value.toString(),
+            destinationLatitude: orderDetail.value.startLat.toString(),
+            destinationLongitude: orderDetail.value.startLon.toString(),
+          );
+          totalHitAPIGetDirectionDriverToOrigin += 1;
+          await prefs.setString(
+            'order_${orderDetail.value.orderId}_driver_to_origin_direction_cache_${orderDetail.value.driverId}',
+            jsonEncode(driverToOriginDirection.value.toJson()),
+          );
+          await prefs.setInt(
+            'order_${orderDetail.value.orderId}_driver_to_origin_total_hit_api_${orderDetail.value.driverId}',
+            totalHitAPIGetDirectionDriverToOrigin,
+          );
+          this.totalHitAPIGetDirectionDriverToOrigin.value =
+              totalHitAPIGetDirectionDriverToOrigin;
+        } else {
+          driverToOriginDirection.value =
+              direction_model.OpenMapDirection.fromJson(
+                jsonDecode(driverToOriginDirectionCache),
+              );
+        }
+      }
+    }
+
+    if ([5, 6, 7, 8].contains(orderDetail.value.state)) {
+      if (locationServices.currentLatitude.value.toString() != "") {
+        if (driverToDestinationDirectionCache == null ||
+            forceUpdateDriverToDestination == true) {
+          driverToDestinationDirection
+              .value = await openMapsRepository.getDirection(
+            originLatitude: locationServices.currentLatitude.value.toString(),
+            originLongitude: locationServices.currentLongitude.value.toString(),
+            destinationLatitude: orderDetail.value.endLat.toString(),
+            destinationLongitude: orderDetail.value.endLon.toString(),
+          );
+          totalHitAPIGetDirectionDriverToDestination += 1;
+          await prefs.setString(
+            'order_${orderDetail.value.orderId}_driver_to_destination_direction_cache_${orderDetail.value.driverId}',
+            jsonEncode(driverToDestinationDirection.value.toJson()),
+          );
+          await prefs.setInt(
+            'order_${orderDetail.value.orderId}_driver_to_destination_total_hit_api_${orderDetail.value.driverId}',
+            totalHitAPIGetDirectionDriverToDestination,
+          );
+          this.totalHitAPIGetDirectionDriverToDestination.value =
+              totalHitAPIGetDirectionDriverToDestination;
+        } else {
+          driverToDestinationDirection.value =
+              direction_model.OpenMapDirection.fromJson(
+                jsonDecode(driverToDestinationDirectionCache),
+              );
+        }
+      }
+    }
+
+    // if (originToDestinationCache == null) {
+    //   originToDestinationDirection.value = await openMapsRepository
+    //       .getDirection(
+    //         originLatitude: orderRideDetail.value.startLat.toString(),
+    //         originLongitude: orderRideDetail.value.startLon.toString(),
+    //         destinationLatitude: orderRideDetail.value.endLat.toString(),
+    //         destinationLongitude: orderRideDetail.value.endLon.toString(),
+    //       );
+
+    //   await prefs.setString(
+    //     'order_${orderRideDetail.value.orderId}_origin_to_destination_direction_cache',
+    //     jsonEncode(originToDestinationDirection.value.toJson()),
+    //   );
+    // } else {
+    //   originToDestinationDirection.value = direction_model
+    //       .OpenMapDirection.fromJson(jsonDecode(originToDestinationCache));
+    // }
+  }
+
+  Future<void> updateVisibility() async {
+    if ([1].contains(orderDetail.value.state)) {
+      isDriverToOriginDirectionVisible.value = false;
+      isOriginToDestinationDirectionVisible.value = false;
+      isMarkerDriverVisible.value = false;
+      isMarkerOriginVisible.value = false;
+      isMarkerDestinationVisible.value = false;
+      isPinLocationWaitingForDriverHide.value = false;
+    }
+
+    if ([2, 3, 4].contains(orderDetail.value.state)) {
+      isDriverToOriginDirectionVisible.value = true;
+      isOriginToDestinationDirectionVisible.value = true;
+      isMarkerDriverVisible.value = true;
+      isMarkerOriginVisible.value = true;
+      isMarkerDestinationVisible.value = false;
+      isPinLocationWaitingForDriverHide.value = true;
+    }
+
+    if ([5, 6, 7, 8].contains(orderDetail.value.state)) {
+      isDriverToOriginDirectionVisible.value = false;
+      isOriginToDestinationDirectionVisible.value = true;
+      isMarkerDriverVisible.value = true;
+      isMarkerOriginVisible.value = true;
+      isMarkerDestinationVisible.value = true;
+      isPinLocationWaitingForDriverHide.value = true;
+    }
+  }
+
+  // markers
+  Future<void> setupAllMarkers() async {
+    if ([1].contains(orderDetail.value.state)) {
+      markers.clear();
+    }
+
+    if ([2, 3, 4].contains(orderDetail.value.state)) {
+      var driverMarkerId = MarkerId("driver");
+      var driverNewMarker = Marker(
+        markerId: driverMarkerId,
+        position: LatLng(
+          double.parse(locationServices.currentLatitude.value.toString()),
+          double.parse(locationServices.currentLongitude.value.toString()),
+        ),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(size: Size(64, 106)),
+          'assets/icons/icon_driver.png',
+        ),
+        anchor: Offset(0.5, 0.5),
+        visible: isMarkerDriverVisible.value,
+      );
+      upsertMarker(markerId: driverMarkerId, newMarker: driverNewMarker);
+
+      var originMarkerId = MarkerId("origin");
+      var originNewMarker = Marker(
+        markerId: originMarkerId,
+        position: LatLng(
+          orderDetail.value.startLat!,
+          orderDetail.value.startLon!,
+        ),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(size: Size(33, 39)),
+          'assets/icons/icon_pinpoint_map_green.png',
+        ),
+        anchor: Offset(0.5, 0.5),
+        visible: isMarkerOriginVisible.value,
+      );
+      upsertMarker(markerId: originMarkerId, newMarker: originNewMarker);
+    }
+
+    if ([5, 6, 7, 8].contains(orderDetail.value.state)) {
+      var driverMarkerId = MarkerId("driver");
+      var driverNewMarker = Marker(
+        markerId: driverMarkerId,
+        position: LatLng(
+          double.parse(locationServices.currentLatitude.value.toString()),
+          double.parse(locationServices.currentLongitude.value.toString()),
+        ),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(size: Size(64, 106)),
+          'assets/icons/icon_driver.png',
+        ),
+        anchor: Offset(0.5, 0.5),
+        visible: isMarkerDriverVisible.value,
+      );
+      upsertMarker(markerId: driverMarkerId, newMarker: driverNewMarker);
+
+      var originMarkerId = MarkerId("origin");
+      var originNewMarker = Marker(
+        markerId: originMarkerId,
+        position: LatLng(
+          orderDetail.value.startLat!,
+          orderDetail.value.startLon!,
+        ),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(size: Size(33, 39)),
+          'assets/icons/icon_pinpoint_map_green.png',
+        ),
+        anchor: Offset(0.5, 0.5),
+        visible: isMarkerOriginVisible.value,
+      );
+      upsertMarker(markerId: originMarkerId, newMarker: originNewMarker);
+
+      var destinationMarkerId = MarkerId("destination");
+      var destinationNewMarker = Marker(
+        markerId: destinationMarkerId,
+        position: LatLng(orderDetail.value.endLat!, orderDetail.value.endLon!),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(size: Size(33, 39)),
+          'assets/icons/icon_pinpoint_map_red.png',
+        ),
+        anchor: Offset(0.5, 0.5),
+        visible: isMarkerDestinationVisible.value,
+      );
+      upsertMarker(
+        markerId: destinationMarkerId,
+        newMarker: destinationNewMarker,
+      );
+    }
+  }
+
+  // googleMapController
+  Future<void> updateCameraAutoFocus() async {
+    // waiting driver accept
+    if ([1].contains(orderDetail.value.state)) {
+      if (isClosed) return;
+      await googleMapController.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          LatLng(orderDetail.value.startLat!, orderDetail.value.startLon!),
+          16,
+        ),
+      );
+    }
+
+    var driverLatitude =
+        (double.tryParse(locationServices.currentLatitude.value.toString()) ??
+                0.0)
+            .toInt();
+    var driverLongitude =
+        (double.tryParse(locationServices.currentLongitude.value.toString()) ??
+                0.0)
+            .toInt();
+
+    if (driverLatitude != 0 && driverLongitude != 0) {
+      // driver to origin
+      if ([2, 3, 4].contains(orderDetail.value.state)) {
+        LatLngBounds bounds;
+
+        var originLatitude = locationServices.currentLatitude.value!;
+        var originLongitude = locationServices.currentLongitude.value!;
+        var destinationLatitude = orderDetail.value.startLat!;
+        var destinationLongitude = orderDetail.value.startLon!;
+
+        if (originLatitude > destinationLatitude &&
+            originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, destinationLongitude),
+            northeast: LatLng(originLatitude, originLongitude),
+          );
+        } else if (originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, destinationLongitude),
+            northeast: LatLng(destinationLatitude, originLongitude),
+          );
+        } else if (originLatitude > destinationLatitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, originLongitude),
+            northeast: LatLng(originLatitude, destinationLongitude),
+          );
+        } else {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, originLongitude),
+            northeast: LatLng(destinationLatitude, destinationLongitude),
+          );
+        }
+
+        var movementDirection = compareLatLng(
+          originLat: originLatitude,
+          originLng: originLongitude,
+          destLat: destinationLatitude,
+          destLng: destinationLongitude,
+        );
+
+        if (isClosed) return;
+        if (movementDirection == MovementDirection.vertical) {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+          );
+        } else {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+          );
+        }
+      }
+
+      // driver to destination
+      if ([5, 6, 7, 8].contains(orderDetail.value.state)) {
+        LatLngBounds bounds;
+
+        var originLatitude = locationServices.currentLatitude.value!;
+        var originLongitude = locationServices.currentLongitude.value!;
+        var destinationLatitude = orderDetail.value.endLat!;
+        var destinationLongitude = orderDetail.value.endLon!;
+
+        if (originLatitude > destinationLatitude &&
+            originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, destinationLongitude),
+            northeast: LatLng(originLatitude, originLongitude),
+          );
+        } else if (originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, destinationLongitude),
+            northeast: LatLng(destinationLatitude, originLongitude),
+          );
+        } else if (originLatitude > destinationLatitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, originLongitude),
+            northeast: LatLng(originLatitude, destinationLongitude),
+          );
+        } else {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, originLongitude),
+            northeast: LatLng(destinationLatitude, destinationLongitude),
+          );
+        }
+
+        var movementDirection = compareLatLng(
+          originLat: originLatitude,
+          originLng: originLongitude,
+          destLat: destinationLatitude,
+          destLng: destinationLongitude,
+        );
+
+        if (isClosed) return;
+        if (movementDirection == MovementDirection.vertical) {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+          );
+        } else {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+          );
+        }
+      }
+    } else {
+      if ([2, 3, 4, 5, 6, 7, 8].contains(orderDetail.value.state)) {
+        LatLngBounds bounds;
+
+        var originLatitude = orderDetail.value.startLat!;
+        var originLongitude = orderDetail.value.startLon!;
+        var destinationLatitude = orderDetail.value.endLat!;
+        var destinationLongitude = orderDetail.value.endLon!;
+
+        if (originLatitude > destinationLatitude &&
+            originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, destinationLongitude),
+            northeast: LatLng(originLatitude, originLongitude),
+          );
+        } else if (originLongitude > destinationLongitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, destinationLongitude),
+            northeast: LatLng(destinationLatitude, originLongitude),
+          );
+        } else if (originLatitude > destinationLatitude) {
+          bounds = LatLngBounds(
+            southwest: LatLng(destinationLatitude, originLongitude),
+            northeast: LatLng(originLatitude, destinationLongitude),
+          );
+        } else {
+          bounds = LatLngBounds(
+            southwest: LatLng(originLatitude, originLongitude),
+            northeast: LatLng(destinationLatitude, destinationLongitude),
+          );
+        }
+
+        var movementDirection = compareLatLng(
+          originLat: originLatitude,
+          originLng: originLongitude,
+          destLat: destinationLatitude,
+          destLng: destinationLongitude,
+        );
+
+        if (isClosed) return;
+        if (movementDirection == MovementDirection.vertical) {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
+          );
+        } else {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+          );
+        }
+      }
+    }
+  }
+
+  // polylines & polylinesCoordinate
+  Future<void> setupAllRouting() async {
+    polylines.clear();
+    polylinesCoordinate.clear();
+
+    var driverLatitude =
+        (double.tryParse(locationServices.currentLatitude.value.toString()) ??
+                0.0)
+            .toInt();
+    var driverLongitude =
+        (double.tryParse(locationServices.currentLongitude.value.toString()) ??
+                0.0)
+            .toInt();
+
+    if (driverLatitude != 0 && driverLongitude != 0) {
+      // waiting driver accept
+      if ([1].contains(orderDetail.value.state)) {}
+
+      // driver to origin
+      if ([2, 3, 4].contains(orderDetail.value.state)) {
+        polylinesCoordinate.value = driverToOriginDirection
+            .value
+            .routes!
+            .first
+            .geometry!
+            .coordinates!
+            .map((p) => LatLng(p[1], p[0]))
+            .toList();
+        polylines.add(
+          Polyline(
+            polylineId: PolylineId("driver_to_origin_direction"),
+            points: polylinesCoordinate,
+            color: Color(0XFF4DABF5),
+            width: 6,
+            visible: isDriverToOriginDirectionVisible.value,
+          ),
+        );
+      }
+
+      // driver to destination
+      if ([5, 6, 7, 8].contains(orderDetail.value.state)) {
+        polylinesCoordinate.value = driverToDestinationDirection
+            .value
+            .routes!
+            .first
+            .geometry!
+            .coordinates!
+            .map((p) => LatLng(p[1], p[0]))
+            .toList();
+        polylines.add(
+          Polyline(
+            polylineId: PolylineId("driver_to_destination_direction"),
+            points: polylinesCoordinate,
+            color: Color(0XFF4DABF5),
+            width: 6,
+            visible: isDriverToDestinationDirectionVisible.value,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> updateDriverPositionReducedPolyline() async {
+    var driverLatitude =
+        (double.tryParse(locationServices.currentLatitude.value.toString()) ??
+                0.0)
+            .toInt();
+    var driverLongitude =
+        (double.tryParse(locationServices.currentLongitude.value.toString()) ??
+                0.0)
+            .toInt();
+
+    if (driverLatitude != 0 && driverLongitude != 0) {
+      var closestPointIndex = getClosestPointIndex(
+        LatLng(
+          double.parse(locationServices.currentLatitude.value.toString()),
+          double.parse(locationServices.currentLongitude.value.toString()),
+        ),
+        polylinesCoordinate,
+      );
+
+      var closestIndex = closestPointIndex['index'];
+      var minDistance = closestPointIndex['min_distance'];
+      var threshold = 30.0;
+
+      this.distanceFromNearestRoute.value = minDistance;
+
+      if (minDistance < threshold && closestIndex > 0) {
+        polylinesCoordinate.value = polylinesCoordinate.sublist(closestIndex);
+
+        polylines.clear();
+        polylines.add(
+          Polyline(
+            polylineId: PolylineId("updated_polyline"),
+            color: Color(0XFF4DABF5),
+            width: 5,
+            points: polylinesCoordinate,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> updateDriverPositionReroutingOffRoute() async {
+    var driverLatitude =
+        (double.tryParse(locationServices.currentLatitude.value.toString()) ??
+                0.0)
+            .toInt();
+    var driverLongitude =
+        (double.tryParse(locationServices.currentLongitude.value.toString()) ??
+                0.0)
+            .toInt();
+
+    if (driverLatitude != 0 && driverLongitude != 0) {
+      if (polylinesCoordinate.isNotEmpty) {
+        var distanceFromRoute = getDistanceFromRoute(
+          LatLng(
+            double.parse(locationServices.currentLatitude.value.toString()),
+            double.parse(locationServices.currentLongitude.value.toString()),
+          ),
+          polylinesCoordinate,
+        );
+
+        this.distanceFromRoute.value = distanceFromRoute;
+
+        if (distanceFromRoute > 50) {
+          if ([2, 3, 4].contains(state.value)) {
+            await getAllRoutingCache(forceUpdateDriverToOrigin: true);
+            await setupAllRouting();
+          }
+
+          if ([5, 6, 7, 8].contains(state.value)) {
+            await getAllRoutingCache(forceUpdateDriverToDestination: true);
+            await setupAllRouting();
+          }
+        }
+      }
+    }
+  }
+
+  Future<void> handleSocketDriverPosition() async {
+    var driverLatitude =
+        (double.tryParse(locationServices.currentLatitude.value.toString()) ??
+                0.0)
+            .toInt();
+    var driverLongitude =
+        (double.tryParse(locationServices.currentLongitude.value.toString()) ??
+                0.0)
+            .toInt();
+
+    if (driverLatitude != 0 && driverLongitude != 0) {
+      var markerId = MarkerId("driver");
+      var newMarker = Marker(
+        markerId: markerId,
+        position: LatLng(
+          double.parse(locationServices.currentLatitude.value.toString()),
+          double.parse(locationServices.currentLongitude.value.toString()),
+        ),
+        icon: await BitmapDescriptor.asset(
+          ImageConfiguration(size: Size(64, 106)),
+          'assets/icons/icon_driver.png',
+        ),
+        anchor: Offset(0.5, 0.5),
+        visible: isMarkerDriverVisible.value,
+      );
+      upsertMarker(markerId: markerId, newMarker: newMarker);
+      await updateDriverPositionReducedPolyline();
+      await updateDriverPositionReroutingOffRoute();
+      await updateCameraAutoFocus();
+    }
+  }
+
+  Future<void> checkSendInvoice() async {
+    if (orderDetail.value.state == 6) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (Get.currentRoute != Routes.ORDER_PAYMENT_CONFIRMATION &&
+            Get.currentRoute != Routes.HOME) {
+          Get.back();
+          Get.toNamed(
+            Routes.ORDER_PAYMENT_CONFIRMATION,
+            arguments: {
+              "order_id": orderId.value,
+              "order_type": orderType.value,
+            },
+          );
+        }
+      });
+    }
+
+    if (orderDetail.value.state == 7 ||
+        orderDetail.value.state == 8 ||
+        orderDetail.value.state == 9) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (Get.currentRoute != Routes.ORDER_PAYMENT_CONFIRMATION &&
+            Get.currentRoute != Routes.HOME) {
+          Get.back();
+          Get.toNamed(
+            Routes.ORDER_PAYMENT_PENDING,
+            arguments: {
+              "order_id": orderId.value,
+              "order_type": orderType.value,
+            },
+          );
+        }
+      });
+    }
+  }
+
+  Future<void> driverJoinChatRoom() async {
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderDetail.value.orderId.toString())
+        .set({
+          "orderId": orderDetail.value.orderId,
+          "driverId": orderDetail.value.driverId,
+          "driverName": homeController.userInfo.value.name,
+          "driverIsOnline": true,
+          "driverLastSeen": FieldValue.serverTimestamp(),
+          "driverProfileUrl": homeController.userInfo.value.avatar,
+        }, SetOptions(merge: true));
+  }
+
+  Future<void> setChatOnline() async {
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderDetail.value.orderId.toString())
+        .set({
+          "orderId": orderDetail.value.orderId,
+          "driverId": orderDetail.value.driverId,
+          "driverName": homeController.userInfo.value.name,
+          "driverIsOnline": true,
+          "driverLastSeen": FieldValue.serverTimestamp(),
+          "driverProfileUrl": homeController.userInfo.value.avatar,
+        }, SetOptions(merge: true));
+  }
+
+  Future<void> setChatOffline() async {
+    await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(orderDetail.value.orderId.toString())
+        .set({
+          "orderId": orderDetail.value.orderId,
+          "driverId": orderDetail.value.driverId,
+          "driverName": homeController.userInfo.value.name,
+          "driverIsOnline": false,
+          "driverLastSeen": FieldValue.serverTimestamp(),
+          "driverProfileUrl": homeController.userInfo.value.avatar,
+        }, SetOptions(merge: true));
   }
 }
 

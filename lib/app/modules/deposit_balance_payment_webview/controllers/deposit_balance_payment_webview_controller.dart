@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -22,12 +24,24 @@ class DepositBalancePaymentWebviewController extends GetxController {
   late InAppWebViewController? webViewController;
 
   final redirectUrl = "".obs;
+  final orderId = "".obs;
   final isLoadingDownloadBlob = false.obs;
+
+  Timer? schedulerStatusPaymentTimer;
+  final rechargeStatusCompleted = false.obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
     redirectUrl.value = Get.arguments['redirect_url'] ?? "";
+    orderId.value = Get.arguments['order_id'] ?? "";
+
+    schedulerStatusPaymentTimer = Timer.periodic(Duration(seconds: 5), (
+      timer,
+    ) async {
+      rechargeStatusCompleted.value = await paymentRepository
+          .checkRechargeStatusCompleted(orderId: orderId.value);
+    });
   }
 
   @override
@@ -38,6 +52,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    schedulerStatusPaymentTimer?.cancel();
   }
 
   Future<void> handleIntent(String intentUrl) async {

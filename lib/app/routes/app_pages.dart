@@ -28,6 +28,8 @@ import '../modules/activity/bindings/activity_binding.dart';
 import '../modules/activity/views/activity_view.dart';
 import '../modules/add_edit_withdraw_bank_account/bindings/add_edit_withdraw_bank_account_binding.dart';
 import '../modules/add_edit_withdraw_bank_account/views/add_edit_withdraw_bank_account_view.dart';
+import '../modules/chat_list/bindings/chat_list_binding.dart';
+import '../modules/chat_list/views/chat_list_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
@@ -46,6 +48,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/login_verification_otp/bindings/login_verification_otp_binding.dart';
 import '../modules/login_verification_otp/views/login_verification_otp_view.dart';
+import '../modules/notification/bindings/notification_binding.dart';
+import '../modules/notification/views/notification_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
 import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
 import '../modules/order_call/bindings/order_call_binding.dart';
@@ -62,6 +66,10 @@ import '../modules/order_payment_confirmation/bindings/order_payment_confirmatio
 import '../modules/order_payment_confirmation/views/order_payment_confirmation_view.dart';
 import '../modules/order_payment_detail/bindings/order_payment_detail_binding.dart';
 import '../modules/order_payment_detail/views/order_payment_detail_view.dart';
+import '../modules/order_payment_pending/bindings/order_payment_pending_binding.dart';
+import '../modules/order_payment_pending/views/order_payment_pending_view.dart';
+import '../modules/order_payment_pending_fee_detail/bindings/order_payment_pending_fee_detail_binding.dart';
+import '../modules/order_payment_pending_fee_detail/views/order_payment_pending_fee_detail_view.dart';
 import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
 import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
@@ -76,6 +84,10 @@ import '../modules/register_form_scan_qr/bindings/register_form_scan_qr_binding.
 import '../modules/register_form_scan_qr/views/register_form_scan_qr_view.dart';
 import '../modules/register_verification_otp/bindings/register_verification_otp_binding.dart';
 import '../modules/register_verification_otp/views/register_verification_otp_view.dart';
+import '../modules/sendbird_chat_detail/bindings/sendbird_chat_detail_binding.dart';
+import '../modules/sendbird_chat_detail/views/sendbird_chat_detail_view.dart';
+import '../modules/sendbird_chat_list/bindings/sendbird_chat_list_binding.dart';
+import '../modules/sendbird_chat_list/views/sendbird_chat_list_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/switch_vehicle/bindings/switch_vehicle_binding.dart';
@@ -316,6 +328,36 @@ class AppPages {
       name: _Paths.REGISTER_FORM_SCAN_QR,
       page: () => const RegisterFormScanQrView(),
       binding: RegisterFormScanQrBinding(),
+    ),
+    GetPage(
+      name: _Paths.SENDBIRD_CHAT_LIST,
+      page: () => const SendbirdChatListView(),
+      binding: SendbirdChatListBinding(),
+    ),
+    GetPage(
+      name: _Paths.SENDBIRD_CHAT_DETAIL,
+      page: () => const SendbirdChatDetailView(),
+      binding: SendbirdChatDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTIFICATION,
+      page: () => const NotificationView(),
+      binding: NotificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_PAYMENT_PENDING,
+      page: () => const OrderPaymentPendingView(),
+      binding: OrderPaymentPendingBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_PAYMENT_PENDING_FEE_DETAIL,
+      page: () => const OrderPaymentPendingFeeDetailView(),
+      binding: OrderPaymentPendingFeeDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT_LIST,
+      page: () => const ChatListView(),
+      binding: ChatListBinding(),
     ),
   ];
 }

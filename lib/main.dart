@@ -7,16 +7,20 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/location_services.dart';
+import 'package:new_evmoto_driver/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
+import 'package:new_evmoto_driver/app/services/voice_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/routes/app_pages.dart';
 
@@ -57,10 +61,12 @@ Future<void> main() async {
   Get.put(ApiServices(), permanent: true);
   Get.put(FirebaseRemoteConfigServices(), permanent: true);
   await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
+  Get.put(LocationServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);
   Get.put(FirebasePushNotificationServices(), permanent: true);
-  Get.put(LocationServices(), permanent: true);
+  Get.put(SendbirdChatServices(), permanent: true);
   Get.put(UserServices(), permanent: true);
+  Get.put(VoiceServices(), permanent: true);
 
   runApp(
     GetMaterialApp(
@@ -87,6 +93,21 @@ Future<void> main() async {
               Get.find<ThemeColorServices>().primaryBlue.value,
         ),
       ),
+
+      routingCallback: (routing) async {
+        if (routing?.current == Routes.HOME) {
+          var userServices = Get.find<UserServices>();
+          userServices.isLoadingRefreshHome.value = true;
+          var prefs = await SharedPreferences.getInstance();
+          var processList = <Future>[];
+          if (prefs.getBool('home_controller_registered') == true) {
+            var homeController = Get.find<HomeController>();
+            processList.add(homeController.refreshAll());
+          }
+          await Future.wait(processList);
+          userServices.isLoadingRefreshHome.value = false;
+        }
+      },
       builder: (context, child) {
         return SafeArea(
           top: false,

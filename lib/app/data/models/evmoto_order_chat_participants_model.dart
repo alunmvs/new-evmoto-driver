@@ -13,8 +13,16 @@ class EvmotoOrderChatParticipants {
   bool? userIsOnChatScreen;
   DateTime? userChatScreenLastSeen;
   DateTime? userJoinedAt;
+  String? orderId;
+  String? lastMessage;
+  DateTime? lastMessageAt;
+  String? driverProfileUrl;
+  String? userProfileUrl;
 
   EvmotoOrderChatParticipants({
+    this.driverProfileUrl,
+    this.userProfileUrl,
+    this.orderId,
     this.driverId,
     this.driverName,
     this.driverIsOnline,
@@ -27,9 +35,14 @@ class EvmotoOrderChatParticipants {
     this.userIsOnChatScreen,
     this.userLastSeen,
     this.userJoinedAt,
+    this.lastMessage,
+    this.lastMessageAt,
   });
 
   EvmotoOrderChatParticipants.fromJson(Map<String, dynamic> json) {
+    driverProfileUrl = json['driverProfileUrl'];
+    userProfileUrl = json['userProfileUrl'];
+    orderId = json['orderId'];
     driverId = json['driverId'];
     driverName = json['driverName'];
     driverIsOnline = json['driverIsOnline'];
@@ -56,10 +69,15 @@ class EvmotoOrderChatParticipants {
     if (json['userJoinedAt'] != null) {
       userJoinedAt = json['userJoinedAt'].toDate();
     }
+    lastMessage = json['lastMessage'];
+    if (json['lastMessageAt'] != null) {
+      userJoinedAt = json['lastMessageAt'].toDate();
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['orderId'] = this.orderId;
     data['driverId'] = this.driverId;
     data['driverName'] = this.driverName;
     data['driverIsOnline'] = this.driverIsOnline;

@@ -293,6 +293,8 @@ class LoginView extends GetView<LoginController> {
                                                       .themeColorServices
                                                       .primaryBlue
                                                       .value,
+                                                  autovalidateMode:
+                                                      AutovalidateMode.disabled,
                                                   decoration: InputDecoration(
                                                     counterText: '',
                                                     contentPadding:
@@ -411,7 +413,8 @@ class LoginView extends GetView<LoginController> {
                                                   },
                                                   maxLength: 25,
                                                   validator: (value) {
-                                                    if (value != null) {
+                                                    if (value != null &&
+                                                        value != "") {
                                                       if (value.isNotEmpty) {
                                                         if (value.substring(
                                                               0,

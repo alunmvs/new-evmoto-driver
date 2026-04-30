@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/file.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
@@ -11,7 +12,6 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AccountOtherSettingController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
@@ -21,6 +21,8 @@ class AccountOtherSettingController extends GetxController {
 
   final packageVersion = "".obs;
   final cacheSizeInBytes = 0.obs;
+
+  final homeController = Get.find<HomeController>();
 
   final isFetch = false.obs;
 
@@ -106,26 +108,8 @@ class AccountOtherSettingController extends GetxController {
   }
 
   Future<void> onTapUpdateVersion() async {
-    if (Platform.isAndroid) {
-      var url = Uri.parse(
-        firebaseRemoteConfigServices.remoteConfig.getString(
-          "driver_playstore_link",
-        ),
-      );
-
-      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-        throw 'Unable launch url update app version';
-      }
-    } else if (Platform.isIOS) {
-      var url = Uri.parse(
-        firebaseRemoteConfigServices.remoteConfig.getString(
-          "driver_appstore_link",
-        ),
-      );
-
-      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-        throw 'Unable launch url update app version';
-      }
-    }
+    await homeController.checkAppVersioning(
+      isShowVersionNewestConfirmationDialog: true,
+    );
   }
 }

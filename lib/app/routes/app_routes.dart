@@ -51,6 +51,13 @@ abstract class Routes {
   static const ORDER_CALL = _Paths.ORDER_CALL;
   static const ACCOUNT_REFERRAL_CODE = _Paths.ACCOUNT_REFERRAL_CODE;
   static const REGISTER_FORM_SCAN_QR = _Paths.REGISTER_FORM_SCAN_QR;
+  static const SENDBIRD_CHAT_LIST = _Paths.SENDBIRD_CHAT_LIST;
+  static const SENDBIRD_CHAT_DETAIL = _Paths.SENDBIRD_CHAT_DETAIL;
+  static const NOTIFICATION = _Paths.NOTIFICATION;
+  static const ORDER_PAYMENT_PENDING = _Paths.ORDER_PAYMENT_PENDING;
+  static const ORDER_PAYMENT_PENDING_FEE_DETAIL =
+      _Paths.ORDER_PAYMENT_PENDING_FEE_DETAIL;
+  static const CHAT_LIST = _Paths.CHAT_LIST;
 }
 
 abstract class _Paths {
@@ -103,4 +110,11 @@ abstract class _Paths {
   static const ORDER_CALL = '/order-call';
   static const ACCOUNT_REFERRAL_CODE = '/account-referral-code';
   static const REGISTER_FORM_SCAN_QR = '/register-form-scan-qr';
+  static const SENDBIRD_CHAT_LIST = '/sendbird-chat-list';
+  static const SENDBIRD_CHAT_DETAIL = '/sendbird-chat-detail';
+  static const NOTIFICATION = '/notification';
+  static const ORDER_PAYMENT_PENDING = '/order-payment-pending';
+  static const ORDER_PAYMENT_PENDING_FEE_DETAIL =
+      '/order-payment-pending-fee-detail';
+  static const CHAT_LIST = '/chat-list';
 }

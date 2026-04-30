@@ -154,11 +154,11 @@ class OrderPaymentConfirmationController extends GetxController {
 
   Future<void> onTapCompleteOrderDirect() async {
     try {
-      await orderRepository.completeOrderDirect(
+      await orderRepository.confirmOrderPayment(
         orderType: orderType.value,
         orderId: orderId.value,
         language: languageServices.languageCodeSystem.value,
-        payType: orderDetail.value.payType!,
+        payManner: orderDetail.value.payType!,
         additionalCharge: formGroup.control("additional_charge").value == null
             ? 0
             : int.tryParse(
@@ -173,26 +173,14 @@ class OrderPaymentConfirmationController extends GetxController {
         surchargeDescription: formGroup.control("surcharge_description").value,
       );
 
-      Get.back();
-      Get.back();
-      Get.find<HomeController>().refreshAll();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.back();
 
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorGreen400.value,
-        content: Text(
-          "Pesanan berhasil diselesaikan",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-
-      Get.toNamed(
-        Routes.ORDER_DETAIL_DONE,
-        arguments: {"order_id": orderId.value, "order_type": orderType.value},
-      );
+        Get.toNamed(
+          Routes.ORDER_PAYMENT_PENDING,
+          arguments: {"order_id": orderId.value, "order_type": orderType.value},
+        );
+      });
     } catch (e) {
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,

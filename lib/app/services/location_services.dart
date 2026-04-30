@@ -1,3 +1,7 @@
+// ignore_for_file: prefer_conditional_assignment
+
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +20,7 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
 
   final geocodingAddress = GeocodingAddress().obs;
 
+  final currentAltitude = Rx<double?>(null);
   final currentLatitude = Rx<double?>(null);
   final currentLongitude = Rx<double?>(null);
   final isPermissionLocationAllow = Rx<bool?>(null);
@@ -25,6 +30,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
   final wasInBackground = false.obs;
   final isRequestingPermission = false.obs;
   final isRequiredAccessPermissionDialogActive = false.obs;
+
+  StreamSubscription<Position>? positionStream;
 
   @override
   Future<void> onInit() async {
@@ -76,6 +83,7 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
           isPermissionLocationAllow.value = false;
           isRequestingPermission.value = false;
 
+          currentAltitude.value = null;
           currentLatitude.value = null;
           currentLongitude.value = null;
 
@@ -87,18 +95,20 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
       }
 
       var locationSettings = LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 100,
+        accuracy: LocationAccuracy.bestForNavigation,
+        distanceFilter: 0,
       );
 
-      var position = await Geolocator.getCurrentPosition(
-        locationSettings: locationSettings,
-      );
-
-      currentLatitude.value = position.latitude;
-      currentLongitude.value = position.longitude;
-
-      await getGeocodingAddress();
+      if (positionStream == null) {
+        positionStream =
+            Geolocator.getPositionStream(
+              locationSettings: locationSettings,
+            ).listen((Position position) {
+              currentAltitude.value = position.altitude;
+              currentLatitude.value = position.latitude;
+              currentLongitude.value = position.longitude;
+            });
+      }
 
       isRequestingPermission.value = false;
     }
@@ -117,24 +127,27 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
         isPermissionLocationAllow.value = false;
         isRequestingPermission.value = false;
 
+        currentAltitude.value = null;
         currentLatitude.value = null;
         currentLongitude.value = null;
         return;
       }
 
       var locationSettings = LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 100,
+        accuracy: LocationAccuracy.bestForNavigation,
+        distanceFilter: 0,
       );
 
-      var position = await Geolocator.getCurrentPosition(
-        locationSettings: locationSettings,
-      );
-
-      currentLatitude.value = position.latitude;
-      currentLongitude.value = position.longitude;
-
-      await getGeocodingAddress();
+      if (positionStream == null) {
+        positionStream =
+            Geolocator.getPositionStream(
+              locationSettings: locationSettings,
+            ).listen((Position position) {
+              currentAltitude.value = position.altitude;
+              currentLatitude.value = position.latitude;
+              currentLongitude.value = position.longitude;
+            });
+      }
 
       isRequestingPermission.value = false;
     }

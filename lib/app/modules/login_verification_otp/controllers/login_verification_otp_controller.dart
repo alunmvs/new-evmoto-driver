@@ -73,15 +73,9 @@ class LoginVerificationOtpController extends GetxController {
 
   Future<void> onTapSubmit() async {
     try {
-      await otpRepository.checkOTP(
+      var token = await loginRepository.loginByMobileNumberOtp(
         phone: mobilePhone.value,
-        code: otpCode.value,
-        language: languageServices.languageCodeSystem.value,
-      );
-
-      var token = await loginRepository.loginByMobileNumber(
-        phone: mobilePhone.value,
-        password: "123456789",
+        otp: otpCode.value,
         language: languageServices.languageCodeSystem.value,
       );
 
