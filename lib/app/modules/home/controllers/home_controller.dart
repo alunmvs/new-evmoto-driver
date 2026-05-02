@@ -65,8 +65,8 @@ class HomeController extends GetxController
   final userServices = Get.find<UserServices>();
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
-  final socketServices = Get.find<SocketServices>();
   final languageServices = Get.find<LanguageServices>();
+  final socketServices = Get.find<SocketServices>();
   final firebasePushNotificationServices =
       Get.find<FirebasePushNotificationServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();

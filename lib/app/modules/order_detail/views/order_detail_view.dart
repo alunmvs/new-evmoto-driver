@@ -339,50 +339,56 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                               Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  GestureDetector(
-                                                    onTap: () async {
-                                                      Get.toNamed(
-                                                        Routes.ORDER_CALL,
-                                                        arguments: {
-                                                          "call_type": "caller",
-                                                        },
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      width: 34,
-                                                      height: 34,
-                                                      decoration: BoxDecoration(
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .primaryBlue
-                                                            .value,
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              8,
-                                                            ),
-                                                      ),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          SvgPicture.asset(
-                                                            "assets/icons/icon_call.svg",
-                                                            width: 21.15,
-                                                            height: 21.15,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 8),
+                                                  // GestureDetector(
+                                                  //   onTap: () async {
+                                                  //     Get.toNamed(
+                                                  //       Routes.ORDER_CALL,
+                                                  //       arguments: {
+                                                  //         "call_type": "caller",
+                                                  //       },
+                                                  //     );
+                                                  //   },
+                                                  //   child: Container(
+                                                  //     width: 34,
+                                                  //     height: 34,
+                                                  //     decoration: BoxDecoration(
+                                                  //       color: controller
+                                                  //           .themeColorServices
+                                                  //           .primaryBlue
+                                                  //           .value,
+                                                  //       borderRadius:
+                                                  //           BorderRadius.circular(
+                                                  //             8,
+                                                  //           ),
+                                                  //     ),
+                                                  //     child: Row(
+                                                  //       mainAxisAlignment:
+                                                  //           MainAxisAlignment
+                                                  //               .center,
+                                                  //       crossAxisAlignment:
+                                                  //           CrossAxisAlignment
+                                                  //               .center,
+                                                  //       children: [
+                                                  //         SvgPicture.asset(
+                                                  //           "assets/icons/icon_call.svg",
+                                                  //           width: 21.15,
+                                                  //           height: 21.15,
+                                                  //         ),
+                                                  //       ],
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                  // SizedBox(width: 8),
                                                   GestureDetector(
                                                     onTap: () {
                                                       Get.toNamed(
-                                                        Routes.ORDER_CHAT,
+                                                        Routes.CHAT_DETAIL,
+                                                        arguments: {
+                                                          "doc_id": controller
+                                                              .evmotoOrderChatParticipants
+                                                              .value
+                                                              .docId,
+                                                        },
                                                       );
                                                     },
                                                     child: Container(
@@ -642,7 +648,8 @@ class OrderDetailView extends GetView<OrderDetailController> {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
-           color:   controller.themeColorServices.neutralsColorGrey0.value,
+                    color:
+                        controller.themeColorServices.neutralsColorGrey0.value,
                     child: Center(
                       child: SizedBox(
                         width: 25,

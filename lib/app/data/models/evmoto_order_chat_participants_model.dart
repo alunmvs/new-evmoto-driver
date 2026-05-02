@@ -1,12 +1,13 @@
 class EvmotoOrderChatParticipants {
-  int? driverId;
+  String? docId;
+  String? driverId;
   String? driverName;
   bool? driverIsOnline;
   DateTime? driverLastSeen;
   bool? driverIsOnChatScreen;
   DateTime? driverChatScreenLastSeen;
   DateTime? driverJoinedAt;
-  int? userId;
+  String? userId;
   String? userName;
   bool? userIsOnline;
   DateTime? userLastSeen;
@@ -20,6 +21,7 @@ class EvmotoOrderChatParticipants {
   String? userProfileUrl;
 
   EvmotoOrderChatParticipants({
+    this.docId,
     this.driverProfileUrl,
     this.userProfileUrl,
     this.orderId,
@@ -40,10 +42,11 @@ class EvmotoOrderChatParticipants {
   });
 
   EvmotoOrderChatParticipants.fromJson(Map<String, dynamic> json) {
+    docId = json['docId'];
     driverProfileUrl = json['driverProfileUrl'];
     userProfileUrl = json['userProfileUrl'];
-    orderId = json['orderId'];
-    driverId = json['driverId'];
+    orderId = json['orderId'].toString();
+    driverId = json['driverId'].toString();
     driverName = json['driverName'];
     driverIsOnline = json['driverIsOnline'];
     driverIsOnChatScreen = json['driverIsOnChatScreen'];
@@ -56,7 +59,7 @@ class EvmotoOrderChatParticipants {
     if (json['driverJoinedAt'] != null) {
       driverJoinedAt = json['driverJoinedAt'].toDate();
     }
-    userId = json['userId'];
+    userId = json['userId'].toString();
     userName = json['userName'];
     userIsOnline = json['userIsOnline'];
     userIsOnChatScreen = json['userIsOnChatScreen'];
@@ -71,7 +74,7 @@ class EvmotoOrderChatParticipants {
     }
     lastMessage = json['lastMessage'];
     if (json['lastMessageAt'] != null) {
-      userJoinedAt = json['lastMessageAt'].toDate();
+      lastMessageAt = json['lastMessageAt'].toDate();
     }
   }
 

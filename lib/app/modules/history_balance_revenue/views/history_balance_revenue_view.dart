@@ -19,9 +19,7 @@ class HistoryBalanceRevenueView
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            controller.index.value == 0
-                ? "Riwayat Pendapatan"
-                : "Riwayat Pengeluaran",
+            "Riwayat Pendapatan",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -83,7 +81,7 @@ class HistoryBalanceRevenueView
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "Total Pendapatan Bulan Ini",
+                                          "Income",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -102,7 +100,13 @@ class HistoryBalanceRevenueView
                                             locale: 'id_ID',
                                             symbol: 'Rp',
                                             decimalDigits: 0,
-                                          ).format(0.0),
+                                          ).format(
+                                            controller
+                                                    .historyBalanceRevenue
+                                                    .value
+                                                    .income ??
+                                                0.0,
+                                          ),
                                           style: controller
                                               .typographyServices
                                               .headingMediumBold
@@ -123,7 +127,7 @@ class HistoryBalanceRevenueView
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "Total Pendapatan Hari Ini",
+                                          "Transaction Records",
                                           style: controller
                                               .typographyServices
                                               .bodySmallRegular
@@ -142,7 +146,13 @@ class HistoryBalanceRevenueView
                                             locale: 'id_ID',
                                             symbol: 'Rp',
                                             decimalDigits: 0,
-                                          ).format(0.0),
+                                          ).format(
+                                            controller
+                                                    .historyBalanceRevenue
+                                                    .value
+                                                    .flow ??
+                                                0.0,
+                                          ),
                                           style: controller
                                               .typographyServices
                                               .headingMediumBold
@@ -187,795 +197,332 @@ class HistoryBalanceRevenueView
                   ),
                   SizedBox(height: 16),
                   Expanded(
-                    child: DefaultTabController(
-                      length: 2,
-                      child: Column(
-                        children: [
-                          TabBar(
-                            labelColor:
-                                controller.themeColorServices.textColor.value,
-                            indicatorColor:
-                                controller.themeColorServices.primaryBlue.value,
-                            unselectedLabelColor:
-                                controller.themeColorServices.textColor.value,
-                            dividerColor: controller
-                                .themeColorServices
-                                .neutralsColorGrey200
-                                .value,
-                            labelStyle: controller
-                                .typographyServices
-                                .bodySmallBold
-                                .value,
-                            unselectedLabelStyle: controller
-                                .typographyServices
-                                .bodySmallBold
-                                .value,
-                            isScrollable: true,
-                            controller: controller.tabController,
-                            tabAlignment: TabAlignment.start,
-                            overlayColor: WidgetStateProperty.all(
-                              Colors.transparent,
-                            ),
-                            tabs: [
-                              Tab(text: "Pendapatan"),
-                              Tab(text: "Pengeluaran"),
-                            ],
-                          ),
-                          Expanded(
-                            child: TabBarView(
-                              controller: controller.tabController,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 16),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            reverse: true,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 16),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        reverse: true,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            SizedBox(width: 16),
-                                            for (var recommendationDateTime
-                                                in controller
-                                                    .recommendationDateTimeList
-                                                    .reversed) ...[
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  controller
-                                                          .selectedDateTime
-                                                          .value =
-                                                      recommendationDateTime;
-                                                  await controller
-                                                      .getHistoryBalanceRevenue();
-                                                },
-                                                child: Container(
-                                                  padding: EdgeInsets.all(16),
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        controller.isDateSelected(
-                                                          recommendationDateTime,
-                                                        )
-                                                        ? controller
-                                                              .themeColorServices
-                                                              .primaryBlue
-                                                              .value
-                                                        : Colors.transparent,
-                                                    border:
-                                                        controller.isDateSelected(
-                                                          recommendationDateTime,
-                                                        )
-                                                        ? Border.all(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .primaryBlue
-                                                                .value,
-                                                          )
-                                                        : Border.all(
-                                                            color: Color(
-                                                              0XFFDEDEDE,
-                                                            ),
-                                                          ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          16,
-                                                        ),
-                                                  ),
-                                                  child: Column(
-                                                    children: [
-                                                      Text(
-                                                        DateFormat(
-                                                          'EEE',
-                                                          'id_ID',
-                                                        ).format(
-                                                          recommendationDateTime,
-                                                        ),
-                                                        style: controller
-                                                            .typographyServices
-                                                            .captionLargeRegular
-                                                            .value
-                                                            .copyWith(
-                                                              color:
-                                                                  controller
-                                                                      .isDateSelected(
-                                                                        recommendationDateTime,
-                                                                      )
-                                                                  ? controller
-                                                                        .themeColorServices
-                                                                        .neutralsColorGrey0
-                                                                        .value
-                                                                  : Color(
-                                                                      0XFFB3B3B3,
-                                                                    ),
-                                                            ),
-                                                      ),
-                                                      SizedBox(height: 4),
-                                                      Text(
-                                                        recommendationDateTime
-                                                            .day
-                                                            .toString(),
-                                                        style: controller
-                                                            .typographyServices
-                                                            .bodySmallBold
-                                                            .value
-                                                            .copyWith(
-                                                              color:
-                                                                  controller
-                                                                      .isDateSelected(
-                                                                        recommendationDateTime,
-                                                                      )
-                                                                  ? controller
-                                                                        .themeColorServices
-                                                                        .neutralsColorGrey0
-                                                                        .value
-                                                                  : Color(
-                                                                      0XFFB3B3B3,
-                                                                    ),
-                                                            ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(width: 16),
-                                            ],
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 16),
-                                    Divider(
-                                      height: 0,
-                                      color: controller
-                                          .themeColorServices
-                                          .neutralsColorGrey200
-                                          .value,
-                                    ),
-                                    SizedBox(height: 8),
-                                    Expanded(
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            SizedBox(height: 8),
-                                            if (controller
-                                                    .historyBalanceRevenue
-                                                    .value
-                                                    .revenue
-                                                    ?.isEmpty ??
-                                                true) ...[
-                                              SizedBox(height: 16 * 3),
-                                              SvgPicture.asset(
-                                                "assets/images/img_history_activity_not_found.svg",
-                                                height: 80,
-                                                width: 80,
-                                              ),
-                                              SizedBox(height: 16),
-                                              Text(
-                                                "Belum Ada Riwayat",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodyLargeBold
-                                                    .value,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              SizedBox(height: 8),
-                                              Text(
-                                                "Tidak ada riwayat pada bagian ini",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodySmallRegular
-                                                    .value,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ],
-                                            for (var revenue
-                                                in controller
-                                                        .historyBalanceRevenue
-                                                        .value
-                                                        .revenue ??
-                                                    <Revenue>[]) ...[
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      horizontal: 16,
-                                                    ),
-                                                child: Container(
-                                                  padding: EdgeInsets.all(16),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          16,
-                                                        ),
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey0
-                                                        .value,
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              CircleAvatar(
-                                                                radius: 42 / 2,
-                                                                backgroundColor:
-                                                                    Color(
-                                                                      0XFFF3F3F3,
-                                                                    ),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    SvgPicture.asset(
-                                                                      "assets/icons/icon_history_revenue.svg",
-                                                                      width:
-                                                                          23.33,
-                                                                      height:
-                                                                          23.33,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 8,
-                                                              ),
-                                                              Text(
-                                                                revenue.payTime ??
-                                                                    "-",
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .bodySmallRegular
-                                                                    .value,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Container(
-                                                            padding:
-                                                                EdgeInsets.symmetric(
-                                                                  horizontal: 8,
-                                                                  vertical: 8,
-                                                                ),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                  color: Color(
-                                                                    0XFF34A853,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius.circular(
-                                                                        8,
-                                                                      ),
-                                                                ),
-                                                            child: Text(
-                                                              revenue.orderType ==
-                                                                      1
-                                                                  ? "Motorcycle"
-                                                                  : "City Express Delivery",
-                                                              style: controller
-                                                                  .typographyServices
-                                                                  .bodySmallBold
-                                                                  .value
-                                                                  .copyWith(
-                                                                    color: controller
-                                                                        .themeColorServices
-                                                                        .neutralsColorGrey0
-                                                                        .value,
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      Text(
-                                                        controller
-                                                                .languageServices
-                                                                .language
-                                                                .value
-                                                                .destinationLocation ??
-                                                            "-",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .captionLargeRegular
-                                                            .value
-                                                            .copyWith(
-                                                              color: Color(
-                                                                0XFFB3B3B3,
-                                                              ),
-                                                            ),
-                                                      ),
-                                                      SizedBox(height: 2),
-                                                      Text(
-                                                        "-",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .captionLargeRegular
-                                                            .value
-                                                            .copyWith(
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .textColor
-                                                                  .value,
-                                                            ),
-                                                      ),
-                                                      SizedBox(height: 16),
-                                                      DashedLine(
-                                                        color: Color(
-                                                          0XFFD5D5D5,
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            "Yang didapatkan driver :",
-                                                            style: controller
-                                                                .typographyServices
-                                                                .bodySmallBold
-                                                                .value
-                                                                .copyWith(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .textColor
-                                                                      .value,
-                                                                ),
-                                                          ),
-                                                          Text(
-                                                            NumberFormat.currency(
-                                                              locale: 'id_ID',
-                                                              symbol: 'Rp',
-                                                              decimalDigits: 0,
-                                                            ).format(
-                                                              revenue.payMoney,
-                                                            ),
-                                                            style: controller
-                                                                .typographyServices
-                                                                .bodySmallBold
-                                                                .value
-                                                                .copyWith(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .textColor
-                                                                      .value,
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(height: 16),
-                                              Divider(
-                                                height: 0,
+                                SizedBox(width: 16),
+                                for (var recommendationDateTime
+                                    in controller
+                                        .recommendationDateTimeList
+                                        .reversed) ...[
+                                  GestureDetector(
+                                    onTap: () async {
+                                      controller.selectedDateTime.value =
+                                          recommendationDateTime;
+                                      await controller
+                                          .getHistoryBalanceRevenue();
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        color:
+                                            controller.isDateSelected(
+                                              recommendationDateTime,
+                                            )
+                                            ? controller
+                                                  .themeColorServices
+                                                  .primaryBlue
+                                                  .value
+                                            : Colors.transparent,
+                                        border:
+                                            controller.isDateSelected(
+                                              recommendationDateTime,
+                                            )
+                                            ? Border.all(
                                                 color: controller
                                                     .themeColorServices
-                                                    .neutralsColorGrey200
+                                                    .primaryBlue
                                                     .value,
+                                              )
+                                            : Border.all(
+                                                color: Color(0XFFDEDEDE),
                                               ),
-                                              SizedBox(height: 16),
-                                            ],
-                                          ],
-                                        ),
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height: 16),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        reverse: true,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            SizedBox(width: 16),
-                                            for (var recommendationDateTime
-                                                in controller
-                                                    .recommendationDateTimeList
-                                                    .reversed) ...[
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  controller
-                                                          .selectedDateTime
-                                                          .value =
-                                                      recommendationDateTime;
-                                                  await controller
-                                                      .getHistoryBalanceRevenue();
-                                                },
-                                                child: Container(
-                                                  padding: EdgeInsets.all(16),
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        controller.isDateSelected(
-                                                          recommendationDateTime,
-                                                        )
-                                                        ? controller
-                                                              .themeColorServices
-                                                              .primaryBlue
-                                                              .value
-                                                        : Colors.transparent,
-                                                    border:
-                                                        controller.isDateSelected(
-                                                          recommendationDateTime,
-                                                        )
-                                                        ? Border.all(
-                                                            color: controller
-                                                                .themeColorServices
-                                                                .primaryBlue
-                                                                .value,
-                                                          )
-                                                        : Border.all(
-                                                            color: Color(
-                                                              0XFFDEDEDE,
-                                                            ),
-                                                          ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          16,
-                                                        ),
-                                                  ),
-                                                  child: Column(
-                                                    children: [
-                                                      Text(
-                                                        DateFormat(
-                                                          'EEE',
-                                                          'id_ID',
-                                                        ).format(
-                                                          recommendationDateTime,
-                                                        ),
-                                                        style: controller
-                                                            .typographyServices
-                                                            .captionLargeRegular
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            DateFormat(
+                                              'EEE',
+                                              'id_ID',
+                                            ).format(recommendationDateTime),
+                                            style: controller
+                                                .typographyServices
+                                                .captionLargeRegular
+                                                .value
+                                                .copyWith(
+                                                  color:
+                                                      controller.isDateSelected(
+                                                        recommendationDateTime,
+                                                      )
+                                                      ? controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey0
                                                             .value
-                                                            .copyWith(
-                                                              color:
-                                                                  controller
-                                                                      .isDateSelected(
-                                                                        recommendationDateTime,
-                                                                      )
-                                                                  ? controller
-                                                                        .themeColorServices
-                                                                        .neutralsColorGrey0
-                                                                        .value
-                                                                  : Color(
-                                                                      0XFFB3B3B3,
-                                                                    ),
-                                                            ),
-                                                      ),
-                                                      SizedBox(height: 4),
-                                                      Text(
-                                                        recommendationDateTime
-                                                            .day
-                                                            .toString(),
-                                                        style: controller
-                                                            .typographyServices
-                                                            .bodySmallBold
-                                                            .value
-                                                            .copyWith(
-                                                              color:
-                                                                  controller
-                                                                      .isDateSelected(
-                                                                        recommendationDateTime,
-                                                                      )
-                                                                  ? controller
-                                                                        .themeColorServices
-                                                                        .neutralsColorGrey0
-                                                                        .value
-                                                                  : Color(
-                                                                      0XFFB3B3B3,
-                                                                    ),
-                                                            ),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                      : Color(0XFFB3B3B3),
                                                 ),
-                                              ),
-                                              SizedBox(width: 16),
-                                            ],
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 16),
-                                    Divider(
-                                      height: 0,
-                                      color: controller
-                                          .themeColorServices
-                                          .neutralsColorGrey200
-                                          .value,
-                                    ),
-                                    SizedBox(height: 8),
-                                    Expanded(
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            SizedBox(height: 8),
-                                            if (controller
-                                                    .historyBalanceRevenue
-                                                    .value
-                                                    .revenue
-                                                    ?.isEmpty ??
-                                                true) ...[
-                                              SizedBox(height: 16 * 3),
-                                              SvgPicture.asset(
-                                                "assets/images/img_history_activity_not_found.svg",
-                                                height: 80,
-                                                width: 80,
-                                              ),
-                                              SizedBox(height: 16),
-                                              Text(
-                                                "Belum Ada Riwayat",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodyLargeBold
-                                                    .value,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              SizedBox(height: 8),
-                                              Text(
-                                                "Tidak ada riwayat pada bagian ini",
-                                                style: controller
-                                                    .typographyServices
-                                                    .bodySmallRegular
-                                                    .value,
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ],
-                                            for (var revenue
-                                                in controller
-                                                        .historyBalanceRevenue
-                                                        .value
-                                                        .revenue ??
-                                                    <Revenue>[]) ...[
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      horizontal: 16,
-                                                    ),
-                                                child: Container(
-                                                  padding: EdgeInsets.all(16),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          16,
-                                                        ),
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey0
-                                                        .value,
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              CircleAvatar(
-                                                                radius: 42 / 2,
-                                                                backgroundColor:
-                                                                    Color(
-                                                                      0XFFF3F3F3,
-                                                                    ),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    SvgPicture.asset(
-                                                                      "assets/icons/icon_history_revenue.svg",
-                                                                      width:
-                                                                          23.33,
-                                                                      height:
-                                                                          23.33,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 8,
-                                                              ),
-                                                              Text(
-                                                                revenue.payTime ??
-                                                                    "-",
-                                                                style: controller
-                                                                    .typographyServices
-                                                                    .bodySmallRegular
-                                                                    .value,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Container(
-                                                            padding:
-                                                                EdgeInsets.symmetric(
-                                                                  horizontal: 8,
-                                                                  vertical: 8,
-                                                                ),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                  color: Color(
-                                                                    0XFF34A853,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius.circular(
-                                                                        8,
-                                                                      ),
-                                                                ),
-                                                            child: Text(
-                                                              revenue.orderType ==
-                                                                      1
-                                                                  ? "Motorcycle"
-                                                                  : "City Express Delivery",
-                                                              style: controller
-                                                                  .typographyServices
-                                                                  .bodySmallBold
-                                                                  .value
-                                                                  .copyWith(
-                                                                    color: controller
-                                                                        .themeColorServices
-                                                                        .neutralsColorGrey0
-                                                                        .value,
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      Text(
-                                                        controller
-                                                                .languageServices
-                                                                .language
-                                                                .value
-                                                                .destinationLocation ??
-                                                            "-",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .captionLargeRegular
+                                          ),
+                                          SizedBox(height: 4),
+                                          Text(
+                                            recommendationDateTime.day
+                                                .toString(),
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallBold
+                                                .value
+                                                .copyWith(
+                                                  color:
+                                                      controller.isDateSelected(
+                                                        recommendationDateTime,
+                                                      )
+                                                      ? controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey0
                                                             .value
-                                                            .copyWith(
-                                                              color: Color(
-                                                                0XFFB3B3B3,
-                                                              ),
-                                                            ),
-                                                      ),
-                                                      SizedBox(height: 2),
-                                                      Text(
-                                                        "-",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .captionLargeRegular
-                                                            .value
-                                                            .copyWith(
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .textColor
-                                                                  .value,
-                                                            ),
-                                                      ),
-                                                      SizedBox(height: 16),
-                                                      DashedLine(
-                                                        color: Color(
-                                                          0XFFD5D5D5,
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 8),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            "Potongan saldo aplikasi :",
-                                                            style: controller
-                                                                .typographyServices
-                                                                .bodySmallBold
-                                                                .value
-                                                                .copyWith(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .textColor
-                                                                      .value,
-                                                                ),
-                                                          ),
-                                                          Text(
-                                                            NumberFormat.currency(
-                                                              locale: 'id_ID',
-                                                              symbol: '-Rp',
-                                                              decimalDigits: 0,
-                                                            ).format(
-                                                              revenue.payMoney,
-                                                            ),
-                                                            style: controller
-                                                                .typographyServices
-                                                                .bodySmallBold
-                                                                .value
-                                                                .copyWith(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .redColor
-                                                                      .value,
-                                                                ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
+                                                      : Color(0XFFB3B3B3),
                                                 ),
-                                              ),
-                                              SizedBox(height: 16),
-                                              Divider(
-                                                height: 0,
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey200
-                                                    .value,
-                                              ),
-                                              SizedBox(height: 16),
-                                            ],
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  SizedBox(width: 16),
+                                ],
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 16),
+                        Divider(
+                          height: 0,
+                          color: controller
+                              .themeColorServices
+                              .neutralsColorGrey200
+                              .value,
+                        ),
+                        SizedBox(height: 8),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                SizedBox(height: 8),
+                                if (controller
+                                        .historyBalanceRevenue
+                                        .value
+                                        .revenue
+                                        ?.isEmpty ??
+                                    true) ...[
+                                  SizedBox(height: 16 * 3),
+                                  SvgPicture.asset(
+                                    "assets/images/img_history_activity_not_found.svg",
+                                    height: 80,
+                                    width: 80,
+                                  ),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    "Belum Ada Riwayat",
+                                    style: controller
+                                        .typographyServices
+                                        .bodyLargeBold
+                                        .value,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    "Tidak ada riwayat pada bagian ini",
+                                    style: controller
+                                        .typographyServices
+                                        .bodySmallRegular
+                                        .value,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                                for (var revenue
+                                    in controller
+                                            .historyBalanceRevenue
+                                            .value
+                                            .revenue ??
+                                        <Revenue>[]) ...[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                    ),
+                                    child: Container(
+                                      padding: EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 42 / 2,
+                                                    backgroundColor: Color(
+                                                      0XFFF3F3F3,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                          "assets/icons/icon_history_revenue.svg",
+                                                          width: 23.33,
+                                                          height: 23.33,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Text(
+                                                    revenue.payTime ?? "-",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallRegular
+                                                        .value,
+                                                  ),
+                                                ],
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                  vertical: 8,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Color(0XFF34A853),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: Text(
+                                                  revenue.orderType == 1
+                                                      ? "Motorcycle"
+                                                      : "City Express Delivery",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .bodySmallBold
+                                                      .value
+                                                      .copyWith(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .neutralsColorGrey0
+                                                            .value,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 8),
+                                          Text(
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .destinationLocation ??
+                                                "-",
+                                            style: controller
+                                                .typographyServices
+                                                .captionLargeRegular
+                                                .value
+                                                .copyWith(
+                                                  color: Color(0XFFB3B3B3),
+                                                ),
+                                          ),
+                                          SizedBox(height: 2),
+                                          Text(
+                                            "-",
+                                            style: controller
+                                                .typographyServices
+                                                .captionLargeRegular
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .textColor
+                                                      .value,
+                                                ),
+                                          ),
+                                          SizedBox(height: 16),
+                                          DashedLine(color: Color(0XFFD5D5D5)),
+                                          SizedBox(height: 8),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Yang didapatkan driver :",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallBold
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .textColor
+                                                          .value,
+                                                    ),
+                                              ),
+                                              Text(
+                                                NumberFormat.currency(
+                                                  locale: 'id_ID',
+                                                  symbol: 'Rp',
+                                                  decimalDigits: 0,
+                                                ).format(revenue.payMoney),
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallBold
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .textColor
+                                                          .value,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  Divider(
+                                    height: 0,
+                                    color: controller
+                                        .themeColorServices
+                                        .neutralsColorGrey200
+                                        .value,
+                                  ),
+                                  SizedBox(height: 16),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

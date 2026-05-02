@@ -14,7 +14,15 @@ class AccountView extends GetView<AccountController> {
   Widget build(BuildContext context) {
     return Obx(
       () => controller.isFetch.value
-          ? Container()
+          ? Center(
+              child: SizedBox(
+                width: 25,
+                height: 25,
+                child: CircularProgressIndicator(
+                  color: controller.themeColorServices.primaryBlue.value,
+                ),
+              ),
+            )
           : Stack(
               clipBehavior: Clip.none,
               children: [

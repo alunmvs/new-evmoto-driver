@@ -908,68 +908,134 @@ class HomeView extends GetView<HomeController> {
                                                         ),
                                                       ],
                                                     ),
-                                                    child: GestureDetector(
-                                                      onTap: () async {
-                                                        await Get.toNamed(
-                                                          Routes.ACTIVITY,
-                                                        );
-                                                        await controller
-                                                            .refreshAll();
-                                                      },
-                                                      child: Container(
-                                                        padding: EdgeInsets.all(
-                                                          16,
-                                                        ),
-                                                        width: MediaQuery.of(
-                                                          context,
-                                                        ).size.width,
-                                                        decoration: BoxDecoration(
-                                                          color: Color(
-                                                            0XFF0052AA,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius.only(
-                                                                bottomLeft:
-                                                                    Radius.circular(
-                                                                      16,
-                                                                    ),
-                                                                bottomRight:
-                                                                    Radius.circular(
-                                                                      16,
-                                                                    ),
-                                                              ),
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            Text(
-                                                              controller
-                                                                      .languageServices
-                                                                      .language
-                                                                      .value
-                                                                      .homeSeeMyActivity ??
-                                                                  "-",
-                                                              style: controller
-                                                                  .typographyServices
-                                                                  .bodySmallBold
-                                                                  .value
-                                                                  .copyWith(
-                                                                    color: controller
-                                                                        .themeColorServices
-                                                                        .neutralsColorGrey0
-                                                                        .value,
+                                                    child: Row(
+                                                      children: [
+                                                        Expanded(
+                                                          child: GestureDetector(
+                                                            onTap: () async {
+                                                              await Get.toNamed(
+                                                                Routes.MY_ORDER,
+                                                              );
+                                                              await controller
+                                                                  .refreshAll();
+                                                            },
+                                                            child: Container(
+                                                              padding:
+                                                                  EdgeInsets.all(
+                                                                    16,
                                                                   ),
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                    context,
+                                                                  ).size.width,
+                                                              decoration: BoxDecoration(
+                                                                color: Color(
+                                                                  0XFF0052AA,
+                                                                ),
+                                                                borderRadius: BorderRadius.only(
+                                                                  bottomLeft:
+                                                                      Radius.circular(
+                                                                        16,
+                                                                      ),
+                                                                  bottomRight:
+                                                                      Radius.circular(
+                                                                        0,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Text(
+                                                                    "Order Saya",
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodySmallBold
+                                                                        .value
+                                                                        .copyWith(
+                                                                          color: controller
+                                                                              .themeColorServices
+                                                                              .neutralsColorGrey0
+                                                                              .value,
+                                                                        ),
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ],
+                                                          ),
                                                         ),
-                                                      ),
+                                                        Expanded(
+                                                          child: GestureDetector(
+                                                            onTap: () async {
+                                                              await Get.toNamed(
+                                                                Routes
+                                                                    .MY_ACTIVITY,
+                                                              );
+                                                              await controller
+                                                                  .refreshAll();
+                                                            },
+                                                            child: Container(
+                                                              padding:
+                                                                  EdgeInsets.all(
+                                                                    16,
+                                                                  ),
+                                                              width:
+                                                                  MediaQuery.of(
+                                                                    context,
+                                                                  ).size.width,
+                                                              decoration: BoxDecoration(
+                                                                color: Color(
+                                                                  0XFF0052AA,
+                                                                ),
+                                                                borderRadius: BorderRadius.only(
+                                                                  bottomLeft:
+                                                                      Radius.circular(
+                                                                        0,
+                                                                      ),
+                                                                  bottomRight:
+                                                                      Radius.circular(
+                                                                        16,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Text(
+                                                                    "Aktivitas Saya",
+                                                                    style: controller
+                                                                        .typographyServices
+                                                                        .bodySmallBold
+                                                                        .value
+                                                                        .copyWith(
+                                                                          color: controller
+                                                                              .themeColorServices
+                                                                              .neutralsColorGrey0
+                                                                              .value,
+                                                                        ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),

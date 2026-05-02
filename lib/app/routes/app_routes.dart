@@ -58,6 +58,11 @@ abstract class Routes {
   static const ORDER_PAYMENT_PENDING_FEE_DETAIL =
       _Paths.ORDER_PAYMENT_PENDING_FEE_DETAIL;
   static const CHAT_LIST = _Paths.CHAT_LIST;
+  static const MY_ACTIVITY = _Paths.MY_ACTIVITY;
+  static const MY_ORDER = _Paths.MY_ORDER;
+  static const AGREEMENT_GUARANTEE_INCOME = _Paths.AGREEMENT_GUARANTEE_INCOME;
+  static const AGREEMENT_COUPON_INCOME = _Paths.AGREEMENT_COUPON_INCOME;
+  static const CHAT_DETAIL = _Paths.CHAT_DETAIL;
 }
 
 abstract class _Paths {
@@ -117,4 +122,9 @@ abstract class _Paths {
   static const ORDER_PAYMENT_PENDING_FEE_DETAIL =
       '/order-payment-pending-fee-detail';
   static const CHAT_LIST = '/chat-list';
+  static const MY_ACTIVITY = '/my-activity';
+  static const MY_ORDER = '/my-order';
+  static const AGREEMENT_GUARANTEE_INCOME = '/agreement-guarantee-income';
+  static const AGREEMENT_COUPON_INCOME = '/agreement-coupon-income';
+  static const CHAT_DETAIL = '/chat-detail';
 }

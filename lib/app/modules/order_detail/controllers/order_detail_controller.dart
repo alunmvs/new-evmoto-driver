@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_messages_model.dart';
 import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
@@ -28,7 +29,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:new_evmoto_driver/app/data/models/open_map_direction_model.dart'
     as direction_model;
 
-class OrderDetailController extends GetxController {
+class OrderDetailController extends GetxController with WidgetsBindingObserver {
   final OrderRepository orderRepository;
   final GoogleMapsRepository googleMapsRepository;
   final OpenMapsRepository openMapsRepository;
@@ -91,6 +92,11 @@ class OrderDetailController extends GetxController {
   final isMarkerDestinationVisible = true.obs;
   final isPinLocationWaitingForDriverHide = true.obs;
 
+  final evmotoOrderChatMessagesList = <EvmotoOrderChatMessages>[].obs;
+
+  StreamSubscription? streamEvmotoOrderChatParticipants;
+  StreamSubscription? streamEvmotoOrderChatMessages;
+
   final state = 0.obs;
   final previousState = 0.obs;
 
@@ -102,6 +108,8 @@ class OrderDetailController extends GetxController {
     isFetch.value = true;
     orderId.value = Get.arguments['order_id'].toString();
     orderType.value = Get.arguments['order_type'];
+
+    WidgetsBinding.instance.addObserver(this);
 
     // if (locationServices.isPermissionLocationAllow.value == true) {
     await Future.wait([getOrderDetail(), getOrderUserDetail()]);
@@ -163,62 +171,6 @@ class OrderDetailController extends GetxController {
     });
 
     await checkSendInvoice();
-
-    // if (orderDetail.value.state == 1 ||
-    //     orderDetail.value.state == 2 ||
-    //     orderDetail.value.state == 3) {
-    //   await setupGoogleMapsPickUpCustomer();
-    // }
-
-    // if (orderDetail.value.state == 4 ||
-    //     orderDetail.value.state == 5 ||
-    //     orderDetail.value.state == 6) {
-    //   await setupGoogleMapOriginToDestination();
-    // }
-
-    // await Future.wait([
-    //   setupSchedulerDriverCurrentLocation(),
-    //   setupSchedulerDriverRefocusMapBound(),
-    // ]);
-
-    // if ([6, 7, 8].contains(orderDetail.value.state)) {
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     Get.offAndToNamed(
-    //       Routes.ORDER_PAYMENT_CONFIRMATION,
-    //       arguments: {
-    //         "order_id": orderId.value,
-    //         "order_type": orderType.value,
-    //       },
-    //     );
-    //   });
-    // }
-
-    // if ([9].contains(orderDetail.value.state)) {
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     Get.offAndToNamed(
-    //       Routes.ORDER_DETAIL_DONE,
-    //       arguments: {
-    //         "order_id": orderId.value,
-    //         "order_type": orderType.value,
-    //       },
-    //     );
-    //   });
-    // }
-
-    // if (orderDetail.value.state == 10) {
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     Get.offAndToNamed(
-    //       Routes.ORDER_DETAIL_CANCEL,
-    //       arguments: {
-    //         "order_id": orderId.value,
-    //         "order_type": orderType.value,
-    //       },
-    //     );
-    //   });
-    // }
-    // } else {
-    //   isFetch.value = false;
-    // }
   }
 
   @override
@@ -230,6 +182,12 @@ class OrderDetailController extends GetxController {
   Future<void> onClose() async {
     super.onClose();
 
+    WidgetsBinding.instance.removeObserver(this);
+
+    await streamEvmotoOrderChatParticipants?.cancel();
+    await streamEvmotoOrderChatMessages?.cancel();
+    await setChatOffline();
+
     try {
       googleMapController.dispose();
     } catch (e) {}
@@ -239,6 +197,16 @@ class OrderDetailController extends GetxController {
     try {
       refocusMapBoundsTimer?.cancel();
     } catch (e) {}
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      await setChatOnline();
+      await Future.wait([getOrderDetail(), getOrderUserDetail()]);
+    } else if (state == AppLifecycleState.paused) {
+      await setChatOffline();
+    }
   }
 
   Future<void> refreshAll() async {
@@ -318,6 +286,20 @@ class OrderDetailController extends GetxController {
     );
 
     state.value = orderDetail.value.state ?? 0;
+
+    if (evmotoOrderChatParticipants.value.userId != orderDetail.value.userId &&
+        evmotoOrderChatParticipants.value.driverId !=
+            orderDetail.value.driverId &&
+        evmotoOrderChatParticipants.value.orderId !=
+            orderDetail.value.orderId.toString()) {
+      await getExistingChatRoom();
+      if (evmotoOrderChatParticipants.value.docId == null) {
+        await userCreateChatRoom();
+      }
+      await setChatOnline();
+      await streamExistingChatRoom();
+      await streamExistingChatList();
+    }
   }
 
   Future<void> getOrderUserDetail() async {
@@ -1853,46 +1835,165 @@ class OrderDetailController extends GetxController {
     }
   }
 
-  Future<void> driverJoinChatRoom() async {
-    await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_participants')
-        .doc(orderDetail.value.orderId.toString())
-        .set({
-          "orderId": orderDetail.value.orderId,
-          "driverId": orderDetail.value.driverId,
-          "driverName": homeController.userInfo.value.name,
-          "driverIsOnline": true,
-          "driverLastSeen": FieldValue.serverTimestamp(),
-          "driverProfileUrl": homeController.userInfo.value.avatar,
-        }, SetOptions(merge: true));
+  // Chat Room
+  Future<void> streamExistingChatRoom() async {
+    if (evmotoOrderChatParticipants.value.docId != null) {
+      await streamEvmotoOrderChatParticipants?.cancel();
+      streamEvmotoOrderChatParticipants = FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(evmotoOrderChatParticipants.value.docId)
+          .snapshots()
+          .listen((snapshots) {
+            evmotoOrderChatParticipants.value =
+                EvmotoOrderChatParticipants.fromJson(snapshots.data() ?? {});
+            evmotoOrderChatParticipants.value.docId = snapshots.id;
+            print("[DEBUG CHAT] ${snapshots.data()}");
+            print("[DEBUG CHAT] Docs Id ${snapshots.id}");
+          });
+    }
+  }
+
+  Future<void> getExistingChatRoom() async {
+    var result =
+        (await FirebaseFirestore.instance
+                .collection('evmoto_order_chat_participants')
+                .where(
+                  "orderId",
+                  isEqualTo: orderDetail.value.orderId.toString(),
+                )
+                .where("userId", isEqualTo: orderDetail.value.userId.toString())
+                .where(
+                  "driverId",
+                  isEqualTo: orderDetail.value.driverId.toString(),
+                )
+                .get())
+            .docs;
+
+    print(
+      "[DEBUG CHAT] Get Existing Chat Room ${orderDetail.value.orderId} ${orderDetail.value.userId} ${orderDetail.value.driverId}",
+    );
+    if (result.isNotEmpty) {
+      print("[DEBUG CHAT] Get Existing Chat Room is Not Empty");
+      evmotoOrderChatParticipants.value = EvmotoOrderChatParticipants.fromJson(
+        result.first.data(),
+      );
+      evmotoOrderChatParticipants.value.docId = result.first.id;
+    }
+  }
+
+  Future<void> userCreateChatRoom() async {
+    print("[DEBUG CHAT] Create Chat Room");
+    if (orderDetail.value.userId != null &&
+        orderDetail.value.driverId != null &&
+        orderDetail.value.orderId != null) {
+      var evmotoOrderChatParticipantsList =
+          (await FirebaseFirestore.instance
+                  .collection('evmoto_order_chat_participants')
+                  .where(
+                    "orderId",
+                    isEqualTo: orderDetail.value.orderId.toString(),
+                  )
+                  .where(
+                    "userId",
+                    isEqualTo: orderDetail.value.userId.toString(),
+                  )
+                  .where(
+                    "driverId",
+                    isEqualTo: orderDetail.value.driverId.toString(),
+                  )
+                  .get())
+              .docs;
+
+      print("[DEBUG CHAT] Create Chat Room Creating...");
+
+      if (evmotoOrderChatParticipantsList.isEmpty) {
+        print("[DEBUG CHAT] Create Chat Room Creating Is Empty...");
+        var data = {
+          "orderId": orderDetail.value.orderId.toString(),
+          "userId": orderDetail.value.userId.toString(),
+          "userName": orderDetail.value.user,
+          "userProfileUrl": orderDetail.value.userHeadImg,
+          "driverId": orderDetail.value.driverId.toString(),
+          "driverName": orderDetail.value.driverName,
+          "driverProfileUrl": orderDetail.value.driverAvatar,
+          "createdAt": FieldValue.serverTimestamp(),
+        };
+        await FirebaseFirestore.instance
+            .collection('evmoto_order_chat_participants')
+            .add(data);
+      }
+    }
   }
 
   Future<void> setChatOnline() async {
-    await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_participants')
-        .doc(orderDetail.value.orderId.toString())
-        .set({
-          "orderId": orderDetail.value.orderId,
-          "driverId": orderDetail.value.driverId,
-          "driverName": homeController.userInfo.value.name,
+    await setChatOffline();
+
+    if (orderDetail.value.driverId != null) {
+      final batch = FirebaseFirestore.instance.batch();
+
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .where('orderId', isEqualTo: orderDetail.value.orderId.toString())
+          .where('userId', isEqualTo: orderDetail.value.userId.toString())
+          .where('driverId', isEqualTo: orderDetail.value.driverId.toString())
+          .get();
+
+      for (var doc in querySnapshot.docs) {
+        batch.set(doc.reference, {
+          "driverId": orderDetail.value.driverId.toString(),
+          "driverName": orderDetail.value.driverName,
+          "driverProfileUrl": orderDetail.value.driverAvatar,
           "driverIsOnline": true,
           "driverLastSeen": FieldValue.serverTimestamp(),
-          "driverProfileUrl": homeController.userInfo.value.avatar,
         }, SetOptions(merge: true));
+      }
+
+      await batch.commit();
+    }
   }
 
   Future<void> setChatOffline() async {
-    await FirebaseFirestore.instance
+    final batch = FirebaseFirestore.instance.batch();
+
+    final querySnapshot = await FirebaseFirestore.instance
         .collection('evmoto_order_chat_participants')
-        .doc(orderDetail.value.orderId.toString())
-        .set({
-          "orderId": orderDetail.value.orderId,
-          "driverId": orderDetail.value.driverId,
-          "driverName": homeController.userInfo.value.name,
-          "driverIsOnline": false,
-          "driverLastSeen": FieldValue.serverTimestamp(),
-          "driverProfileUrl": homeController.userInfo.value.avatar,
-        }, SetOptions(merge: true));
+        .where('orderId', isEqualTo: orderDetail.value.orderId.toString())
+        .get();
+
+    for (var doc in querySnapshot.docs) {
+      batch.set(doc.reference, {
+        "driverId": orderDetail.value.driverId.toString(),
+        "driverName": orderDetail.value.driverName,
+        "driverProfileUrl": orderDetail.value.driverAvatar,
+        "driverIsOnline": false,
+        "driverLastSeen": FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    }
+
+    await batch.commit();
+  }
+
+  Future<void> streamExistingChatList() async {
+    await streamEvmotoOrderChatParticipants?.cancel();
+    streamEvmotoOrderChatMessages = FirebaseFirestore.instance
+        .collection('evmoto_order_chat_messages')
+        .where(
+          'evmotoOrderChatParticipantsDocumentId',
+          isEqualTo: evmotoOrderChatParticipants.value.docId,
+        )
+        .orderBy('createdAt', descending: false)
+        .snapshots()
+        .listen((snapshots) async {
+          var evmotoOrderChatMessagesList = <EvmotoOrderChatMessages>[];
+          for (var doc in snapshots.docs) {
+            var evmotoOrderChatMessages = EvmotoOrderChatMessages.fromJson(
+              doc.data(),
+            );
+            evmotoOrderChatMessages.evmotoOrderChatMessagesId = doc.id;
+            evmotoOrderChatMessagesList.add(evmotoOrderChatMessages);
+          }
+          this.evmotoOrderChatMessagesList.value = evmotoOrderChatMessagesList;
+        });
   }
 }
 

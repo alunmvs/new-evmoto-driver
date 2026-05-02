@@ -15,7 +15,7 @@ class ChatListController extends GetxController {
   final languageServices = Get.find<LanguageServices>();
 
   final roomList = <EvmotoOrderChatParticipants>[].obs;
-  DocumentSnapshot? lastDoc;
+  QueryDocumentSnapshot? lastDoc;
 
   final isSeeMoreRoomList = true.obs;
 
@@ -48,16 +48,20 @@ class ChatListController extends GetxController {
 
     var evmotoOrderChatParticipants = await FirebaseFirestore.instance
         .collection('evmoto_order_chat_participants')
-        .where('driverId', isEqualTo: userServices.userInfo.value.id)
-        .orderBy('driverJoinedAt', descending: true)
+        .where('driverId', isEqualTo: userServices.userInfo.value.id.toString())
+        .orderBy('createdAt', descending: true)
         .limit(10)
         .get();
 
-    lastDoc = evmotoOrderChatParticipants.docs.last;
+    if (evmotoOrderChatParticipants.docs.isNotEmpty) {
+      lastDoc = evmotoOrderChatParticipants.docs.last;
+    } else {
+      lastDoc = null;
+    }
 
     for (var doc in evmotoOrderChatParticipants.docs) {
       var data = EvmotoOrderChatParticipants.fromJson(doc.data());
-      data.orderId = doc.id;
+      data.docId = doc.id;
       roomList.add(data);
     }
 
@@ -73,14 +77,17 @@ class ChatListController extends GetxController {
 
     var evmotoOrderChatParticipants = await FirebaseFirestore.instance
         .collection('evmoto_order_chat_participants')
-        .where('driverId', isEqualTo: userServices.userInfo.value.id)
-        .where('userName', isNotEqualTo: null)
-        .orderBy('driverJoinedAt', descending: true)
+        .where('driverId', isEqualTo: userServices.userInfo.value.id.toString())
+        .orderBy('createdAt', descending: true)
         .startAfterDocument(lastDoc!)
         .limit(10)
         .get();
 
-    lastDoc = evmotoOrderChatParticipants.docs.last;
+    if (evmotoOrderChatParticipants.docs.isNotEmpty) {
+      lastDoc = evmotoOrderChatParticipants.docs.last;
+    } else {
+      lastDoc = null;
+    }
 
     for (var doc in evmotoOrderChatParticipants.docs) {
       var data = EvmotoOrderChatParticipants.fromJson(doc.data());

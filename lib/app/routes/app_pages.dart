@@ -28,6 +28,12 @@ import '../modules/activity/bindings/activity_binding.dart';
 import '../modules/activity/views/activity_view.dart';
 import '../modules/add_edit_withdraw_bank_account/bindings/add_edit_withdraw_bank_account_binding.dart';
 import '../modules/add_edit_withdraw_bank_account/views/add_edit_withdraw_bank_account_view.dart';
+import '../modules/agreement_coupon_income/bindings/agreement_coupon_income_binding.dart';
+import '../modules/agreement_coupon_income/views/agreement_coupon_income_view.dart';
+import '../modules/agreement_guarantee_income/bindings/agreement_guarantee_income_binding.dart';
+import '../modules/agreement_guarantee_income/views/agreement_guarantee_income_view.dart';
+import '../modules/chat_detail/bindings/chat_detail_binding.dart';
+import '../modules/chat_detail/views/chat_detail_view.dart';
 import '../modules/chat_list/bindings/chat_list_binding.dart';
 import '../modules/chat_list/views/chat_list_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
@@ -48,6 +54,10 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/login_verification_otp/bindings/login_verification_otp_binding.dart';
 import '../modules/login_verification_otp/views/login_verification_otp_view.dart';
+import '../modules/my_activity/bindings/my_activity_binding.dart';
+import '../modules/my_activity/views/my_activity_view.dart';
+import '../modules/my_order/bindings/my_order_binding.dart';
+import '../modules/my_order/views/my_order_view.dart';
 import '../modules/notification/bindings/notification_binding.dart';
 import '../modules/notification/views/notification_view.dart';
 import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
@@ -358,6 +368,31 @@ class AppPages {
       name: _Paths.CHAT_LIST,
       page: () => const ChatListView(),
       binding: ChatListBinding(),
+    ),
+    GetPage(
+      name: _Paths.MY_ACTIVITY,
+      page: () => const MyActivityView(),
+      binding: MyActivityBinding(),
+    ),
+    GetPage(
+      name: _Paths.MY_ORDER,
+      page: () => const MyOrderView(),
+      binding: MyOrderBinding(),
+    ),
+    GetPage(
+      name: _Paths.AGREEMENT_GUARANTEE_INCOME,
+      page: () => const AgreementGuaranteeIncomeView(),
+      binding: AgreementGuaranteeIncomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.AGREEMENT_COUPON_INCOME,
+      page: () => const AgreementCouponIncomeView(),
+      binding: AgreementCouponIncomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT_DETAIL,
+      page: () => const ChatDetailView(),
+      binding: ChatDetailBinding(),
     ),
   ];
 }

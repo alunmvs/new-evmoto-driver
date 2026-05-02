@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../controllers/chat_list_controller.dart';
@@ -79,92 +80,107 @@ class ChatListView extends GetView<ChatListController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             for (var room in controller.roomList) ...[
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 16,
-                                ),
-                                child: Row(
-                                  children: [
-                                    if (room.userProfileUrl == null) ...[
-                                      CircleAvatar(
-                                        radius: 42 / 2,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/icon_profile.svg",
-                                          width: 42,
-                                          height: 42,
+                              GestureDetector(
+                                onTap: () async {
+                                  await Get.toNamed(
+                                    Routes.CHAT_DETAIL,
+                                    arguments: {"doc_id": room.docId},
+                                  );
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 16,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      if (room.userProfileUrl == null ||
+                                          room.userProfileUrl == "") ...[
+                                        CircleAvatar(
+                                          radius: 42 / 2,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/icon_profile.svg",
+                                            width: 42,
+                                            height: 42,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                    if (room.userProfileUrl != null) ...[
-                                      CircleAvatar(
-                                        radius: 42 / 2,
-                                        child: CachedNetworkImage(
-                                          imageUrl: room.userProfileUrl!,
-                                          width: 42,
-                                          height: 42,
-                                          fit: BoxFit.cover,
+                                      ],
+                                      if (room.userProfileUrl != null &&
+                                          room.userProfileUrl != "") ...[
+                                        CircleAvatar(
+                                          radius: 42 / 2,
+                                          child: CachedNetworkImage(
+                                            imageUrl: room.userProfileUrl!,
+                                            width: 42,
+                                            height: 42,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                    SizedBox(width: 8),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            room.userName ?? "-",
-                                            style: controller
-                                                .typographyServices
-                                                .bodyLargeBold
-                                                .value,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          SizedBox(height: 2),
-                                          Text(
-                                            room.orderId ?? "-",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: Color(0XFFB3B3B3),
-                                                ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          SizedBox(height: 6),
-                                          Text(
-                                            room.lastMessage ?? "-",
-                                            style: controller
-                                                .typographyServices
-                                                .bodySmallRegular
-                                                .value
-                                                .copyWith(
-                                                  color: Color(0XFF808080),
-                                                ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    if (room.lastMessageAt != null) ...[
+                                      ],
                                       SizedBox(width: 8),
-                                      Text(
-                                        DateFormat(
-                                          'HH:mm',
-                                        ).format(room.lastMessageAt!),
-                                        style: controller
-                                            .typographyServices
-                                            .captionLargeRegular
-                                            .value
-                                            .copyWith(color: Color(0XFFB3B3B3)),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              room.userName ?? "-",
+                                              style: controller
+                                                  .typographyServices
+                                                  .bodyLargeBold
+                                                  .value,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            SizedBox(height: 2),
+                                            Text(
+                                              room.orderId ?? "-",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: Color(0XFFB3B3B3),
+                                                  ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            if (room.lastMessage != null) ...[
+                                              SizedBox(height: 6),
+                                              Text(
+                                                room.lastMessage ?? "-",
+                                                style: controller
+                                                    .typographyServices
+                                                    .bodySmallRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: Color(0XFF808080),
+                                                    ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ],
+                                        ),
                                       ),
+                                      if (room.lastMessageAt != null) ...[
+                                        SizedBox(width: 8),
+                                        Text(
+                                          DateFormat(
+                                            'HH:mm',
+                                          ).format(room.lastMessageAt!),
+                                          style: controller
+                                              .typographyServices
+                                              .captionLargeRegular
+                                              .value
+                                              .copyWith(
+                                                color: Color(0XFFB3B3B3),
+                                              ),
+                                        ),
+                                      ],
                                     ],
-                                  ],
+                                  ),
                                 ),
                               ),
                               Padding(

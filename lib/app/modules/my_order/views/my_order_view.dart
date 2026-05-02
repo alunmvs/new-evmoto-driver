@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:new_evmoto_driver/app/modules/activity/views/activity_view/activity_all_sub_view.dart';
-import 'package:new_evmoto_driver/app/modules/activity/views/activity_view/activity_cancelled_sub_view.dart';
-import 'package:new_evmoto_driver/app/modules/activity/views/activity_view/activity_pending_payment_sub_view.dart';
+import 'package:new_evmoto_driver/app/modules/my_order/views/my_order_view/my_order_all_sub_view.dart';
+import 'package:new_evmoto_driver/app/modules/my_order/views/my_order_view/my_order_cancelled_sub_view.dart';
+import 'package:new_evmoto_driver/app/modules/my_order/views/my_order_view/my_order_pending_payment_sub_view.dart';
 
-import '../controllers/activity_controller.dart';
+import '../controllers/my_order_controller.dart';
 
-class ActivityView extends GetView<ActivityController> {
-  const ActivityView({super.key});
+class MyOrderView extends GetView<MyOrderController> {
+  const MyOrderView({super.key});
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            controller.languageServices.language.value.myActivities ?? "-",
+            "Order Saya",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -142,9 +142,9 @@ class ActivityView extends GetView<ActivityController> {
                       child: TabBarView(
                         controller: controller.tabController,
                         children: [
-                          ActivityAllSubView(),
-                          ActivityPendingPaymentSubView(),
-                          ActivityCancelledSubView(),
+                          MyOrderAllSubView(),
+                          MyOrderPendingPaymentSubView(),
+                          MyOrderCancelledSubView(),
                         ],
                       ),
                     ),
