@@ -38,7 +38,7 @@ class AccountAboutUsController extends GetxController {
 
   Future<void> getAboutUsAgreement() async {
     agreement.value = await agreementRepository.getAgreementDetail(
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       userType: 2,
       type: 5,
     );

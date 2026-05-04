@@ -19,6 +19,7 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_driver/app/utils/time_process_helper.dart';
@@ -44,6 +45,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
   final homeController = Get.find<HomeController>();
+  final userServices = Get.find<UserServices>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),
@@ -282,7 +284,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     orderDetail.value = await orderRepository.getOrderDetail(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     );
 
     state.value = orderDetail.value.state ?? 0;
@@ -1125,7 +1127,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                                   await orderRepository.cancelOrder(
                                     orderType: orderType.value,
                                     orderId: orderId.value,
-                                    language: 2,
+                                    language: languageServices
+                                        .languageCodeSystem
+                                        .value,
                                   );
                                   Get.close(1);
                                   Get.back();
@@ -1202,7 +1206,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       await orderRepository.grabOrder(
         orderType: orderType.value,
         orderId: orderDetail.value.orderId.toString(),
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
     } catch (e) {
       final SnackBar snackBar = SnackBar(
@@ -1847,8 +1851,6 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
             evmotoOrderChatParticipants.value =
                 EvmotoOrderChatParticipants.fromJson(snapshots.data() ?? {});
             evmotoOrderChatParticipants.value.docId = snapshots.id;
-            print("[DEBUG CHAT] ${snapshots.data()}");
-            print("[DEBUG CHAT] Docs Id ${snapshots.id}");
           });
     }
   }
@@ -1869,11 +1871,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                 .get())
             .docs;
 
-    print(
-      "[DEBUG CHAT] Get Existing Chat Room ${orderDetail.value.orderId} ${orderDetail.value.userId} ${orderDetail.value.driverId}",
-    );
     if (result.isNotEmpty) {
-      print("[DEBUG CHAT] Get Existing Chat Room is Not Empty");
       evmotoOrderChatParticipants.value = EvmotoOrderChatParticipants.fromJson(
         result.first.data(),
       );
@@ -1882,7 +1880,6 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> userCreateChatRoom() async {
-    print("[DEBUG CHAT] Create Chat Room");
     if (orderDetail.value.userId != null &&
         orderDetail.value.driverId != null &&
         orderDetail.value.orderId != null) {
@@ -1904,10 +1901,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                   .get())
               .docs;
 
-      print("[DEBUG CHAT] Create Chat Room Creating...");
-
       if (evmotoOrderChatParticipantsList.isEmpty) {
-        print("[DEBUG CHAT] Create Chat Room Creating Is Empty...");
         var data = {
           "orderId": orderDetail.value.orderId.toString(),
           "userId": orderDetail.value.userId.toString(),
@@ -1974,7 +1968,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> streamExistingChatList() async {
-    await streamEvmotoOrderChatParticipants?.cancel();
+    await streamEvmotoOrderChatMessages?.cancel();
     streamEvmotoOrderChatMessages = FirebaseFirestore.instance
         .collection('evmoto_order_chat_messages')
         .where(

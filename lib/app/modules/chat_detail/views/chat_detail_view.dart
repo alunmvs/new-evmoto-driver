@@ -495,7 +495,6 @@ class ChatDetailView extends GetView<ChatDetailController> {
                               child: TextField(
                                 controller: controller.textEditingController,
                                 onChanged: (value) {
-                                  print(value);
                                   controller.message.value = value;
                                 },
                                 decoration: InputDecoration(
@@ -553,11 +552,9 @@ class ChatDetailView extends GetView<ChatDetailController> {
                             SizedBox(width: 12),
                             GestureDetector(
                               onTap: () async {
-                                print("oke-1");
                                 if (controller.textEditingController.text
                                         .trim() !=
                                     "") {
-                                  print("oke-2");
                                   await controller.sendMessage();
                                 }
                               },

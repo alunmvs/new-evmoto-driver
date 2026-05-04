@@ -99,7 +99,7 @@ class DepositBalanceController extends GetxController {
           return;
         }
         var depositBalance = await paymentRepository.rechargeDriver(
-          language: 2,
+          language: languageServices.languageCodeSystem.value,
           money: double.parse(
             formGroup.control("money").value.toString().replaceAll(".", ""),
           ),

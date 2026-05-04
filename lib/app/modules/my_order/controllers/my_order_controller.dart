@@ -69,7 +69,7 @@ class MyOrderController extends GetxController
 
     allOrderList.value = (await orderRepository.getHistoryOrderList(
       size: 10,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       state: 1,
       pageNum: allOrderPageNum.value,
     ));
@@ -85,7 +85,7 @@ class MyOrderController extends GetxController
 
       var allOrderList = (await orderRepository.getHistoryOrderList(
         size: 10,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         state: 1,
         pageNum: allOrderPageNum.value,
       ));
@@ -104,7 +104,7 @@ class MyOrderController extends GetxController
 
     toBePaidList.value = (await orderRepository.getHistoryOrderList(
       size: 10,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       state: 2,
       pageNum: toBePaidPageNum.value,
     ));
@@ -120,7 +120,7 @@ class MyOrderController extends GetxController
 
       var toBePaidList = (await orderRepository.getHistoryOrderList(
         size: 10,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         state: 2,
         pageNum: toBePaidPageNum.value,
       ));
@@ -139,7 +139,7 @@ class MyOrderController extends GetxController
 
     cancelOrderList.value = (await orderRepository.getHistoryOrderList(
       size: 10,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       state: 3,
       pageNum: cancelOrderPageNum.value,
     ));
@@ -155,7 +155,7 @@ class MyOrderController extends GetxController
 
       var cancelOrderList = (await orderRepository.getHistoryOrderList(
         size: 10,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         state: 3,
         pageNum: cancelOrderPageNum.value,
       ));

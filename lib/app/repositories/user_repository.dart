@@ -19,7 +19,7 @@ class UserRepository {
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
-      print("[DEBUG TOKEN] $token");
+      // print("[DEBUG TOKEN] $token");
 
       var headers = {
         "Content-Type": "multipart/form-data",

@@ -6,7 +6,10 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 
-Future<XFile?> onTapImageUpload({required String title}) async {
+Future<XFile?> onTapImageUpload({
+  required String title,
+  CameraDevice? preferredCameraDevice,
+}) async {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
@@ -134,7 +137,8 @@ Future<XFile?> onTapImageUpload({required String title}) async {
                               var image = await imagePicker.pickImage(
                                 source: ImageSource.camera,
                                 maxWidth: 720,
-                                preferredCameraDevice: CameraDevice.front,
+                                preferredCameraDevice:
+                                    preferredCameraDevice ?? CameraDevice.rear,
                               );
 
                               if (image != null) {

@@ -10,6 +10,7 @@ import 'package:new_evmoto_driver/app/modules/order_detail/controllers/order_det
 import 'package:new_evmoto_driver/app/modules/order_payment_confirmation/controllers/order_payment_confirmation_controller.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
@@ -26,6 +27,7 @@ class SocketServices extends GetxService {
   final typographyServices = Get.find<TypographyServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
   final locationServices = Get.find<LocationServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final isSocketClose = true.obs;
 
@@ -57,8 +59,8 @@ class SocketServices extends GetxService {
 
           if (dataJson != null) {
             if (["PONG", "OK"].contains(dataJson['method']) == false) {
-              print("[DEBUG SOCKET] ${dataJson['method']}");
-              print("[DEBUG SOCKET] $dataJson");
+              // print("[DEBUG SOCKET] ${dataJson['method']}");
+              // print("[DEBUG SOCKET] $dataJson");
             }
 
             var method = dataJson['method'] ?? "";
@@ -147,7 +149,7 @@ class SocketServices extends GetxService {
 
                 if (homeController.vehicleStatistics.value.work != 1) {
                   await homeController.userRepository.startWork(
-                    language: 2,
+                    language: languageServices.languageCodeSystem.value,
                     type: 1,
                   );
                   homeController.workStatus.value = 1;

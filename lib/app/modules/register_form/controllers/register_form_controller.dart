@@ -165,7 +165,10 @@ class RegisterFormController extends GetxController {
   }
 
   Future<void> onTapUploadAvatar() async {
-    var image = await onTapImageUpload(title: 'Foto Avatar');
+    var image = await onTapImageUpload(
+      title: 'Foto Avatar',
+      preferredCameraDevice: CameraDevice.front,
+    );
 
     if (image != null) {
       showLoadingDialog();
@@ -177,7 +180,10 @@ class RegisterFormController extends GetxController {
   }
 
   Future<void> onTapDriverSelfieWithKtp() async {
-    var image = await onTapImageUpload(title: 'Driver Selfie dengan KTP');
+    var image = await onTapImageUpload(
+      title: 'Driver Selfie dengan KTP',
+      preferredCameraDevice: CameraDevice.front,
+    );
 
     if (image != null) {
       showLoadingDialog();

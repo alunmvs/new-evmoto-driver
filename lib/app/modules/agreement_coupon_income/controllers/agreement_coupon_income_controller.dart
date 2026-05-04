@@ -38,7 +38,7 @@ class AgreementCouponIncomeController extends GetxController {
 
   Future<void> getCouponIncomeAgreement() async {
     agreement.value = await agreementRepository.getAgreementDetail(
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       userType: 2,
       type: 16,
     );

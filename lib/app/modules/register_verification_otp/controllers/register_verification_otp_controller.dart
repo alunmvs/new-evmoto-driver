@@ -53,7 +53,7 @@ class RegisterVerificationOtpController extends GetxController {
     try {
       await otpRepository.requestOTP(
         phone: "62${mobilePhone.value}",
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         type: 3,
       );
       isButtonResendEnable.value = false;

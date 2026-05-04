@@ -45,7 +45,7 @@ class OnboardingIntroductionController extends GetxController {
   Future<void> getIntroductionImageList() async {
     systemImageList.value = await systemImageRepository.getSystemImageList(
       usePort: 2,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       type: 2,
     );
   }

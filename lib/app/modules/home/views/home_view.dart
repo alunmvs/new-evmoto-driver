@@ -450,9 +450,8 @@ class HomeView extends GetView<HomeController> {
                                                                                         : controller.totalUnreadMessageCount.value.toString(),
                                                                                     style: controller.typographyServices.captionSmallRegular.value,
                                                                                   ),
-                                                                            backgroundColor: Color(
-                                                                              0XFF17CC8C,
-                                                                            ),
+                                                                            backgroundColor:
+                                                                                controller.themeColorServices.primaryBlue.value,
                                                                             child: SvgPicture.asset(
                                                                               'assets/icons/icon_chat_filled.svg',
                                                                             ),

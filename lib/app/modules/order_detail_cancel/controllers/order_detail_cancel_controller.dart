@@ -51,7 +51,7 @@ class OrderDetailCancelController extends GetxController {
     orderDetail.value = await orderRepository.getOrderDetail(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     );
 
     formGroup.control("reason").value = orderDetail.value.cancelReason;

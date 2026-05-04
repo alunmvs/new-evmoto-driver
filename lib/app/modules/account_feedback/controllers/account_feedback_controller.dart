@@ -56,7 +56,7 @@ class AccountFeedbackController extends GetxController {
     }
 
     await accountRepository.createFeedback(
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       type: 2,
       content: formGroup.control("content").value,
     );

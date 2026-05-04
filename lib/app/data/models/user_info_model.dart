@@ -65,6 +65,7 @@ class UserInfo {
 
   UserInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    // print("[DEBUG ID] $id");
     avatar = json['avatar'];
     name = json['name'];
     phone = json['phone'];

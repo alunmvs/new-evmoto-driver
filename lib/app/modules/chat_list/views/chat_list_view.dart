@@ -79,6 +79,66 @@ class ChatListView extends GetView<ChatListController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(height: 16),
+                            if (controller.roomList.isEmpty) ...[
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                            147 /
+                                            812,
+                                      ),
+                                      Image.asset(
+                                        "assets/images/img_chat_empty.png",
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                            176 /
+                                            375,
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        "Belum ada pesan",
+                                        style: controller
+                                            .typographyServices
+                                            .bodyLargeBold
+                                            .value,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 8),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                            297 /
+                                            375,
+                                        child: Text(
+                                          "Percakapan akan ditampilkan di sini setelah Anda mengirim atau menerima pesan.",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .neutralsColorGrey600
+                                                    .value,
+                                              ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                             for (var room in controller.roomList) ...[
                               GestureDetector(
                                 onTap: () async {
@@ -166,17 +226,52 @@ class ChatListView extends GetView<ChatListController> {
                                       ),
                                       if (room.lastMessageAt != null) ...[
                                         SizedBox(width: 8),
-                                        Text(
-                                          DateFormat(
-                                            'HH:mm',
-                                          ).format(room.lastMessageAt!),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: Color(0XFFB3B3B3),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              DateFormat(
+                                                'HH:mm',
+                                              ).format(room.lastMessageAt!),
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: Color(0XFFB3B3B3),
+                                                  ),
+                                            ),
+                                            if ((room.totalUnreadChatUser ??
+                                                    0) >
+                                                0) ...[
+                                              SizedBox(height: 4),
+                                              CircleAvatar(
+                                                radius: 18 / 2,
+                                                backgroundColor: controller
+                                                    .themeColorServices
+                                                    .primaryBlue
+                                                    .value,
+                                                child: Text(
+                                                  (room.totalUnreadChatUser ??
+                                                          0)
+                                                      .toString(),
+                                                  style: controller
+                                                      .typographyServices
+                                                      .captionSmallRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: Color(
+                                                          0XFFFFFFFF,
+                                                        ),
+                                                      ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               ),
+                                            ],
+                                          ],
                                         ),
                                       ],
                                     ],

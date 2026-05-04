@@ -16,14 +16,14 @@ class LanguageServices extends GetxService {
   Future<void> onInit() async {
     super.onInit();
 
-    var prefs = await SharedPreferences.getInstance();
-    var languageCode = prefs.getString('language_code');
+    // var prefs = await SharedPreferences.getInstance();
+    // var languageCode = prefs.getString('language_code');
 
-    if (languageCode != null) {
-      await switchLanguage(languageCode: languageCode);
-    } else {
-      await switchLanguage(languageCode: "ID");
-    }
+    // if (languageCode != null) {
+    //   await switchLanguage(languageCode: languageCode);
+    // } else {
+    await switchLanguage(languageCode: "ID");
+    // }
   }
 
   @override

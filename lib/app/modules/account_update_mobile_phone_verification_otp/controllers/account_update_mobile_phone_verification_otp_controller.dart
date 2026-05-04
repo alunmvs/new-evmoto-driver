@@ -51,7 +51,7 @@ class AccountUpdateMobilePhoneVerificationOtpController extends GetxController {
       await accountRepository.updateMobilePhone(
         password: "123456789",
         phone: "62${mobilePhone.value}",
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
     } catch (e) {
       final SnackBar snackBar = SnackBar(

@@ -42,7 +42,7 @@ class AccountServiceController extends GetxController {
     serviceOrderList.value = await accountRepository.getServiceOrderList(
       size: 999999,
       pageNum: 1,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     );
   }
 
@@ -51,7 +51,7 @@ class AccountServiceController extends GetxController {
       if (serviceOrder.state != serviceOrder.updatedState) {
         try {
           await accountRepository.updateServiceOrderStatus(
-            language: 2,
+            language: languageServices.languageCodeSystem.value,
             type: serviceOrder.type,
           );
         } catch (e) {

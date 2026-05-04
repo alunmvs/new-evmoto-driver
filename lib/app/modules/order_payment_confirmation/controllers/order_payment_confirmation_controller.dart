@@ -70,7 +70,7 @@ class OrderPaymentConfirmationController extends GetxController {
     orderDetail.value = await orderRepository.getOrderDetail(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     );
   }
 
@@ -78,7 +78,7 @@ class OrderPaymentConfirmationController extends GetxController {
     orderPayment.value = await orderRepository.getOrderPayment(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       payManner: orderDetail.value.payManner!,
     );
   }
@@ -87,7 +87,7 @@ class OrderPaymentConfirmationController extends GetxController {
     await orderRepository.confirmCashReceived(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     );
   }
 
@@ -95,7 +95,7 @@ class OrderPaymentConfirmationController extends GetxController {
     await orderRepository.confirmOrderPayment(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       payManner: orderDetail.value.payManner!,
       additionalCharge: formGroup.control("additional_charge").value == null
           ? 0
@@ -119,7 +119,7 @@ class OrderPaymentConfirmationController extends GetxController {
       await orderRepository.confirmCashReceived(
         orderType: orderType.value,
         orderId: orderId.value,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
 
       Get.back();

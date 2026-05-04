@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:action_slider/action_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -214,10 +215,11 @@ class HomeController extends GetxController
       getVehicleStatistics(),
       userServices.getUserInfo(),
       voiceServices.manualOnInit(),
+      getServiceOrderList(),
       getWorking(),
     ]);
 
-    await Future.wait([getTotalUnreadSendbirdChat()]);
+    await Future.wait([getTotalUnreadFirebaseChat()]);
 
     workStatus.value = vehicleStatistics.value.work ?? 2;
 
@@ -238,7 +240,7 @@ class HomeController extends GetxController
 
     orderGrabbingHallList.value = (await orderRepository.getOrderList(
       size: 10,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       state: 3,
       pageNum: orderGrabbingHallPageNum.value,
     ));
@@ -255,7 +257,7 @@ class HomeController extends GetxController
 
       var orderGrabbingHallList = (await orderRepository.getOrderList(
         size: 10,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         state: 3,
         pageNum: orderGrabbingHallPageNum.value,
       ));
@@ -274,7 +276,7 @@ class HomeController extends GetxController
 
     orderInServiceList.value = (await orderRepository.getOrderList(
       size: 10,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       state: 1,
       pageNum: orderInServicePageNum.value,
     ));
@@ -291,7 +293,7 @@ class HomeController extends GetxController
 
       var orderInServiceList = (await orderRepository.getOrderList(
         size: 10,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         state: 3,
         pageNum: orderInServicePageNum.value,
       ));
@@ -308,7 +310,7 @@ class HomeController extends GetxController
     serviceOrderList.value = await accountRepository.getServiceOrderList(
       size: 999999,
       pageNum: 1,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     );
   }
 
@@ -318,7 +320,7 @@ class HomeController extends GetxController
 
     orderToBeServedList.value = (await orderRepository.getOrderList(
       size: 10,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       state: 2,
       pageNum: orderInServicePageNum.value,
     ));
@@ -336,7 +338,7 @@ class HomeController extends GetxController
 
       var orderToBeServedList = (await orderRepository.getOrderList(
         size: 10,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
         state: 3,
         pageNum: orderToBeServedPageNum.value,
       ));
@@ -357,7 +359,10 @@ class HomeController extends GetxController
   Future<void> onSwitchStatusWork() async {
     try {
       if (vehicleStatistics.value.work == 2) {
-        await userRepository.startWork(language: 2, type: 1);
+        await userRepository.startWork(
+          language: languageServices.languageCodeSystem.value,
+          type: 1,
+        );
         workStatus.value = 1;
       } else {
         await userRepository.stopWork(language: 2);
@@ -386,7 +391,7 @@ class HomeController extends GetxController
       await orderRepository.grabOrder(
         orderType: order.type!,
         orderId: order.id.toString(),
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
 
       await Get.toNamed(
@@ -484,7 +489,7 @@ class HomeController extends GetxController
       var orderData = await orderRepository.getOrderDetail(
         orderType: socketOrderStatusData.orderType!,
         orderId: socketOrderStatusData.orderId.toString(),
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
       var orderUserData = await orderRepository.getOrderUserDetail(
         orderType: socketOrderStatusData.orderType!,
@@ -1001,7 +1006,7 @@ class HomeController extends GetxController
     try {
       await orderRepository.orderPushConfirm(
         orderId: socketOrderStatusData.orderId.toString(),
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
     } catch (e) {}
     await Get.toNamed(
@@ -1021,7 +1026,7 @@ class HomeController extends GetxController
       if (serviceOrder.state != serviceOrder.updatedState) {
         try {
           await accountRepository.updateServiceOrderStatus(
-            language: 2,
+            language: languageServices.languageCodeSystem.value,
             type: serviceOrder.type,
           );
         } catch (e) {
@@ -1678,6 +1683,28 @@ class HomeController extends GetxController
         } catch (e) {}
         isFetchTotalUnreadMessageCount.value = false;
       }
+    }
+  }
+
+  Future<void> getTotalUnreadFirebaseChat() async {
+    if (isFetchTotalUnreadMessageCount.value == false) {
+      isFetchTotalUnreadMessageCount.value = true;
+      totalUnreadMessageCount.value = 0;
+      var evmotoOrderChatParticipants = await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .where(
+            'driverId',
+            isEqualTo: userServices.userInfo.value.id.toString(),
+          )
+          .where('totalUnreadChatUser', isGreaterThan: 0)
+          .orderBy('lastMessageAt', descending: true)
+          .get();
+
+      for (var doc in evmotoOrderChatParticipants.docs) {
+        totalUnreadMessageCount.value +=
+            int.tryParse(doc.data()['totalUnreadChatUser'].toString()) ?? 0;
+      }
+      isFetchTotalUnreadMessageCount.value = false;
     }
   }
 
