@@ -14,8 +14,6 @@ import '../modules/account_my_evaluation/bindings/account_my_evaluation_binding.
 import '../modules/account_my_evaluation/views/account_my_evaluation_view.dart';
 import '../modules/account_other_setting/bindings/account_other_setting_binding.dart';
 import '../modules/account_other_setting/views/account_other_setting_view.dart';
-import '../modules/account_referral_code/bindings/account_referral_code_binding.dart';
-import '../modules/account_referral_code/views/account_referral_code_view.dart';
 import '../modules/account_service/bindings/account_service_binding.dart';
 import '../modules/account_service/views/account_service_view.dart';
 import '../modules/account_update_mobile_phone/bindings/account_update_mobile_phone_binding.dart';
@@ -24,8 +22,6 @@ import '../modules/account_update_mobile_phone_verification_otp/bindings/account
 import '../modules/account_update_mobile_phone_verification_otp/views/account_update_mobile_phone_verification_otp_view.dart';
 import '../modules/account_user_guide/bindings/account_user_guide_binding.dart';
 import '../modules/account_user_guide/views/account_user_guide_view.dart';
-import '../modules/activity/bindings/activity_binding.dart';
-import '../modules/activity/views/activity_view.dart';
 import '../modules/add_edit_withdraw_bank_account/bindings/add_edit_withdraw_bank_account_binding.dart';
 import '../modules/add_edit_withdraw_bank_account/views/add_edit_withdraw_bank_account_view.dart';
 import '../modules/agreement_coupon_income/bindings/agreement_coupon_income_binding.dart';
@@ -60,16 +56,8 @@ import '../modules/my_order/bindings/my_order_binding.dart';
 import '../modules/my_order/views/my_order_view.dart';
 import '../modules/notification/bindings/notification_binding.dart';
 import '../modules/notification/views/notification_view.dart';
-import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
-import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
-import '../modules/order_chat/bindings/order_chat_binding.dart';
-import '../modules/order_chat/views/order_chat_view.dart';
 import '../modules/order_detail/bindings/order_detail_binding.dart';
 import '../modules/order_detail/views/order_detail_view.dart';
-import '../modules/order_detail_cancel/bindings/order_detail_cancel_binding.dart';
-import '../modules/order_detail_cancel/views/order_detail_cancel_view.dart';
-import '../modules/order_detail_done/bindings/order_detail_done_binding.dart';
-import '../modules/order_detail_done/views/order_detail_done_view.dart';
 import '../modules/order_payment_confirmation/bindings/order_payment_confirmation_binding.dart';
 import '../modules/order_payment_confirmation/views/order_payment_confirmation_view.dart';
 import '../modules/order_payment_detail/bindings/order_payment_detail_binding.dart';
@@ -88,14 +76,8 @@ import '../modules/register_form/bindings/register_form_binding.dart';
 import '../modules/register_form/views/register_form_view.dart';
 import '../modules/register_form_completed/bindings/register_form_completed_binding.dart';
 import '../modules/register_form_completed/views/register_form_completed_view.dart';
-import '../modules/register_form_scan_qr/bindings/register_form_scan_qr_binding.dart';
-import '../modules/register_form_scan_qr/views/register_form_scan_qr_view.dart';
 import '../modules/register_verification_otp/bindings/register_verification_otp_binding.dart';
 import '../modules/register_verification_otp/views/register_verification_otp_view.dart';
-import '../modules/sendbird_chat_detail/bindings/sendbird_chat_detail_binding.dart';
-import '../modules/sendbird_chat_detail/views/sendbird_chat_detail_view.dart';
-import '../modules/sendbird_chat_list/bindings/sendbird_chat_list_binding.dart';
-import '../modules/sendbird_chat_list/views/sendbird_chat_list_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/switch_vehicle/bindings/switch_vehicle_binding.dart';
@@ -126,11 +108,6 @@ class AppPages {
       name: _Paths.SPLASH_SCREEN,
       page: () => const SplashScreenView(),
       binding: SplashScreenBinding(),
-    ),
-    GetPage(
-      name: _Paths.ONBOARDING_INTRODUCTION,
-      page: () => const OnboardingIntroductionView(),
-      binding: OnboardingIntroductionBinding(),
     ),
     GetPage(
       name: _Paths.LOGIN,
@@ -253,26 +230,6 @@ class AppPages {
       binding: AccountAboutUsBinding(),
     ),
     GetPage(
-      name: _Paths.ACTIVITY,
-      page: () => const ActivityView(),
-      binding: ActivityBinding(),
-    ),
-    GetPage(
-      name: _Paths.ORDER_DETAIL_DONE,
-      page: () => const OrderDetailDoneView(),
-      binding: OrderDetailDoneBinding(),
-    ),
-    GetPage(
-      name: _Paths.ORDER_DETAIL_CANCEL,
-      page: () => const OrderDetailCancelView(),
-      binding: OrderDetailCancelBinding(),
-    ),
-    GetPage(
-      name: _Paths.ORDER_CHAT,
-      page: () => const OrderChatView(),
-      binding: OrderChatBinding(),
-    ),
-    GetPage(
       name: _Paths.SWITCH_VEHICLE,
       page: () => const SwitchVehicleView(),
       binding: SwitchVehicleBinding(),
@@ -321,26 +278,6 @@ class AppPages {
       name: _Paths.HISTORY_BALANCE_RECHARGE,
       page: () => const HistoryBalanceRechargeView(),
       binding: HistoryBalanceRechargeBinding(),
-    ),
-    GetPage(
-      name: _Paths.ACCOUNT_REFERRAL_CODE,
-      page: () => const AccountReferralCodeView(),
-      binding: AccountReferralCodeBinding(),
-    ),
-    GetPage(
-      name: _Paths.REGISTER_FORM_SCAN_QR,
-      page: () => const RegisterFormScanQrView(),
-      binding: RegisterFormScanQrBinding(),
-    ),
-    GetPage(
-      name: _Paths.SENDBIRD_CHAT_LIST,
-      page: () => const SendbirdChatListView(),
-      binding: SendbirdChatListBinding(),
-    ),
-    GetPage(
-      name: _Paths.SENDBIRD_CHAT_DETAIL,
-      page: () => const SendbirdChatDetailView(),
-      binding: SendbirdChatDetailBinding(),
     ),
     GetPage(
       name: _Paths.NOTIFICATION,

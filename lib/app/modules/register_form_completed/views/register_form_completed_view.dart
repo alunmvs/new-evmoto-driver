@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
-import 'package:reactive_forms/reactive_forms.dart';
-
 import '../controllers/register_form_completed_controller.dart';
 
 class RegisterFormCompletedView

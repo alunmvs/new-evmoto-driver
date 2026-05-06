@@ -59,14 +59,13 @@ class GlobalBodyHandler extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  languageServices.language.value.criticalErrorTitle ?? "-",
+                  "Maaf, terjadi kesalahan",
                   style: typographyServices.bodyLargeBold.value,
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8),
                 Text(
-                  languageServices.language.value.criticalErrorDescription ??
-                      "-",
+                  "Kesalahan sistem. Silahkan coba lagi nanti atau kembali ke halaman sebelumnya.",
                   style: typographyServices.bodySmallRegular.value,
                   textAlign: TextAlign.center,
                 ),
@@ -78,8 +77,7 @@ class GlobalBodyHandler extends StatelessWidget {
                       await onInit();
                     },
                     child: Text(
-                      languageServices.language.value.criticalErrorButton ??
-                          "-",
+                      "Coba Lagi",
                       style: typographyServices.bodyLargeBold.value.copyWith(
                         color: themeColorServices.neutralsColorGrey0.value,
                       ),

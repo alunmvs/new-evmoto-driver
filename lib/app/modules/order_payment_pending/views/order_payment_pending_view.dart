@@ -68,7 +68,7 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Franky Fransisco Marlissa",
+                                    controller.orderUser.value.name ?? "-",
                                     style: controller
                                         .typographyServices
                                         .bodySmallRegular
@@ -77,7 +77,7 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                                   ),
                                   SizedBox(height: 2),
                                   Text(
-                                    "(0)",
+                                    "(${controller.orderDetail.value.historyNum})",
                                     style: controller
                                         .typographyServices
                                         .bodySmallRegular
@@ -111,7 +111,7 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                "2025-12-03 16:34:02",
+                                controller.orderDetail.value.travelTime ?? "-",
                                 style: controller
                                     .typographyServices
                                     .bodySmallRegular
@@ -155,7 +155,8 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                                   ),
                                   SizedBox(height: 2),
                                   Text(
-                                    "Jl. Wijaya I No.67, RT.6/RW.4, Petogogan, Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12160",
+                                    controller.orderDetail.value.startAddress ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodySmallRegular
@@ -201,7 +202,8 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                                   ),
                                   SizedBox(height: 2),
                                   Text(
-                                    "Wisma PMI",
+                                    controller.orderDetail.value.endAddress ??
+                                        "-",
                                     style: controller
                                         .typographyServices
                                         .bodySmallRegular

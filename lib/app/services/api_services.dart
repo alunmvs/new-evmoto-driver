@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:dio_curl_logger/dio_curl_logger.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -45,7 +44,7 @@ class ApiServices extends GetxService {
     //     };
 
     dio.interceptors.add(
-      CurlLoggingInterceptor(showRequestLog: false, showResponseLog: false),
+      CurlLoggingInterceptor(showRequestLog: true, showResponseLog: true),
     );
 
     dio.interceptors.add(

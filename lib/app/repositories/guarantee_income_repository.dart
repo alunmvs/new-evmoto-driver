@@ -90,4 +90,40 @@ class GuaranteeIncomeRepository {
       throw e.message.toString();
     }
   }
+
+  Future<int?> getActiveEnsureIncomeRuleId() async {
+    try {
+      var url = "$baseUrl/app/ensureIncomeRule/getActiveEnsureIncomeRuleId";
+
+      var data = 1;
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: data,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      if (response.data['data'] != null) {
+        if (response.data['data'].length > 0) {
+          return response.data['data'][0];
+        }
+      }
+      return null;
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
 }

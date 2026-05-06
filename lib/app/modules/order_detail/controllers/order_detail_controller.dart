@@ -289,9 +289,10 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
     state.value = orderDetail.value.state ?? 0;
 
-    if (evmotoOrderChatParticipants.value.userId != orderDetail.value.userId &&
+    if (evmotoOrderChatParticipants.value.userId !=
+            orderDetail.value.userId.toString() &&
         evmotoOrderChatParticipants.value.driverId !=
-            orderDetail.value.driverId &&
+            orderDetail.value.driverId.toString() &&
         evmotoOrderChatParticipants.value.orderId !=
             orderDetail.value.orderId.toString()) {
       await getExistingChatRoom();
@@ -1912,9 +1913,13 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           "driverProfileUrl": orderDetail.value.driverAvatar,
           "createdAt": FieldValue.serverTimestamp(),
         };
-        await FirebaseFirestore.instance
-            .collection('evmoto_order_chat_participants')
-            .add(data);
+
+        await getExistingChatRoom();
+        if (evmotoOrderChatParticipants.value.docId == null) {
+          await FirebaseFirestore.instance
+              .collection('evmoto_order_chat_participants')
+              .add(data);
+        }
       }
     }
   }

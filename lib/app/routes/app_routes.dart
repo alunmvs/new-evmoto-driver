@@ -5,7 +5,6 @@ abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
   static const SPLASH_SCREEN = _Paths.SPLASH_SCREEN;
-  static const ONBOARDING_INTRODUCTION = _Paths.ONBOARDING_INTRODUCTION;
   static const LOGIN = _Paths.LOGIN;
   static const REGISTER = _Paths.REGISTER;
   static const TERMS_AND_CONDITIONS = _Paths.TERMS_AND_CONDITIONS;
@@ -33,10 +32,6 @@ abstract class Routes {
   static const ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES =
       _Paths.ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES;
   static const ACCOUNT_ABOUT_US = _Paths.ACCOUNT_ABOUT_US;
-  static const ACTIVITY = _Paths.ACTIVITY;
-  static const ORDER_DETAIL_DONE = _Paths.ORDER_DETAIL_DONE;
-  static const ORDER_DETAIL_CANCEL = _Paths.ORDER_DETAIL_CANCEL;
-  static const ORDER_CHAT = _Paths.ORDER_CHAT;
   static const SWITCH_VEHICLE = _Paths.SWITCH_VEHICLE;
   static const WITHDRAW = _Paths.WITHDRAW;
   static const ADD_EDIT_WITHDRAW_BANK_ACCOUNT =
@@ -48,10 +43,6 @@ abstract class Routes {
   static const HISTORY_BALANCE_REVENUE = _Paths.HISTORY_BALANCE_REVENUE;
   static const HISTORY_BALANCE_WITHDRAW = _Paths.HISTORY_BALANCE_WITHDRAW;
   static const HISTORY_BALANCE_RECHARGE = _Paths.HISTORY_BALANCE_RECHARGE;
-  static const ACCOUNT_REFERRAL_CODE = _Paths.ACCOUNT_REFERRAL_CODE;
-  static const REGISTER_FORM_SCAN_QR = _Paths.REGISTER_FORM_SCAN_QR;
-  static const SENDBIRD_CHAT_LIST = _Paths.SENDBIRD_CHAT_LIST;
-  static const SENDBIRD_CHAT_DETAIL = _Paths.SENDBIRD_CHAT_DETAIL;
   static const NOTIFICATION = _Paths.NOTIFICATION;
   static const ORDER_PAYMENT_PENDING = _Paths.ORDER_PAYMENT_PENDING;
   static const ORDER_PAYMENT_PENDING_FEE_DETAIL =
@@ -68,7 +59,6 @@ abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
   static const SPLASH_SCREEN = '/splash-screen';
-  static const ONBOARDING_INTRODUCTION = '/onboarding-introduction';
   static const LOGIN = '/login';
   static const REGISTER = '/register';
   static const TERMS_AND_CONDITIONS = '/terms-and-conditions';
@@ -96,10 +86,6 @@ abstract class _Paths {
   static const ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES =
       '/account-legal-terms-and-platform-rules';
   static const ACCOUNT_ABOUT_US = '/account-about-us';
-  static const ACTIVITY = '/activity';
-  static const ORDER_DETAIL_DONE = '/order-detail-done';
-  static const ORDER_DETAIL_CANCEL = '/order-detail-cancel';
-  static const ORDER_CHAT = '/order-chat';
   static const SWITCH_VEHICLE = '/switch-vehicle';
   static const WITHDRAW = '/withdraw';
   static const ADD_EDIT_WITHDRAW_BANK_ACCOUNT =
@@ -111,11 +97,6 @@ abstract class _Paths {
   static const HISTORY_BALANCE_REVENUE = '/history-balance-revenue';
   static const HISTORY_BALANCE_WITHDRAW = '/history-balance-withdraw';
   static const HISTORY_BALANCE_RECHARGE = '/history-balance-recharge';
-  static const ORDER_CALL = '/order-call';
-  static const ACCOUNT_REFERRAL_CODE = '/account-referral-code';
-  static const REGISTER_FORM_SCAN_QR = '/register-form-scan-qr';
-  static const SENDBIRD_CHAT_LIST = '/sendbird-chat-list';
-  static const SENDBIRD_CHAT_DETAIL = '/sendbird-chat-detail';
   static const NOTIFICATION = '/notification';
   static const ORDER_PAYMENT_PENDING = '/order-payment-pending';
   static const ORDER_PAYMENT_PENDING_FEE_DETAIL =

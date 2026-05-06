@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/modules/my_activity/views/my_activity_view/my_activity_coupon_income_sub_view.dart';
 import 'package:new_evmoto_driver/app/modules/my_activity/views/my_activity_view/my_activity_guarantee_income_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
-import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 
 import '../controllers/my_activity_controller.dart';
 
@@ -115,18 +113,18 @@ class MyActivityView extends GetView<MyActivityController> {
                                           : Color(0XFFB3B3B3),
                                     ),
                               ),
-                              // SizedBox(width: 8),
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     Get.toNamed(Routes.AGREEMENT_COUPON_INCOME);
-                              //   },
-                              //   child: SvgPicture.asset(
-                              //     "assets/icons/icon_question_fill.svg",
-                              //     color: controller.indexTabBar.value == 1
-                              //         ? Color(0XFF272727)
-                              //         : Color(0XFFB3B3B3),
-                              //   ),
-                              // ),
+                              SizedBox(width: 8),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.AGREEMENT_COUPON_INCOME);
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/icons/icon_question_fill.svg",
+                                  color: controller.indexTabBar.value == 1
+                                      ? Color(0XFF272727)
+                                      : Color(0XFFB3B3B3),
+                                ),
+                              ),
                             ],
                           ),
                         ),

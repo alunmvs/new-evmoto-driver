@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maps_toolkit/maps_toolkit.dart' as mapsToolkit;
 import 'package:new_evmoto_driver/app/data/consts/order_state_const.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/service_order_model.dart';
@@ -29,7 +30,6 @@ import 'package:new_evmoto_driver/app/services/firebase_push_notification_servic
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/location_services.dart';
-import 'package:new_evmoto_driver/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
@@ -42,7 +42,6 @@ import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
-import 'package:sendbird_chat_sdk/sendbird_chat_sdk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -73,7 +72,6 @@ class HomeController extends GetxController
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
   final voiceServices = Get.find<VoiceServices>();
   final locationServices = Get.find<LocationServices>();
-  final sendbirdChatServices = Get.find<SendbirdChatServices>();
 
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
@@ -128,6 +126,11 @@ class HomeController extends GetxController
   final totalUnreadMessageCount = 0.obs;
   final isFetchTotalUnreadMessageCount = false.obs;
 
+  Timer? autoOfflineTimer;
+  final initialLatitude = Rx<double?>(null);
+  final initialLongitude = Rx<double?>(null);
+  final onlineAt = Rx<DateTime?>(null);
+
   final isFetch = false.obs;
 
   @override
@@ -142,7 +145,6 @@ class HomeController extends GetxController
 
     await requestLocation();
     await refreshAll();
-    await Future.wait([sendbirdChatServices.initialize()]);
     isSendbirdInit.value = true;
     isFetch.value = false;
 
@@ -153,6 +155,7 @@ class HomeController extends GetxController
       await displayCoachmark();
       await firebasePushNotificationServices.requestPermission();
       await setHomeControllerRegistered();
+      await setupAutoOfflineTimer();
     });
   }
 
@@ -165,6 +168,7 @@ class HomeController extends GetxController
   Future<void> onClose() async {
     super.onClose();
     await socketServices.closeWebsocket();
+    autoOfflineTimer?.cancel();
   }
 
   Future<void> requestLocation() async {
@@ -214,6 +218,7 @@ class HomeController extends GetxController
       getUserInfoDetail(),
       getVehicleStatistics(),
       userServices.getUserInfo(),
+      userServices.getWorkingArea(),
       voiceServices.manualOnInit(),
       getServiceOrderList(),
       getWorking(),
@@ -356,6 +361,110 @@ class HomeController extends GetxController
     userInfo.refresh();
   }
 
+  Future<void> setupAutoOfflineTimer() async {
+    if (workStatus.value != 2) {
+      onlineAt.value = DateTime.now();
+      setInitialLatitudeLongitude();
+    }
+
+    autoOfflineTimer = Timer.periodic(Duration(seconds: 3), (timer) async {
+      if (vehicleStatistics.value.work != 2) {
+        if (working.value.id == null) {
+          // Auto Offline Outside Working Area
+          if (locationServices.currentLatitude.value != null) {
+            var polygonList = <mapsToolkit.LatLng>[];
+            var point = mapsToolkit.LatLng(
+              locationServices.currentLatitude.value!,
+              locationServices.currentLongitude.value!,
+            );
+
+            if (userServices.workingArea.value.center?.isNotEmpty ?? false) {
+              for (var pointPolygon
+                  in userServices.workingArea.value.center ?? <String>[]) {
+                var pointPolygonList = pointPolygon.split(",");
+                polygonList.add(
+                  mapsToolkit.LatLng(
+                    double.parse(pointPolygonList[0]),
+                    double.parse(pointPolygonList[1]),
+                  ),
+                );
+              }
+
+              var isInside = mapsToolkit.PolygonUtil.containsLocation(
+                point,
+                polygonList,
+                false,
+              );
+
+              if (isInside == false) {
+                await userRepository.stopWork(language: 2);
+                workStatus.value = 2;
+                SnackbarHelper.showSnackbarError(
+                  text:
+                      "Saat ini anda berada diluar dari Working Area. Status Anda akan offline.",
+                );
+                await getVehicleStatistics();
+                return;
+              }
+            }
+          }
+
+          // Auto Offline 200 m Initial Latitude Longitude
+          if (initialLatitude.value != null &&
+              locationServices.currentLatitude.value != null) {
+            var distanceInMeters = Geolocator.distanceBetween(
+              initialLatitude.value!,
+              initialLongitude.value!,
+              locationServices.currentLatitude.value!,
+              locationServices.currentLongitude.value!,
+            );
+            if (distanceInMeters >= 200) {
+              await userRepository.stopWork(language: 2);
+              workStatus.value = 2;
+              SnackbarHelper.showSnackbarError(
+                text:
+                    "Anda sudah menempuh 200 meter dan belum mendapatkan order, status Anda akan Offline.",
+              );
+              await getVehicleStatistics();
+              return;
+            }
+          }
+
+          // Auto Offline 1 min After Online
+          if (onlineAt.value != null) {
+            if (DateTime.now().difference(onlineAt.value!).inMinutes >= 1) {
+              var distanceInMeters = Geolocator.distanceBetween(
+                initialLatitude.value!,
+                initialLongitude.value!,
+                locationServices.currentLatitude.value!,
+                locationServices.currentLongitude.value!,
+              );
+
+              if (distanceInMeters >= 10) {
+                await userRepository.stopWork(language: 2);
+                workStatus.value = 2;
+                SnackbarHelper.showSnackbarError(
+                  text:
+                      "Tidak ada aktivitas dalam 1 menit sejak Anda Online. Status Anda akan Offline.",
+                );
+                await getVehicleStatistics();
+              } else {
+                onlineAt.value = DateTime.now();
+              }
+
+              return;
+            }
+          }
+        }
+      }
+    });
+  }
+
+  void setInitialLatitudeLongitude() {
+    initialLatitude.value = locationServices.currentLatitude.value;
+    initialLongitude.value = locationServices.currentLongitude.value;
+  }
+
   Future<void> onSwitchStatusWork() async {
     try {
       if (vehicleStatistics.value.work == 2) {
@@ -364,6 +473,8 @@ class HomeController extends GetxController
           type: 1,
         );
         workStatus.value = 1;
+        onlineAt.value = DateTime.now();
+        setInitialLatitudeLongitude();
       } else {
         await userRepository.stopWork(language: 2);
         workStatus.value = 2;
@@ -507,8 +618,6 @@ class HomeController extends GetxController
         position: LatLng(orderData.startLat!, orderData.startLon!),
       );
       markers.add(newMarkers);
-
-      late GoogleMapController googleMapController;
 
       final durationAccept = 0.obs;
       durationAccept.value = socketOrderStatusData.time ?? 0;
@@ -1009,6 +1118,9 @@ class HomeController extends GetxController
         language: languageServices.languageCodeSystem.value,
       );
     } catch (e) {}
+
+    Get.until((route) => route.settings.name == Routes.HOME);
+
     await Get.toNamed(
       Routes.ORDER_DETAIL,
       arguments: {
@@ -1398,17 +1510,13 @@ class HomeController extends GetxController
                             ),
                             SizedBox(height: 8),
                             Text(
-                              languageServices
-                                      .language
-                                      .value
-                                      .usingLatestVersion ??
-                                  "-",
+                              "Anda menggunakan versi terbaru",
                               style: typographyServices.bodyLargeBold.value,
                             ),
                             SizedBox(height: 16),
                             LoaderElevatedButton(
                               child: Text(
-                                languageServices.language.value.back ?? "-",
+                                "Kembali",
                                 style: typographyServices.bodyLargeBold.value
                                     .copyWith(color: Colors.white),
                               ),
@@ -1494,11 +1602,7 @@ class HomeController extends GetxController
                                 ),
                                 SizedBox(height: 16),
                                 Text(
-                                  languageServices
-                                          .language
-                                          .value
-                                          .appUpdateAvailable ??
-                                      "-",
+                                  "Versi baru tersedia",
                                   style: typographyServices.bodyLargeBold.value,
                                   textAlign: TextAlign.center,
                                 ),
@@ -1520,8 +1624,7 @@ class HomeController extends GetxController
                                     await onTapUpdateVersion();
                                   },
                                   child: Text(
-                                    languageServices.language.value.updateNow ??
-                                        "-",
+                                    "Perbarui sekarang",
                                     style: typographyServices
                                         .bodyLargeBold
                                         .value
@@ -1556,11 +1659,7 @@ class HomeController extends GetxController
                                         );
                                       },
                                       child: Text(
-                                        languageServices
-                                                .language
-                                                .value
-                                                .updateLater ??
-                                            "-",
+                                        "Perbarui nanti",
                                         style: typographyServices
                                             .bodyLargeBold
                                             .value
@@ -1622,17 +1721,13 @@ class HomeController extends GetxController
                               ),
                               SizedBox(height: 8),
                               Text(
-                                languageServices
-                                        .language
-                                        .value
-                                        .usingLatestVersion ??
-                                    "-",
+                                "Anda menggunakan versi terbaru",
                                 style: typographyServices.bodyLargeBold.value,
                               ),
                               SizedBox(height: 16),
                               LoaderElevatedButton(
                                 child: Text(
-                                  languageServices.language.value.back ?? "-",
+                                  "Kembali",
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(color: Colors.white),
                                 ),
@@ -1662,28 +1757,6 @@ class HomeController extends GetxController
 
   bool isSameDay(DateTime a, DateTime b) {
     return a.year == b.year && a.month == b.month && a.day == b.day;
-  }
-
-  Future<void> getTotalUnreadSendbirdChat() async {
-    totalUnreadMessageCount.value = 0;
-    if (sendbirdChatServices.isSuccessInitialize.value == true) {
-      if (isFetchTotalUnreadMessageCount.value == false) {
-        isFetchTotalUnreadMessageCount.value = true;
-        try {
-          var query = GroupChannelListQuery();
-          var channelList = await query.next();
-
-          for (var channel in channelList) {
-            for (var member in channel.members) {
-              if (member.userId == "user_${userServices.userInfo.value.id}") {
-                totalUnreadMessageCount.value += channel.unreadMessageCount;
-              }
-            }
-          }
-        } catch (e) {}
-        isFetchTotalUnreadMessageCount.value = false;
-      }
-    }
   }
 
   Future<void> getTotalUnreadFirebaseChat() async {

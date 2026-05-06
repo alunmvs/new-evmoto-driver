@@ -48,7 +48,7 @@ class Revenue {
   double? nightMoney;
   double? additionalCharge;
   double? collectionFees;
-  Null? subsidy;
+  dynamic subsidy;
 
   Revenue({
     this.orderId,

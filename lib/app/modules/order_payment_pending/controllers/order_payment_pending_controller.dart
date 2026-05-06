@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
@@ -17,6 +18,7 @@ class OrderPaymentPendingController extends GetxController {
   final languageServices = Get.find<LanguageServices>();
 
   final orderDetail = OrderDetail().obs;
+  final orderUser = OrderUser().obs;
 
   final orderId = "".obs;
   final orderType = 0.obs;
@@ -34,6 +36,7 @@ class OrderPaymentPendingController extends GetxController {
     orderType.value = Get.arguments['order_type'];
 
     await getOrderDetail();
+    await getOrderUserDetail();
 
     refreshOrderStateTimer = Timer.periodic(Duration(seconds: 3), (
       timer,
@@ -53,6 +56,13 @@ class OrderPaymentPendingController extends GetxController {
   void onClose() {
     super.onClose();
     refreshOrderStateTimer?.cancel();
+  }
+
+  Future<void> getOrderUserDetail() async {
+    orderUser.value = await orderRepository.getOrderUserDetail(
+      orderType: orderType.value,
+      orderId: orderId.value,
+    );
   }
 
   Future<void> getOrderDetail() async {

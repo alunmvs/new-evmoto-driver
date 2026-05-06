@@ -13,11 +13,13 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pinput/pinput.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -149,9 +151,17 @@ class AccountController extends GetxController {
                     SizedBox(height: 16),
                     LoaderElevatedButton(
                       onPressed: () async {
+                        final userServices = Get.find<UserServices>();
+                        var prefs = await SharedPreferences.getInstance();
                         var storage = FlutterSecureStorage();
-                        await storage.deleteAll();
-                        await socketServices.closeWebsocket();
+
+                        await Future.wait([
+                          storage.deleteAll(),
+                          socketServices.closeWebsocket(),
+                          prefs.clear(),
+                        ]);
+
+                        userServices.clearUserInfo();
 
                         Get.offAllNamed(Routes.LOGIN);
 

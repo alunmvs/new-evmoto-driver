@@ -163,24 +163,26 @@ class RegisterRepository {
     String? code,
     int? language,
   }) async {
-    try {
-      var url = "$baseUrl/account/base/driver/registeredDriverNoPassword";
+    // try {
+    var url = "$baseUrl/account/base/driver/registeredDriverNoPassword";
 
-      var formData = FormData.fromMap({
-        "phone": phone,
-        "code": code,
-        "language": language,
-      });
+    var formData = FormData.fromMap({
+      "phone": phone,
+      "code": code,
+      "language": language,
+    });
 
-      var dio = apiServices.dio;
-      var response = await dio.post(url, data: formData);
+    var dio = apiServices.dio;
+    var response = await dio.post(url, data: formData);
 
-      if (response.data['code'] != 200) {
-        throw response.data['msg'];
-      }
-      return RegisteredDriver.fromJson(response.data['data']);
-    } on DioException catch (e) {
-      throw e.message.toString();
+    if (response.data['code'] != 200) {
+      throw response.data['msg'];
     }
+    return RegisteredDriver.fromJson(response.data['data']);
+    // } on DioException catch (e) {
+    //   print("[DEBUG RESPONSE] ${e.response?.statusCode}");
+    //   print("[DEBUG RESPONSE] ${e.response?.data}");
+    //   throw e.message.toString();
+    // }
   }
 }

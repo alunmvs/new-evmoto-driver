@@ -13,7 +13,6 @@ import 'package:new_evmoto_driver/app/services/firebase_push_notification_servic
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/location_services.dart';
-import 'package:new_evmoto_driver/app/services/sendbird_chat_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
@@ -64,7 +63,6 @@ Future<void> main() async {
   Get.put(LocationServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);
   Get.put(FirebasePushNotificationServices(), permanent: true);
-  Get.put(SendbirdChatServices(), permanent: true);
   Get.put(UserServices(), permanent: true);
   Get.put(VoiceServices(), permanent: true);
 

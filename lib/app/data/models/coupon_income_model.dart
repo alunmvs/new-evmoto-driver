@@ -36,9 +36,6 @@ class Daily {
   double? totalOrderIncome;
   double? totalCouponIncome;
   double? totalCashIncome;
-  String? orderTime;
-  String? startAddressName;
-  String? endAddressName;
 
   Daily({
     this.date,
@@ -46,14 +43,9 @@ class Daily {
     this.totalOrderIncome,
     this.totalCouponIncome,
     this.totalCashIncome,
-    this.startAddressName,
-    this.endAddressName,
   });
 
   Daily.fromJson(Map<String, dynamic> json) {
-    orderTime = json['order_time'];
-    startAddressName = json['start_address_name'];
-    endAddressName = json['end_address_name'];
     date = json['date'];
     if (json['orders'] != null) {
       orders = <Orders>[];
@@ -84,14 +76,28 @@ class Orders {
   double? orderIncome;
   double? couponIncome;
   double? cashIncome;
+  String? orderTime;
+  String? startAddressName;
+  String? endAddressName;
 
-  Orders({this.orderId, this.orderIncome, this.couponIncome, this.cashIncome});
+  Orders({
+    this.orderId,
+    this.orderIncome,
+    this.couponIncome,
+    this.cashIncome,
+    this.orderTime,
+    this.startAddressName,
+    this.endAddressName,
+  });
 
   Orders.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
     orderIncome = json['orderIncome'];
     couponIncome = json['couponIncome'];
     cashIncome = json['cashIncome'];
+    orderTime = json['orderTime'];
+    startAddressName = json['startAddressName'];
+    endAddressName = json['endAddressName'];
   }
 
   Map<String, dynamic> toJson() {

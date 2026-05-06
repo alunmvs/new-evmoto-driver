@@ -27,6 +27,8 @@ class OrderPaymentConfirmationController extends GetxController {
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
 
+  final homeController = Get.find<HomeController>();
+
   final refreshController = RefreshController();
 
   final orderId = "".obs;
@@ -172,6 +174,8 @@ class OrderPaymentConfirmationController extends GetxController {
                   0,
         surchargeDescription: formGroup.control("surcharge_description").value,
       );
+
+      homeController.setInitialLatitudeLongitude();
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Get.back();

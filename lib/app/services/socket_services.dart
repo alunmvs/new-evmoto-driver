@@ -18,6 +18,7 @@ import 'package:new_evmoto_driver/app/utils/socket_helper.dart';
 import 'package:new_evmoto_driver/environment.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SocketServices extends GetxService {
   late Socket? socket;
@@ -232,9 +233,10 @@ class SocketServices extends GetxService {
   }
 
   Future<void> sendHeartBeat() async {
+    var prefs = await SharedPreferences.getInstance();
+
     if (isSocketClose.value == false &&
-        Get.isRegistered<HomeController>() &&
-        locationServices.isPermissionLocationAllow.value == true) {
+        prefs.getBool('home_controller_registered') == true) {
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
@@ -253,26 +255,26 @@ class SocketServices extends GetxService {
         "method": "PING",
         "msg": "SUCCESS",
       };
-      var dataLocation = {
-        "code": 200,
-        "data": {
-          "altitude": locationServices.currentAltitude.value,
-          "computeAzimuth": 0.0,
-          "driverId": Get.find<HomeController>().userInfo.value.id,
-          "lat": locationServices.currentLatitude.value,
-          "lon": locationServices.currentLongitude.value,
-          "orderId": "",
-          "orderType": "",
-        },
-        "method": "LOCATION",
-        "msg": "SUCCESS",
-      };
-
-      // print(jsonEncode(dataUser));
-      // print(jsonEncode(dataLocation));
-
       socket?.add(convertJsonToPacket(dataUser));
-      socket?.add(convertJsonToPacket(dataLocation));
+
+      if (Get.find<HomeController>().workStatus.value == 1 &&
+          locationServices.isPermissionLocationAllow.value == true) {
+        var dataLocation = {
+          "code": 200,
+          "data": {
+            "altitude": locationServices.currentAltitude.value,
+            "computeAzimuth": 0.0,
+            "driverId": Get.find<HomeController>().userInfo.value.id,
+            "lat": locationServices.currentLatitude.value,
+            "lon": locationServices.currentLongitude.value,
+            "orderId": "",
+            "orderType": "",
+          },
+          "method": "LOCATION",
+          "msg": "SUCCESS",
+        };
+        socket?.add(convertJsonToPacket(dataLocation));
+      }
 
       if (isSocketClose.value == false) {
         await socket?.flush();

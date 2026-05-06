@@ -81,6 +81,8 @@ class MyActivityController extends GetxController
     null,
   );
 
+  final ensureIncomeRuleId = Rx<int?>(null);
+
   final isFetch = false.obs;
 
   @override
@@ -98,6 +100,7 @@ class MyActivityController extends GetxController
       end: DateTime.now(),
     );
 
+    await Future.wait([getEnsureIncomeRuleId()]);
     await Future.wait([getGuaranteeIncome(), getCouponIncome()]);
     await Future.wait([
       generateGuaranteeIncomeTableData(),
@@ -118,6 +121,11 @@ class MyActivityController extends GetxController
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> getEnsureIncomeRuleId() async {
+    ensureIncomeRuleId.value = await guaranteeIncomeRepository
+        .getActiveEnsureIncomeRuleId();
   }
 
   Future<void> onTapSelectDateRangeGuaranteeIncome({
@@ -205,20 +213,23 @@ class MyActivityController extends GetxController
   }
 
   Future<void> getGuaranteeIncome() async {
-    guaranteeIncome.value = await guaranteeIncomeRepository.getGuaranteeIncome(
-      driverId: userServices.userInfo.value.id,
-      ensureIncomeRuleId: 73,
-      startDate: guaranteeIncomeSelectedDateRange.value != null
-          ? DateFormat(
-              'yyyy-MM-dd',
-            ).format(guaranteeIncomeSelectedDateRange.value!.start)
-          : null,
-      endDate: guaranteeIncomeSelectedDateRange.value != null
-          ? DateFormat(
-              'yyyy-MM-dd',
-            ).format(guaranteeIncomeSelectedDateRange.value!.end)
-          : null,
-    );
+    if (ensureIncomeRuleId.value != null) {
+      guaranteeIncome.value = await guaranteeIncomeRepository
+          .getGuaranteeIncome(
+            driverId: userServices.userInfo.value.id,
+            ensureIncomeRuleId: ensureIncomeRuleId.value,
+            startDate: guaranteeIncomeSelectedDateRange.value != null
+                ? DateFormat(
+                    'yyyy-MM-dd',
+                  ).format(guaranteeIncomeSelectedDateRange.value!.start)
+                : null,
+            endDate: guaranteeIncomeSelectedDateRange.value != null
+                ? DateFormat(
+                    'yyyy-MM-dd',
+                  ).format(guaranteeIncomeSelectedDateRange.value!.end)
+                : null,
+          );
+    }
 
     workingTimeRushHour.value = 0;
     workingTimeNormalHour.value = 0;
@@ -297,38 +308,35 @@ class MyActivityController extends GetxController
         workingTimeTotal.value += period.onlineDurationMinutes ?? 0;
 
         // Guarantee Income / Hour
-        if (period.amount != null) {
-          if (period.hourType == 2) {
-            // sumGuaranteeIncomeRushHour +=
-            //     (period.amount! /
-            //             getMinutesDifference(
-            //               period.startTime!,
-            //               period.endTime!,
-            //             ))
-            //         .round();
-            sumGuaranteeIncomeRushHour += period.guaranteedAmountPerHour ?? 0.0;
-            countGuaranteeIncomeRushHour += 1;
+        if (period.hourType == 2) {
+          // sumGuaranteeIncomeRushHour +=
+          //     (period.amount! /
+          //             getMinutesDifference(
+          //               period.startTime!,
+          //               period.endTime!,
+          //             ))
+          //         .round();
+          sumGuaranteeIncomeRushHour += period.guaranteedAmountPerHour ?? 0.0;
+          countGuaranteeIncomeRushHour += 1;
 
-            dailySumGuaranteeIncomeRushHour +=
-                period.guaranteedAmountPerHour ?? 0.0;
-            dailyCountGuaranteeIncomeRushHour += 1;
-          }
-          if (period.hourType == 1) {
-            // sumGuaranteeIncomeNormalHour +=
-            //     (period.amount! /
-            //             getMinutesDifference(
-            //               period.startTime!,
-            //               period.endTime!,
-            //             ))
-            //         .round();
-            sumGuaranteeIncomeNormalHour +=
-                period.guaranteedAmountPerHour ?? 0.0;
-            countGuaranteeIncomeNormalHour += 1;
+          dailySumGuaranteeIncomeRushHour +=
+              period.guaranteedAmountPerHour ?? 0.0;
+          dailyCountGuaranteeIncomeRushHour += 1;
+        }
+        if (period.hourType == 1) {
+          // sumGuaranteeIncomeNormalHour +=
+          //     (period.amount! /
+          //             getMinutesDifference(
+          //               period.startTime!,
+          //               period.endTime!,
+          //             ))
+          //         .round();
+          sumGuaranteeIncomeNormalHour += period.guaranteedAmountPerHour ?? 0.0;
+          countGuaranteeIncomeNormalHour += 1;
 
-            dailySumGuaranteeIncomeNormalHour +=
-                period.guaranteedAmountPerHour ?? 0.0;
-            dailyCountGuaranteeIncomeNormalHour += 1;
-          }
+          dailySumGuaranteeIncomeNormalHour +=
+              period.guaranteedAmountPerHour ?? 0.0;
+          dailyCountGuaranteeIncomeNormalHour += 1;
         }
 
         // Total Guarantee Income
@@ -396,7 +404,6 @@ class MyActivityController extends GetxController
         );
       }
     }
-
     if (countGuaranteeIncomeRushHour != 0) {
       guaranteeIncomeHourRushHour.value =
           (sumGuaranteeIncomeRushHour / countGuaranteeIncomeRushHour).round();
@@ -425,9 +432,9 @@ class MyActivityController extends GetxController
 
           couponIncomeTableData.add([
             daily.date,
-            daily.orderTime ?? "-",
-            daily.startAddressName ?? "-",
-            daily.endAddressName ?? "-",
+            order.orderTime ?? "-",
+            order.startAddressName ?? "-",
+            order.endAddressName ?? "-",
             NumberFormat.currency(
               locale: 'id_ID',
               symbol: 'Rp',

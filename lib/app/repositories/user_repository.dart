@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
+import 'package:new_evmoto_driver/app/data/models/working_area_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/environment.dart';
@@ -38,6 +41,33 @@ class UserRepository {
       }
 
       return UserInfo.fromJson(response.data['data']);
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
+
+  Future<WorkingArea> getWorkingArea() async {
+    try {
+      var url = "$baseUrl/driver/api/driver/workingArea";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.get(url, options: Options(headers: headers));
+
+      print(response.data);
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      return WorkingArea.fromJson(jsonDecode(response.data['data'][0])[0]);
     } on DioException catch (e) {
       throw e.message.toString();
     }

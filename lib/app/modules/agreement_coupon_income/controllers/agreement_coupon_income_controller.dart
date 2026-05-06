@@ -40,7 +40,7 @@ class AgreementCouponIncomeController extends GetxController {
     agreement.value = await agreementRepository.getAgreementDetail(
       language: languageServices.languageCodeSystem.value,
       userType: 2,
-      type: 16,
+      type: 18,
     );
   }
 }
