@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/coupon_income_model.dart';
 import 'package:new_evmoto_driver/app/data/models/guarantee_income_model.dart';
+import 'package:new_evmoto_driver/app/data/models/guarantee_income_progress_bar_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/environment.dart';
@@ -47,6 +48,47 @@ class GuaranteeIncomeRepository {
       }
 
       return GuaranteeIncome.fromJson(response.data['data']);
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
+
+  Future<List<GuaranteeIncomeProgressBar>> getGuaranteeIncomeProgressBarList({
+    required int? ensureIncomeRuleId,
+  }) async {
+    try {
+      var url = "$baseUrl/app/ensureIncomeFoundation/getListByEnsureIncomeId";
+
+      var data = {"ensureIncomeRuleId": ensureIncomeRuleId};
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: data,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      var guaranteeIncomeProgressBarList = <GuaranteeIncomeProgressBar>[];
+
+      for (var guaranteeIncomeProgressBar in response.data['data']) {
+        guaranteeIncomeProgressBarList.add(
+          GuaranteeIncomeProgressBar.fromJson(guaranteeIncomeProgressBar),
+        );
+      }
+
+      return guaranteeIncomeProgressBarList;
     } on DioException catch (e) {
       throw e.message.toString();
     }

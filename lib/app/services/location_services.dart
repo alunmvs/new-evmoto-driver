@@ -104,9 +104,17 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
             Geolocator.getPositionStream(
               locationSettings: locationSettings,
             ).listen((Position position) {
-              currentAltitude.value = position.altitude;
-              currentLatitude.value = position.latitude;
-              currentLongitude.value = position.longitude;
+              // print(
+              //   "[DEBUG POSITION] ${position.latitude},${position.longitude} Accuracy : ${position.accuracy.toStringAsFixed(2)} m",
+              // );
+
+              var isValidLocation =
+                  currentLatitude.value == null || position.accuracy <= 20;
+              if (isValidLocation) {
+                currentAltitude.value = position.altitude;
+                currentLatitude.value = position.latitude;
+                currentLongitude.value = position.longitude;
+              }
             });
       }
 
@@ -143,9 +151,16 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
             Geolocator.getPositionStream(
               locationSettings: locationSettings,
             ).listen((Position position) {
-              currentAltitude.value = position.altitude;
-              currentLatitude.value = position.latitude;
-              currentLongitude.value = position.longitude;
+              // print(
+              //   "[DEBUG POSITION] ${position.latitude},${position.longitude} Accuracy : ${position.accuracy.toStringAsFixed(2)} m",
+              // );
+              var isValidLocation =
+                  currentLatitude.value == null || position.accuracy <= 20;
+              if (isValidLocation) {
+                currentAltitude.value = position.altitude;
+                currentLatitude.value = position.latitude;
+                currentLongitude.value = position.longitude;
+              }
             });
       }
 

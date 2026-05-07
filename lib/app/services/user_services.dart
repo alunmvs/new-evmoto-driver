@@ -11,7 +11,7 @@ class UserServices extends GetxService {
   final languageServices = Get.find<LanguageServices>();
 
   final userInfo = UserInfo().obs;
-  final workingArea = WorkingArea().obs;
+  final workingAreaList = <WorkingArea>[].obs;
 
   final isLoadingRefreshHome = false.obs;
 
@@ -26,11 +26,11 @@ class UserServices extends GetxService {
   }
 
   Future<void> getWorkingArea() async {
-    workingArea.value = (await userRepository.getWorkingArea());
+    workingAreaList.value = (await userRepository.getWorkingAreaList());
   }
 
   void clearUserInfo() {
     userInfo.value = UserInfo();
-    workingArea.value = WorkingArea();
+    workingAreaList.value = [];
   }
 }

@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mapsToolkit;
 import 'package:new_evmoto_driver/app/data/consts/order_state_const.dart';
+import 'package:new_evmoto_driver/app/data/models/guarantee_income_progress_bar_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/service_order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
@@ -21,6 +22,7 @@ import 'package:new_evmoto_driver/app/data/models/vehicle_statistics_model.dart'
 import 'package:new_evmoto_driver/app/data/models/versioning_server_model.dart';
 import 'package:new_evmoto_driver/app/data/models/working_model.dart';
 import 'package:new_evmoto_driver/app/repositories/account_repository.dart';
+import 'package:new_evmoto_driver/app/repositories/guarantee_income_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/vehicle_repository.dart';
@@ -53,6 +55,7 @@ class HomeController extends GetxController
   final UserRepository userRepository;
   final AccountRepository accountRepository;
   final VersioningServerRepository versioningServerRepository;
+  final GuaranteeIncomeRepository guaranteeIncomeRepository;
 
   HomeController({
     required this.vehicleRepository,
@@ -60,6 +63,7 @@ class HomeController extends GetxController
     required this.userRepository,
     required this.accountRepository,
     required this.versioningServerRepository,
+    required this.guaranteeIncomeRepository,
   });
 
   final userServices = Get.find<UserServices>();
@@ -131,6 +135,20 @@ class HomeController extends GetxController
   final initialLongitude = Rx<double?>(null);
   final onlineAt = Rx<DateTime?>(null);
 
+  // Guarantee Income Progress Bar
+  final ensureIncomeRuleId = Rx<int?>(null);
+  final guaranteeIncomeProgressBarList = <GuaranteeIncomeProgressBar>[].obs;
+  final activeGuaranteeIncomeProgressBar = Rx<GuaranteeIncomeProgressBar?>(
+    null,
+  );
+  Timer? guaranteeIncomeProgressBarTimer;
+  final isActiveGuaranteeIncomeProgressBarOpen = false.obs;
+  final guaranteeIncomeProgress = 0.0.obs;
+  final startTimeLocal = Rx<DateTime?>(null);
+  final endTimeLocal = Rx<DateTime?>(null);
+  final startTimeAdjustTz = Rx<String?>(null);
+  final endTimeAdjustTz = Rx<String?>(null);
+
   final isFetch = false.obs;
 
   @override
@@ -155,7 +173,10 @@ class HomeController extends GetxController
       await displayCoachmark();
       await firebasePushNotificationServices.requestPermission();
       await setHomeControllerRegistered();
-      await setupAutoOfflineTimer();
+      await Future.wait([
+        setupAutoOfflineTimer(),
+        setupGuaranteeIncomeProgressBarTimer(),
+      ]);
     });
   }
 
@@ -169,6 +190,7 @@ class HomeController extends GetxController
     super.onClose();
     await socketServices.closeWebsocket();
     autoOfflineTimer?.cancel();
+    guaranteeIncomeProgressBarTimer?.cancel();
   }
 
   Future<void> requestLocation() async {
@@ -222,9 +244,13 @@ class HomeController extends GetxController
       voiceServices.manualOnInit(),
       getServiceOrderList(),
       getWorking(),
+      getEnsureIncomeRuleId(),
     ]);
 
-    await Future.wait([getTotalUnreadFirebaseChat()]);
+    await Future.wait([
+      getTotalUnreadFirebaseChat(),
+      getGuaranteeIncomeProgressBarList(),
+    ]);
 
     workStatus.value = vehicleStatistics.value.work ?? 2;
 
@@ -372,29 +398,40 @@ class HomeController extends GetxController
         if (working.value.id == null) {
           // Auto Offline Outside Working Area
           if (locationServices.currentLatitude.value != null) {
-            var polygonList = <mapsToolkit.LatLng>[];
             var point = mapsToolkit.LatLng(
               locationServices.currentLatitude.value!,
               locationServices.currentLongitude.value!,
             );
 
-            if (userServices.workingArea.value.center?.isNotEmpty ?? false) {
-              for (var pointPolygon
-                  in userServices.workingArea.value.center ?? <String>[]) {
-                var pointPolygonList = pointPolygon.split(",");
-                polygonList.add(
-                  mapsToolkit.LatLng(
-                    double.parse(pointPolygonList[0]),
-                    double.parse(pointPolygonList[1]),
-                  ),
-                );
-              }
+            if (userServices.workingAreaList.isNotEmpty) {
+              var isInside = false;
 
-              var isInside = mapsToolkit.PolygonUtil.containsLocation(
-                point,
-                polygonList,
-                false,
-              );
+              for (var workingArea in userServices.workingAreaList) {
+                var polygonList = <mapsToolkit.LatLng>[];
+
+                if (workingArea.center?.isNotEmpty ?? false) {
+                  for (var pointPolygon in workingArea.center ?? <String>[]) {
+                    var pointPolygonList = pointPolygon.split(",");
+                    polygonList.add(
+                      mapsToolkit.LatLng(
+                        double.parse(pointPolygonList[0]),
+                        double.parse(pointPolygonList[1]),
+                      ),
+                    );
+                  }
+
+                  var isInsideLoop = mapsToolkit.PolygonUtil.containsLocation(
+                    point,
+                    polygonList,
+                    false,
+                  );
+
+                  if (isInsideLoop == true) {
+                    isInside = true;
+                    break;
+                  }
+                }
+              }
 
               if (isInside == false) {
                 await userRepository.stopWork(language: 2);
@@ -409,7 +446,7 @@ class HomeController extends GetxController
             }
           }
 
-          // Auto Offline 200 m Initial Latitude Longitude
+          // Auto Offline 200 m Initial Longitudel Latitude
           if (initialLatitude.value != null &&
               locationServices.currentLatitude.value != null) {
             var distanceInMeters = Geolocator.distanceBetween(
@@ -460,6 +497,15 @@ class HomeController extends GetxController
     });
   }
 
+  Future<void> setupGuaranteeIncomeProgressBarTimer() async {
+    guaranteeIncomeProgressBarTimer = Timer.periodic(Duration(minutes: 1), (
+      timer,
+    ) async {
+      await getEnsureIncomeRuleId();
+      await getGuaranteeIncomeProgressBarList();
+    });
+  }
+
   void setInitialLatitudeLongitude() {
     initialLatitude.value = locationServices.currentLatitude.value;
     initialLongitude.value = locationServices.currentLongitude.value;
@@ -480,6 +526,7 @@ class HomeController extends GetxController
         workStatus.value = 2;
       }
 
+      await userServices.getWorkingArea();
       await getVehicleStatistics();
     } catch (e) {
       errorInfoBottomSheet.value = e.toString();
@@ -1784,5 +1831,82 @@ class HomeController extends GetxController
   Future<void> setHomeControllerRegistered() async {
     var prefs = await SharedPreferences.getInstance();
     await prefs.setBool('home_controller_registered', true);
+  }
+
+  Future<void> getEnsureIncomeRuleId() async {
+    ensureIncomeRuleId.value = await guaranteeIncomeRepository
+        .getActiveEnsureIncomeRuleId();
+  }
+
+  Future<void> getGuaranteeIncomeProgressBarList() async {
+    if (ensureIncomeRuleId.value != null) {
+      guaranteeIncomeProgressBarList.value = await guaranteeIncomeRepository
+          .getGuaranteeIncomeProgressBarList(
+            ensureIncomeRuleId: ensureIncomeRuleId.value,
+          );
+
+      var isInRangeExist = false;
+      for (var guaranteeIncomeProgressBar in guaranteeIncomeProgressBarList) {
+        if (guaranteeIncomeProgressBar.startTime != null &&
+            guaranteeIncomeProgressBar.endTime != null) {
+          var now = DateTime.now();
+
+          var start = parseToToday(
+            now,
+            guaranteeIncomeProgressBar.startTime!,
+          ).toLocal();
+          var end = parseToToday(
+            now,
+            guaranteeIncomeProgressBar.endTime!,
+          ).toLocal();
+
+          var isInRange = now.isAfter(start) && now.isBefore(end);
+
+          if (isInRange == true) {
+            activeGuaranteeIncomeProgressBar.value = guaranteeIncomeProgressBar;
+            isInRangeExist = true;
+
+            // Guarantee Income Progress
+            if (guaranteeIncomeProgressBar.onlineDurationMinutes != null) {
+              var start = parseTime(guaranteeIncomeProgressBar.startTime!);
+              var end = parseTime(guaranteeIncomeProgressBar.endTime!);
+              guaranteeIncomeProgress.value =
+                  guaranteeIncomeProgressBar.onlineDurationMinutes! /
+                  end.difference(start).inMinutes;
+            } else {
+              guaranteeIncomeProgress.value = 0.0;
+            }
+
+            // Start Time & End Time
+            var startTimeLocal = convertToLocal(
+              guaranteeIncomeProgressBar.startTime!,
+            );
+            var endTimeLocal = convertToLocal(
+              guaranteeIncomeProgressBar.endTime!,
+            );
+            this.startTimeLocal.value = startTimeLocal;
+            this.endTimeLocal.value = endTimeLocal;
+            startTimeAdjustTz.value = formatTime(startTimeLocal);
+            endTimeAdjustTz.value = formatTime(endTimeLocal);
+            break;
+          }
+        }
+      }
+
+      if (isInRangeExist == false) {
+        activeGuaranteeIncomeProgressBar.value = GuaranteeIncomeProgressBar();
+        guaranteeIncomeProgress.value = 0.0;
+        startTimeAdjustTz.value = null;
+        endTimeAdjustTz.value = null;
+        isActiveGuaranteeIncomeProgressBarOpen.value = false;
+      }
+    } else {
+      guaranteeIncomeProgressBarList.value = <GuaranteeIncomeProgressBar>[];
+      activeGuaranteeIncomeProgressBar.value = GuaranteeIncomeProgressBar();
+      guaranteeIncomeProgress.value = 0.0;
+      startTimeAdjustTz.value = null;
+      endTimeAdjustTz.value = null;
+      isActiveGuaranteeIncomeProgressBarOpen.value = false;
+    }
   }
 }

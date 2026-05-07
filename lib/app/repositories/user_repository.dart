@@ -46,7 +46,7 @@ class UserRepository {
     }
   }
 
-  Future<WorkingArea> getWorkingArea() async {
+  Future<List<WorkingArea>> getWorkingAreaList() async {
     try {
       var url = "$baseUrl/driver/api/driver/workingArea";
 
@@ -61,13 +61,18 @@ class UserRepository {
       var dio = apiServices.dio;
       var response = await dio.get(url, options: Options(headers: headers));
 
-      print(response.data);
-
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
 
-      return WorkingArea.fromJson(jsonDecode(response.data['data'][0])[0]);
+      var workingAreaList = <WorkingArea>[];
+
+      for (var workingArea in response.data?['data'] ?? []) {
+        workingAreaList.add(WorkingArea.fromJson(jsonDecode(workingArea)[0]));
+        print("[DEBUG OFFLINE] ${workingArea}");
+      }
+
+      return workingAreaList;
     } on DioException catch (e) {
       throw e.message.toString();
     }

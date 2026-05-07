@@ -58,6 +58,20 @@ class AccountView extends GetView<AccountController> {
                       controller.homeController.userInfo.value.name ?? "-",
                       style: controller.typographyServices.bodyLargeBold.value
                           .copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            color: controller
+                                .themeColorServices
+                                .neutralsColorGrey0
+                                .value,
+                          ),
+                    ),
+                    Text(
+                      controller.homeController.userInfo.value.phone ?? "-",
+                      style: controller.typographyServices.bodyLargeBold.value
+                          .copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                             color: controller
                                 .themeColorServices
                                 .neutralsColorGrey0
@@ -71,6 +85,8 @@ class AccountView extends GetView<AccountController> {
                           .bodySmallRegular
                           .value
                           .copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
                             color: controller
                                 .themeColorServices
                                 .neutralsColorGrey0

@@ -19,15 +19,20 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/services/voice_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/routes/app_pages.dart';
+
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones();
 
   await initializeDateFormatting('id_ID', null);
 
