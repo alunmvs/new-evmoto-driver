@@ -157,12 +157,8 @@ class HomeController extends GetxController
     isFetch.value = true;
     tabController ??= TabController(length: 3, vsync: this);
 
-    if (locationServices.isPermissionLocationAllow.value == false) {
-      await locationServices.requestLocation();
-    }
-
-    await requestLocation();
     await refreshAll();
+
     isSendbirdInit.value = true;
     isFetch.value = false;
 
@@ -236,6 +232,8 @@ class HomeController extends GetxController
   }
 
   Future<void> refreshAll() async {
+    await locationServices.requestLocation();
+
     await Future.wait([
       getUserInfoDetail(),
       getVehicleStatistics(),
@@ -468,30 +466,30 @@ class HomeController extends GetxController
           }
 
           // Auto Offline 1 min After Online
-          if (onlineAt.value != null) {
-            if (DateTime.now().difference(onlineAt.value!).inMinutes >= 1) {
-              var distanceInMeters = Geolocator.distanceBetween(
-                initialLatitude.value!,
-                initialLongitude.value!,
-                locationServices.currentLatitude.value!,
-                locationServices.currentLongitude.value!,
-              );
+          // if (onlineAt.value != null) {
+          //   if (DateTime.now().difference(onlineAt.value!).inMinutes >= 1) {
+          //     var distanceInMeters = Geolocator.distanceBetween(
+          //       initialLatitude.value!,
+          //       initialLongitude.value!,
+          //       locationServices.currentLatitude.value!,
+          //       locationServices.currentLongitude.value!,
+          //     );
 
-              if (distanceInMeters >= 10) {
-                await userRepository.stopWork(language: 2);
-                workStatus.value = 2;
-                SnackbarHelper.showSnackbarError(
-                  text:
-                      "Tidak ada aktivitas dalam 1 menit sejak Anda Online. Status Anda akan Offline.",
-                );
-                await getVehicleStatistics();
-              } else {
-                onlineAt.value = DateTime.now();
-              }
+          //     if (distanceInMeters >= 10) {
+          //       await userRepository.stopWork(language: 2);
+          //       workStatus.value = 2;
+          //       SnackbarHelper.showSnackbarError(
+          //         text:
+          //             "Tidak ada aktivitas dalam 1 menit sejak Anda Online. Status Anda akan Offline.",
+          //       );
+          //       await getVehicleStatistics();
+          //     } else {
+          //       onlineAt.value = DateTime.now();
+          //     }
 
-              return;
-            }
-          }
+          //     return;
+          //   }
+          // }
         }
       }
     });

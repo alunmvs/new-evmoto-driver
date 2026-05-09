@@ -45,7 +45,7 @@ class MyActivityController extends GetxController
 
   final guaranteeIncomeHourRushHour = 0.obs;
   final guaranteeIncomeHourNormalHour = 0.obs;
-  final guaranteeIncomeTotal = 0.obs;
+  final guaranteeIncomeTotal = 0.0.obs;
 
   final totalGuaranteeIncomeRushHour = 0.0.obs;
   final totalGuaranteeIncomeNormalHour = 0.0.obs;
@@ -298,6 +298,7 @@ class MyActivityController extends GetxController
       var logOnlineOfflineTextListNormalHour = [];
 
       for (var period in daily.periods ?? <Periods>[]) {
+        print("[DEBUG GUARANTEE] Period");
         // Working Hour
         if (period.hourType == 2) {
           workingTimeRushHour.value += period.onlineDurationMinutes ?? 0;
@@ -356,7 +357,7 @@ class MyActivityController extends GetxController
         if (period.hourType == 1) {
           orderIncomeNormalHour.value += period.orderIncome ?? 0.0;
         }
-        orderIncomeTotal.value += period.orderIncome ?? 0.0;
+        // orderIncomeTotal.value += period.orderIncome ?? 0.0;
 
         // Log Online Offline
         if (period.hourType == 2) {
@@ -403,6 +404,10 @@ class MyActivityController extends GetxController
           "${daily.date}\n${logOnlineOfflineTextListNormalHour.join("\n")}",
         );
       }
+
+      orderIncomeTotal.value += daily.totalDayOrderIncome ?? 0.0;
+      netPaymentOfGuaranteeTotal.value += daily.dailyNetGuaranteedIncome ?? 0.0;
+      guaranteeIncomeTotal.value += daily.totalDayGuaranteedAmount ?? 0.0;
     }
     if (countGuaranteeIncomeRushHour != 0) {
       guaranteeIncomeHourRushHour.value =
@@ -413,13 +418,13 @@ class MyActivityController extends GetxController
           (sumGuaranteeIncomeNormalHour / countGuaranteeIncomeNormalHour)
               .round();
     }
-    guaranteeIncomeTotal.value =
-        guaranteeIncomeHourRushHour.value + guaranteeIncomeHourNormalHour.value;
+    // guaranteeIncomeTotal.value =
+    //     guaranteeIncomeHourRushHour.value + guaranteeIncomeHourNormalHour.value;
 
-    netPaymentOfGuaranteeTotal.value =
-        (totalGuaranteeIncomeTotal.value - orderIncomeTotal.value) <= 0
-        ? 0
-        : (totalGuaranteeIncomeTotal.value - orderIncomeTotal.value);
+    // netPaymentOfGuaranteeTotal.value =
+    //     (totalGuaranteeIncomeTotal.value - orderIncomeTotal.value) <= 0
+    //     ? 0
+    //     : (totalGuaranteeIncomeTotal.value - orderIncomeTotal.value);
   }
 
   Future<void> generateCouponIncomeTableData() async {

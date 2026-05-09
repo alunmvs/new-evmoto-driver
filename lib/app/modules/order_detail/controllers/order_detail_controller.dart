@@ -114,6 +114,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     // if (locationServices.isPermissionLocationAllow.value == true) {
+    await locationServices.requestLocation();
     await Future.wait([getOrderDetail(), getOrderUserDetail()]);
     await Future.wait([getAllRoutingCache()]);
     isFetch.value = false;

@@ -53,6 +53,7 @@ abstract class Routes {
   static const AGREEMENT_GUARANTEE_INCOME = _Paths.AGREEMENT_GUARANTEE_INCOME;
   static const AGREEMENT_COUPON_INCOME = _Paths.AGREEMENT_COUPON_INCOME;
   static const CHAT_DETAIL = _Paths.CHAT_DETAIL;
+  static const HISTORY_GUARANTEE_INCOME = _Paths.HISTORY_GUARANTEE_INCOME;
 }
 
 abstract class _Paths {
@@ -107,4 +108,5 @@ abstract class _Paths {
   static const AGREEMENT_GUARANTEE_INCOME = '/agreement-guarantee-income';
   static const AGREEMENT_COUPON_INCOME = '/agreement-coupon-income';
   static const CHAT_DETAIL = '/chat-detail';
+  static const HISTORY_GUARANTEE_INCOME = '/history-guarantee-income';
 }

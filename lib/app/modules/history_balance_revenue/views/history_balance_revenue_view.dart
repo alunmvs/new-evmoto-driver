@@ -95,28 +95,41 @@ class HistoryBalanceRevenueView
                                               ),
                                         ),
                                         SizedBox(height: 4),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                    .historyBalanceRevenue
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/icons/icon_wallet.svg',
+                                              color: Colors.white,
+                                              width: 16,
+                                              height: 15,
+                                            ),
+                                            SizedBox(width: 9),
+                                            Expanded(
+                                              child: Text(
+                                                NumberFormat.currency(
+                                                  locale: 'id_ID',
+                                                  symbol: 'Rp',
+                                                  decimalDigits: 0,
+                                                ).format(
+                                                  controller
+                                                          .historyBalanceRevenue
+                                                          .value
+                                                          .income ??
+                                                      0.0,
+                                                ),
+                                                style: controller
+                                                    .typographyServices
+                                                    .headingMediumBold
                                                     .value
-                                                    .income ??
-                                                0.0,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .headingMediumBold
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey0
-                                                    .value,
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey0
+                                                          .value,
+                                                    ),
                                               ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -141,28 +154,41 @@ class HistoryBalanceRevenueView
                                               ),
                                         ),
                                         SizedBox(height: 4),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                    .historyBalanceRevenue
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/icons/icon_wallet.svg',
+                                              color: Colors.white,
+                                              width: 16,
+                                              height: 15,
+                                            ),
+                                            SizedBox(width: 9),
+                                            Expanded(
+                                              child: Text(
+                                                NumberFormat.currency(
+                                                  locale: 'id_ID',
+                                                  symbol: 'Rp',
+                                                  decimalDigits: 0,
+                                                ).format(
+                                                  controller
+                                                          .historyBalanceRevenue
+                                                          .value
+                                                          .flow ??
+                                                      0.0,
+                                                ),
+                                                style: controller
+                                                    .typographyServices
+                                                    .headingMediumBold
                                                     .value
-                                                    .flow ??
-                                                0.0,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .headingMediumBold
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey0
-                                                    .value,
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .neutralsColorGrey0
+                                                          .value,
+                                                    ),
                                               ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),

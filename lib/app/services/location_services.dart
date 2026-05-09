@@ -23,7 +23,7 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
   final currentAltitude = Rx<double?>(null);
   final currentLatitude = Rx<double?>(null);
   final currentLongitude = Rx<double?>(null);
-  final isPermissionLocationAllow = Rx<bool?>(null);
+  final isPermissionLocationAllow = Rx<bool?>(false);
 
   final requestPermissionCount = 0.obs;
 
@@ -94,12 +94,12 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
         }
       }
 
-      var locationSettings = LocationSettings(
-        accuracy: LocationAccuracy.bestForNavigation,
-        distanceFilter: 0,
-      );
-
       if (positionStream == null) {
+        var locationSettings = LocationSettings(
+          accuracy: LocationAccuracy.bestForNavigation,
+          distanceFilter: 0,
+        );
+
         positionStream =
             Geolocator.getPositionStream(
               locationSettings: locationSettings,
@@ -108,13 +108,13 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
               //   "[DEBUG POSITION] ${position.latitude},${position.longitude} Accuracy : ${position.accuracy.toStringAsFixed(2)} m",
               // );
 
-              var isValidLocation =
-                  currentLatitude.value == null || position.accuracy <= 20;
-              if (isValidLocation) {
-                currentAltitude.value = position.altitude;
-                currentLatitude.value = position.latitude;
-                currentLongitude.value = position.longitude;
-              }
+              // var isValidLocation =
+              //     currentLatitude.value == null || position.accuracy <= 20;
+              // if (isValidLocation) {
+              currentAltitude.value = position.altitude;
+              currentLatitude.value = position.latitude;
+              currentLongitude.value = position.longitude;
+              // }
             });
       }
 
@@ -154,13 +154,13 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
               // print(
               //   "[DEBUG POSITION] ${position.latitude},${position.longitude} Accuracy : ${position.accuracy.toStringAsFixed(2)} m",
               // );
-              var isValidLocation =
-                  currentLatitude.value == null || position.accuracy <= 20;
-              if (isValidLocation) {
-                currentAltitude.value = position.altitude;
-                currentLatitude.value = position.latitude;
-                currentLongitude.value = position.longitude;
-              }
+              // var isValidLocation =
+              //     currentLatitude.value == null || position.accuracy <= 20;
+              // if (isValidLocation) {
+              currentAltitude.value = position.altitude;
+              currentLatitude.value = position.latitude;
+              currentLongitude.value = position.longitude;
+              // }
             });
       }
 

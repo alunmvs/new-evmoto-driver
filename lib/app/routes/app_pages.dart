@@ -44,6 +44,8 @@ import '../modules/history_balance_revenue/bindings/history_balance_revenue_bind
 import '../modules/history_balance_revenue/views/history_balance_revenue_view.dart';
 import '../modules/history_balance_withdraw/bindings/history_balance_withdraw_binding.dart';
 import '../modules/history_balance_withdraw/views/history_balance_withdraw_view.dart';
+import '../modules/history_guarantee_income/bindings/history_guarantee_income_binding.dart';
+import '../modules/history_guarantee_income/views/history_guarantee_income_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -323,6 +325,11 @@ class AppPages {
       name: _Paths.CHAT_DETAIL,
       page: () => const ChatDetailView(),
       binding: ChatDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_GUARANTEE_INCOME,
+      page: () => const HistoryGuaranteeIncomeView(),
+      binding: HistoryGuaranteeIncomeBinding(),
     ),
   ];
 }

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_messages_model.dart';
 import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_participants_model.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/upload_image_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
@@ -21,6 +22,8 @@ class ChatDetailController extends GetxController {
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
 
+  final homeController = Get.find<HomeController>();
+
   final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
   final evmotoOrderChatMessagesList = <EvmotoOrderChatMessages>[].obs;
 
@@ -34,6 +37,7 @@ class ChatDetailController extends GetxController {
   final message = "".obs;
 
   final isAttachmentOptionOpen = false.obs;
+  final isTripHasEnded = true.obs;
   final isFetch = false.obs;
 
   @override
@@ -43,6 +47,7 @@ class ChatDetailController extends GetxController {
     docId.value = Get.arguments['doc_id'];
     await streamExistingChatRoom();
     await streamExistingChatList();
+    await checkIfTripHasEnded();
     isFetch.value = false;
   }
 
@@ -210,5 +215,16 @@ class ChatDetailController extends GetxController {
         .get();
 
     return data.docs.length;
+  }
+
+  Future<void> checkIfTripHasEnded() async {
+    await homeController.getWorking();
+
+    if (homeController.working.value.id != null) {
+      if (homeController.working.value.id.toString() ==
+          evmotoOrderChatParticipants.value.orderId) {
+        isTripHasEnded.value = false;
+      }
+    }
   }
 }

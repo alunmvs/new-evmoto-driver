@@ -34,11 +34,23 @@ class Daily {
   String? date;
   List<Periods>? periods;
   List<String?>? logOnlineOffline;
+  double? totalDayOrderIncome;
+  double? totalDayGuaranteedAmount;
+  double? dailyNetGuaranteedIncome;
 
-  Daily({this.date, this.periods, this.logOnlineOffline});
+  Daily({
+    this.date,
+    this.periods,
+    this.logOnlineOffline,
+    this.totalDayOrderIncome,
+    this.totalDayGuaranteedAmount,
+    this.dailyNetGuaranteedIncome,
+  });
 
   Daily.fromJson(Map<String, dynamic> json) {
-    date = json['date'];
+    totalDayOrderIncome = json['totalDayOrderIncome'];
+    totalDayGuaranteedAmount = json['totalDayGuaranteedAmount'];
+    dailyNetGuaranteedIncome = json['dailyNetGuaranteedIncome'];
     if (json['logOnlineOffline'] != null) {
       logOnlineOffline = json['logOnlineOffline'];
     }

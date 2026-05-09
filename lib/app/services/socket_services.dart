@@ -4,6 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/modules/order_detail/controllers/order_detail_controller.dart';
@@ -225,7 +226,7 @@ class SocketServices extends GetxService {
   Future<void> schedulerDataSocket() async {
     await sendHeartBeat();
 
-    schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 3), (
+    schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
       timer,
     ) async {
       await sendHeartBeat();
