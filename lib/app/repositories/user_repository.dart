@@ -69,7 +69,7 @@ class UserRepository {
 
       for (var workingArea in response.data?['data'] ?? []) {
         workingAreaList.add(WorkingArea.fromJson(jsonDecode(workingArea)[0]));
-        print("[DEBUG OFFLINE] ${workingArea}");
+        // print("[DEBUG OFFLINE] ${workingArea}");
       }
 
       return workingAreaList;
