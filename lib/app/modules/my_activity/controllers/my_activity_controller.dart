@@ -361,13 +361,25 @@ class MyActivityController extends GetxController
 
         // Log Online Offline
         if (period.hourType == 2) {
-          for (var logOnlineOffline in daily.logOnlineOffline ?? <String>[]) {
-            logOnlineOfflineTextListRushHour.add("• $logOnlineOffline");
+          // for (var logOnlineOffline in daily.logOnlineOffline ?? <String>[]) {
+          //   logOnlineOfflineTextListRushHour.add("• $logOnlineOffline");
+          // }
+
+          for (var onlineTime in period.onlineTimes ?? <OnlineTimes>[]) {
+            logOnlineOfflineTextListRushHour.add(
+              "• ${onlineTime.start} - ${onlineTime.end}",
+            );
           }
         }
         if (period.hourType == 1) {
-          for (var logOnlineOffline in daily.logOnlineOffline ?? <String>[]) {
-            logOnlineOfflineTextListNormalHour.add("• $logOnlineOffline");
+          // for (var logOnlineOffline in daily.logOnlineOffline ?? <String>[]) {
+          //   logOnlineOfflineTextListNormalHour.add("• $logOnlineOffline");
+          // }
+
+          for (var onlineTime in period.onlineTimes ?? <OnlineTimes>[]) {
+            logOnlineOfflineTextListRushHour.add(
+              "• ${onlineTime.start} - ${onlineTime.end}",
+            );
           }
         }
       }

@@ -48,6 +48,7 @@ class Daily {
   });
 
   Daily.fromJson(Map<String, dynamic> json) {
+    date = json['date'];
     totalDayOrderIncome = json['totalDayOrderIncome'];
     totalDayGuaranteedAmount = json['totalDayGuaranteedAmount'];
     dailyNetGuaranteedIncome = json['dailyNetGuaranteedIncome'];
@@ -72,6 +73,25 @@ class Daily {
   }
 }
 
+class OnlineTimes {
+  String? start;
+  String? end;
+
+  OnlineTimes({this.start, this.end});
+
+  OnlineTimes.fromJson(Map<String, dynamic> json) {
+    start = json['start'];
+    end = json['end'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['start'] = this.start;
+    data['end'] = this.end;
+    return data;
+  }
+}
+
 class Periods {
   int? foundationId;
   String? startTime;
@@ -84,6 +104,7 @@ class Periods {
   double? netGuaranteedIncome;
   double? amount;
   double? guaranteedAmountPerHour;
+  List<OnlineTimes>? onlineTimes;
 
   Periods({
     this.foundationId,
@@ -97,9 +118,16 @@ class Periods {
     this.netGuaranteedIncome,
     this.amount,
     this.guaranteedAmountPerHour,
+    this.onlineTimes,
   });
 
   Periods.fromJson(Map<String, dynamic> json) {
+    if (json['onlineTimes'] != null) {
+      onlineTimes = <OnlineTimes>[];
+      json['onlineTimes'].forEach((v) {
+        onlineTimes!.add(new OnlineTimes.fromJson(v));
+      });
+    }
     amount = json['amount'];
     guaranteedAmountPerHour = double.tryParse(
       json['guaranteedAmountPerHour'].toString(),
