@@ -444,26 +444,26 @@ class HomeController extends GetxController
             }
           }
 
-          // Auto Offline 200 m Initial Longitudel Latitude
-          if (initialLatitude.value != null &&
-              locationServices.currentLatitude.value != null) {
-            var distanceInMeters = Geolocator.distanceBetween(
-              initialLatitude.value!,
-              initialLongitude.value!,
-              locationServices.currentLatitude.value!,
-              locationServices.currentLongitude.value!,
-            );
-            if (distanceInMeters >= 200) {
-              await userRepository.stopWork(language: 2);
-              workStatus.value = 2;
-              SnackbarHelper.showSnackbarError(
-                text:
-                    "Anda sudah menempuh 200 meter dan belum mendapatkan order, status Anda akan Offline.",
-              );
-              await getVehicleStatistics();
-              return;
-            }
-          }
+          // Auto Offline 200 m Initial Latitude Longitude
+          // if (initialLatitude.value != null &&
+          //     locationServices.currentLatitude.value != null) {
+          //   var distanceInMeters = Geolocator.distanceBetween(
+          //     initialLatitude.value!,
+          //     initialLongitude.value!,
+          //     locationServices.currentLatitude.value!,
+          //     locationServices.currentLongitude.value!,
+          //   );
+          //   if (distanceInMeters >= 200) {
+          //     await userRepository.stopWork(language: 2);
+          //     workStatus.value = 2;
+          //     SnackbarHelper.showSnackbarError(
+          //       text:
+          //           "Anda sudah menempuh 200 meter dan belum mendapatkan order, status Anda akan Offline.",
+          //     );
+          //     await getVehicleStatistics();
+          //     return;
+          //   }
+          // }
 
           // Auto Offline 1 min After Online
           // if (onlineAt.value != null) {
