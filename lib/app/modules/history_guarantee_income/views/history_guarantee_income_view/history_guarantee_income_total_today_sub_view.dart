@@ -54,24 +54,42 @@ class HistoryGuaranteeIncomeTotalTodaySubView
                       ),
                       SizedBox(width: 9),
                       Expanded(
-                        child: Text(
-                          NumberFormat.currency(
-                            locale: 'id_ID',
-                            symbol: 'Rp',
-                            decimalDigits: 0,
-                          ).format(0),
-                          style: controller
-                              .typographyServices
-                              .headingMediumBold
-                              .value
-                              .copyWith(
-                                color: controller
-                                    .themeColorServices
-                                    .neutralsColorGrey0
-                                    .value,
-                                fontSize: 28,
+                        child: controller.isFetchDate.value
+                            ? Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: SizedBox(
+                                      width: 25,
+                                      height: 25,
+                                      child: CircularProgressIndicator(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Text(
+                                NumberFormat.currency(
+                                  locale: 'id_ID',
+                                  symbol: 'Rp',
+                                  decimalDigits: 0,
+                                ).format(controller.totalSubsidyAmount.value),
+                                style: controller
+                                    .typographyServices
+                                    .headingMediumBold
+                                    .value
+                                    .copyWith(
+                                      color: controller
+                                          .themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
+                                      fontSize: 28,
+                                    ),
                               ),
-                        ),
                       ),
                     ],
                   ),

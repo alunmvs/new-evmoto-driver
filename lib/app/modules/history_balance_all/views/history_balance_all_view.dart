@@ -262,58 +262,58 @@ class HistoryBalanceAllView extends GetView<HistoryBalanceAllController> {
                     ),
                   ),
                 ),
-                // SizedBox(height: 8),
-                // GestureDetector(
-                //   onTap: () {
-                //     Get.toNamed(Routes.HISTORY_GUARANTEE_INCOME);
-                //   },
-                //   child: Container(
-                //     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                //     decoration: BoxDecoration(
-                //       color: controller
-                //           .themeColorServices
-                //           .neutralsColorGrey0
-                //           .value,
-                //       border: Border.all(color: Color(0XFFE8E8E8)),
-                //       borderRadius: BorderRadius.circular(16),
-                //     ),
-                //     child: Row(
-                //       children: [
-                //         SvgPicture.asset(
-                //           "assets/icons/icon_history_guarantee_income.svg",
-                //           width: 20,
-                //           height: 20,
-                //         ),
-                //         SizedBox(width: 8),
-                //         Expanded(
-                //           child: Text(
-                //             "Riwayat Guarantee Income",
-                //             style: controller
-                //                 .typographyServices
-                //                 .bodySmallRegular
-                //                 .value,
-                //           ),
-                //         ),
-                //         SizedBox(width: 8),
-                //         SizedBox(
-                //           width: 19,
-                //           height: 19,
-                //           child: Row(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             crossAxisAlignment: CrossAxisAlignment.center,
-                //             children: [
-                //               SvgPicture.asset(
-                //                 "assets/icons/icon_arrow_right.svg",
-                //                 width: 4.75,
-                //                 height: 9.5,
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.HISTORY_GUARANTEE_INCOME);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    decoration: BoxDecoration(
+                      color: controller
+                          .themeColorServices
+                          .neutralsColorGrey0
+                          .value,
+                      border: Border.all(color: Color(0XFFE8E8E8)),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/icon_history_guarantee_income.svg",
+                          width: 20,
+                          height: 20,
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            "Riwayat Guarantee Income",
+                            style: controller
+                                .typographyServices
+                                .bodySmallRegular
+                                .value,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        SizedBox(
+                          width: 19,
+                          height: 19,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/icon_arrow_right.svg",
+                                width: 4.75,
+                                height: 9.5,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

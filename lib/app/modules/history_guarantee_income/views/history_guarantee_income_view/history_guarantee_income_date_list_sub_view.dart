@@ -24,8 +24,11 @@ class HistoryGuaranteeIncomeDateListSubView
                   in controller.recommendationDateTimeList.reversed) ...[
                 GestureDetector(
                   onTap: () async {
-                    controller.selectedDateTime.value = recommendationDateTime;
-                    // await controller.getHistoryBalanceRevenue();
+                    if (controller.isFetchDate.value == false) {
+                      controller.selectedDateTime.value =
+                          recommendationDateTime;
+                      await controller.getGuaranteeIncomeApprovalList();
+                    }
                   },
                   child: Container(
                     padding: EdgeInsets.all(16),

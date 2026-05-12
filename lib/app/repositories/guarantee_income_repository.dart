@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/coupon_income_model.dart';
+import 'package:new_evmoto_driver/app/data/models/guarantee_income_approval_model.dart';
 import 'package:new_evmoto_driver/app/data/models/guarantee_income_model.dart';
 import 'package:new_evmoto_driver/app/data/models/guarantee_income_progress_bar_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
@@ -11,6 +12,48 @@ import 'package:new_evmoto_driver/environment.dart';
 class GuaranteeIncomeRepository {
   final apiServices = Get.find<ApiServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
+
+  Future<List<GuaranteeIncomeApproval>> getGuaranteeIncomeApprovalList({
+    required String startDate,
+    required String endDate,
+  }) async {
+    try {
+      var url = "$baseUrl/activity/base/driver/queryGIHistory";
+
+      var queryParameters = {"startDate": startDate, "endDate": endDate};
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      var guaranteeIncomeApprovalList = <GuaranteeIncomeApproval>[];
+
+      for (var guaranteeIncomeApproval in response.data?['data'] ?? []) {
+        guaranteeIncomeApprovalList.add(
+          GuaranteeIncomeApproval.fromJson(guaranteeIncomeApproval),
+        );
+      }
+
+      return guaranteeIncomeApprovalList;
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
 
   Future<GuaranteeIncome> getGuaranteeIncome({
     int? driverId,
