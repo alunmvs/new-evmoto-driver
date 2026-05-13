@@ -10,6 +10,82 @@ class NotificationRepository {
   final apiServices = Get.find<ApiServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
+  Future<void> unsubscribeNotification({
+    required String? fcmToken,
+    required String? apnsToken,
+  }) async {
+    try {
+      var url = "$baseUrl/notification/unsubscribe";
+
+      var formData = FormData.fromMap({
+        "fcmToken": fcmToken,
+        "apnsToken": apnsToken,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+    } on DioException {
+      rethrow;
+    }
+  }
+
+  Future<void> subscribeNotification({
+    required String? fcmToken,
+    required String? apnsToken,
+    required String deviceType,
+    required String? deviceId,
+    required String? appVersion,
+    required String? osVersion,
+  }) async {
+    try {
+      var url = "$baseUrl/notification/subscribe";
+
+      var formData = FormData.fromMap({
+        "fcmToken": fcmToken,
+        "apnsToken": apnsToken,
+        "deviceType": deviceType,
+        "deviceId": deviceId,
+        "appVersion": appVersion,
+        "osVersion": osVersion,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+    } on DioException {
+      rethrow;
+    }
+  }
+
   Future<List<Notification>> getNotificationList({
     required int type,
     required int pageNum,

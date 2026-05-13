@@ -10,6 +10,13 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		5B2E5C542FB3267B00F366F3 /* order_cancelled.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5B2E5C522FB3267B00F366F3 /* order_cancelled.m4a */; };
+		5B2E5C552FB3267B00F366F3 /* arrived_destination.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5B2E5C4D2FB3267B00F366F3 /* arrived_destination.m4a */; };
+		5B2E5C562FB3267B00F366F3 /* driver_online.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5B2E5C4F2FB3267B00F366F3 /* driver_online.m4a */; };
+		5B2E5C572FB3267B00F366F3 /* order_accepted.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5B2E5C512FB3267B00F366F3 /* order_accepted.m4a */; };
+		5B2E5C582FB3267B00F366F3 /* new_order_incoming.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5B2E5C502FB3267B00F366F3 /* new_order_incoming.m4a */; };
+		5B2E5C592FB3267B00F366F3 /* passenger_boarded.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5B2E5C532FB3267B00F366F3 /* passenger_boarded.m4a */; };
+		5B2E5C5A2FB3267B00F366F3 /* driver_offline.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5B2E5C4E2FB3267B00F366F3 /* driver_offline.m4a */; };
 		5FBE802F9C2C02F42E7BD8DB /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3717A3394F05E8C34D10D01E /* Pods_RunnerTests.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -49,6 +56,13 @@
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3717A3394F05E8C34D10D01E /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		5B2E5C4D2FB3267B00F366F3 /* arrived_destination.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = arrived_destination.m4a; sourceTree = "<group>"; };
+		5B2E5C4E2FB3267B00F366F3 /* driver_offline.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = driver_offline.m4a; sourceTree = "<group>"; };
+		5B2E5C4F2FB3267B00F366F3 /* driver_online.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = driver_online.m4a; sourceTree = "<group>"; };
+		5B2E5C502FB3267B00F366F3 /* new_order_incoming.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = new_order_incoming.m4a; sourceTree = "<group>"; };
+		5B2E5C512FB3267B00F366F3 /* order_accepted.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = order_accepted.m4a; sourceTree = "<group>"; };
+		5B2E5C522FB3267B00F366F3 /* order_cancelled.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = order_cancelled.m4a; sourceTree = "<group>"; };
+		5B2E5C532FB3267B00F366F3 /* passenger_boarded.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = passenger_boarded.m4a; sourceTree = "<group>"; };
 		5B9C98F72F1B34790068B2AC /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		62C6A97893201D0C63DBEF26 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -156,6 +170,13 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				5B2E5C4D2FB3267B00F366F3 /* arrived_destination.m4a */,
+				5B2E5C4E2FB3267B00F366F3 /* driver_offline.m4a */,
+				5B2E5C4F2FB3267B00F366F3 /* driver_online.m4a */,
+				5B2E5C502FB3267B00F366F3 /* new_order_incoming.m4a */,
+				5B2E5C512FB3267B00F366F3 /* order_accepted.m4a */,
+				5B2E5C522FB3267B00F366F3 /* order_cancelled.m4a */,
+				5B2E5C532FB3267B00F366F3 /* passenger_boarded.m4a */,
 				5B9C98F72F1B34790068B2AC /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -266,6 +287,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B2E5C542FB3267B00F366F3 /* order_cancelled.m4a in Resources */,
+				5B2E5C552FB3267B00F366F3 /* arrived_destination.m4a in Resources */,
+				5B2E5C562FB3267B00F366F3 /* driver_online.m4a in Resources */,
+				5B2E5C572FB3267B00F366F3 /* order_accepted.m4a in Resources */,
+				5B2E5C582FB3267B00F366F3 /* new_order_incoming.m4a in Resources */,
+				5B2E5C592FB3267B00F366F3 /* passenger_boarded.m4a in Resources */,
+				5B2E5C5A2FB3267B00F366F3 /* driver_offline.m4a in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
@@ -522,7 +550,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = 7GQ9U982M7;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = "";
@@ -535,7 +563,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.16;
+				MARKETING_VERSION = 1.8.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evmoto.driver.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -713,7 +741,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = 7GQ9U982M7;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = "";
@@ -726,7 +754,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.16;
+				MARKETING_VERSION = 1.8.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evmoto.driver.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -744,7 +772,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = 7GQ9U982M7;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = "";
@@ -757,7 +785,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.16;
+				MARKETING_VERSION = 1.8.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evmoto.driver.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

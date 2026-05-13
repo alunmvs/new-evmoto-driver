@@ -3,8 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/modules/order_detail/views/order_detail_view/order_detail_footer_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/utils/general_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 
 import '../controllers/order_detail_controller.dart';
@@ -194,21 +196,21 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .nickName
-                                                .toString(),
-                                            style: controller
-                                                .typographyServices
-                                                .bodySmallRegular
-                                                .value
-                                                .copyWith(
-                                                  color: Color(0XFFB3B3B3),
-                                                ),
-                                          ),
-                                          SizedBox(height: 4),
+                                          // Text(
+                                          //   controller
+                                          //       .orderDetail
+                                          //       .value
+                                          //       .nickName
+                                          //       .toString(),
+                                          //   style: controller
+                                          //       .typographyServices
+                                          //       .bodySmallRegular
+                                          //       .value
+                                          //       .copyWith(
+                                          //         color: Color(0XFFB3B3B3),
+                                          //       ),
+                                          // ),
+                                          // SizedBox(height: 4),
                                           Row(
                                             children: [
                                               Expanded(
@@ -263,70 +265,19 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                                         .value,
                                                                   ),
                                                             ),
+                                                            SizedBox(height: 2),
                                                             Text(
-                                                              "(${controller.orderDetail.value.historyNum})",
+                                                              "${controller.getStatusOnGoing()} • ${formatDoubleToString(controller.getKmOnGoing())} km",
                                                               style: controller
                                                                   .typographyServices
-                                                                  .bodySmallRegular
+                                                                  .captionLargeRegular
                                                                   .value
                                                                   .copyWith(
-                                                                    color: controller
-                                                                        .themeColorServices
-                                                                        .textColor
-                                                                        .value,
+                                                                    color: Color(
+                                                                      0XFF7D7D7D,
+                                                                    ),
                                                                   ),
                                                             ),
-                                                            // SizedBox(
-                                                            //   height: 4,
-                                                            // ),
-                                                            // Row(
-                                                            //   crossAxisAlignment:
-                                                            //       CrossAxisAlignment
-                                                            //           .start,
-                                                            //   children: [
-                                                            //     SizedBox(
-                                                            //       width: 16,
-                                                            //       height: 16,
-                                                            //       child: Row(
-                                                            //         mainAxisAlignment:
-                                                            //             MainAxisAlignment
-                                                            //                 .center,
-                                                            //         crossAxisAlignment:
-                                                            //             CrossAxisAlignment
-                                                            //                 .center,
-                                                            //         children: [
-                                                            //           SvgPicture.asset(
-                                                            //             "assets/icons/icon_star.svg",
-                                                            //             width:
-                                                            //                 15,
-                                                            //             height:
-                                                            //                 15,
-                                                            //             color: controller
-                                                            //                 .themeColorServices
-                                                            //                 .sematicColorYellow400
-                                                            //                 .value,
-                                                            //           ),
-                                                            //         ],
-                                                            //       ),
-                                                            //     ),
-                                                            //     SizedBox(
-                                                            //       width: 4,
-                                                            //     ),
-                                                            //     Text(
-                                                            //       "5.0 (0)",
-                                                            //       style: controller
-                                                            //           .typographyServices
-                                                            //           .bodySmallRegular
-                                                            //           .value
-                                                            //           .copyWith(
-                                                            //             color: controller
-                                                            //                 .themeColorServices
-                                                            //                 .textColor
-                                                            //                 .value,
-                                                            //           ),
-                                                            //     ),
-                                                            //   ],
-                                                            // ),
                                                           ],
                                                         ),
                                                       ],
@@ -528,10 +479,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                               .value) ...[
                                             Divider(
                                               height: 0,
-                                              color: controller
-                                                  .themeColorServices
-                                                  .neutralsColorGrey300
-                                                  .value,
+                                              color: Color(0XFFE2E2E2),
                                             ),
                                             Container(
                                               padding: EdgeInsets.all(12),
@@ -590,6 +538,10 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                                         .textColor
                                                                         .value,
                                                                   ),
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                             ),
                                                           ],
                                                         ),
@@ -648,9 +600,52 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                                         .textColor
                                                                         .value,
                                                                   ),
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                             ),
                                                           ],
                                                         ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 16),
+                                                  Divider(
+                                                    height: 0,
+                                                    color: Color(0XFFE2E2E2),
+                                                  ),
+                                                  SizedBox(height: 16),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Total Biaya",
+                                                        style: controller
+                                                            .typographyServices
+                                                            .bodySmallRegular
+                                                            .value,
+                                                      ),
+                                                      Text(
+                                                        NumberFormat.currency(
+                                                          locale: 'id_ID',
+                                                          symbol: 'Rp',
+                                                          decimalDigits: 0,
+                                                        ).format(
+                                                          controller
+                                                              .orderDetail
+                                                              .value
+                                                              .orderMoney,
+                                                        ),
+                                                        style: controller
+                                                            .typographyServices
+                                                            .bodyLargeBold
+                                                            .value
+                                                            .copyWith(
+                                                              fontSize: 18,
+                                                            ),
                                                       ),
                                                     ],
                                                   ),

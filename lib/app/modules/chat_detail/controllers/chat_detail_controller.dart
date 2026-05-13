@@ -45,6 +45,7 @@ class ChatDetailController extends GetxController {
     super.onInit();
     isFetch.value = true;
     docId.value = Get.arguments['doc_id'];
+    await getExistingChatRoom();
     await streamExistingChatRoom();
     await streamExistingChatList();
     await checkIfTripHasEnded();
@@ -61,6 +62,20 @@ class ChatDetailController extends GetxController {
     super.onClose();
     streamEvmotoOrderChatParticipants?.cancel();
     streamEvmotoOrderChatMessages?.cancel();
+  }
+
+  Future<void> getExistingChatRoom() async {
+    var result = (await FirebaseFirestore.instance
+        .collection('evmoto_order_chat_participants')
+        .doc(docId.value)
+        .get());
+
+    if (result.data() != null) {
+      evmotoOrderChatParticipants.value = EvmotoOrderChatParticipants.fromJson(
+        result.data()!,
+      );
+      evmotoOrderChatParticipants.value.docId = result.id;
+    }
   }
 
   Future<void> streamExistingChatList() async {

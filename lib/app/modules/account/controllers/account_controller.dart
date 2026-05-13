@@ -8,6 +8,7 @@ import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.d
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
@@ -152,12 +153,15 @@ class AccountController extends GetxController {
                     LoaderElevatedButton(
                       onPressed: () async {
                         final userServices = Get.find<UserServices>();
+                        final firebasePushNotificationServices =
+                            Get.find<FirebasePushNotificationServices>();
                         var prefs = await SharedPreferences.getInstance();
                         var storage = FlutterSecureStorage();
 
                         await Future.wait([
                           storage.deleteAll(),
                           socketServices.closeWebsocket(),
+                          firebasePushNotificationServices.onUnsubscribe(),
                           prefs.clear(),
                         ]);
 

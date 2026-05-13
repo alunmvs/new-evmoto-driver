@@ -29,6 +29,9 @@ Map<String, dynamic> getClosestPointIndex(
 }
 
 double getDistanceFromRoute(LatLng driver, List<LatLng> routePoints) {
+  if (routePoints.isEmpty) {
+    return 0.0;
+  }
   var lineString = turf.LineString(
     coordinates: [
       for (var p in routePoints) turf.Position(p.longitude, p.latitude),
@@ -39,8 +42,12 @@ double getDistanceFromRoute(LatLng driver, List<LatLng> routePoints) {
     coordinates: turf.Position(driver.longitude, driver.latitude),
   );
 
-  var nearest = nearestPointOnLine(lineString, point);
-  var distance = turf.distance(point, nearest.geometry!, Unit.meters);
+  try {
+    var nearest = nearestPointOnLine(lineString, point);
+    var distance = turf.distance(point, nearest.geometry!, Unit.meters);
 
-  return distance.toDouble();
+    return distance.toDouble();
+  } catch (e) {
+    return 0.0;
+  }
 }

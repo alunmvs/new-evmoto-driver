@@ -28,6 +28,7 @@ import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/vehicle_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/versioning_server_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
@@ -76,6 +77,7 @@ class HomeController extends GetxController
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
   final voiceServices = Get.find<VoiceServices>();
   final locationServices = Get.find<LocationServices>();
+  final backgroundServices = Get.find<BackgroundServices>();
 
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
@@ -168,6 +170,7 @@ class HomeController extends GetxController
 
       await displayCoachmark();
       await firebasePushNotificationServices.requestPermission();
+      await setupBackgroundServices();
       await setHomeControllerRegistered();
       await Future.wait([
         setupAutoOfflineTimer(),
@@ -187,6 +190,7 @@ class HomeController extends GetxController
     await socketServices.closeWebsocket();
     autoOfflineTimer?.cancel();
     guaranteeIncomeProgressBarTimer?.cancel();
+    backgroundServices.service.invoke("stop");
   }
 
   Future<void> requestLocation() async {
@@ -493,6 +497,10 @@ class HomeController extends GetxController
         }
       }
     });
+  }
+
+  Future<void> setupBackgroundServices() async {
+    await backgroundServices.service.startService();
   }
 
   Future<void> setupGuaranteeIncomeProgressBarTimer() async {

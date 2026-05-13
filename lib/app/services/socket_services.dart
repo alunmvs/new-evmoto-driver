@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_driver/app/data/models/socket_driver_position_data_model.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/modules/order_detail/controllers/order_detail_controller.dart';
@@ -61,14 +62,25 @@ class SocketServices extends GetxService {
 
           if (dataJson != null) {
             if (["PONG", "OK"].contains(dataJson['method']) == false) {
-              // print("[DEBUG SOCKET] ${dataJson['method']}");
-              // print("[DEBUG SOCKET] $dataJson");
+              print("[DEBUG SOCKET] ${dataJson['method']}");
+              print("[DEBUG SOCKET] $dataJson");
             }
 
             var method = dataJson['method'] ?? "";
 
             switch (method) {
               case 'OK':
+                break;
+              case 'DRIVER_POSITION':
+                if (Get.currentRoute == Routes.ORDER_DETAIL) {
+                  var socketDriverPositionDataModel =
+                      SocketDriverPositionData.fromJson(dataJson['data']);
+
+                  var orderDetailController = Get.find<OrderDetailController>();
+                  await orderDetailController.handleSocketDriverPositionUser(
+                    socketDriverPositionData: socketDriverPositionDataModel,
+                  );
+                }
                 break;
               case 'ORDER_STATUS':
                 var socketOrderStatusData = SocketOrderStatusData.fromJson(
@@ -229,6 +241,7 @@ class SocketServices extends GetxService {
     schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
       timer,
     ) async {
+      print("[DEBUG SOCKET] Send Socket Heart Beat");
       await sendHeartBeat();
     });
   }
@@ -243,6 +256,25 @@ class SocketServices extends GetxService {
 
       var deviceId = await getDeviceId();
       var appVersion = await getVersion();
+
+      // background service
+      await Future.wait([
+        prefs.setString('device_id', deviceId),
+        prefs.setString('app_version', appVersion),
+        prefs.setInt('user_id', Get.find<HomeController>().userInfo.value.id!),
+        prefs.setInt(
+          'driver_id',
+          Get.find<HomeController>().userInfo.value.id!,
+        ),
+        prefs.setInt(
+          'work_status',
+          Get.find<HomeController>().workStatus.value,
+        ),
+        prefs.setBool(
+          'is_permission_location_allow',
+          locationServices.isPermissionLocationAllow.value ?? false,
+        ),
+      ]);
 
       var dataUser = {
         "code": 200,

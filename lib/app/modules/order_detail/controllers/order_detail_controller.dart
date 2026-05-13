@@ -10,6 +10,7 @@ import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_messages_mod
 import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
+import 'package:new_evmoto_driver/app/data/models/socket_driver_position_data_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/open_maps_repository.dart';
@@ -102,6 +103,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   final state = 0.obs;
   final previousState = 0.obs;
 
+  final socketDriverPositionData = SocketDriverPositionData().obs;
+
   final isFetch = false.obs;
 
   @override
@@ -113,67 +116,68 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
 
-    // if (locationServices.isPermissionLocationAllow.value == true) {
-    await locationServices.requestLocation();
-    await Future.wait([getOrderDetail(), getOrderUserDetail()]);
-    await Future.wait([getAllRoutingCache()]);
-    isFetch.value = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await locationServices.requestLocation();
+      await Future.wait([getOrderDetail(), getOrderUserDetail()]);
+      await Future.wait([getAllRoutingCache()]);
+      isFetch.value = false;
 
-    await Future.wait([updateVisibility()]);
-    await Future.wait([
-      setupAllMarkers(),
-      setupAllRouting(),
-      updateCameraAutoFocus(),
-    ]);
-
-    if ([2, 3, 4, 5, 6, 7, 8].contains(orderDetail.value.state)) {
-      await updateDriverPositionReducedPolyline();
-      await updateDriverPositionReroutingOffRoute();
-    }
-
-    ever(locationServices.currentLatitude, (value) async {
-      await handleSocketDriverPosition();
-    });
-
-    ever(state, (value) async {
-      await measureTime(
-        "[Essentials] Get Order Ride Detail & Get Order Ride Server Detail",
-        () => Future.wait([getOrderDetail(), getOrderUserDetail()]),
-      );
-
-      if (value == 1) {}
-
-      if (value == 2) {
-        if (locationServices.currentLatitude.value == null) {
-          await locationServices.currentLatitude.stream.firstWhere(
-            (value) => value != null,
-          );
-          await getAllRoutingCache();
-        }
-      }
-
-      await measureTime(
-        "[Essentials] Get All Routing Cache",
-        () => Future.wait([getAllRoutingCache()]),
-      );
-
-      await updateVisibility();
+      await Future.wait([updateVisibility()]);
       await Future.wait([
         setupAllMarkers(),
         setupAllRouting(),
         updateCameraAutoFocus(),
       ]);
-      // await Future.wait([checkReceiveInvoice()]);
 
-      if ([2, 3, 4, 5, 6, 7, 8].contains(state.value)) {
+      if ([2, 3, 4, 5, 6, 7, 8].contains(orderDetail.value.state)) {
         await updateDriverPositionReducedPolyline();
         await updateDriverPositionReroutingOffRoute();
       }
 
-      previousState.value = value;
-    });
+      ever(locationServices.currentLatitude, (value) async {
+        await handleSocketDriverPosition();
+      });
 
-    await checkSendInvoice();
+      ever(state, (value) async {
+        await measureTime(
+          "[Essentials] Get Order Ride Detail & Get Order Ride Server Detail",
+          () => Future.wait([getOrderDetail(), getOrderUserDetail()]),
+        );
+
+        if (value == 1) {}
+
+        if (value == 2) {
+          if (locationServices.currentLatitude.value == null) {
+            await locationServices.currentLatitude.stream.firstWhere(
+              (value) => value != null,
+            );
+            await getAllRoutingCache();
+          }
+        }
+
+        await measureTime(
+          "[Essentials] Get All Routing Cache",
+          () => Future.wait([getAllRoutingCache()]),
+        );
+
+        await updateVisibility();
+        await Future.wait([
+          setupAllMarkers(),
+          setupAllRouting(),
+          updateCameraAutoFocus(),
+        ]);
+        // await Future.wait([checkReceiveInvoice()]);
+
+        if ([2, 3, 4, 5, 6, 7, 8].contains(state.value)) {
+          await updateDriverPositionReducedPolyline();
+          await updateDriverPositionReroutingOffRoute();
+        }
+
+        previousState.value = value;
+      });
+
+      await checkSendInvoice();
+    });
   }
 
   @override
@@ -1365,6 +1369,40 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  double getKmOnGoing() {
+    var mileage = 0.0;
+
+    if ([2, 3, 4].contains(orderDetail.value.state)) {
+      mileage =
+          double.tryParse(
+            socketDriverPositionData.value.reservationMileage ?? "0",
+          ) ??
+          0.0;
+    }
+
+    if ([5, 6, 7, 8].contains(orderDetail.value.state)) {
+      mileage =
+          double.tryParse(socketDriverPositionData.value.laveMileage ?? "0") ??
+          0.0;
+    }
+
+    return mileage;
+  }
+
+  String getStatusOnGoing() {
+    var statusOngoing = 'Penjemputan';
+
+    if ([2, 3, 4].contains(orderDetail.value.state)) {
+      statusOngoing = 'Penjemputan';
+    }
+
+    if ([5, 6, 7, 8].contains(orderDetail.value.state)) {
+      statusOngoing = 'Pengantaran';
+    }
+
+    return statusOngoing;
+  }
+
   // markers
   Future<void> setupAllMarkers() async {
     if ([1].contains(orderDetail.value.state)) {
@@ -1773,6 +1811,12 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  Future<void> handleSocketDriverPositionUser({
+    required SocketDriverPositionData socketDriverPositionData,
+  }) async {
+    this.socketDriverPositionData.value = socketDriverPositionData;
+  }
+
   Future<void> handleSocketDriverPosition() async {
     var driverLatitude =
         (double.tryParse(locationServices.currentLatitude.value.toString()) ??
@@ -1884,6 +1928,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   Future<void> userCreateChatRoom() async {
     if (orderDetail.value.userId != null &&
         orderDetail.value.driverId != null &&
+        orderDetail.value.driverId != 0 &&
         orderDetail.value.orderId != null) {
       var evmotoOrderChatParticipantsList =
           (await FirebaseFirestore.instance
@@ -1907,7 +1952,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         var data = {
           "orderId": orderDetail.value.orderId.toString(),
           "userId": orderDetail.value.userId.toString(),
-          "userName": orderDetail.value.user,
+          "userName": orderDetail.value.nickName,
           "userProfileUrl": orderDetail.value.userHeadImg,
           "driverId": orderDetail.value.driverId.toString(),
           "driverName": orderDetail.value.driverName,
@@ -1915,11 +1960,14 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           "createdAt": FieldValue.serverTimestamp(),
         };
 
+        print("[DEBUG CHAT] $data");
+
         await getExistingChatRoom();
         if (evmotoOrderChatParticipants.value.docId == null) {
           await FirebaseFirestore.instance
               .collection('evmoto_order_chat_participants')
               .add(data);
+          await getExistingChatRoom();
         }
       }
     }
@@ -1928,7 +1976,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   Future<void> setChatOnline() async {
     await setChatOffline();
 
-    if (orderDetail.value.driverId != null) {
+    if (orderDetail.value.driverId != null && orderDetail.value.driverId != 0) {
       final batch = FirebaseFirestore.instance.batch();
 
       final querySnapshot = await FirebaseFirestore.instance

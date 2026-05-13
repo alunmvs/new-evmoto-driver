@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/repositories/notification_repository.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -42,8 +45,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class FirebasePushNotificationServices extends GetxService {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final fcmToken = "".obs;
-  final apnsToken = "".obs;
+  final notificationRepository = NotificationRepository();
+  final fcmToken = Rx<String?>(null);
+  final apnsToken = Rx<String?>(null);
 
   @override
   Future<void> onInit() async {
@@ -82,13 +86,37 @@ class FirebasePushNotificationServices extends GetxService {
   }
 
   Future<void> initTokens() async {
-    if (Platform.isIOS) {
-      final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-      this.apnsToken.value = apnsToken ?? "";
-    }
+    var deviceId = await getDeviceId();
+    var appVersion = await getVersion();
+    var osVersion = await getOSVersion();
 
     var fcmToken = await FirebaseMessaging.instance.getToken();
-    this.fcmToken.value = fcmToken ?? "";
+    this.fcmToken.value = fcmToken;
+
+    if (Platform.isIOS) {
+      final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+      this.apnsToken.value = apnsToken;
+
+      // await notificationRepository.subscribeNotification(
+      //   fcmToken: fcmToken,
+      //   apnsToken: apnsToken,
+      //   deviceType: "1",
+      //   deviceId: deviceId,
+      //   appVersion: appVersion,
+      //   osVersion: osVersion,
+      // );
+    }
+
+    if (Platform.isAndroid) {
+      // await notificationRepository.subscribeNotification(
+      //   fcmToken: fcmToken,
+      //   apnsToken: null,
+      //   deviceType: "1",
+      //   deviceId: deviceId,
+      //   appVersion: appVersion,
+      //   osVersion: osVersion,
+      // );
+    }
   }
 
   Future<void> initListeners() async {
@@ -141,7 +169,49 @@ class FirebasePushNotificationServices extends GetxService {
     );
   }
 
-  Future<void> onTapUnSubscribe() async {
-    await FirebaseMessaging.instance.deleteToken();
+  Future<void> onUnsubscribe() async {
+    try {
+      await FirebaseMessaging.instance.deleteToken();
+    } catch (e) {}
+    try {
+      await notificationRepository.unsubscribeNotification(
+        fcmToken: fcmToken.value,
+        apnsToken: apnsToken.value,
+      );
+    } catch (e) {}
+  }
+
+  Future<String> getDeviceId() async {
+    final deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isAndroid) {
+      final deviceInfo = DeviceInfoPlugin();
+      final androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.id;
+    } else if (Platform.isIOS) {
+      final iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.identifierForVendor ?? "";
+    }
+
+    return "";
+  }
+
+  Future<String> getOSVersion() async {
+    final deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.version.release;
+    } else if (Platform.isIOS) {
+      final iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.systemVersion;
+    } else {
+      return "Unknown OS";
+    }
+  }
+
+  Future<String> getVersion() async {
+    var packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
   }
 }
