@@ -5,8 +5,13 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_driver/app/services/app_lifecycle_services.dart';
+import 'package:new_evmoto_driver/app/services/location_services.dart';
+import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/utils/socket_helper.dart';
 import 'package:new_evmoto_driver/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,13 +20,13 @@ class BackgroundServices extends GetxService {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final service = FlutterBackgroundService();
 
+  final isRestarting = false.obs;
+
   @override
   Future<void> onInit() async {
     super.onInit();
-    print("[DEBUG BACKGROUND] start");
     await initializeNotification();
     await initializeService();
-    print("[DEBUG BACKGROUND] end");
   }
 
   @override
@@ -32,6 +37,61 @@ class BackgroundServices extends GetxService {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  Future<void> clearAllState() async {
+    var isRunning = await service.isRunning();
+
+    if (isRunning == true) {
+      service.invoke("clearAllState");
+    }
+  }
+
+  Future<void> startService() async {
+    await service.startService();
+  }
+
+  Future<void> stopService() async {
+    await FlutterLocalNotificationsPlugin().cancel(9191);
+    service.invoke("stopService");
+  }
+
+  Future<void> refreshState() async {
+    var isRunning = await service.isRunning();
+
+    if (isRunning == true) {
+      final appLifecycleController = Get.find<AppLifecycleController>();
+      final locationServices = Get.find<LocationServices>();
+      final socketServices = Get.find<SocketServices>();
+
+      var prefs = await SharedPreferences.getInstance();
+      var storage = FlutterSecureStorage();
+
+      var isHomeControllerRegistered = prefs.getBool(
+        'home_controller_registered',
+      );
+
+      var payload = <String, dynamic>{};
+
+      payload['isForeground'] = appLifecycleController.isForeground.value;
+
+      payload['isPermissionLocationAllow'] =
+          locationServices.isPermissionLocationAllow.value;
+
+      payload['deviceId'] = await socketServices.getDeviceId();
+      payload['appVersion'] = await socketServices.getVersion();
+
+      if (isHomeControllerRegistered == true) {
+        var homeController = Get.find<HomeController>();
+        payload['driverId'] = homeController.userInfo.value.id;
+        payload['userId'] = homeController.userInfo.value.id;
+        payload['workStatus'] = homeController.workStatus.value;
+      }
+
+      payload['token'] = await storage.read(key: 'token');
+
+      service.invoke("refreshState", payload);
+    }
   }
 
   Future<void> initializeNotification() async {
@@ -57,6 +117,7 @@ class BackgroundServices extends GetxService {
         onBackground: onIosBackground,
       ),
       androidConfiguration: AndroidConfiguration(
+        foregroundServiceNotificationId: 9191,
         autoStart: false,
         onStart: onStart,
         isForegroundMode: true,
@@ -89,107 +150,103 @@ void onStart(ServiceInstance service) async {
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
 
-  debugPrint("[DEBUG BACKGROUND] start-1");
-
-  StreamSubscription? sub;
-
-  var currentAltitude = 0.0;
-  var currentLatitude = 0.0;
-  var currentLongitude = 0.0;
-
-  debugPrint("[DEBUG BACKGROUND] start-2");
-
-  var prefs = await SharedPreferences.getInstance();
-  var socket = await Socket.connect(socketUrl, 8888);
-
-  debugPrint("[DEBUG BACKGROUND] start-3");
-
-  var isPermissionLocationAllow = prefs.getBool("is_permission_location_allow");
-
-  debugPrint("[DEBUG BACKGROUND] start-4");
-
-  if (isPermissionLocationAllow == true) {
-    debugPrint("[DEBUG BACKGROUND] start-5");
-    sub =
-        Geolocator.getPositionStream(
-          locationSettings: LocationSettings(
-            accuracy: LocationAccuracy.bestForNavigation,
-            distanceFilter: 0,
-          ),
-        ).listen((position) {
-          currentAltitude = position.accuracy;
-          currentLatitude = position.latitude;
-          currentLongitude = position.longitude;
-        });
-
-    debugPrint("[DEBUG BACKGROUND] start-6");
-  }
-  debugPrint("[DEBUG BACKGROUND] start-7");
+  bool? isForeground;
+  bool? isPermissionLocationAllow;
+  String? deviceId;
+  String? token;
+  int? userId;
+  String? appVersion;
+  int? driverId;
+  int? workStatus;
 
   var schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
     timer,
   ) async {
-    debugPrint("[DEBUG BACKGROUND] Timer Start");
-    var deviceId = prefs.getString("device_id");
-    var token = prefs.getString("token");
-    var userId = prefs.getInt("user_id");
-    var appVersion = prefs.getString("app_version");
-
-    var driverId = prefs.getInt("driver_id");
-
-    var workStatus = prefs.getInt("work_status");
-
-    var dataUser = {
-      "code": 200,
-      "data": {
-        "device": deviceId,
-        "token": token,
-        "type": 2,
-        "userId": userId,
-        "version": appVersion,
-      },
-      "method": "PING",
-      "msg": "SUCCESS",
-    };
-    print("[DEBUG BACKGROUND] $dataUser");
-    socket.add(convertJsonToPacket(dataUser));
-
-    if (workStatus == 1 && isPermissionLocationAllow == true) {
-      var dataLocation = {
+    if (isForeground == false && (token != null && token != '')) {
+      var socket = await Socket.connect(socketUrl, 8888);
+      var dataUser = {
         "code": 200,
         "data": {
-          "altitude": currentAltitude,
-          "computeAzimuth": 0.0,
-          "driverId": driverId,
-          "lat": currentLatitude,
-          "lon": currentLongitude,
-          "orderId": "",
-          "orderType": "",
+          "device": deviceId,
+          "token": token,
+          "type": 2,
+          "userId": userId,
+          "version": appVersion,
         },
-        "method": "LOCATION",
+        "method": "PING",
         "msg": "SUCCESS",
       };
-      print("[DEBUG BACKGROUND] $dataLocation");
-      socket.add(convertJsonToPacket(dataLocation));
-    }
+      socket.add(convertJsonToPacket(dataUser));
 
-    await socket.flush();
-    debugPrint("[DEBUG BACKGROUND] Timer End");
+      if (workStatus == 1 && isPermissionLocationAllow == true) {
+        var locationSettings = LocationSettings(
+          accuracy: LocationAccuracy.bestForNavigation,
+          distanceFilter: 0,
+        );
+        var location = await Geolocator.getCurrentPosition(
+          locationSettings: locationSettings,
+        );
+
+        var dataLocation = {
+          "code": 200,
+          "data": {
+            "altitude": location.altitude,
+            "computeAzimuth": 0.0,
+            "driverId": driverId,
+            "lat": location.latitude,
+            "lon": location.longitude,
+            "orderId": "",
+            "orderType": "",
+          },
+          "method": "LOCATION",
+          "msg": "SUCCESS",
+        };
+        socket.add(convertJsonToPacket(dataLocation));
+      }
+
+      await socket.flush();
+      await socket.close();
+    }
   });
 
-  debugPrint("[DEBUG BACKGROUND] start-8");
-
-  service.on("stop").listen((event) async {
-    await socket.close();
-    schedulerDataSocketTimer.cancel();
-    sub?.cancel();
+  service.on("stopService").listen((event) {
     service.stopSelf();
 
-    print("[DEBUG BACKGROUND] background process is now stopped");
+    // try {
+    //   schedulerDataSocketTimer.cancel();
+    // } catch (e) {
+    //   print("[DEBUG STOP SERVICE] ini error timer cancel $e");
+    // }
+    // try {
+    //   await service.stopSelf();
+    // } catch (e) {
+    //   print("[DEBUG STOP SERVICE] ini stop self $e");
+    // }
   });
 
-  service.on("start").listen((event) {
-    print("[DEBUG BACKGROUND] background process is now stopped");
+  service.on("start").listen((event) {});
+
+  service.on("refreshState").listen((event) {
+    isForeground = event?['isForeground'];
+    isPermissionLocationAllow = event?['isPermissionLocationAllow'];
+    isForeground = event?['isForeground'];
+    deviceId = event?['deviceId'];
+    token = event?['token'];
+    userId = event?['userId'];
+    appVersion = event?['appVersion'];
+    driverId = event?['driverId'];
+    workStatus = event?['workStatus'];
   });
-  debugPrint("[DEBUG BACKGROUND] start-9");
+
+  service.on("clearAllState").listen((event) {
+    isForeground = null;
+    isPermissionLocationAllow = null;
+    isForeground = null;
+    deviceId = null;
+    token = null;
+    userId = null;
+    appVersion = null;
+    driverId = null;
+    workStatus = null;
+  });
 }

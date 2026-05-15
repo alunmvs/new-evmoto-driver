@@ -170,12 +170,13 @@ class HomeController extends GetxController
 
       await displayCoachmark();
       await firebasePushNotificationServices.requestPermission();
-      await setupBackgroundServices();
+      await backgroundServices.startService();
       await setHomeControllerRegistered();
       await Future.wait([
         setupAutoOfflineTimer(),
         setupGuaranteeIncomeProgressBarTimer(),
       ]);
+      await backgroundServices.refreshState();
     });
   }
 
@@ -190,7 +191,6 @@ class HomeController extends GetxController
     await socketServices.closeWebsocket();
     autoOfflineTimer?.cancel();
     guaranteeIncomeProgressBarTimer?.cancel();
-    backgroundServices.service.invoke("stop");
   }
 
   Future<void> requestLocation() async {
@@ -260,6 +260,8 @@ class HomeController extends GetxController
       await userRepository.stopWork(language: 2);
       workStatus.value = 2;
     }
+
+    await backgroundServices.refreshState();
   }
 
   Future<void> getVehicleStatistics() async {
@@ -499,9 +501,9 @@ class HomeController extends GetxController
     });
   }
 
-  Future<void> setupBackgroundServices() async {
-    await backgroundServices.service.startService();
-  }
+  // Future<void> setupBackgroundServices() async {
+  //   await backgroundServices.service.startService();
+  // }
 
   Future<void> setupGuaranteeIncomeProgressBarTimer() async {
     guaranteeIncomeProgressBarTimer = Timer.periodic(Duration(minutes: 1), (

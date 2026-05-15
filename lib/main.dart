@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
+import 'package:new_evmoto_driver/app/services/app_lifecycle_services.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
@@ -22,13 +23,9 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/services/voice_services.dart';
-import 'package:new_evmoto_driver/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'app/routes/app_pages.dart';
-
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
@@ -69,12 +66,13 @@ Future<void> main() async {
   Get.put(ApiServices(), permanent: true);
   Get.put(FirebaseRemoteConfigServices(), permanent: true);
   await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
-  Get.put(LocationServices(), permanent: true);
-  Get.put(SocketServices(), permanent: true);
   Get.put(FirebasePushNotificationServices(), permanent: true);
   Get.put(UserServices(), permanent: true);
   Get.put(VoiceServices(), permanent: true);
   Get.put(BackgroundServices(), permanent: true);
+  Get.put(AppLifecycleController(), permanent: true);
+  Get.put(LocationServices(), permanent: true);
+  Get.put(SocketServices(), permanent: true);
 
   runApp(
     GetMaterialApp(

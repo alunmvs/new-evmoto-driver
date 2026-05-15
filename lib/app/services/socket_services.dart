@@ -4,13 +4,13 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_driver_position_data_model.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/modules/order_detail/controllers/order_detail_controller.dart';
 import 'package:new_evmoto_driver/app/modules/order_payment_confirmation/controllers/order_payment_confirmation_controller.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/location_services.dart';
@@ -31,6 +31,7 @@ class SocketServices extends GetxService {
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
   final locationServices = Get.find<LocationServices>();
   final languageServices = Get.find<LanguageServices>();
+  final backgroundServices = Get.find<BackgroundServices>();
 
   final isSocketClose = true.obs;
 
@@ -269,10 +270,6 @@ class SocketServices extends GetxService {
         prefs.setInt(
           'work_status',
           Get.find<HomeController>().workStatus.value,
-        ),
-        prefs.setBool(
-          'is_permission_location_allow',
-          locationServices.isPermissionLocationAllow.value ?? false,
         ),
       ]);
 

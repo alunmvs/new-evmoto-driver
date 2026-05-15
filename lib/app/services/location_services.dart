@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/geocoding_address_model.dart';
 import 'package:new_evmoto_driver/app/repositories/geocoding_repository.dart';
+import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
@@ -17,6 +18,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+
+  final backgroundServices = Get.find<BackgroundServices>();
 
   final geocodingAddress = GeocodingAddress().obs;
 
