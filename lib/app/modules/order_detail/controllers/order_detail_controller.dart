@@ -1227,7 +1227,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     } finally {
-      await refreshAll();
+      // await refreshAll();
     }
   }
 

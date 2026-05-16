@@ -30,14 +30,24 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     message.notification?.title,
     message.notification?.body,
     NotificationDetails(
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentBanner: true,
+        presentSound: true,
+        sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+            ? "${message.data['voice_type']}.caf"
+            : null,
+      ),
       android: AndroidNotificationDetails(
-        'default_channel',
-        'Default',
-        importance: Importance.max,
-        priority: Priority.high,
+        message.data['channel_id'] ?? "default",
+        message.data['channel_name'] ?? "Default",
         largeIcon: DrawableResourceAndroidBitmap('ic_notification_large'),
         icon: 'ic_notification_small',
         color: const Color(0XFF0060C6),
+        sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+            ? RawResourceAndroidNotificationSound(message.data['voice_type'])
+            : null,
       ),
     ),
   );
@@ -61,6 +71,19 @@ class FirebasePushNotificationServices extends GetxService {
         badge: true,
         sound: true,
       );
+
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin
+          >()
+          ?.requestPermissions(alert: true, badge: true, sound: true);
+
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+            alert: false,
+            badge: false,
+            sound: false,
+          );
     }
 
     if (Platform.isAndroid) {
@@ -71,10 +94,14 @@ class FirebasePushNotificationServices extends GetxService {
           ?.requestNotificationsPermission();
     }
 
-    flutterLocalNotificationsPlugin.initialize(
+    await flutterLocalNotificationsPlugin.initialize(
       InitializationSettings(
         android: AndroidInitializationSettings('ic_notification_small'),
-        iOS: DarwinInitializationSettings(),
+        iOS: DarwinInitializationSettings(
+          requestAlertPermission: false,
+          requestBadgePermission: false,
+          requestSoundPermission: false,
+        ),
       ),
       onDidReceiveNotificationResponse: (NotificationResponse response) {
         if (response.payload == 'detail_page') {}
@@ -93,29 +120,31 @@ class FirebasePushNotificationServices extends GetxService {
     var fcmToken = await FirebaseMessaging.instance.getToken();
     this.fcmToken.value = fcmToken;
 
+    print("[DEBUG NOTIFICATION] fcmToken ${this.fcmToken.value}");
+
     if (Platform.isIOS) {
       final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
       this.apnsToken.value = apnsToken;
 
-      // await notificationRepository.subscribeNotification(
-      //   fcmToken: fcmToken,
-      //   apnsToken: apnsToken,
-      //   deviceType: "1",
-      //   deviceId: deviceId,
-      //   appVersion: appVersion,
-      //   osVersion: osVersion,
-      // );
+      await notificationRepository.subscribeNotification(
+        fcmToken: fcmToken,
+        apnsToken: apnsToken,
+        deviceType: "1",
+        deviceId: deviceId,
+        appVersion: appVersion,
+        osVersion: osVersion,
+      );
     }
 
     if (Platform.isAndroid) {
-      // await notificationRepository.subscribeNotification(
-      //   fcmToken: fcmToken,
-      //   apnsToken: null,
-      //   deviceType: "1",
-      //   deviceId: deviceId,
-      //   appVersion: appVersion,
-      //   osVersion: osVersion,
-      // );
+      await notificationRepository.subscribeNotification(
+        fcmToken: fcmToken,
+        apnsToken: null,
+        deviceType: "1",
+        deviceId: deviceId,
+        appVersion: appVersion,
+        osVersion: osVersion,
+      );
     }
   }
 
@@ -125,19 +154,41 @@ class FirebasePushNotificationServices extends GetxService {
         .onError((err) {});
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("[DEBUG NOTIFICATION] ${message.data}");
+      print("[DEBUG NOTIFICATION] ${message.notification?.title}");
+      print("[DEBUG NOTIFICATION] ${message.notification?.body}");
+      print(
+        "[DEBUG NOTIFICATION] ${message.data['notification_type'] == 'VOICE_BROADCAST'}",
+      );
+      print("[DEBUG NOTIFICATION] ${"${message.data['voice_type']}.caf"}");
+
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,
         message.notification?.title,
         message.notification?.body,
         NotificationDetails(
+          iOS: DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentBanner: true,
+            presentSound: true,
+            sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+                ? "${message.data['voice_type']}.caf"
+                : null,
+            interruptionLevel: InterruptionLevel.active,
+          ),
           android: AndroidNotificationDetails(
-            'default_channel',
-            'Default',
-            importance: Importance.max,
-            priority: Priority.high,
+            message.data['channel_id'] ?? "default",
+            message.data['channel_name'] ?? "Default",
             largeIcon: DrawableResourceAndroidBitmap('ic_notification_large'),
             icon: 'ic_notification_small',
             color: const Color(0XFF0060C6),
+            playSound: true,
+            sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+                ? RawResourceAndroidNotificationSound(
+                    message.data['voice_type'],
+                  )
+                : null,
           ),
         ),
       );
@@ -151,14 +202,27 @@ class FirebasePushNotificationServices extends GetxService {
         message.notification?.title,
         message.notification?.body,
         NotificationDetails(
+          iOS: DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentBanner: true,
+            presentSound: true,
+            sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+                ? "${message.data['voice_type']}.caf"
+                : null,
+          ),
           android: AndroidNotificationDetails(
-            'default_channel',
-            'Default',
-            importance: Importance.max,
-            priority: Priority.high,
+            message.data['channel_id'] ?? "default",
+            message.data['channel_name'] ?? "Default",
             largeIcon: DrawableResourceAndroidBitmap('ic_notification_large'),
             icon: 'ic_notification_small',
             color: const Color(0XFF0060C6),
+            playSound: true,
+            sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+                ? RawResourceAndroidNotificationSound(
+                    message.data['voice_type'],
+                  )
+                : null,
           ),
         ),
       );

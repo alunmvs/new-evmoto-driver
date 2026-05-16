@@ -8,9 +8,13 @@ import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/background_services.dart';
+import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
+import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/utils/error_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class ApiServices extends GetxService {
@@ -70,9 +74,24 @@ class ApiServices extends GetxService {
             if (response.data is Map<String, dynamic>) {
               if (response.data['code'] == 600) {
                 if (Get.currentRoute != Routes.LOGIN) {
+                  final socketServices = Get.find<SocketServices>();
+                  final backgroundServices = Get.find<BackgroundServices>();
+                  final userServices = Get.find<UserServices>();
+                  final firebasePushNotificationServices =
+                      Get.find<FirebasePushNotificationServices>();
+                  var prefs = await SharedPreferences.getInstance();
                   var storage = FlutterSecureStorage();
-                  await storage.deleteAll();
-                  await Get.find<SocketServices>().closeWebsocket();
+
+                  await backgroundServices.clearAllState();
+                  await Future.wait([
+                    backgroundServices.stopService(),
+                    storage.deleteAll(),
+                    socketServices.closeWebsocket(),
+                    firebasePushNotificationServices.onUnsubscribe(),
+                    prefs.clear(),
+                  ]);
+
+                  userServices.clearUserInfo();
                   Get.offAllNamed(Routes.LOGIN);
                 }
               }
