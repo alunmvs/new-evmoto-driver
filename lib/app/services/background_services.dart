@@ -18,7 +18,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class BackgroundServices extends GetxService {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final service = FlutterBackgroundService();
 
   final isRestarting = false.obs;
 
@@ -40,24 +39,24 @@ class BackgroundServices extends GetxService {
   }
 
   Future<void> clearAllState() async {
-    var isRunning = await service.isRunning();
+    var isRunning = await FlutterBackgroundService().isRunning();
 
     if (isRunning == true) {
-      service.invoke("clearAllState");
+      FlutterBackgroundService().invoke("clearAllState");
     }
   }
 
   Future<void> startService() async {
-    await service.startService();
+    await FlutterBackgroundService().startService();
   }
 
   Future<void> stopService() async {
     await FlutterLocalNotificationsPlugin().cancel(9191);
-    service.invoke("stopService");
+    FlutterBackgroundService().invoke("stopService");
   }
 
   Future<void> refreshState() async {
-    var isRunning = await service.isRunning();
+    var isRunning = await FlutterBackgroundService().isRunning();
 
     if (isRunning == true) {
       final appLifecycleController = Get.find<AppLifecycleController>();
@@ -90,7 +89,7 @@ class BackgroundServices extends GetxService {
 
       payload['token'] = await storage.read(key: 'token');
 
-      service.invoke("refreshState", payload);
+      FlutterBackgroundService().invoke("refreshState", payload);
     }
   }
 
@@ -110,7 +109,7 @@ class BackgroundServices extends GetxService {
   }
 
   Future<void> initializeService() async {
-    await service.configure(
+    await FlutterBackgroundService().configure(
       iosConfiguration: IosConfiguration(
         autoStart: false,
         onForeground: onStart,
@@ -146,7 +145,7 @@ Future<bool> onIosBackground(ServiceInstance service) async {
 }
 
 @pragma('vm:entry-point')
-void onStart(ServiceInstance service) async {
+void onStart(ServiceInstance service) {
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
 

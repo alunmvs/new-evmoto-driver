@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
 
@@ -41,6 +42,7 @@ class AppLifecycleController extends GetxController
         break;
 
       case AppLifecycleState.detached:
+        FlutterBackgroundService().invoke("stopService");
         break;
 
       case AppLifecycleState.hidden:
