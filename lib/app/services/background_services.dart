@@ -158,6 +158,27 @@ void onStart(ServiceInstance service) {
   int? driverId;
   int? workStatus;
 
+  double? currentAltitude;
+  double? currentLongitude;
+  double? currentLatitude;
+
+  StreamSubscription<Position>? positionStream;
+
+  if (isPermissionLocationAllow == true) {
+    var locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.bestForNavigation,
+      distanceFilter: 0,
+    );
+    positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings).listen(
+          (Position position) {
+            currentAltitude = position.altitude;
+            currentLatitude = position.latitude;
+            currentLongitude = position.longitude;
+          },
+        );
+  }
+
   var schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
     timer,
   ) async {
@@ -180,22 +201,14 @@ void onStart(ServiceInstance service) {
       socket.add(convertJsonToPacket(dataUser));
 
       if (workStatus == 1 && isPermissionLocationAllow == true) {
-        var locationSettings = LocationSettings(
-          accuracy: LocationAccuracy.bestForNavigation,
-          distanceFilter: 0,
-        );
-        var location = await Geolocator.getCurrentPosition(
-          locationSettings: locationSettings,
-        );
-
         var dataLocation = {
           "code": 200,
           "data": {
-            "altitude": location.altitude,
+            "altitude": currentAltitude,
             "computeAzimuth": 0.0,
             "driverId": driverId,
-            "lat": location.latitude,
-            "lon": location.longitude,
+            "lat": currentLatitude,
+            "lon": currentLongitude,
             "orderId": "",
             "orderType": "",
           },
@@ -213,7 +226,15 @@ void onStart(ServiceInstance service) {
   });
 
   service.on("stopService").listen((event) {
-    service.stopSelf();
+    try {
+      schedulerDataSocketTimer.cancel();
+    } catch (e) {}
+    try {
+      positionStream?.cancel();
+    } catch (e) {}
+    try {
+      service.stopSelf();
+    } catch (e) {}
 
     // try {
     //   schedulerDataSocketTimer.cancel();
@@ -239,6 +260,23 @@ void onStart(ServiceInstance service) {
     appVersion = event?['appVersion'];
     driverId = event?['driverId'];
     workStatus = event?['workStatus'];
+
+    if (positionStream == null) {
+      if (isPermissionLocationAllow == true) {
+        var locationSettings = LocationSettings(
+          accuracy: LocationAccuracy.bestForNavigation,
+          distanceFilter: 0,
+        );
+        positionStream =
+            Geolocator.getPositionStream(
+              locationSettings: locationSettings,
+            ).listen((Position position) {
+              currentAltitude = position.altitude;
+              currentLatitude = position.latitude;
+              currentLongitude = position.longitude;
+            });
+      }
+    }
   });
 
   service.on("clearAllState").listen((event) {

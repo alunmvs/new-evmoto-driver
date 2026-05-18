@@ -10,6 +10,7 @@ import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.d
 import 'package:new_evmoto_driver/app/modules/order_detail/controllers/order_detail_controller.dart';
 import 'package:new_evmoto_driver/app/modules/order_payment_confirmation/controllers/order_payment_confirmation_controller.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/app_lifecycle_services.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
@@ -32,6 +33,7 @@ class SocketServices extends GetxService {
   final locationServices = Get.find<LocationServices>();
   final languageServices = Get.find<LanguageServices>();
   final backgroundServices = Get.find<BackgroundServices>();
+  final appLifecycleController = Get.find<AppLifecycleController>();
 
   final isSocketClose = true.obs;
 
@@ -251,7 +253,8 @@ class SocketServices extends GetxService {
     var prefs = await SharedPreferences.getInstance();
 
     if (isSocketClose.value == false &&
-        prefs.getBool('home_controller_registered') == true) {
+        prefs.getBool('home_controller_registered') == true &&
+        appLifecycleController.isForeground.value == true) {
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 

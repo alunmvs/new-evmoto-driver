@@ -67,7 +67,6 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
   Future<void> requestLocation() async {
     if (isRequestingPermission.value == false) {
       isRequestingPermission.value = true;
-      isPermissionLocationAllow.value = true;
       var checkPermission = await Geolocator.checkPermission();
       var isLocationServiceEnabled =
           await Geolocator.isLocationServiceEnabled();
@@ -95,6 +94,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
           }
           return;
         }
+      } else {
+        isPermissionLocationAllow.value = true;
       }
 
       if (positionStream == null) {
@@ -119,6 +120,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
               currentLongitude.value = position.longitude;
               // }
             });
+
+        await backgroundServices.refreshState();
       }
 
       isRequestingPermission.value = false;
@@ -128,7 +131,6 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
   Future<void> requestLocationSplashScreen() async {
     if (isRequestingPermission.value == false) {
       isRequestingPermission.value = true;
-      isPermissionLocationAllow.value = true;
       var checkPermission = await Geolocator.checkPermission();
       var isLocationServiceEnabled =
           await Geolocator.isLocationServiceEnabled();
@@ -142,6 +144,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
         currentLatitude.value = null;
         currentLongitude.value = null;
         return;
+      } else {
+        isPermissionLocationAllow.value = true;
       }
 
       var locationSettings = LocationSettings(
@@ -165,6 +169,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
               currentLongitude.value = position.longitude;
               // }
             });
+
+        await backgroundServices.refreshState();
       }
 
       isRequestingPermission.value = false;

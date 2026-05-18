@@ -27,8 +27,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   flutterLocalNotificationsPlugin.show(
     DateTime.now().millisecondsSinceEpoch ~/ 1000,
-    message.notification?.title,
-    message.notification?.body,
+    message.data['title'],
+    message.data['body'],
     NotificationDetails(
       iOS: DarwinNotificationDetails(
         presentAlert: true,
@@ -155,8 +155,8 @@ class FirebasePushNotificationServices extends GetxService {
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       // print("[DEBUG NOTIFICATION] ${message.data}");
-      // print("[DEBUG NOTIFICATION] ${message.notification?.title}");
-      // print("[DEBUG NOTIFICATION] ${message.notification?.body}");
+      // print("[DEBUG NOTIFICATION] ${message.data['title']}");
+      // print("[DEBUG NOTIFICATION] ${message.data['body']}");
       // print(
       //   "[DEBUG NOTIFICATION] ${message.data['notification_type'] == 'VOICE_BROADCAST'}",
       // );
@@ -164,8 +164,8 @@ class FirebasePushNotificationServices extends GetxService {
 
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        message.notification?.title,
-        message.notification?.body,
+        message.data['title'],
+        message.data['body'],
         NotificationDetails(
           iOS: DarwinNotificationDetails(
             presentAlert: true,
@@ -199,8 +199,8 @@ class FirebasePushNotificationServices extends GetxService {
     FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        message.notification?.title,
-        message.notification?.body,
+        message.data['title'],
+        message.data['body'],
         NotificationDetails(
           iOS: DarwinNotificationDetails(
             presentAlert: true,
