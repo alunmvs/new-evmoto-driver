@@ -63,8 +63,8 @@ class SocketServices extends GetxService {
 
           if (dataJson != null) {
             if (["PONG", "OK"].contains(dataJson['method']) == false) {
-              print("[DEBUG SOCKET] ${dataJson['method']}");
-              print("[DEBUG SOCKET] $dataJson");
+              // print("[DEBUG SOCKET] ${dataJson['method']}");
+              // print("[DEBUG SOCKET] $dataJson");
             }
 
             var method = dataJson['method'] ?? "";
@@ -242,7 +242,7 @@ class SocketServices extends GetxService {
     schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
       timer,
     ) async {
-      print("[DEBUG SOCKET] Send Socket Heart Beat");
+      // print("[DEBUG SOCKET] Send Socket Heart Beat");
       await sendHeartBeat();
     });
   }

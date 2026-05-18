@@ -162,9 +162,9 @@ void onStart(ServiceInstance service) async {
   var schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
     timer,
   ) async {
-    print("[DEBUG BACKGROUND] Start");
+    // print("[DEBUG BACKGROUND] Start");
     if (isForeground == false && (token != null && token != '')) {
-      print("[DEBUG BACKGROUND] Start-1");
+      // print("[DEBUG BACKGROUND] Start-1");
       var socket = await Socket.connect(socketUrl, 8888);
       var dataUser = {
         "code": 200,
@@ -208,9 +208,9 @@ void onStart(ServiceInstance service) async {
 
       await socket.flush();
       await socket.close();
-      print("[DEBUG BACKGROUND] End-1");
+      // print("[DEBUG BACKGROUND] End-1");
     }
-    print("[DEBUG BACKGROUND] End");
+    // print("[DEBUG BACKGROUND] End");
   });
 
   service.on("stopService").listen((event) {

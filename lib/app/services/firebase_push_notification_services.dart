@@ -120,7 +120,7 @@ class FirebasePushNotificationServices extends GetxService {
     var fcmToken = await FirebaseMessaging.instance.getToken();
     this.fcmToken.value = fcmToken;
 
-    print("[DEBUG NOTIFICATION] fcmToken ${this.fcmToken.value}");
+    // print("[DEBUG NOTIFICATION] fcmToken ${this.fcmToken.value}");
 
     if (Platform.isIOS) {
       final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
@@ -154,13 +154,13 @@ class FirebasePushNotificationServices extends GetxService {
         .onError((err) {});
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("[DEBUG NOTIFICATION] ${message.data}");
-      print("[DEBUG NOTIFICATION] ${message.notification?.title}");
-      print("[DEBUG NOTIFICATION] ${message.notification?.body}");
-      print(
-        "[DEBUG NOTIFICATION] ${message.data['notification_type'] == 'VOICE_BROADCAST'}",
-      );
-      print("[DEBUG NOTIFICATION] ${"${message.data['voice_type']}.caf"}");
+      // print("[DEBUG NOTIFICATION] ${message.data}");
+      // print("[DEBUG NOTIFICATION] ${message.notification?.title}");
+      // print("[DEBUG NOTIFICATION] ${message.notification?.body}");
+      // print(
+      //   "[DEBUG NOTIFICATION] ${message.data['notification_type'] == 'VOICE_BROADCAST'}",
+      // );
+      // print("[DEBUG NOTIFICATION] ${"${message.data['voice_type']}.caf"}");
 
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,

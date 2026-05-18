@@ -1960,7 +1960,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           "createdAt": FieldValue.serverTimestamp(),
         };
 
-        print("[DEBUG CHAT] $data");
+        // print("[DEBUG CHAT] $data");
 
         await getExistingChatRoom();
         if (evmotoOrderChatParticipants.value.docId == null) {
