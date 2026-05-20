@@ -129,7 +129,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         updateCameraAutoFocus(),
       ]);
 
-      if ([2, 3, 4, 5, 6, 7, 8].contains(orderDetail.value.state)) {
+      if ([1, 2, 3, 4, 5, 6, 7, 8].contains(orderDetail.value.state)) {
         await updateDriverPositionReducedPolyline();
         await updateDriverPositionReroutingOffRoute();
       }
@@ -144,9 +144,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           () => Future.wait([getOrderDetail(), getOrderUserDetail()]),
         );
 
-        if (value == 1) {}
-
-        if (value == 2) {
+        if (value == 2 || value == 1) {
           if (locationServices.currentLatitude.value == null) {
             await locationServices.currentLatitude.stream.firstWhere(
               (value) => value != null,
@@ -168,7 +166,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         ]);
         // await Future.wait([checkReceiveInvoice()]);
 
-        if ([2, 3, 4, 5, 6, 7, 8].contains(state.value)) {
+        if ([1, 2, 3, 4, 5, 6, 7, 8].contains(state.value)) {
           await updateDriverPositionReducedPolyline();
           await updateDriverPositionReroutingOffRoute();
         }
@@ -304,6 +302,15 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       if (evmotoOrderChatParticipants.value.docId == null) {
         await userCreateChatRoom();
       }
+      await setChatOnline();
+      await streamExistingChatRoom();
+      await streamExistingChatList();
+    }
+  }
+
+  Future<void> refreshChatRoom() async {
+    await getExistingChatRoom();
+    if (evmotoOrderChatParticipants.value.docId != null) {
       await setChatOnline();
       await streamExistingChatRoom();
       await streamExistingChatList();
@@ -1127,70 +1134,77 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: LoaderElevatedButton(
-                              onPressed: () async {
-                                try {
-                                  await orderRepository.cancelOrder(
-                                    orderType: orderType.value,
-                                    orderId: orderId.value,
-                                    language: languageServices
-                                        .languageCodeSystem
-                                        .value,
-                                  );
-                                  Get.close(1);
-                                  Get.back();
-                                  Get.find<HomeController>().refreshAll();
-
-                                  final SnackBar snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorGreen400
-                                        .value,
-                                    content: Text(
-                                      "Berhasil membatalkan pesanan",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
-                                  );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
-                                } catch (e) {
-                                  final SnackBar snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorRed400
-                                        .value,
-                                    content: Text(
-                                      e.toString(),
-                                      style: typographyServices
-                                          .bodySmallBold
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
-                                  );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
-                                }
-                              },
-                              buttonColor: themeColorServices.redColor.value,
-                              child: Text(
-                                "Batalkan",
-                                style: typographyServices.bodyLargeBold.value
-                                    .copyWith(
-                                      color: themeColorServices
-                                          .neutralsColorGrey0
+                            child: SizedBox(
+                              height: 46,
+                              width: MediaQuery.of(
+                                navigatorKey.currentContext!,
+                              ).size.width,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(color: Color(0XFFE54C3F)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  try {
+                                    await orderRepository.cancelOrder(
+                                      orderType: orderType.value,
+                                      orderId: orderId.value,
+                                      language: languageServices
+                                          .languageCodeSystem
                                           .value,
-                                    ),
+                                    );
+                                    Get.close(1);
+                                    Get.back();
+                                    Get.find<HomeController>().refreshAll();
+
+                                    final SnackBar snackBar = SnackBar(
+                                      behavior: SnackBarBehavior.fixed,
+                                      backgroundColor: themeColorServices
+                                          .sematicColorGreen400
+                                          .value,
+                                      content: Text(
+                                        "Berhasil membatalkan pesanan",
+                                        style: typographyServices
+                                            .bodySmallRegular
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .neutralsColorGrey0
+                                                  .value,
+                                            ),
+                                      ),
+                                    );
+                                    rootScaffoldMessengerKey.currentState
+                                        ?.showSnackBar(snackBar);
+                                  } catch (e) {
+                                    final SnackBar snackBar = SnackBar(
+                                      behavior: SnackBarBehavior.fixed,
+                                      backgroundColor: themeColorServices
+                                          .sematicColorRed400
+                                          .value,
+                                      content: Text(
+                                        e.toString(),
+                                        style: typographyServices
+                                            .bodySmallBold
+                                            .value
+                                            .copyWith(
+                                              color: themeColorServices
+                                                  .neutralsColorGrey0
+                                                  .value,
+                                            ),
+                                      ),
+                                    );
+                                    rootScaffoldMessengerKey.currentState
+                                        ?.showSnackBar(snackBar);
+                                  }
+                                },
+                                child: Text(
+                                  languageServices.language.value.cancel ?? "-",
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(color: Color(0XFFE54C3F)),
+                                ),
                               ),
                             ),
                           ),
@@ -1214,6 +1228,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         orderId: orderDetail.value.orderId.toString(),
         language: languageServices.languageCodeSystem.value,
       );
+      await getOrderDetail();
     } catch (e) {
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
@@ -1260,7 +1275,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     //   'order_${orderRideDetail.value.orderId}_origin_to_destination_direction_cache',
     // );
 
-    if ([2, 3, 4].contains(orderDetail.value.state)) {
+    if ([1, 2, 3, 4].contains(orderDetail.value.state)) {
       if (locationServices.currentLatitude.value.toString() != "") {
         if (driverToOriginDirectionCache == null ||
             forceUpdateDriverToOrigin == true) {
@@ -1341,16 +1356,16 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> updateVisibility() async {
-    if ([1].contains(orderDetail.value.state)) {
-      isDriverToOriginDirectionVisible.value = false;
-      isOriginToDestinationDirectionVisible.value = false;
-      isMarkerDriverVisible.value = false;
-      isMarkerOriginVisible.value = false;
-      isMarkerDestinationVisible.value = false;
-      isPinLocationWaitingForDriverHide.value = false;
-    }
+    // if ([1].contains(orderDetail.value.state)) {
+    //   isDriverToOriginDirectionVisible.value = false;
+    //   isOriginToDestinationDirectionVisible.value = false;
+    //   isMarkerDriverVisible.value = false;
+    //   isMarkerOriginVisible.value = false;
+    //   isMarkerDestinationVisible.value = false;
+    //   isPinLocationWaitingForDriverHide.value = false;
+    // }
 
-    if ([2, 3, 4].contains(orderDetail.value.state)) {
+    if ([1, 2, 3, 4].contains(orderDetail.value.state)) {
       isDriverToOriginDirectionVisible.value = true;
       isOriginToDestinationDirectionVisible.value = true;
       isMarkerDriverVisible.value = true;
@@ -1372,7 +1387,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   double getKmOnGoing() {
     var mileage = 0.0;
 
-    if ([2, 3, 4].contains(orderDetail.value.state)) {
+    if ([1, 2, 3, 4].contains(orderDetail.value.state)) {
       mileage =
           double.tryParse(
             socketDriverPositionData.value.reservationMileage ?? "0",
@@ -1392,7 +1407,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   String getStatusOnGoing() {
     var statusOngoing = 'Penjemputan';
 
-    if ([2, 3, 4].contains(orderDetail.value.state)) {
+    if ([1, 2, 3, 4].contains(orderDetail.value.state)) {
       statusOngoing = 'Penjemputan';
     }
 
@@ -1406,10 +1421,10 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   // markers
   Future<void> setupAllMarkers() async {
     if ([1].contains(orderDetail.value.state)) {
-      markers.clear();
+      // markers.clear();
     }
 
-    if ([2, 3, 4].contains(orderDetail.value.state)) {
+    if ([1, 2, 3, 4].contains(orderDetail.value.state)) {
       var driverMarkerId = MarkerId("driver");
       var driverNewMarker = Marker(
         markerId: driverMarkerId,
@@ -1497,15 +1512,15 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   // googleMapController
   Future<void> updateCameraAutoFocus() async {
     // waiting driver accept
-    if ([1].contains(orderDetail.value.state)) {
-      if (isClosed) return;
-      await googleMapController.animateCamera(
-        CameraUpdate.newLatLngZoom(
-          LatLng(orderDetail.value.startLat!, orderDetail.value.startLon!),
-          16,
-        ),
-      );
-    }
+    // if ([1].contains(orderDetail.value.state)) {
+    //   if (isClosed) return;
+    //   await googleMapController.animateCamera(
+    //     CameraUpdate.newLatLngZoom(
+    //       LatLng(orderDetail.value.startLat!, orderDetail.value.startLon!),
+    //       16,
+    //     ),
+    //   );
+    // }
 
     var driverLatitude =
         (double.tryParse(locationServices.currentLatitude.value.toString()) ??
@@ -1518,7 +1533,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
     if (driverLatitude != 0 && driverLongitude != 0) {
       // driver to origin
-      if ([2, 3, 4].contains(orderDetail.value.state)) {
+      if ([1, 2, 3, 4].contains(orderDetail.value.state)) {
         LatLngBounds bounds;
 
         var originLatitude = locationServices.currentLatitude.value!;
@@ -1619,7 +1634,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         }
       }
     } else {
-      if ([2, 3, 4, 5, 6, 7, 8].contains(orderDetail.value.state)) {
+      if ([1, 2, 3, 4, 5, 6, 7, 8].contains(orderDetail.value.state)) {
         LatLngBounds bounds;
 
         var originLatitude = orderDetail.value.startLat!;
@@ -1687,10 +1702,10 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
     if (driverLatitude != 0 && driverLongitude != 0) {
       // waiting driver accept
-      if ([1].contains(orderDetail.value.state)) {}
+      // if ([1].contains(orderDetail.value.state)) {}
 
       // driver to origin
-      if ([2, 3, 4].contains(orderDetail.value.state)) {
+      if ([1, 2, 3, 4].contains(orderDetail.value.state)) {
         polylinesCoordinate.value = driverToOriginDirection
             .value
             .routes!
@@ -1797,7 +1812,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         this.distanceFromRoute.value = distanceFromRoute;
 
         if (distanceFromRoute > 50) {
-          if ([2, 3, 4].contains(state.value)) {
+          if ([1, 2, 3, 4].contains(state.value)) {
             await getAllRoutingCache(forceUpdateDriverToOrigin: true);
             await setupAllRouting();
           }

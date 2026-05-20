@@ -26,6 +26,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
   final currentAltitude = Rx<double?>(null);
   final currentLatitude = Rx<double?>(null);
   final currentLongitude = Rx<double?>(null);
+  final currentHeading = Rx<double?>(null);
+  final currentSpeed = Rx<double?>(null);
   final isPermissionLocationAllow = Rx<bool?>(false);
 
   final requestPermissionCount = 0.obs;
@@ -118,6 +120,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
               currentAltitude.value = position.altitude;
               currentLatitude.value = position.latitude;
               currentLongitude.value = position.longitude;
+              currentHeading.value = position.heading;
+              currentSpeed.value = position.speed;
               // }
             });
 
@@ -167,6 +171,8 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
               currentAltitude.value = position.altitude;
               currentLatitude.value = position.latitude;
               currentLongitude.value = position.longitude;
+              currentHeading.value = position.heading;
+              currentSpeed.value = position.speed;
               // }
             });
 

@@ -16,6 +16,7 @@ import 'package:new_evmoto_driver/app/data/consts/order_state_const.dart';
 import 'package:new_evmoto_driver/app/data/models/guarantee_income_progress_bar_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/service_order_model.dart';
+import 'package:new_evmoto_driver/app/data/models/service_time_schedule_model.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_driver/app/data/models/vehicle_statistics_model.dart';
@@ -103,6 +104,9 @@ class HomeController extends GetxController
 
   final serviceOrderList = <ServiceOrder>[].obs;
 
+  // Service Time Schedule
+  final serviceTimeScheduleList = <ServiceTimeSchedule>[].obs;
+
   // coachmark
   final activityStatisticsGlobalKey = GlobalKey();
   final buttonSeeAllMyActivityGlobalKey = GlobalKey();
@@ -168,7 +172,7 @@ class HomeController extends GetxController
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await checkAppVersioning(isShowVersionNewestConfirmationDialog: false);
 
-      await displayCoachmark();
+      // await displayCoachmark();
       await firebasePushNotificationServices.requestPermission();
       await backgroundServices.startService();
       await setHomeControllerRegistered();
@@ -177,6 +181,9 @@ class HomeController extends GetxController
         setupGuaranteeIncomeProgressBarTimer(),
       ]);
       await backgroundServices.refreshState();
+
+      await getServiceTimeScheduleList();
+      await checkServiceTimeSchedule();
     });
   }
 
@@ -191,6 +198,155 @@ class HomeController extends GetxController
     await socketServices.closeWebsocket();
     autoOfflineTimer?.cancel();
     guaranteeIncomeProgressBarTimer?.cancel();
+  }
+
+  // Working Time Schedule
+  Future<void> getServiceTimeScheduleList() async {
+    var serviceTimeScheduleList = <ServiceTimeSchedule>[];
+    if (firebaseRemoteConfigServices.remoteConfig
+        .getString("evmoto_global_service_time")
+        .isNotEmpty) {
+      var evmotoGlobalWorkingTime = jsonDecode(
+        firebaseRemoteConfigServices.remoteConfig.getString(
+          "evmoto_global_service_time",
+        ),
+      );
+
+      for (var workingTimeSchedule
+          in evmotoGlobalWorkingTime['service_time_schedule']) {
+        serviceTimeScheduleList.add(
+          ServiceTimeSchedule.fromJson(workingTimeSchedule),
+        );
+      }
+    }
+
+    this.serviceTimeScheduleList.value = serviceTimeScheduleList;
+  }
+
+  Future<void> checkServiceTimeSchedule() async {
+    if (serviceTimeScheduleList.isNotEmpty) {
+      var isInServiceTimeSchedule = false;
+
+      for (var serviceTimeSchedule in serviceTimeScheduleList) {
+        final now = DateTime.now();
+        final startTime = parseTime(serviceTimeSchedule.startTime!);
+        final endTime = parseTime(serviceTimeSchedule.endTime!);
+
+        isInServiceTimeSchedule =
+            (now.isAtSameMomentAs(startTime) || now.isAfter(startTime)) &&
+            (now.isAtSameMomentAs(endTime) || now.isBefore(endTime));
+
+        if (isInServiceTimeSchedule == true) {
+          break;
+        }
+      }
+
+      if (isInServiceTimeSchedule == false) {
+        Get.dialog(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: 400,
+                      maxHeight: MediaQuery.of(
+                        navigatorKey.currentContext!,
+                      ).size.height,
+                    ),
+                    child: Material(
+                      color: themeColorServices.neutralsColorGrey0.value,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Stack(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  "assets/icons/icon_service_time.png",
+                                  width: 64,
+                                  height: 64,
+                                ),
+                                SizedBox(height: 16),
+                                Text(
+                                  "Pemberitahuan Jam Operasional",
+                                  style: typographyServices.bodyLargeBold.value,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  "Saat ini layanan mengikuti jam operasional yang berlaku. Penggunaan aplikasi tetap berjalan seperti biasa.",
+                                  style: typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(color: Color(0XFFB3B3B3)),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 16),
+                                LoaderElevatedButton(
+                                  child: Text(
+                                    "Lanjutkan",
+                                    style: typographyServices
+                                        .bodyLargeBold
+                                        .value
+                                        .copyWith(
+                                          color: themeColorServices
+                                              .neutralsColorGrey0
+                                              .value,
+                                        ),
+                                  ),
+                                  onPressed: () async {
+                                    Get.close(1);
+                                  },
+                                ),
+                              ],
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.close(1);
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  width: 24,
+                                  height: 24,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/icon_close_1.svg",
+                                        width: 18,
+                                        height: 18,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    }
   }
 
   Future<void> requestLocation() async {

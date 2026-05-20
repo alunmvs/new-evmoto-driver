@@ -329,82 +329,103 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                   //   ),
                                                   // ),
                                                   // SizedBox(width: 8),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Get.toNamed(
-                                                        Routes.CHAT_DETAIL,
-                                                        arguments: {
-                                                          "doc_id": controller
-                                                              .evmotoOrderChatParticipants
-                                                              .value
-                                                              .docId,
-                                                        },
-                                                      );
-                                                    },
-                                                    child: Badge(
-                                                      isLabelVisible:
+                                                  if (controller
+                                                          .evmotoOrderChatParticipants
+                                                          .value
+                                                          .docId !=
+                                                      null) ...[
+                                                    GestureDetector(
+                                                      onTap: () async {
+                                                        if (controller
+                                                                .evmotoOrderChatParticipants
+                                                                .value
+                                                                .docId ==
+                                                            null) {
+                                                          await controller
+                                                              .refreshChatRoom();
+                                                        }
+                                                        if (controller
+                                                                .evmotoOrderChatParticipants
+                                                                .value
+                                                                .docId ==
+                                                            null) {
+                                                          return;
+                                                        }
+                                                        Get.toNamed(
+                                                          Routes.CHAT_DETAIL,
+                                                          arguments: {
+                                                            "doc_id": controller
+                                                                .evmotoOrderChatParticipants
+                                                                .value
+                                                                .docId,
+                                                          },
+                                                        );
+                                                      },
+                                                      child: Badge(
+                                                        isLabelVisible:
+                                                            (controller
+                                                                    .evmotoOrderChatParticipants
+                                                                    .value
+                                                                    .totalUnreadChatUser ??
+                                                                0) >
+                                                            0,
+                                                        label: Text(
                                                           (controller
-                                                                  .evmotoOrderChatParticipants
-                                                                  .value
-                                                                  .totalUnreadChatUser ??
-                                                              0) >
-                                                          0,
-                                                      label: Text(
-                                                        (controller
-                                                                        .evmotoOrderChatParticipants
-                                                                        .value
-                                                                        .totalUnreadChatUser ??
-                                                                    0) >
-                                                                99
-                                                            ? "99+"
-                                                            : (controller
                                                                           .evmotoOrderChatParticipants
                                                                           .value
                                                                           .totalUnreadChatUser ??
-                                                                      0)
-                                                                  .toString(),
-                                                        style: controller
-                                                            .typographyServices
-                                                            .captionSmallRegular
-                                                            .value,
-                                                      ),
-                                                      backgroundColor: controller
-                                                          .themeColorServices
-                                                          .primaryBlue
-                                                          .value,
-                                                      child: Container(
-                                                        width: 34,
-                                                        height: 34,
-                                                        decoration: BoxDecoration(
-                                                          color: Color(
-                                                            0XFFE6E6E6,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                8,
-                                                              ),
+                                                                      0) >
+                                                                  99
+                                                              ? "99+"
+                                                              : (controller
+                                                                            .evmotoOrderChatParticipants
+                                                                            .value
+                                                                            .totalUnreadChatUser ??
+                                                                        0)
+                                                                    .toString(),
+                                                          style: controller
+                                                              .typographyServices
+                                                              .captionSmallRegular
+                                                              .value,
                                                         ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            SvgPicture.asset(
-                                                              "assets/icons/icon_bubble_chat_2.svg",
-                                                              width: 21.15,
-                                                              height: 21.15,
-                                                              color: Color(
-                                                                0XFF7D7D7D,
-                                                              ),
+                                                        backgroundColor: controller
+                                                            .themeColorServices
+                                                            .primaryBlue
+                                                            .value,
+                                                        child: Container(
+                                                          width: 34,
+                                                          height: 34,
+                                                          decoration: BoxDecoration(
+                                                            color: Color(
+                                                              0XFFE6E6E6,
                                                             ),
-                                                          ],
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  8,
+                                                                ),
+                                                          ),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                "assets/icons/icon_bubble_chat_2.svg",
+                                                                width: 21.15,
+                                                                height: 21.15,
+                                                                color: Color(
+                                                                  0XFF7D7D7D,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ],
                                               ),
                                             ],

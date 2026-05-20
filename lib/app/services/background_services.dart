@@ -161,6 +161,8 @@ void onStart(ServiceInstance service) {
   double? currentAltitude;
   double? currentLongitude;
   double? currentLatitude;
+  double? currentHeading;
+  double? currentSpeed;
 
   StreamSubscription<Position>? positionStream;
 
@@ -175,6 +177,8 @@ void onStart(ServiceInstance service) {
             currentAltitude = position.altitude;
             currentLatitude = position.latitude;
             currentLongitude = position.longitude;
+            currentHeading = position.heading;
+            currentSpeed = position.speed;
           },
         );
   }
@@ -209,6 +213,8 @@ void onStart(ServiceInstance service) {
             "driverId": driverId,
             "lat": currentLatitude,
             "lon": currentLongitude,
+            "heading": currentHeading,
+            "speed": currentSpeed,
             "orderId": "",
             "orderType": "",
           },

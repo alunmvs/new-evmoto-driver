@@ -9,6 +9,7 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
+import 'package:new_evmoto_driver/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DepositBalancePaymentWebviewController extends GetxController {
@@ -122,21 +123,27 @@ class DepositBalancePaymentWebviewController extends GetxController {
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: LoaderElevatedButton(
-                              onPressed: () async {
-                                Get.close(1);
-                                Get.back();
-                              },
-                              buttonColor:
-                                  themeColorServices.sematicColorRed400.value,
-                              child: Text(
-                                "Batalkan",
-                                style: typographyServices.bodyLargeBold.value
-                                    .copyWith(
-                                      color: themeColorServices
-                                          .neutralsColorGrey0
-                                          .value,
-                                    ),
+                            child: SizedBox(
+                              height: 46,
+                              width: MediaQuery.of(
+                                navigatorKey.currentContext!,
+                              ).size.width,
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(color: Color(0XFFE54C3F)),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  Get.close(1);
+                                  Get.back();
+                                },
+                                child: Text(
+                                  languageServices.language.value.cancel ?? "-",
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(color: Color(0XFFE54C3F)),
+                                ),
                               ),
                             ),
                           ),

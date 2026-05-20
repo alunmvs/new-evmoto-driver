@@ -4,15 +4,15 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_curl_logger/dio_curl_logger.dart';
-import 'package:dio_smart_retry/dio_smart_retry.dart';
+// import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
+import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
-import 'package:new_evmoto_driver/app/utils/error_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -72,26 +72,32 @@ class ApiServices extends GetxService {
         onResponse: (response, handler) async {
           if (response.data != null) {
             if (response.data is Map<String, dynamic>) {
-              if (response.data['code'] == 600) {
+              if (response.data['code'] == 600 &&
+                  response.realUri.path.contains('/notification/unsubscribe') ==
+                      false) {
                 if (Get.currentRoute != Routes.LOGIN) {
                   final socketServices = Get.find<SocketServices>();
                   final backgroundServices = Get.find<BackgroundServices>();
                   final userServices = Get.find<UserServices>();
+                  final locationServices = Get.find<LocationServices>();
                   final firebasePushNotificationServices =
                       Get.find<FirebasePushNotificationServices>();
                   var prefs = await SharedPreferences.getInstance();
                   var storage = FlutterSecureStorage();
 
                   await backgroundServices.clearAllState();
+                  await firebasePushNotificationServices.onUnsubscribe();
+                  await locationServices.positionStream?.cancel();
+
                   await Future.wait([
                     backgroundServices.stopService(),
                     storage.deleteAll(),
                     socketServices.closeWebsocket(),
-                    firebasePushNotificationServices.onUnsubscribe(),
                     prefs.clear(),
                   ]);
 
                   userServices.clearUserInfo();
+
                   Get.offAllNamed(Routes.LOGIN);
                 }
               }
@@ -103,46 +109,46 @@ class ApiServices extends GetxService {
       ),
     );
 
-    dio.interceptors.add(
-      RetryInterceptor(
-        dio: dio,
-        retries: 999999999,
-        retryEvaluator: (error, attempt) async {
-          if (error.type == DioExceptionType.connectionError ||
-              error.error is SocketException) {
-            await showNoConnectivityInternetDialog(onRetry: () async {});
-            return true;
-          }
+    // dio.interceptors.add(
+    //   RetryInterceptor(
+    //     dio: dio,
+    //     retries: 999999999,
+    //     retryEvaluator: (error, attempt) async {
+    //       if (error.type == DioExceptionType.connectionError ||
+    //           error.error is SocketException) {
+    //         await showNoConnectivityInternetDialog(onRetry: () async {});
+    //         return true;
+    //       }
 
-          return false;
-        },
-      ),
-    );
+    //       return false;
+    //     },
+    //   ),
+    // );
 
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onError: (DioException e, handler) {
-          String message;
+    // dio.interceptors.add(
+    //   InterceptorsWrapper(
+    //     onError: (DioException e, handler) {
+    //       String message;
 
-          if (e.type == DioExceptionType.connectionError ||
-              e.error is SocketException) {
-            message = 'Tidak ada koneksi internet. Periksa jaringan Anda.';
-          } else if (e.type == DioExceptionType.receiveTimeout) {
-            message = 'Koneksi timeout. Coba lagi.';
-          } else {
-            message = 'Terjadi kesalahan. Silakan coba lagi.';
-          }
+    //       if (e.type == DioExceptionType.connectionError ||
+    //           e.error is SocketException) {
+    //         message = 'Tidak ada koneksi internet. Periksa jaringan Anda.';
+    //       } else if (e.type == DioExceptionType.receiveTimeout) {
+    //         message = 'Koneksi timeout. Coba lagi.';
+    //       } else {
+    //         message = 'Terjadi kesalahan. Silakan coba lagi.';
+    //       }
 
-          return handler.reject(
-            DioException(
-              requestOptions: e.requestOptions,
-              message: message,
-              type: e.type,
-            ),
-          );
-        },
-      ),
-    );
+    //       return handler.reject(
+    //         DioException(
+    //           requestOptions: e.requestOptions,
+    //           message: message,
+    //           type: e.type,
+    //         ),
+    //       );
+    //     },
+    //   ),
+    // );
   }
 
   Future<void> getPackageInfo() async {

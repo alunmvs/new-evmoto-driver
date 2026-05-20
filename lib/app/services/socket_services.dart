@@ -12,11 +12,13 @@ import 'package:new_evmoto_driver/app/modules/order_payment_confirmation/control
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/app_lifecycle_services.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
+import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/utils/socket_helper.dart';
 import 'package:new_evmoto_driver/environment.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -210,6 +212,31 @@ class SocketServices extends GetxService {
                   rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
                 }
                 break;
+              case 'OFFLINE':
+                final backgroundServices = Get.find<BackgroundServices>();
+                final userServices = Get.find<UserServices>();
+                final firebasePushNotificationServices =
+                    Get.find<FirebasePushNotificationServices>();
+                final locationServices = Get.find<LocationServices>();
+                var prefs = await SharedPreferences.getInstance();
+                var storage = FlutterSecureStorage();
+                final socketServices = Get.find<SocketServices>();
+
+                await backgroundServices.clearAllState();
+                await locationServices.positionStream?.cancel();
+                await firebasePushNotificationServices.onUnsubscribe();
+
+                await Future.wait([
+                  backgroundServices.stopService(),
+                  storage.deleteAll(),
+                  socketServices.closeWebsocket(),
+                  prefs.clear(),
+                ]);
+
+                userServices.clearUserInfo();
+
+                Get.offAllNamed(Routes.LOGIN);
+                break;
               default:
                 break;
             }
@@ -252,9 +279,11 @@ class SocketServices extends GetxService {
   Future<void> sendHeartBeat() async {
     var prefs = await SharedPreferences.getInstance();
 
+    // print("[DEBUG SOCKET] Start Heart Beat 1");
     if (isSocketClose.value == false &&
         prefs.getBool('home_controller_registered') == true &&
         appLifecycleController.isForeground.value == true) {
+      // print("[DEBUG SOCKET] Start Heart Beat 2");
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
@@ -300,6 +329,8 @@ class SocketServices extends GetxService {
             "driverId": Get.find<HomeController>().userInfo.value.id,
             "lat": locationServices.currentLatitude.value,
             "lon": locationServices.currentLongitude.value,
+            "heading": locationServices.currentHeading.value,
+            "speed": locationServices.currentSpeed.value,
             "orderId": "",
             "orderType": "",
           },

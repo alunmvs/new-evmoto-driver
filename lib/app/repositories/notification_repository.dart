@@ -15,7 +15,7 @@ class NotificationRepository {
     required String? apnsToken,
   }) async {
     try {
-      var url = "$baseUrl/account/api/notification/unsubscribe";
+      var url = "$baseUrl/account/base/notification/unsubscribe";
 
       var formData = FormData.fromMap({
         "fcmToken": fcmToken,

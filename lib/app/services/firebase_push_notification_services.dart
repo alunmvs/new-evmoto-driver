@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/repositories/notification_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -237,12 +238,10 @@ class FirebasePushNotificationServices extends GetxService {
     try {
       await FirebaseMessaging.instance.deleteToken();
     } catch (e) {}
-    try {
-      await notificationRepository.unsubscribeNotification(
-        fcmToken: fcmToken.value,
-        apnsToken: apnsToken.value,
-      );
-    } catch (e) {}
+    await notificationRepository.unsubscribeNotification(
+      fcmToken: fcmToken.value,
+      apnsToken: apnsToken.value,
+    );
   }
 
   Future<String> getDeviceId() async {

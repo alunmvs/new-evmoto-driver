@@ -29,6 +29,7 @@ import 'package:timezone/data/latest.dart' as tz;
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,6 +77,7 @@ Future<void> main() async {
 
   runApp(
     GetMaterialApp(
+      navigatorKey: navigatorKey,
       title: "Evmoto Driver",
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

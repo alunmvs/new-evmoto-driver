@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/modules/account/controllers/account_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/login_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
+import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
@@ -81,6 +83,13 @@ class LoginVerificationOtpController extends GetxController {
 
       var storage = FlutterSecureStorage();
       await storage.write(key: "token", value: token);
+
+      // Get.lazyPut<AccountController>(
+      //   () => AccountController(
+      //     otpRepository: OtpRepository(),
+      //     userRepository: UserRepository(),
+      //   ),
+      // );
 
       Get.offAllNamed(Routes.HOME);
     } catch (e) {

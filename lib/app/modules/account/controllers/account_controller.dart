@@ -12,6 +12,7 @@ import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
+import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
@@ -158,15 +159,18 @@ class AccountController extends GetxController {
                         final userServices = Get.find<UserServices>();
                         final firebasePushNotificationServices =
                             Get.find<FirebasePushNotificationServices>();
+                        final locationServices = Get.find<LocationServices>();
                         var prefs = await SharedPreferences.getInstance();
                         var storage = FlutterSecureStorage();
 
                         await backgroundServices.clearAllState();
+                        await locationServices.positionStream?.cancel();
+                        await firebasePushNotificationServices.onUnsubscribe();
+
                         await Future.wait([
                           backgroundServices.stopService(),
                           storage.deleteAll(),
                           socketServices.closeWebsocket(),
-                          firebasePushNotificationServices.onUnsubscribe(),
                           prefs.clear(),
                         ]);
 
@@ -200,15 +204,25 @@ class AccountController extends GetxController {
                       ),
                     ),
                     SizedBox(height: 8),
-                    LoaderElevatedButton(
-                      onPressed: () async {
-                        Get.close(1);
-                      },
-                      buttonColor: Color(0XFFD9D9D9),
-                      child: Text(
-                        "Batalkan",
-                        style: typographyServices.bodyLargeBold.value.copyWith(
-                          color: themeColorServices.textColor.value,
+                    SizedBox(
+                      height: 46,
+                      width: MediaQuery.of(
+                        navigatorKey.currentContext!,
+                      ).size.width,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Color(0XFFE54C3F)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        child: Text(
+                          languageServices.language.value.cancel ?? "-",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(color: Color(0XFFE54C3F)),
                         ),
                       ),
                     ),
@@ -289,15 +303,26 @@ class AccountController extends GetxController {
                       ),
                     ),
                     SizedBox(height: 8),
-                    LoaderElevatedButton(
-                      onPressed: () async {
-                        Get.close(1);
-                      },
-                      buttonColor: Color(0XFFD9D9D9),
-                      child: Text(
-                        "Batalkan",
-                        style: typographyServices.bodyLargeBold.value.copyWith(
-                          color: themeColorServices.textColor.value,
+
+                    SizedBox(
+                      height: 46,
+                      width: MediaQuery.of(
+                        navigatorKey.currentContext!,
+                      ).size.width,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Color(0XFFE54C3F)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed: () async {
+                          Get.close(1);
+                        },
+                        child: Text(
+                          languageServices.language.value.cancel ?? "-",
+                          style: typographyServices.bodyLargeBold.value
+                              .copyWith(color: Color(0XFFE54C3F)),
                         ),
                       ),
                     ),
@@ -761,17 +786,26 @@ class AccountController extends GetxController {
                         ),
                       ),
                       SizedBox(height: 8),
-                      LoaderElevatedButton(
-                        onPressed: () async {
-                          Get.close(1);
-                        },
-                        buttonColor: Color(0XFFD9D9D9),
-                        child: Text(
-                          "Batalkan",
-                          style: typographyServices.bodyLargeBold.value
-                              .copyWith(
-                                color: themeColorServices.textColor.value,
-                              ),
+                      SizedBox(
+                        height: 46,
+                        width: MediaQuery.of(
+                          navigatorKey.currentContext!,
+                        ).size.width,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Color(0XFFE54C3F)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          onPressed: () async {
+                            Get.close(1);
+                          },
+                          child: Text(
+                            languageServices.language.value.cancel ?? "-",
+                            style: typographyServices.bodyLargeBold.value
+                                .copyWith(color: Color(0XFFE54C3F)),
+                          ),
                         ),
                       ),
                       SizedBox(height: 16),

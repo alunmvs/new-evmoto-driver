@@ -676,12 +676,7 @@ class OrderDetailFooterSubView extends GetView<OrderDetailController> {
                   width: MediaQuery.of(context).size.width,
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey300
-                            .value,
-                      ),
+                      side: BorderSide(color: Color(0XFFE54C3F)),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -692,12 +687,7 @@ class OrderDetailFooterSubView extends GetView<OrderDetailController> {
                     child: Text(
                       controller.languageServices.language.value.cancel ?? "-",
                       style: controller.typographyServices.bodyLargeBold.value
-                          .copyWith(
-                            color: controller
-                                .themeColorServices
-                                .neutralsColorGrey400
-                                .value,
-                          ),
+                          .copyWith(color: Color(0XFFE54C3F)),
                     ),
                   ),
                 ),
