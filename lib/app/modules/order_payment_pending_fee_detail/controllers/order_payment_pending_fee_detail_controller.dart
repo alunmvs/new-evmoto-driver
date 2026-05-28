@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
@@ -17,6 +18,7 @@ class OrderPaymentPendingFeeDetailController extends GetxController {
   final languageServices = Get.find<LanguageServices>();
 
   final orderDetail = OrderDetail().obs;
+  final orderPayment = OrderPayment().obs;
 
   final orderId = "".obs;
   final orderType = 0.obs;
@@ -32,6 +34,7 @@ class OrderPaymentPendingFeeDetailController extends GetxController {
     orderType.value = Get.arguments['order_type'];
 
     await getOrderDetail();
+    await getOrderPayment();
 
     isFetch.value = false;
   }
@@ -51,6 +54,15 @@ class OrderPaymentPendingFeeDetailController extends GetxController {
       orderType: orderType.value,
       orderId: orderId.value,
       language: languageServices.languageCodeSystem.value,
+    );
+  }
+
+  Future<void> getOrderPayment() async {
+    orderPayment.value = await orderRepository.getOrderPayment(
+      orderType: orderType.value,
+      orderId: orderId.value,
+      language: languageServices.languageCodeSystem.value,
+      payManner: orderDetail.value.payManner!,
     );
   }
 }

@@ -221,193 +221,24 @@ class OrderPaymentPendingFeeDetailView
                                       ],
                                     ),
                                   ],
-                                  if (controller
-                                              .orderDetail
-                                              .value
-                                              .mileageMoney !=
-                                          null &&
-                                      controller
-                                              .orderDetail
-                                              .value
-                                              .mileageMoney !=
-                                          0) ...[
-                                    SizedBox(height: 8),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${controller.languageServices.language.value.mileageFee} (${controller.orderDetail.value.mileage!.toStringAsPrecision(2)}) km",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp ',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .mileageMoney,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .textColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (controller
-                                              .orderDetail
-                                              .value
-                                              .durationMoney !=
-                                          null &&
-                                      controller
-                                              .orderDetail
-                                              .value
-                                              .durationMoney !=
-                                          0) ...[
-                                    SizedBox(height: 8),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${controller.languageServices.language.value.timeCost} (${controller.orderDetail.value.duration!.toStringAsPrecision(2)}) km",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp ',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .durationMoney,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .textColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (controller
-                                              .orderDetail
-                                              .value
-                                              .longDistanceMoney !=
-                                          null &&
-                                      controller
-                                              .orderDetail
-                                              .value
-                                              .longDistanceMoney !=
-                                          0) ...[
-                                    SizedBox(height: 8),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${controller.languageServices.language.value.longDistanceFee} (${controller.orderDetail.value.longDistance!.toStringAsPrecision(2)}) km",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp ',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .longDistanceMoney,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .textColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (controller
-                                              .orderDetail
-                                              .value
-                                              .collectionFees !=
-                                          null &&
-                                      controller
-                                              .orderDetail
-                                              .value
-                                              .collectionFees !=
-                                          0) ...[
-                                    SizedBox(height: 8),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          controller
-                                                  .languageServices
-                                                  .language
+                                  if (((controller
+                                                  .orderDetail
                                                   .value
-                                                  .collectedByDrivers ??
-                                              "-",
+                                                  .mileageMoney ??
+                                              0) +
+                                          (controller
+                                                  .orderDetail
+                                                  .value
+                                                  .longDistanceMoney ??
+                                              0)) !=
+                                      0) ...[
+                                    SizedBox(height: 8),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "${controller.languageServices.language.value.mileageFee} (${(controller.orderPayment.value.mileage! + controller.orderPayment.value.longDistance!).toStringAsPrecision(2)}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -427,9 +258,13 @@ class OrderPaymentPendingFeeDetailView
                                             decimalDigits: 0,
                                           ).format(
                                             controller
-                                                .orderDetail
-                                                .value
-                                                .collectionFees,
+                                                    .orderDetail
+                                                    .value
+                                                    .mileageMoney! +
+                                                controller
+                                                    .orderDetail
+                                                    .value
+                                                    .longDistanceMoney!,
                                           ),
                                           style: controller
                                               .typographyServices

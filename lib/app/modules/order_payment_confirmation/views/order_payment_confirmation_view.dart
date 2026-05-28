@@ -336,7 +336,7 @@ class OrderPaymentConfirmationView
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${controller.languageServices.language.value.mileageFee} (${controller.orderPayment.value.mileage!.toStringAsPrecision(2)}) km",
+                                            "${controller.languageServices.language.value.mileageFee} (${(controller.orderPayment.value.mileage! + controller.orderPayment.value.longDistance!).toStringAsPrecision(2)}) km",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -356,146 +356,13 @@ class OrderPaymentConfirmationView
                                               decimalDigits: 0,
                                             ).format(
                                               controller
-                                                  .orderPayment
-                                                  .value
-                                                  .mileageMoney,
-                                            ),
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .textColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "${controller.languageServices.language.value.timeCost} (${controller.orderPayment.value.duration!.toStringAsPrecision(2)}) km",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .thirdTextColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                          Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: 'Rp ',
-                                              decimalDigits: 0,
-                                            ).format(
-                                              controller
-                                                  .orderPayment
-                                                  .value
-                                                  .durationMoney,
-                                            ),
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .textColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "${controller.languageServices.language.value.longDistanceFee} (${controller.orderPayment.value.longDistance!.toStringAsPrecision(2)}) km",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .thirdTextColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                          Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: 'Rp ',
-                                              decimalDigits: 0,
-                                            ).format(
-                                              controller
-                                                  .orderPayment
-                                                  .value
-                                                  .longDistanceMoney,
-                                            ),
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .textColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            controller
-                                                    .languageServices
-                                                    .language
-                                                    .value
-                                                    .collectedByDrivers ??
-                                                "-",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .thirdTextColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                          Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: 'Rp ',
-                                              decimalDigits: 0,
-                                            ).format(
-                                              controller
-                                                  .orderPayment
-                                                  .value
-                                                  .collectionFees,
+                                                      .orderPayment
+                                                      .value
+                                                      .mileageMoney! +
+                                                  controller
+                                                      .orderPayment
+                                                      .value
+                                                      .longDistanceMoney!,
                                             ),
                                             style: controller
                                                 .typographyServices
