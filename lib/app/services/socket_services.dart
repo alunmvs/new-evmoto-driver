@@ -93,8 +93,7 @@ class SocketServices extends GetxService {
                 );
                 var homeController = Get.find<HomeController>();
 
-                if (socketOrderStatusData.state == 1 ||
-                    socketOrderStatusData.state == 2) {
+                if (socketOrderStatusData.state == 1) {
                   if (Get.currentRoute == Routes.ORDER_DETAIL) {
                     var orderDetailController =
                         Get.find<OrderDetailController>();
@@ -129,7 +128,8 @@ class SocketServices extends GetxService {
                   }
                 }
                 if (socketOrderStatusData.state == 10 &&
-                    Get.currentRoute == Routes.ORDER_DETAIL) {
+                    (Get.currentRoute == Routes.ORDER_DETAIL ||
+                        Get.routing.previous == Routes.ORDER_DETAIL)) {
                   var orderDetailController = Get.find<OrderDetailController>();
 
                   if (orderDetailController.orderId.value ==
@@ -237,6 +237,18 @@ class SocketServices extends GetxService {
 
                 Get.offAllNamed(Routes.LOGIN);
                 break;
+              case 'USER_CANCEL_ORDER':
+                var prefs = await SharedPreferences.getInstance();
+                if (prefs.getBool('home_controller_registered') == true) {
+                  var orderId = dataJson['data']['orderId'];
+                  var isDialogShow =
+                      prefs.getBool('dialog_order_confirmation_$orderId') ??
+                      false;
+
+                  if (isDialogShow == true) {
+                    Get.close(1);
+                  }
+                }
               default:
                 break;
             }

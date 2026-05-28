@@ -18,13 +18,13 @@ import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/location_services.dart';
+import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
 import 'package:new_evmoto_driver/app/utils/time_process_helper.dart';
-import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,6 +47,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   final languageServices = Get.find<LanguageServices>();
   final homeController = Get.find<HomeController>();
   final userServices = Get.find<UserServices>();
+  final socketServices = Get.find<SocketServices>();
 
   final initialCameraPosition = CameraPosition(
     target: LatLng(-6.1744651, 106.822745),
@@ -105,6 +106,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
   final socketDriverPositionData = SocketDriverPositionData().obs;
 
+  late Timer? globalSchedulerTimer;
+
+  final isCreateRoomLoading = false.obs;
   final isFetch = false.obs;
 
   @override
@@ -119,15 +123,20 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await locationServices.requestLocation();
       await Future.wait([getOrderDetail(), getOrderUserDetail()]);
-      await Future.wait([getAllRoutingCache()]);
-      isFetch.value = false;
 
+      while (locationServices.currentLatitude.value == null) {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+
+      await Future.wait([getAllRoutingCache()]);
       await Future.wait([updateVisibility()]);
       await Future.wait([
         setupAllMarkers(),
         setupAllRouting(),
         updateCameraAutoFocus(),
       ]);
+
+      isFetch.value = false;
 
       if ([1, 2, 3, 4, 5, 6, 7, 8].contains(orderDetail.value.state)) {
         await updateDriverPositionReducedPolyline();
@@ -202,6 +211,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     try {
       refocusMapBoundsTimer?.cancel();
     } catch (e) {}
+    try {
+      globalSchedulerTimer?.cancel();
+    } catch (e) {}
   }
 
   @override
@@ -212,6 +224,30 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     } else if (state == AppLifecycleState.paused) {
       await setChatOffline();
     }
+  }
+
+  Future<void> setupGlobalSchedulerTimer() async {
+    globalSchedulerTimer ??= Timer.periodic(Duration(minutes: 1), (
+      timer,
+    ) async {
+      await Future.wait([getOrderDetail(), getOrderUserDetail()]);
+
+      if (orderDetail.value.state == 10) {
+        Get.back();
+        await Get.find<HomeController>().refreshAll();
+        final SnackBar snackBar = SnackBar(
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: themeColorServices.sematicColorRed400.value,
+          content: Text(
+            "Pelanggan membatalkan pesanan",
+            style: typographyServices.bodySmallRegular.value.copyWith(
+              color: themeColorServices.neutralsColorGrey0.value,
+            ),
+          ),
+        );
+        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      }
+    });
   }
 
   Future<void> refreshAll() async {
@@ -292,28 +328,58 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
     state.value = orderDetail.value.state ?? 0;
 
-    if (evmotoOrderChatParticipants.value.userId !=
-            orderDetail.value.userId.toString() &&
-        evmotoOrderChatParticipants.value.driverId !=
-            orderDetail.value.driverId.toString() &&
-        evmotoOrderChatParticipants.value.orderId !=
-            orderDetail.value.orderId.toString()) {
-      await getExistingChatRoom();
-      if (evmotoOrderChatParticipants.value.docId == null) {
-        await userCreateChatRoom();
+    if (isCreateRoomLoading.value == false) {
+      if ((evmotoOrderChatParticipants.value.userId !=
+                  orderDetail.value.userId.toString() &&
+              evmotoOrderChatParticipants.value.driverId !=
+                  orderDetail.value.driverId.toString() &&
+              evmotoOrderChatParticipants.value.orderId !=
+                  orderDetail.value.orderId.toString()) &&
+          (orderDetail.value.userId != null &&
+              orderDetail.value.driverId != null &&
+              orderDetail.value.driverId != 0 &&
+              orderDetail.value.orderId != null)) {
+        isCreateRoomLoading.value = true;
+        await getExistingChatRoom();
+        if (evmotoOrderChatParticipants.value.docId == null) {
+          await userCreateChatRoom();
+        }
+
+        if (evmotoOrderChatParticipants.value.docId != null) {
+          await setChatOnline();
+          await streamExistingChatRoom();
+          await streamExistingChatList();
+        }
+        isCreateRoomLoading.value = false;
       }
-      await setChatOnline();
-      await streamExistingChatRoom();
-      await streamExistingChatList();
     }
   }
 
   Future<void> refreshChatRoom() async {
-    await getExistingChatRoom();
-    if (evmotoOrderChatParticipants.value.docId != null) {
-      await setChatOnline();
-      await streamExistingChatRoom();
-      await streamExistingChatList();
+    if (isCreateRoomLoading.value == false) {
+      if ((evmotoOrderChatParticipants.value.userId !=
+                  orderDetail.value.userId.toString() &&
+              evmotoOrderChatParticipants.value.driverId !=
+                  orderDetail.value.driverId.toString() &&
+              evmotoOrderChatParticipants.value.orderId !=
+                  orderDetail.value.orderId.toString()) &&
+          (orderDetail.value.userId != null &&
+              orderDetail.value.driverId != null &&
+              orderDetail.value.driverId != 0 &&
+              orderDetail.value.orderId != null)) {
+        isCreateRoomLoading.value = true;
+        await getExistingChatRoom();
+        if (evmotoOrderChatParticipants.value.docId == null) {
+          await userCreateChatRoom();
+        }
+
+        if (evmotoOrderChatParticipants.value.docId != null) {
+          await setChatOnline();
+          await streamExistingChatRoom();
+          await streamExistingChatList();
+        }
+        isCreateRoomLoading.value = false;
+      }
     }
   }
 
@@ -824,6 +890,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         language: languageServices.languageCodeSystem.value,
         state: 3,
       );
+      await getOrderDetail();
     } catch (e) {
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
@@ -836,6 +903,14 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         ),
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+
+      if ([
+        "Better luck, next time!",
+        "Semoga lain kali lebih beruntung!",
+        "手速有点慢哦，订单已被抢啦！",
+      ].contains(e.toString())) {
+        Get.back();
+      }
     } finally {
       state.value = 3;
     }
@@ -851,6 +926,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         language: languageServices.languageCodeSystem.value,
         state: 4,
       );
+      await getOrderDetail();
     } catch (e) {
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
@@ -863,6 +939,14 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         ),
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+
+      if ([
+        "Better luck, next time!",
+        "Semoga lain kali lebih beruntung!",
+        "手速有点慢哦，订单已被抢啦！",
+      ].contains(e.toString())) {
+        Get.back();
+      }
     } finally {
       state.value = 4;
     }
@@ -878,6 +962,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         language: languageServices.languageCodeSystem.value,
         state: 5,
       );
+      await getOrderDetail();
     } catch (e) {
       final SnackBar snackBar = SnackBar(
         behavior: SnackBarBehavior.fixed,
@@ -890,6 +975,14 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         ),
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+
+      if ([
+        "Better luck, next time!",
+        "Semoga lain kali lebih beruntung!",
+        "手速有点慢哦，订单已被抢啦！",
+      ].contains(e.toString())) {
+        Get.back();
+      }
     } finally {
       state.value = 5;
     }
@@ -905,6 +998,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         language: languageServices.languageCodeSystem.value,
         state: 6,
       );
+      await getOrderDetail();
 
       state.value = 6;
 
@@ -925,6 +1019,14 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         ),
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+
+      if ([
+        "Better luck, next time!",
+        "Semoga lain kali lebih beruntung!",
+        "手速有点慢哦，订单已被抢啦！",
+      ].contains(e.toString())) {
+        Get.back();
+      }
     } finally {}
   }
 
@@ -1241,6 +1343,14 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         ),
       );
       rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+
+      if ([
+        "Better luck, next time!",
+        "Semoga lain kali lebih beruntung!",
+        "手速有点慢哦，订单已被抢啦！",
+      ].contains(e.toString())) {
+        Get.back();
+      }
     } finally {
       // await refreshAll();
     }
@@ -1276,7 +1386,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     // );
 
     if ([1, 2, 3, 4].contains(orderDetail.value.state)) {
-      if (locationServices.currentLatitude.value.toString() != "") {
+      if (locationServices.currentLatitude.value != null) {
         if (driverToOriginDirectionCache == null ||
             forceUpdateDriverToOrigin == true) {
           driverToOriginDirection.value = await openMapsRepository.getDirection(
@@ -1306,7 +1416,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     }
 
     if ([5, 6, 7, 8].contains(orderDetail.value.state)) {
-      if (locationServices.currentLatitude.value.toString() != "") {
+      if (locationServices.currentLatitude.value != null) {
         if (driverToDestinationDirectionCache == null ||
             forceUpdateDriverToDestination == true) {
           driverToDestinationDirection
@@ -1929,6 +2039,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                   "driverId",
                   isEqualTo: orderDetail.value.driverId.toString(),
                 )
+                .orderBy("createdAt", descending: true)
                 .get())
             .docs;
 

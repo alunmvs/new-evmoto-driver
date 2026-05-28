@@ -141,7 +141,8 @@ class ChatDetailController extends GetxController {
   }
 
   Future<void> sendMessage() async {
-    if (message.value != "" || attachmentUrl.value != "") {
+    if ((message.value != "" && textEditingController.text.trim() != "") ||
+        attachmentUrl.value != "") {
       var data = {
         "evmotoOrderChatParticipantsDocumentId": docId.value,
         "senderAttachmentUrl": attachmentUrl.value,

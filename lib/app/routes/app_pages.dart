@@ -56,6 +56,8 @@ import '../modules/my_activity/bindings/my_activity_binding.dart';
 import '../modules/my_activity/views/my_activity_view.dart';
 import '../modules/my_order/bindings/my_order_binding.dart';
 import '../modules/my_order/views/my_order_view.dart';
+import '../modules/my_order_v2/bindings/my_order_v2_binding.dart';
+import '../modules/my_order_v2/views/my_order_v2_view.dart';
 import '../modules/notification/bindings/notification_binding.dart';
 import '../modules/notification/views/notification_view.dart';
 import '../modules/order_detail/bindings/order_detail_binding.dart';
@@ -330,6 +332,11 @@ class AppPages {
       name: _Paths.HISTORY_GUARANTEE_INCOME,
       page: () => const HistoryGuaranteeIncomeView(),
       binding: HistoryGuaranteeIncomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.MY_ORDER_V2,
+      page: () => const MyOrderV2View(),
+      binding: MyOrderV2Binding(),
     ),
   ];
 }

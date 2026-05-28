@@ -670,27 +670,35 @@ class OrderDetailFooterSubView extends GetView<OrderDetailController> {
                     },
                   ),
                 ],
-                SizedBox(height: 16),
-                SizedBox(
-                  height: 46,
-                  width: MediaQuery.of(context).size.width,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Color(0XFFE54C3F)),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                if ([
+                  1,
+                  2,
+                  3,
+                  4,
+                ].contains(controller.orderDetail.value.state)) ...[
+                  SizedBox(height: 16),
+                  SizedBox(
+                    height: 46,
+                    width: MediaQuery.of(context).size.width,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Color(0XFFE54C3F)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      onPressed: () async {
+                        await controller.onTapCancelOrder();
+                      },
+                      child: Text(
+                        controller.languageServices.language.value.cancel ??
+                            "-",
+                        style: controller.typographyServices.bodyLargeBold.value
+                            .copyWith(color: Color(0XFFE54C3F)),
                       ),
                     ),
-                    onPressed: () async {
-                      await controller.onTapCancelOrder();
-                    },
-                    child: Text(
-                      controller.languageServices.language.value.cancel ?? "-",
-                      style: controller.typographyServices.bodyLargeBold.value
-                          .copyWith(color: Color(0XFFE54C3F)),
-                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),

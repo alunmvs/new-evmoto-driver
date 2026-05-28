@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
+import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/modules/account/views/account_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_balance_sub_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_guarantee_income_progress_bar_card_full_screen_sub_view.dart';
@@ -536,6 +537,17 @@ class HomeView extends GetView<HomeController> {
                                                                   );
                                                                   await controller
                                                                       .refreshAll();
+                                                                  // await Get.toNamed(
+                                                                  //   Routes
+                                                                  //       .MY_ORDER_V2,
+                                                                  // );
+                                                                  // await controller
+                                                                  //     .refreshAll();
+                                                                  // await controller
+                                                                  //     .showDialogAdvancedBookingConfirmation(
+                                                                  //       socketOrderStatusData:
+                                                                  //           SocketOrderStatusData(),
+                                                                  //     );
                                                                 },
                                                                 child: Container(
                                                                   padding:

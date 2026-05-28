@@ -5,10 +5,14 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
+import 'package:new_evmoto_driver/app/modules/order_detail/controllers/order_detail_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/notification_repository.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -99,9 +103,9 @@ class FirebasePushNotificationServices extends GetxService {
       InitializationSettings(
         android: AndroidInitializationSettings('ic_notification_small'),
         iOS: DarwinInitializationSettings(
-          requestAlertPermission: false,
-          requestBadgePermission: false,
-          requestSoundPermission: false,
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
         ),
       ),
       onDidReceiveNotificationResponse: (NotificationResponse response) {
@@ -154,14 +158,47 @@ class FirebasePushNotificationServices extends GetxService {
         .listen((fcmToken) {})
         .onError((err) {});
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // print("[DEBUG NOTIFICATION] ${message.data}");
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       // print("[DEBUG NOTIFICATION] ${message.data['title']}");
       // print("[DEBUG NOTIFICATION] ${message.data['body']}");
       // print(
       //   "[DEBUG NOTIFICATION] ${message.data['notification_type'] == 'VOICE_BROADCAST'}",
       // );
       // print("[DEBUG NOTIFICATION] ${"${message.data['voice_type']}.caf"}");
+
+      if (message.data['notification_type'] == 'VOICE_BROADCAST') {
+        if (['1'].contains(message.data['state'].toString())) {
+          if (Get.currentRoute == Routes.ORDER_DETAIL) {
+            var orderDetailController = Get.find<OrderDetailController>();
+
+            if (orderDetailController.orderId.value ==
+                SocketOrderStatusData.fromJson(
+                  message.data,
+                ).orderId.toString()) {
+              return;
+            }
+          }
+
+          var prefs = await SharedPreferences.getInstance();
+
+          if (prefs.getBool('home_controller_registered') == true) {
+            var homeController = Get.find<HomeController>();
+            await Future.wait([
+              homeController.refreshAll(),
+              homeController.showDialogOrderConfirmation(
+                socketOrderStatusData: SocketOrderStatusData(
+                  orderId: int.tryParse(message.data['order_id'].toString()),
+                  orderType: int.tryParse(
+                    message.data['order_type'].toString(),
+                  ),
+                  state: int.tryParse(message.data['state'].toString()),
+                  time: int.tryParse(message.data['time'].toString()),
+                ),
+              ),
+            ]);
+          }
+        }
+      }
 
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,
@@ -198,6 +235,40 @@ class FirebasePushNotificationServices extends GetxService {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
+      if (message.data['notification_type'] == 'VOICE_BROADCAST') {
+        if (['1'].contains(message.data['state'].toString())) {
+          if (Get.currentRoute == Routes.ORDER_DETAIL) {
+            var orderDetailController = Get.find<OrderDetailController>();
+
+            if (orderDetailController.orderId.value ==
+                SocketOrderStatusData.fromJson(
+                  message.data,
+                ).orderId.toString()) {
+              return;
+            }
+          }
+
+          var prefs = await SharedPreferences.getInstance();
+
+          if (prefs.getBool('home_controller_registered') == true) {
+            var homeController = Get.find<HomeController>();
+            await Future.wait([
+              homeController.refreshAll(),
+              homeController.showDialogOrderConfirmation(
+                socketOrderStatusData: SocketOrderStatusData(
+                  orderId: int.tryParse(message.data['order_id'].toString()),
+                  orderType: int.tryParse(
+                    message.data['order_type'].toString(),
+                  ),
+                  state: int.tryParse(message.data['state'].toString()),
+                  time: int.tryParse(message.data['time'].toString()),
+                ),
+              ),
+            ]);
+          }
+        }
+      }
+
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,
         message.data['title'],

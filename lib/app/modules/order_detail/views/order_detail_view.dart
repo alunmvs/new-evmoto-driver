@@ -693,7 +693,7 @@ class OrderDetailView extends GetView<OrderDetailController> {
                     child: OrderDetailFooterSubView(),
                   ),
                 ],
-                if (controller.isFetch.value) ...[
+                if (controller.isFetch.value == true) ...[
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,

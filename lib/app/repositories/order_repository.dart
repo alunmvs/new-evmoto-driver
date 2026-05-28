@@ -144,7 +144,7 @@ class OrderRepository {
     }
   }
 
-  Future<void> orderPushConfirm({
+  Future<bool> orderPushConfirm({
     required String orderId,
     required int language,
   }) async {
@@ -174,6 +174,8 @@ class OrderRepository {
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
+
+      return response.data['data'];
     } on DioException catch (e) {
       throw e.message.toString();
     }
