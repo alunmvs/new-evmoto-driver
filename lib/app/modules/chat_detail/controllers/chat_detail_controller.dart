@@ -158,6 +158,8 @@ class ChatDetailController extends GetxController {
           .collection('evmoto_order_chat_messages')
           .add(data);
 
+      textEditingController.clear();
+
       await FirebaseFirestore.instance
           .collection('evmoto_order_chat_participants')
           .doc(docId.value)
@@ -171,7 +173,6 @@ class ChatDetailController extends GetxController {
       message.value = "";
       attachmentUrl.value = "";
       isAttachmentOptionOpen.value = false;
-      textEditingController.clear();
     }
   }
 

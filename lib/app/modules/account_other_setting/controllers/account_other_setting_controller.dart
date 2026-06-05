@@ -7,6 +7,7 @@ import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.d
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -91,18 +92,7 @@ class AccountOtherSettingController extends GetxController {
     }
 
     await getCacheSizeInBytes();
-
-    var snackBar = SnackBar(
-      behavior: SnackBarBehavior.fixed,
-      backgroundColor: themeColorServices.sematicColorGreen400.value,
-      content: Text(
-        "Berhasil membersihkan cache",
-        style: typographyServices.bodySmallRegular.value.copyWith(
-          color: themeColorServices.neutralsColorGrey0.value,
-        ),
-      ),
-    );
-    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    SnackbarHelper.showSnackbarSuccess(text: "Berhasil membersihkan cache");
   }
 
   Future<void> onTapUpdateVersion() async {

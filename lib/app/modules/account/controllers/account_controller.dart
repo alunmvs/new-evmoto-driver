@@ -17,6 +17,7 @@ import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -178,22 +179,8 @@ class AccountController extends GetxController {
 
                         Get.offAllNamed(Routes.LOGIN);
 
-                        var snackBar = SnackBar(
-                          behavior: SnackBarBehavior.fixed,
-                          backgroundColor:
-                              themeColorServices.sematicColorGreen400.value,
-                          content: Text(
-                            "Berhasil keluar akun",
-                            style: typographyServices.bodySmallRegular.value
-                                .copyWith(
-                                  color: themeColorServices
-                                      .neutralsColorGrey0
-                                      .value,
-                                ),
-                          ),
-                        );
-                        rootScaffoldMessengerKey.currentState?.showSnackBar(
-                          snackBar,
+                        SnackbarHelper.showSnackbarSuccess(
+                          text: "Berhasil keluar akun",
                         );
                       },
                       child: Text(
@@ -347,17 +334,7 @@ class AccountController extends GetxController {
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          "Tidak dapat membuka whatsapp",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: "Tidak dapat membuka whatsapp");
     }
   }
 
@@ -727,25 +704,9 @@ class AccountController extends GetxController {
                                     otpCode: otpCode.value,
                                   );
                                 } catch (e) {
-                                  final SnackBar snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorRed400
-                                        .value,
-                                    content: Text(
-                                      e.toString(),
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
+                                  SnackbarHelper.showSnackbarError(
+                                    text: e.toString(),
                                   );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
                                   return;
                                 }
                                 await onTapSuccessDeleteAccountDialog();
@@ -755,26 +716,9 @@ class AccountController extends GetxController {
                                 await socketServices.closeWebsocket();
 
                                 Get.offAllNamed(Routes.LOGIN);
-
-                                var snackBar = SnackBar(
-                                  behavior: SnackBarBehavior.fixed,
-                                  backgroundColor: themeColorServices
-                                      .sematicColorGreen400
-                                      .value,
-                                  content: Text(
-                                    "Berhasil menghapus akun",
-                                    style: typographyServices
-                                        .bodySmallRegular
-                                        .value
-                                        .copyWith(
-                                          color: themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                        ),
-                                  ),
+                                SnackbarHelper.showSnackbarSuccess(
+                                  text: "Berhasil menghapus akun",
                                 );
-                                rootScaffoldMessengerKey.currentState
-                                    ?.showSnackBar(snackBar);
                               },
                         child: Text(
                           "Konfirmasi OTP",

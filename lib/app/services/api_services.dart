@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:dio_curl_logger/dio_curl_logger.dart';
 // import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -13,6 +14,7 @@ import 'package:new_evmoto_driver/app/services/firebase_push_notification_servic
 import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -38,7 +40,7 @@ class ApiServices extends GetxService {
     // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
     //     (client) {
     //       client.findProxy = (uri) {
-    //         return "PROXY 192.168.0.144:8888";
+    //         return "PROXY 192.168.0.139:8888";
     //       };
 
     //       client.badCertificateCallback =
@@ -99,6 +101,10 @@ class ApiServices extends GetxService {
                   userServices.clearUserInfo();
 
                   Get.offAllNamed(Routes.LOGIN);
+
+                  SnackbarHelper.showSnackbarError(
+                    text: "Anda sedang Login di perangkat lain",
+                  );
                 }
               }
             }

@@ -14,6 +14,7 @@ import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
 import 'package:new_evmoto_driver/app/utils/image_upload_helper.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -287,17 +288,9 @@ class RegisterFormController extends GetxController {
         vehicleRegistrationCertificateFrontPhotoUrl.value == "" ||
         vehicleRegistrationCertificateBackPhotoUrl.value == "" ||
         driverSelfieKtpPhotoUrl.value == "") {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          "Harap lengkapi data yang dibutuhkan",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+      SnackbarHelper.showSnackbarError(
+        text: "Harap lengkapi data yang dibutuhkan",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       isFormValid.value = false;
       return;
     }
@@ -336,17 +329,7 @@ class RegisterFormController extends GetxController {
       );
       Get.offAllNamed(Routes.REGISTER_FORM_COMPLETED);
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 }

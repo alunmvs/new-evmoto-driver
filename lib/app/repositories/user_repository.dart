@@ -22,7 +22,9 @@ class UserRepository {
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
-      // print("[DEBUG TOKEN] $token");
+      if (token == null) {
+        return UserInfo();
+      }
 
       var headers = {
         "Content-Type": "multipart/form-data",
@@ -52,6 +54,10 @@ class UserRepository {
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
+
+      if (token == null) {
+        return <WorkingArea>[];
+      }
 
       var headers = {
         "Content-Type": "application/json",

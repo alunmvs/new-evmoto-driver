@@ -7,6 +7,7 @@ import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.d
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 
@@ -154,47 +155,15 @@ class WithdrawController extends GetxController {
                                       );
                                   Get.close(1);
 
-                                  var snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorGreen400
-                                        .value,
-                                    content: Text(
-                                      "Berhasil menghapus nomor rekening",
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
+                                  SnackbarHelper.showSnackbarSuccess(
+                                    text: "Berhasil menghapus nomor rekening",
                                   );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
 
                                   await getBankAccountList();
                                 } catch (e) {
-                                  var snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: themeColorServices
-                                        .sematicColorRed400
-                                        .value,
-                                    content: Text(
-                                      e.toString(),
-                                      style: typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: themeColorServices
-                                                .neutralsColorGrey0
-                                                .value,
-                                          ),
-                                    ),
+                                  SnackbarHelper.showSnackbarError(
+                                    text: e.toString(),
                                   );
-                                  rootScaffoldMessengerKey.currentState
-                                      ?.showSnackBar(snackBar);
                                 }
                               },
                               buttonColor:

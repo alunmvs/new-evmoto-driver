@@ -24,6 +24,7 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/utils/time_process_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -235,17 +236,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       if (orderDetail.value.state == 10) {
         Get.back();
         await Get.find<HomeController>().refreshAll();
-        final SnackBar snackBar = SnackBar(
-          behavior: SnackBarBehavior.fixed,
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          content: Text(
-            "Pelanggan membatalkan pesanan",
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
-          ),
-        );
-        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+        SnackbarHelper.showSnackbarError(text: "Pelanggan membatalkan pesanan");
       }
     });
   }
@@ -282,17 +273,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         setupSchedulerDriverRefocusMapBound(),
       ]);
     } catch (e) {
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          "Terdapat error pada aplikasi",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: "Terdapat error pada aplikasi");
     }
   }
 
@@ -892,17 +873,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
       await getOrderDetail();
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
 
       if ([
         "Better luck, next time!",
@@ -928,17 +899,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
       await getOrderDetail();
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
 
       if ([
         "Better luck, next time!",
@@ -964,17 +925,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
       await getOrderDetail();
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
 
       if ([
         "Better luck, next time!",
@@ -1008,17 +959,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         arguments: {"order_id": orderId.value, "order_type": orderType.value},
       );
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
 
       if ([
         "Better luck, next time!",
@@ -1260,46 +1201,13 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                                     Get.close(1);
                                     Get.back();
                                     Get.find<HomeController>().refreshAll();
-
-                                    final SnackBar snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorGreen400
-                                          .value,
-                                      content: Text(
-                                        "Berhasil membatalkan pesanan",
-                                        style: typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
+                                    SnackbarHelper.showSnackbarSuccess(
+                                      text: "Berhasil membatalkan pesanan",
                                     );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
                                   } catch (e) {
-                                    final SnackBar snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorRed400
-                                          .value,
-                                      content: Text(
-                                        e.toString(),
-                                        style: typographyServices
-                                            .bodySmallBold
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
+                                    SnackbarHelper.showSnackbarError(
+                                      text: e.toString(),
                                     );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
                                   }
                                 },
                                 child: Text(
@@ -1332,17 +1240,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
       await getOrderDetail();
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
 
       if ([
         "Better luck, next time!",

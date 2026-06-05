@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 
 class AccountLanguageController extends GetxController {
@@ -32,16 +33,6 @@ class AccountLanguageController extends GetxController {
   Future<void> onTapSave() async {
     await languageServices.switchLanguage(languageCode: tempLanguageCode.value);
     Get.back();
-    var snackBar = SnackBar(
-      behavior: SnackBarBehavior.fixed,
-      backgroundColor: themeColorServices.sematicColorGreen400.value,
-      content: Text(
-        "Berhasil mengganti bahasa",
-        style: typographyServices.bodySmallRegular.value.copyWith(
-          color: themeColorServices.neutralsColorGrey0.value,
-        ),
-      ),
-    );
-    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    SnackbarHelper.showSnackbarSuccess(text: "Berhasil mengganti bahasa");
   }
 }

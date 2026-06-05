@@ -7,6 +7,7 @@ import 'package:new_evmoto_driver/app/repositories/bank_account_repository.dart'
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -82,18 +83,9 @@ class AddEditWithdrawBankAccountController extends GetxController {
           );
 
           Get.back();
-
-          var snackBar = SnackBar(
-            behavior: SnackBarBehavior.fixed,
-            backgroundColor: themeColorServices.sematicColorGreen400.value,
-            content: Text(
-              "Berhasil menambah rekening penarikan",
-              style: typographyServices.bodySmallRegular.value.copyWith(
-                color: themeColorServices.neutralsColorGrey0.value,
-              ),
-            ),
+          SnackbarHelper.showSnackbarSuccess(
+            text: "Berhasil menambah rekening penarikan",
           );
-          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
         } else {
           await bankAccountRepository.updateBankAccount(
             id: bankAccount.value.id!,
@@ -108,30 +100,12 @@ class AddEditWithdrawBankAccountController extends GetxController {
 
           Get.back();
 
-          var snackBar = SnackBar(
-            behavior: SnackBarBehavior.fixed,
-            backgroundColor: themeColorServices.sematicColorGreen400.value,
-            content: Text(
-              "Berhasil mengubah rekening penarikan",
-              style: typographyServices.bodySmallRegular.value.copyWith(
-                color: themeColorServices.neutralsColorGrey0.value,
-              ),
-            ),
+          SnackbarHelper.showSnackbarSuccess(
+            text: "Berhasil menambah rekening penarikan",
           );
-          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
         }
       } catch (e) {
-        var snackBar = SnackBar(
-          behavior: SnackBarBehavior.fixed,
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          content: Text(
-            e.toString(),
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
-          ),
-        );
-        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+        SnackbarHelper.showSnackbarError(text: e.toString());
       }
     }
   }

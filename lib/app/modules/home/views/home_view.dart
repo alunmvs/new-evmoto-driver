@@ -14,6 +14,7 @@ import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_guarante
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_statistics_card_sub_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/order_card_home_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
@@ -37,23 +38,6 @@ class HomeView extends GetView<HomeController> {
             if (now.difference(controller.lastPressedBackDateTime.value) >
                 Duration(seconds: 2)) {
               controller.lastPressedBackDateTime.value = now;
-
-              var snackBar = SnackBar(
-                behavior: SnackBarBehavior.fixed,
-                backgroundColor:
-                    controller.themeColorServices.primaryBlue.value,
-                content: Text(
-                  "Tekan sekali lagi untuk keluar aplikasi",
-                  style: controller.typographyServices.bodySmallRegular.value
-                      .copyWith(
-                        color: controller
-                            .themeColorServices
-                            .neutralsColorGrey0
-                            .value,
-                      ),
-                ),
-              );
-              rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
             } else {
               SystemNavigator.pop();
             }

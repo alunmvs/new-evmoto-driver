@@ -10,6 +10,7 @@ import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.d
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -80,17 +81,10 @@ class WithdrawAmountController extends GetxController {
       );
 
       if (withdrawAmount < withdrawAmountMin) {
-        final SnackBar snackBar = SnackBar(
-          behavior: SnackBarBehavior.fixed,
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          content: Text(
-            "Minimum penarikan dana ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(withdrawAmountMin)}",
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
-          ),
+        SnackbarHelper.showSnackbarError(
+          text:
+              "Minimum penarikan dana ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(withdrawAmountMin)}",
         );
-        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
         canRequestFocus.value = true;
         return;
       }
@@ -339,48 +333,17 @@ class WithdrawAmountController extends GetxController {
                                 Get.back();
                                 Get.back();
 
-                                var snackBar = SnackBar(
-                                  behavior: SnackBarBehavior.fixed,
-                                  backgroundColor: themeColorServices
-                                      .sematicColorGreen400
-                                      .value,
-                                  content: Text(
-                                    "Berhasil pengajuan penarikan dana",
-                                    style: typographyServices
-                                        .bodySmallRegular
-                                        .value
-                                        .copyWith(
-                                          color: themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                        ),
-                                  ),
+                                SnackbarHelper.showSnackbarSuccess(
+                                  text: "Berhasil pengajuan penarikan dana",
                                 );
-                                rootScaffoldMessengerKey.currentState
-                                    ?.showSnackBar(snackBar);
 
                                 Get.toNamed(Routes.HISTORY_BALANCE_WITHDRAW);
                               } catch (e) {
                                 Get.close(1);
-                                final SnackBar snackBar = SnackBar(
-                                  behavior: SnackBarBehavior.fixed,
-                                  backgroundColor: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
-                                  content: Text(
-                                    e.toString(),
-                                    style: typographyServices
-                                        .bodySmallRegular
-                                        .value
-                                        .copyWith(
-                                          color: themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                        ),
-                                  ),
+
+                                SnackbarHelper.showSnackbarError(
+                                  text: e.toString(),
                                 );
-                                rootScaffoldMessengerKey.currentState
-                                    ?.showSnackBar(snackBar);
                               }
                             },
                             child: Text(
@@ -405,17 +368,9 @@ class WithdrawAmountController extends GetxController {
         ),
       );
     } else {
-      var snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          "Harap mengisi nominal penarikan dana",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+      SnackbarHelper.showSnackbarError(
+        text: "Harap mengisi nominal penarikan dana",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
 
     canRequestFocus.value = true;

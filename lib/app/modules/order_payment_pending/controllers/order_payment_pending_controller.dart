@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
@@ -7,6 +8,8 @@ import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_driver/main.dart';
 
 class OrderPaymentPendingController extends GetxController {
   final OrderRepository orderRepository;
@@ -79,5 +82,9 @@ class OrderPaymentPendingController extends GetxController {
       orderId: orderId.value,
     );
     await getOrderDetail();
+    Get.back();
+    SnackbarHelper.showSnackbarSuccess(
+      text: "Anda telah menyelesaikan perjalanan ini.",
+    );
   }
 }

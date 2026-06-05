@@ -14,6 +14,7 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
@@ -692,45 +693,13 @@ class MyOrderV2Controller extends GetxController
                                     // Get.back();
                                     // Get.find<HomeController>().refreshAll();
 
-                                    final SnackBar snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorGreen400
-                                          .value,
-                                      content: Text(
-                                        "Berhasil membatalkan pesanan",
-                                        style: typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
+                                    SnackbarHelper.showSnackbarSuccess(
+                                      text: "Berhasil membatalkan pesanan",
                                     );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
                                   } catch (e) {
-                                    final SnackBar snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorRed400
-                                          .value,
-                                      content: Text(
-                                        e.toString(),
-                                        style: typographyServices
-                                            .bodySmallBold
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
+                                    SnackbarHelper.showSnackbarError(
+                                      text: e.toString(),
                                     );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
                                   }
                                 },
                                 child: Text(

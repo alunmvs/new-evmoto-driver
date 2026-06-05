@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gallery_saver_plus/gallery_saver.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:path_provider/path_provider.dart';
@@ -134,56 +135,17 @@ class DepositBalancePaymentWebviewView
                         final success = await GallerySaver.saveImage(file.path);
 
                         if (success == true) {
-                          var snackBar = SnackBar(
-                            behavior: SnackBarBehavior.fixed,
-                            backgroundColor: controller
-                                .themeColorServices
-                                .sematicColorGreen400
-                                .value,
-                            content: Text(
-                              "Berhasil menyimpan gambar pada gallery",
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallRegular
-                                  .value
-                                  .copyWith(
-                                    color: controller
-                                        .themeColorServices
-                                        .neutralsColorGrey0
-                                        .value,
-                                  ),
-                            ),
-                          );
-                          rootScaffoldMessengerKey.currentState?.showSnackBar(
-                            snackBar,
+                          SnackbarHelper.showSnackbarSuccess(
+                            text: "Berhasil menyimpan gambar pada gallery",
                           );
                         }
 
                         await file.delete();
                       } catch (e) {}
                     } else {
-                      var snackBar = SnackBar(
-                        behavior: SnackBarBehavior.fixed,
-                        backgroundColor: controller
-                            .themeColorServices
-                            .sematicColorRed400
-                            .value,
-                        content: Text(
-                          "Tidak memiliki akses menyimpan gambar ke gallery",
-                          style: controller
-                              .typographyServices
-                              .bodySmallRegular
-                              .value
-                              .copyWith(
-                                color: controller
-                                    .themeColorServices
-                                    .neutralsColorGrey0
-                                    .value,
-                              ),
-                        ),
-                      );
-                      rootScaffoldMessengerKey.currentState?.showSnackBar(
-                        snackBar,
+                      SnackbarHelper.showSnackbarError(
+                        text:
+                            "Tidak memiliki akses menyimpan gambar ke gallery",
                       );
                     }
                   }
@@ -234,55 +196,15 @@ class DepositBalancePaymentWebviewView
                       "settlement") {
                     Get.back();
                     Get.back();
-                    final SnackBar snackBar = SnackBar(
-                      behavior: SnackBarBehavior.fixed,
-                      backgroundColor: controller
-                          .themeColorServices
-                          .sematicColorGreen400
-                          .value,
-                      content: Text(
-                        "Saldo berhasil ditambah",
-                        style: controller
-                            .typographyServices
-                            .bodySmallRegular
-                            .value
-                            .copyWith(
-                              color: controller
-                                  .themeColorServices
-                                  .neutralsColorGrey0
-                                  .value,
-                            ),
-                      ),
-                    );
-                    rootScaffoldMessengerKey.currentState?.showSnackBar(
-                      snackBar,
+                    SnackbarHelper.showSnackbarSuccess(
+                      text: "Saldo berhasil ditambah",
                     );
                     return NavigationActionPolicy.CANCEL;
                   } else if (uri.queryParameters['action'].toString() ==
                       "abandoned") {
                     Get.back();
-                    final SnackBar snackBar = SnackBar(
-                      behavior: SnackBarBehavior.fixed,
-                      backgroundColor: controller
-                          .themeColorServices
-                          .sematicColorRed400
-                          .value,
-                      content: Text(
-                        "Transaksi kedaluwarsa",
-                        style: controller
-                            .typographyServices
-                            .bodySmallRegular
-                            .value
-                            .copyWith(
-                              color: controller
-                                  .themeColorServices
-                                  .neutralsColorGrey0
-                                  .value,
-                            ),
-                      ),
-                    );
-                    rootScaffoldMessengerKey.currentState?.showSnackBar(
-                      snackBar,
+                    SnackbarHelper.showSnackbarError(
+                      text: "Transaksi kedaluwarsa",
                     );
                     return NavigationActionPolicy.CANCEL;
                   }
@@ -336,37 +258,16 @@ class DepositBalancePaymentWebviewView
         final success = await GallerySaver.saveImage(file.path);
 
         if (success == true) {
-          var snackBar = SnackBar(
-            behavior: SnackBarBehavior.fixed,
-            backgroundColor:
-                controller.themeColorServices.sematicColorGreen400.value,
-            content: Text(
-              "Berhasil menyimpan gambar pada gallery",
-              style: controller.typographyServices.bodySmallRegular.value
-                  .copyWith(
-                    color:
-                        controller.themeColorServices.neutralsColorGrey0.value,
-                  ),
-            ),
+          SnackbarHelper.showSnackbarSuccess(
+            text: "Berhasil menyimpan gambar pada gallery",
           );
-          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
         }
 
         await file.delete();
       } else {
-        var snackBar = SnackBar(
-          behavior: SnackBarBehavior.fixed,
-          backgroundColor:
-              controller.themeColorServices.sematicColorRed400.value,
-          content: Text(
-            "Tidak memiliki akses menyimpan gambar ke gallery",
-            style: controller.typographyServices.bodySmallRegular.value
-                .copyWith(
-                  color: controller.themeColorServices.neutralsColorGrey0.value,
-                ),
-          ),
+        SnackbarHelper.showSnackbarError(
+          text: "Tidak memiliki akses menyimpan gambar ke gallery",
         );
-        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       }
       controller.isLoadingDownloadBlob.value = false;
     }

@@ -8,6 +8,7 @@ import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -85,17 +86,10 @@ class DepositBalanceController extends GetxController {
         );
 
         if (money < depositAmountMin) {
-          final SnackBar snackBar = SnackBar(
-            behavior: SnackBarBehavior.fixed,
-            backgroundColor: themeColorServices.sematicColorRed400.value,
-            content: Text(
-              "${languageServices.language.value.minimumRechargeBalance!} ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(depositAmountMin)}",
-              style: typographyServices.bodySmallRegular.value.copyWith(
-                color: themeColorServices.neutralsColorGrey0.value,
-              ),
-            ),
+          SnackbarHelper.showSnackbarError(
+            text:
+                "${languageServices.language.value.minimumRechargeBalance!} ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(depositAmountMin)}",
           );
-          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
           return;
         }
         var depositBalance = await paymentRepository.rechargeDriver(
@@ -115,17 +109,7 @@ class DepositBalanceController extends GetxController {
 
         await getUserInfoDetail();
       } catch (e) {
-        final SnackBar snackBar = SnackBar(
-          behavior: SnackBarBehavior.fixed,
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          content: Text(
-            e.toString(),
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
-          ),
-        );
-        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+        SnackbarHelper.showSnackbarError(text: e.toString());
       }
     }
   }

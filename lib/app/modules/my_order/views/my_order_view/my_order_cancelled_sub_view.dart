@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/modules/my_order/controllers/my_order_controller.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
@@ -85,12 +86,10 @@ class MyOrderCancelledSubView extends GetView<MyOrderController> {
                     child: Container(
                       padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: cancelOrder.state == 10
-                            ? Color(0XFFEBEBEB)
-                            : controller
-                                  .themeColorServices
-                                  .neutralsColorGrey0
-                                  .value,
+                        color: controller
+                            .themeColorServices
+                            .neutralsColorGrey0
+                            .value,
                         border: Border.all(color: Color(0XFFD3D3D3)),
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -98,114 +97,275 @@ class MyOrderCancelledSubView extends GetView<MyOrderController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              if (cancelOrder.state == 10) ...[
+                              // Reservation
+                              if (cancelOrder.reservation == 1) ...[
                                 Container(
                                   padding: EdgeInsets.symmetric(
-                                    vertical: 4,
-                                    horizontal: 8,
+                                    horizontal: 10,
+                                    vertical: 3,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Color(0XFFDFDFDF),
                                     borderRadius: BorderRadius.circular(9999),
+                                    color: Color(0XFF0573EA),
                                   ),
                                   child: Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .canceled ??
-                                        "-",
+                                    "Reguler",
                                     style: controller
                                         .typographyServices
-                                        .captionSmallRegular
+                                        .captionLargeBold
                                         .value
-                                        .copyWith(color: Color(0XFF979797)),
+                                        .copyWith(color: Color(0XFFFFFFFF)),
                                   ),
                                 ),
                               ],
-                              if ([
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                              ].contains(cancelOrder.state)) ...[
+                              if (cancelOrder.reservation == 2) ...[
                                 Container(
                                   padding: EdgeInsets.symmetric(
-                                    vertical: 4,
-                                    horizontal: 8,
+                                    horizontal: 10,
+                                    vertical: 3,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Color(0XFFD6EAFF),
                                     borderRadius: BorderRadius.circular(9999),
+                                    color: Color(0XFFEA7405),
                                   ),
                                   child: Text(
-                                    "Dalam Layanan",
+                                    "Booking",
                                     style: controller
                                         .typographyServices
-                                        .captionSmallRegular
+                                        .captionLargeBold
                                         .value
-                                        .copyWith(color: Color(0XFF0573EA)),
+                                        .copyWith(color: Color(0XFFFFFFFF)),
                                   ),
                                 ),
                               ],
-                              if ([8, 9].contains(cancelOrder.state)) ...[
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 4,
-                                    horizontal: 8,
+                              SizedBox(width: 6),
+                              // Status
+                              if (cancelOrder.reservation == 1) ...[
+                                if (cancelOrder.state == 10) ...[
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 3,
+                                      horizontal: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(9999),
+                                      border: Border.all(
+                                        color: Color(0XFF979797),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .canceled ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFF979797)),
+                                    ),
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFFD0FFDD),
-                                    borderRadius: BorderRadius.circular(9999),
+                                ],
+                                if ([
+                                  1,
+                                  2,
+                                  3,
+                                  4,
+                                  5,
+                                  6,
+                                  7,
+                                ].contains(cancelOrder.state)) ...[
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 3,
+                                      horizontal: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Color(0XFF0573EA),
+                                      ),
+                                      borderRadius: BorderRadius.circular(9999),
+                                    ),
+                                    child: Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .inService ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFF0573EA)),
+                                    ),
                                   ),
-                                  child: Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .finished ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .captionSmallRegular
-                                        .value
-                                        .copyWith(color: Color(0XFF34A853)),
+                                ],
+                                if ([8, 9].contains(cancelOrder.state)) ...[
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 3,
+                                      horizontal: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(9999),
+                                      border: Border.all(
+                                        color: Color(0XFF00731F),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      controller
+                                              .languageServices
+                                              .language
+                                              .value
+                                              .finished ??
+                                          "-",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFF00731F)),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ],
-                              // Text(
-                              //   NumberFormat.currency(
-                              //     locale: 'id_ID',
-                              //     symbol: 'Rp ',
-                              //     decimalDigits: 0,
-                              //   ).format(cancelOrder.totalOrderCost ?? 0),
-                              //   style: controller
-                              //       .typographyServices
-                              //       .captionLargeBold
-                              //       .value
-                              //       .copyWith(
-                              //         color: cancelOrder.state == 10
-                              //             ? Color(0XFFB3B3B3)
-                              //             : [
-                              //                 1,
-                              //                 2,
-                              //                 3,
-                              //                 4,
-                              //                 5,
-                              //                 6,
-                              //                 7,
-                              //               ].contains(cancelOrder.state)
-                              //             ? Color(0XFF0573EA)
-                              //             : Color(0XFF34A853),
-                              //       ),
-                              // ),
+                              if (cancelOrder.reservation == 2) ...[
+                                if (cancelOrder.advanceBookingState == 3) ...[
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 3,
+                                      horizontal: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(9999),
+                                      border: Border.all(
+                                        color: Color(0XFF0573EA),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Dalam Layanan",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFF0573EA)),
+                                    ),
+                                  ),
+                                ],
+                                if (cancelOrder.advanceBookingState == 2) ...[
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 3,
+                                      horizontal: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(9999),
+                                      border: Border.all(
+                                        color: Color(0XFFCE6400),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Sedang Menunggu",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFCE6400)),
+                                    ),
+                                  ),
+                                ],
+                                if (cancelOrder.advanceBookingState == 3) ...[
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 3,
+                                      horizontal: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(9999),
+                                      border: Border.all(
+                                        color: Color(0XFF00731F),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Selesai",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFF00731F)),
+                                    ),
+                                  ),
+                                ],
+                                if (cancelOrder.advanceBookingState == 5) ...[
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 3,
+                                      horizontal: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(9999),
+                                      border: Border.all(
+                                        color: Color(0XFF979797),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Dibatalkan",
+                                      style: controller
+                                          .typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFF979797)),
+                                    ),
+                                  ),
+                                ],
+                              ],
                             ],
                           ),
+                          if (cancelOrder.reservation == 2) ...[
+                            if (cancelOrder.state != 10) ...[
+                              SizedBox(height: 8),
+                              Text(
+                                "Tanggal dan Waktu",
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value
+                                    .copyWith(color: Color(0XFFB3B3B3)),
+                              ),
+                              SizedBox(height: 2),
+                              Text(
+                                DateFormat(
+                                  'EEEE, d MMMM yyyy · HH:mm',
+                                  controller
+                                      .languageServices
+                                      .languageCode
+                                      .value,
+                                ).format(
+                                  DateTime.parse(
+                                    cancelOrder.advanceBookingTravelTime!
+                                        .replaceFirst(' ', 'T'),
+                                  ),
+                                ),
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallRegular
+                                    .value
+                                    .copyWith(
+                                      color: controller
+                                          .themeColorServices
+                                          .textColor
+                                          .value,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ],
                           SizedBox(height: 8),
                           Text(
                             controller
@@ -220,6 +380,7 @@ class MyOrderCancelledSubView extends GetView<MyOrderController> {
                                 .value
                                 .copyWith(color: Color(0XFFB3B3B3)),
                           ),
+                          SizedBox(height: 2),
                           Text(
                             cancelOrder.endAddress!,
                             style: controller
@@ -227,12 +388,10 @@ class MyOrderCancelledSubView extends GetView<MyOrderController> {
                                 .bodySmallRegular
                                 .value
                                 .copyWith(
-                                  color: cancelOrder.state == 10
-                                      ? Color(0XFFB3B3B3)
-                                      : controller
-                                            .themeColorServices
-                                            .textColor
-                                            .value,
+                                  color: controller
+                                      .themeColorServices
+                                      .textColor
+                                      .value,
                                   fontWeight: FontWeight.w600,
                                 ),
                             maxLines: 1,

@@ -63,6 +63,14 @@ class HomeGuaranteeIncomeProgressBarCardFullScreenSubView
                             .inMinutes,
                       ),
                       shouldShowMinutes: (duration) => duration.inDays == 0,
+                      onDone: () async {
+                        controller
+                                .isActiveGuaranteeIncomeProgressBarOpen
+                                .value =
+                            false;
+                        await controller.getEnsureIncomeRuleId();
+                        await controller.getGuaranteeIncomeProgressBarList();
+                      },
                       style: controller
                           .typographyServices
                           .captionLargeRegular

@@ -19,6 +19,7 @@ import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/utils/socket_helper.dart';
 import 'package:new_evmoto_driver/environment.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -67,8 +68,8 @@ class SocketServices extends GetxService {
 
           if (dataJson != null) {
             if (["PONG", "OK"].contains(dataJson['method']) == false) {
-              // print("[DEBUG SOCKET] ${dataJson['method']}");
-              // print("[DEBUG SOCKET] $dataJson");
+              print("[DEBUG SOCKET] ${dataJson['method']}");
+              print("[DEBUG SOCKET] $dataJson");
             }
 
             var method = dataJson['method'] ?? "";
@@ -93,6 +94,8 @@ class SocketServices extends GetxService {
                 );
                 var homeController = Get.find<HomeController>();
 
+                print("[DEBUG SOCKET] oke-1");
+
                 if (socketOrderStatusData.state == 1) {
                   if (Get.currentRoute == Routes.ORDER_DETAIL) {
                     var orderDetailController =
@@ -100,6 +103,29 @@ class SocketServices extends GetxService {
 
                     if (orderDetailController.orderId.value !=
                         socketOrderStatusData.orderId.toString()) {
+                      if (socketOrderStatusData.travelTime == null) {
+                        print("[DEBUG SOCKET] oke-2");
+                        await Future.wait([
+                          homeController.refreshAll(),
+                          homeController.showDialogOrderConfirmation(
+                            socketOrderStatusData: socketOrderStatusData,
+                          ),
+                        ]);
+                      }
+
+                      if (socketOrderStatusData.travelTime != null) {
+                        print("[DEBUG SOCKET] oke-3");
+                        await Future.wait([
+                          homeController.refreshAll(),
+                          homeController.showDialogAdvancedBookingConfirmation(
+                            socketOrderStatusData: socketOrderStatusData,
+                          ),
+                        ]);
+                      }
+                    }
+                  } else {
+                    if (socketOrderStatusData.travelTime == null) {
+                      print("[DEBUG SOCKET] oke-4");
                       await Future.wait([
                         homeController.refreshAll(),
                         homeController.showDialogOrderConfirmation(
@@ -107,13 +133,16 @@ class SocketServices extends GetxService {
                         ),
                       ]);
                     }
-                  } else {
-                    await Future.wait([
-                      homeController.refreshAll(),
-                      homeController.showDialogOrderConfirmation(
-                        socketOrderStatusData: socketOrderStatusData,
-                      ),
-                    ]);
+
+                    if (socketOrderStatusData.travelTime != null) {
+                      print("[DEBUG SOCKET] oke-5");
+                      await Future.wait([
+                        homeController.refreshAll(),
+                        homeController.showDialogAdvancedBookingConfirmation(
+                          socketOrderStatusData: socketOrderStatusData,
+                        ),
+                      ]);
+                    }
                   }
                 }
 
@@ -136,21 +165,9 @@ class SocketServices extends GetxService {
                       socketOrderStatusData.orderId.toString()) {
                     Get.back();
                     await Get.find<HomeController>().refreshAll();
-                    final SnackBar snackBar = SnackBar(
-                      behavior: SnackBarBehavior.fixed,
-                      backgroundColor:
-                          themeColorServices.sematicColorRed400.value,
-                      content: Text(
-                        "Pelanggan membatalkan pesanan",
-                        style: typographyServices.bodySmallRegular.value
-                            .copyWith(
-                              color:
-                                  themeColorServices.neutralsColorGrey0.value,
-                            ),
-                      ),
-                    );
-                    rootScaffoldMessengerKey.currentState?.showSnackBar(
-                      snackBar,
+
+                    SnackbarHelper.showSnackbarError(
+                      text: "Pelanggan membatalkan pesanan",
                     );
                   }
                 }
@@ -175,18 +192,9 @@ class SocketServices extends GetxService {
 
                   await homeController.getVehicleStatistics();
 
-                  final SnackBar snackBar = SnackBar(
-                    behavior: SnackBarBehavior.fixed,
-                    backgroundColor:
-                        themeColorServices.sematicColorGreen400.value,
-                    content: Text(
-                      dataJson["data"]["message"],
-                      style: typographyServices.bodySmallRegular.value.copyWith(
-                        color: themeColorServices.neutralsColorGrey0.value,
-                      ),
-                    ),
+                  SnackbarHelper.showSnackbarSuccess(
+                    text: dataJson["data"]["message"],
                   );
-                  rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
                 }
                 break;
               case 'DRIVER_BALANCE_LOW':
@@ -198,18 +206,9 @@ class SocketServices extends GetxService {
 
                   await homeController.getVehicleStatistics();
 
-                  final SnackBar snackBar = SnackBar(
-                    behavior: SnackBarBehavior.fixed,
-                    backgroundColor:
-                        themeColorServices.sematicColorRed400.value,
-                    content: Text(
-                      dataJson["data"]["message"],
-                      style: typographyServices.bodySmallRegular.value.copyWith(
-                        color: themeColorServices.neutralsColorGrey0.value,
-                      ),
-                    ),
+                  SnackbarHelper.showSnackbarError(
+                    text: dataJson["data"]["message"],
                   );
-                  rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
                 }
                 break;
               case 'OFFLINE':
@@ -236,14 +235,22 @@ class SocketServices extends GetxService {
                 userServices.clearUserInfo();
 
                 Get.offAllNamed(Routes.LOGIN);
+
+                SnackbarHelper.showSnackbarError(
+                  text: "Anda sedang Login di perangkat lain",
+                );
                 break;
               case 'USER_CANCEL_ORDER':
                 var prefs = await SharedPreferences.getInstance();
                 if (prefs.getBool('home_controller_registered') == true) {
                   var orderId = dataJson['data']['orderId'];
                   var isDialogShow =
-                      prefs.getBool('dialog_order_confirmation_$orderId') ??
-                      false;
+                      (prefs.getBool('dialog_order_confirmation_$orderId') ??
+                          false) ||
+                      (prefs.getBool(
+                            'dialog_advance_booking_confirmation_$orderId',
+                          ) ??
+                          false);
 
                   if (isDialogShow == true) {
                     Get.close(1);

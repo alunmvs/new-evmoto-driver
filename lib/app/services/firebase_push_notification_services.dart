@@ -183,19 +183,39 @@ class FirebasePushNotificationServices extends GetxService {
 
           if (prefs.getBool('home_controller_registered') == true) {
             var homeController = Get.find<HomeController>();
-            await Future.wait([
-              homeController.refreshAll(),
-              homeController.showDialogOrderConfirmation(
-                socketOrderStatusData: SocketOrderStatusData(
-                  orderId: int.tryParse(message.data['order_id'].toString()),
-                  orderType: int.tryParse(
-                    message.data['order_type'].toString(),
+            if (message.data['travel_time'] == null) {
+              await Future.wait([
+                homeController.refreshAll(),
+                homeController.showDialogOrderConfirmation(
+                  socketOrderStatusData: SocketOrderStatusData(
+                    orderId: int.tryParse(message.data['order_id'].toString()),
+                    orderType: int.tryParse(
+                      message.data['order_type'].toString(),
+                    ),
+                    state: int.tryParse(message.data['state'].toString()),
+                    time: int.tryParse(message.data['time'].toString()),
+                    travelTime: message.data['travel_time'],
                   ),
-                  state: int.tryParse(message.data['state'].toString()),
-                  time: int.tryParse(message.data['time'].toString()),
                 ),
-              ),
-            ]);
+              ]);
+            }
+
+            if (message.data['travel_time'] != null) {
+              await Future.wait([
+                homeController.refreshAll(),
+                homeController.showDialogAdvancedBookingConfirmation(
+                  socketOrderStatusData: SocketOrderStatusData(
+                    orderId: int.tryParse(message.data['order_id'].toString()),
+                    orderType: int.tryParse(
+                      message.data['order_type'].toString(),
+                    ),
+                    state: int.tryParse(message.data['state'].toString()),
+                    time: int.tryParse(message.data['time'].toString()),
+                    travelTime: message.data['travel_time'],
+                  ),
+                ),
+              ]);
+            }
           }
         }
       }
@@ -252,19 +272,40 @@ class FirebasePushNotificationServices extends GetxService {
 
           if (prefs.getBool('home_controller_registered') == true) {
             var homeController = Get.find<HomeController>();
-            await Future.wait([
-              homeController.refreshAll(),
-              homeController.showDialogOrderConfirmation(
-                socketOrderStatusData: SocketOrderStatusData(
-                  orderId: int.tryParse(message.data['order_id'].toString()),
-                  orderType: int.tryParse(
-                    message.data['order_type'].toString(),
+
+            if (message.data['travel_time'] == null) {
+              await Future.wait([
+                homeController.refreshAll(),
+                homeController.showDialogOrderConfirmation(
+                  socketOrderStatusData: SocketOrderStatusData(
+                    orderId: int.tryParse(message.data['order_id'].toString()),
+                    orderType: int.tryParse(
+                      message.data['order_type'].toString(),
+                    ),
+                    state: int.tryParse(message.data['state'].toString()),
+                    time: int.tryParse(message.data['time'].toString()),
+                    travelTime: message.data['travel_time'],
                   ),
-                  state: int.tryParse(message.data['state'].toString()),
-                  time: int.tryParse(message.data['time'].toString()),
                 ),
-              ),
-            ]);
+              ]);
+            }
+
+            if (message.data['travel_time'] != null) {
+              await Future.wait([
+                homeController.refreshAll(),
+                homeController.showDialogAdvancedBookingConfirmation(
+                  socketOrderStatusData: SocketOrderStatusData(
+                    orderId: int.tryParse(message.data['order_id'].toString()),
+                    orderType: int.tryParse(
+                      message.data['order_type'].toString(),
+                    ),
+                    state: int.tryParse(message.data['state'].toString()),
+                    time: int.tryParse(message.data['time'].toString()),
+                    travelTime: message.data['travel_time'],
+                  ),
+                ),
+              ]);
+            }
           }
         }
       }
