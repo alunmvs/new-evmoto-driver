@@ -40,7 +40,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         presentBadge: true,
         presentBanner: true,
         presentSound: true,
-        sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+        sound:
+            [
+              'VOICE_BROADCAST',
+              'ORDER_DISPATCH_ADVANCE_BOOKING',
+            ].contains(message.data['notification_type'])
             ? "${message.data['voice_type']}.caf"
             : null,
       ),
@@ -50,7 +54,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         largeIcon: DrawableResourceAndroidBitmap('ic_notification_large'),
         icon: 'ic_notification_small',
         color: const Color(0XFF0060C6),
-        sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+        sound:
+            [
+              'VOICE_BROADCAST',
+              'ORDER_DISPATCH_ADVANCE_BOOKING',
+            ].contains(message.data['notification_type'])
             ? RawResourceAndroidNotificationSound(message.data['voice_type'])
             : null,
       ),
@@ -159,14 +167,12 @@ class FirebasePushNotificationServices extends GetxService {
         .onError((err) {});
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      // print("[DEBUG NOTIFICATION] ${message.data['title']}");
-      // print("[DEBUG NOTIFICATION] ${message.data['body']}");
-      // print(
-      //   "[DEBUG NOTIFICATION] ${message.data['notification_type'] == 'VOICE_BROADCAST'}",
-      // );
-      // print("[DEBUG NOTIFICATION] ${"${message.data['voice_type']}.caf"}");
+      // print("[DEBUG NOTIFICATION] ${message.data}");
 
-      if (message.data['notification_type'] == 'VOICE_BROADCAST') {
+      if ([
+        'VOICE_BROADCAST',
+        'ORDER_DISPATCH_ADVANCE_BOOKING',
+      ].contains(message.data['notification_type'])) {
         if (['1'].contains(message.data['state'].toString())) {
           if (Get.currentRoute == Routes.ORDER_DETAIL) {
             var orderDetailController = Get.find<OrderDetailController>();
@@ -230,7 +236,11 @@ class FirebasePushNotificationServices extends GetxService {
             presentBadge: true,
             presentBanner: true,
             presentSound: true,
-            sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+            sound:
+                [
+                  'VOICE_BROADCAST',
+                  'ORDER_DISPATCH_ADVANCE_BOOKING',
+                ].contains(message.data['notification_type'])
                 ? "${message.data['voice_type']}.caf"
                 : null,
             interruptionLevel: InterruptionLevel.active,
@@ -242,7 +252,11 @@ class FirebasePushNotificationServices extends GetxService {
             icon: 'ic_notification_small',
             color: const Color(0XFF0060C6),
             playSound: true,
-            sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+            sound:
+                [
+                  'VOICE_BROADCAST',
+                  'ORDER_DISPATCH_ADVANCE_BOOKING',
+                ].contains(message.data['notification_type'])
                 ? RawResourceAndroidNotificationSound(
                     message.data['voice_type'],
                   )
@@ -255,7 +269,10 @@ class FirebasePushNotificationServices extends GetxService {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
-      if (message.data['notification_type'] == 'VOICE_BROADCAST') {
+      if ([
+        'VOICE_BROADCAST',
+        'ORDER_DISPATCH_ADVANCE_BOOKING',
+      ].contains(message.data['notification_type'])) {
         if (['1'].contains(message.data['state'].toString())) {
           if (Get.currentRoute == Routes.ORDER_DETAIL) {
             var orderDetailController = Get.find<OrderDetailController>();
@@ -320,7 +337,11 @@ class FirebasePushNotificationServices extends GetxService {
             presentBadge: true,
             presentBanner: true,
             presentSound: true,
-            sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+            sound:
+                [
+                  'VOICE_BROADCAST',
+                  'ORDER_DISPATCH_ADVANCE_BOOKING',
+                ].contains(message.data['notification_type'])
                 ? "${message.data['voice_type']}.caf"
                 : null,
           ),
@@ -331,7 +352,11 @@ class FirebasePushNotificationServices extends GetxService {
             icon: 'ic_notification_small',
             color: const Color(0XFF0060C6),
             playSound: true,
-            sound: message.data['notification_type'] == 'VOICE_BROADCAST'
+            sound:
+                [
+                  'VOICE_BROADCAST',
+                  'ORDER_DISPATCH_ADVANCE_BOOKING',
+                ].contains(message.data['notification_type'])
                 ? RawResourceAndroidNotificationSound(
                     message.data['voice_type'],
                   )
