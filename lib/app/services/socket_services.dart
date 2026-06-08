@@ -67,10 +67,7 @@ class SocketServices extends GetxService {
           var dataJson = convertBytesToJson(bytes: data);
 
           if (dataJson != null) {
-            if (["PONG", "OK"].contains(dataJson['method']) == false) {
-              print("[DEBUG SOCKET] ${dataJson['method']}");
-              print("[DEBUG SOCKET] $dataJson");
-            }
+            if (["PONG", "OK"].contains(dataJson['method']) == false) {}
 
             var method = dataJson['method'] ?? "";
 
@@ -94,8 +91,6 @@ class SocketServices extends GetxService {
                 );
                 var homeController = Get.find<HomeController>();
 
-                print("[DEBUG SOCKET] oke-1");
-
                 if (socketOrderStatusData.state == 1) {
                   if (Get.currentRoute == Routes.ORDER_DETAIL) {
                     var orderDetailController =
@@ -104,7 +99,6 @@ class SocketServices extends GetxService {
                     if (orderDetailController.orderId.value !=
                         socketOrderStatusData.orderId.toString()) {
                       if (socketOrderStatusData.travelTime == null) {
-                        print("[DEBUG SOCKET] oke-2");
                         await Future.wait([
                           homeController.refreshAll(),
                           homeController.showDialogOrderConfirmation(
@@ -114,7 +108,6 @@ class SocketServices extends GetxService {
                       }
 
                       if (socketOrderStatusData.travelTime != null) {
-                        print("[DEBUG SOCKET] oke-3");
                         await Future.wait([
                           homeController.refreshAll(),
                           homeController.showDialogAdvancedBookingConfirmation(
@@ -125,7 +118,6 @@ class SocketServices extends GetxService {
                     }
                   } else {
                     if (socketOrderStatusData.travelTime == null) {
-                      print("[DEBUG SOCKET] oke-4");
                       await Future.wait([
                         homeController.refreshAll(),
                         homeController.showDialogOrderConfirmation(
@@ -135,7 +127,6 @@ class SocketServices extends GetxService {
                     }
 
                     if (socketOrderStatusData.travelTime != null) {
-                      print("[DEBUG SOCKET] oke-5");
                       await Future.wait([
                         homeController.refreshAll(),
                         homeController.showDialogAdvancedBookingConfirmation(

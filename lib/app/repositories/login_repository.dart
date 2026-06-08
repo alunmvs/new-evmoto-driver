@@ -66,10 +66,14 @@ class LoginRepository {
     try {
       var url = "$baseUrl/driver/base/driver/checkPhone";
 
-      var formData = FormData.fromMap({"phone": phone});
+      var headers = {"Content-Type": "application/json"};
 
       var dio = apiServices.dio;
-      var response = await dio.post(url, data: formData);
+      var response = await dio.post(
+        url,
+        data: {"phone": phone},
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != null && response.data['code'] != 200) {
         if (response.data['msg'] != null) {

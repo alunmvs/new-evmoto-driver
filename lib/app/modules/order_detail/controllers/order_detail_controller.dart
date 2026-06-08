@@ -307,8 +307,6 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       language: languageServices.languageCodeSystem.value,
     );
 
-    print("[DEBUG ORDER] Order Id ${orderDetail.value.orderId}");
-
     state.value = orderDetail.value.state ?? 0;
 
     if (isCreateRoomLoading.value == false) {
@@ -1986,11 +1984,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           "createdAt": FieldValue.serverTimestamp(),
         };
 
-        print("[DEBUG CHAT] $data");
-
         await getExistingChatRoom();
         if (evmotoOrderChatParticipants.value.docId == null) {
-          print("[DEBUG CHAT] INSERT $data");
           await FirebaseFirestore.instance
               .collection('evmoto_order_chat_participants')
               .add(data);
