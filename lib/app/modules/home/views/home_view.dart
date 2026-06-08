@@ -521,17 +521,8 @@ class HomeView extends GetView<HomeController> {
                                                                   );
                                                                   await controller
                                                                       .refreshAll();
-                                                                  // await Get.toNamed(
-                                                                  //   Routes
-                                                                  //       .MY_ORDER_V2,
-                                                                  // );
                                                                   // await controller
-                                                                  //     .refreshAll();
-                                                                  // await controller
-                                                                  //     .showDialogAdvancedBookingConfirmation(
-                                                                  //       socketOrderStatusData:
-                                                                  //           SocketOrderStatusData(),
-                                                                  //     );
+                                                                  //     .showDialogAndSnackbarGuaranteeIncomeAreaOut();
                                                                 },
                                                                 child: Container(
                                                                   padding:
