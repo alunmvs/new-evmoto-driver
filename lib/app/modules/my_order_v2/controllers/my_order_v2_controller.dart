@@ -484,7 +484,7 @@ class MyOrderV2Controller extends GetxController
                                   borderRadius: BorderRadius.circular(9999),
                                   border: Border.all(
                                     color: state.position >= 0.5
-                                        ? Color(0XFF0573EA)
+                                        ? Color(0XFF0060C6)
                                         : themeColorServices
                                               .neutralsColorGrey300
                                               .value,

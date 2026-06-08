@@ -199,7 +199,7 @@ class OrderDetailFooterSubView extends GetView<OrderDetailController> {
                           borderRadius: BorderRadius.circular(9999),
                           border: Border.all(
                             color: state.position >= 0.5
-                                ? Color(0XFF0573EA)
+                                ? Color(0XFF0060C6)
                                 : controller
                                       .themeColorServices
                                       .neutralsColorGrey300
@@ -298,7 +298,7 @@ class OrderDetailFooterSubView extends GetView<OrderDetailController> {
                           borderRadius: BorderRadius.circular(9999),
                           border: Border.all(
                             color: state.position >= 0.5
-                                ? Color(0XFF0573EA)
+                                ? Color(0XFF0060C6)
                                 : controller
                                       .themeColorServices
                                       .neutralsColorGrey300
@@ -407,7 +407,7 @@ class OrderDetailFooterSubView extends GetView<OrderDetailController> {
                           borderRadius: BorderRadius.circular(9999),
                           border: Border.all(
                             color: state.position >= 0.5
-                                ? Color(0XFF0573EA)
+                                ? Color(0XFF0060C6)
                                 : controller
                                       .themeColorServices
                                       .neutralsColorGrey300
@@ -516,7 +516,7 @@ class OrderDetailFooterSubView extends GetView<OrderDetailController> {
                           borderRadius: BorderRadius.circular(9999),
                           border: Border.all(
                             color: state.position >= 0.5
-                                ? Color(0XFF0573EA)
+                                ? Color(0XFF0060C6)
                                 : controller
                                       .themeColorServices
                                       .neutralsColorGrey300
@@ -625,7 +625,7 @@ class OrderDetailFooterSubView extends GetView<OrderDetailController> {
                           borderRadius: BorderRadius.circular(9999),
                           border: Border.all(
                             color: state.position >= 0.5
-                                ? Color(0XFF0573EA)
+                                ? Color(0XFF0060C6)
                                 : controller
                                       .themeColorServices
                                       .neutralsColorGrey300

@@ -45,6 +45,7 @@ import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/services/voice_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_out_dialog.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -1240,7 +1241,7 @@ class HomeController extends GetxController
                                     borderRadius: BorderRadius.circular(9999),
                                     border: Border.all(
                                       color: state.position >= 0.5
-                                          ? Color(0XFF0573EA)
+                                          ? Color(0XFF0060C6)
                                           : themeColorServices
                                                 .neutralsColorGrey300
                                                 .value,
@@ -1803,7 +1804,7 @@ class HomeController extends GetxController
                                     borderRadius: BorderRadius.circular(9999),
                                     border: Border.all(
                                       color: state.position >= 0.5
-                                          ? Color(0XFF0573EA)
+                                          ? Color(0XFF0060C6)
                                           : themeColorServices
                                                 .neutralsColorGrey300
                                                 .value,
@@ -2734,6 +2735,146 @@ class HomeController extends GetxController
       startTimeAdjustTz.value = null;
       endTimeAdjustTz.value = null;
       isActiveGuaranteeIncomeProgressBarOpen.value = false;
+    }
+  }
+
+  // Guarantee Income Area
+  Future<void> showDialogAndSnackbarGuaranteeIncomeAreaIn() async {
+    var prefs = await SharedPreferences.getInstance();
+    var isGuaranteeIncomeAreaInDialogShown =
+        prefs.getBool("is_guarantee_income_area_in_dialog_shown") ?? false;
+
+    if (isGuaranteeIncomeAreaInDialogShown == false) {
+      await Get.dialog(GuaranteeIncomeAreaOutDialog());
+      await prefs.setBool("is_guarantee_income_area_in_dialog_shown", true);
+    } else {
+      // Snackbar
+      final themeColorServices = Get.find<ThemeColorServices>();
+      final typographyServices = Get.find<TypographyServices>();
+
+      var snackBar = SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SvgPicture.asset("assets/icons/icon_guarantee_income_area_in.svg"),
+            SizedBox(width: 8),
+            Expanded(
+              child: RichText(
+                textAlign: TextAlign.left,
+                text: TextSpan(
+                  text: 'Anda telah memasuki wilayah ',
+                  style: typographyServices.bodySmallRegular.value.copyWith(
+                    color: Color(0XFF005216),
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: "Gurantee Income.",
+                      style: typographyServices.bodySmallBold.value.copyWith(
+                        color: Color(0XFF005216),
+                      ),
+                    ),
+                    TextSpan(
+                      text:
+                          " Selesaikan perjalanannya untuk mendapatkan manfaatnya.",
+                      style: typographyServices.bodySmallRegular.value.copyWith(
+                        color: Color(0XFF005216),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(width: 8),
+            GestureDetector(
+              onTap: () {
+                rootScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+              },
+              child: Icon(Icons.close, color: Color(0XFF005216), size: 20),
+            ),
+          ],
+        ),
+        closeIconColor: Color(0XFF005216),
+        showCloseIcon: false,
+        padding: EdgeInsets.only(left: 12, top: 10, bottom: 10, right: 12),
+        margin: EdgeInsets.only(bottom: 14, left: 12, right: 12),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        duration: Duration(seconds: 3),
+        backgroundColor: Color(0XFFE1FFE9),
+        elevation: 0,
+      );
+
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    }
+  }
+
+  Future<void> showDialogAndSnackbarGuaranteeIncomeAreaOut() async {
+    var prefs = await SharedPreferences.getInstance();
+    var isGuaranteeIncomeAreaOutDialogShown =
+        prefs.getBool("is_guarantee_income_area_out_dialog_shown") ?? false;
+
+    if (isGuaranteeIncomeAreaOutDialogShown == false) {
+      await Get.dialog(GuaranteeIncomeAreaOutDialog());
+      await prefs.setBool("is_guarantee_income_area_out_dialog_shown", true);
+    } else {
+      final themeColorServices = Get.find<ThemeColorServices>();
+      final typographyServices = Get.find<TypographyServices>();
+
+      var snackBar = SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SvgPicture.asset("assets/icons/icon_guarantee_income_area_out.svg"),
+            SizedBox(width: 8),
+            Expanded(
+              child: RichText(
+                textAlign: TextAlign.left,
+                text: TextSpan(
+                  text: 'Anda telah keluar wilayah ',
+                  style: typographyServices.bodySmallRegular.value.copyWith(
+                    color: Color(0XFFCD0000),
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: "Gurantee Income.",
+                      style: typographyServices.bodySmallBold.value.copyWith(
+                        color: Color(0XFFCD0000),
+                      ),
+                    ),
+                    TextSpan(
+                      text:
+                          " Manfaat Gurantee Income tidak berlaku didalam area ini.",
+                      style: typographyServices.bodySmallRegular.value.copyWith(
+                        color: Color(0XFFCD0000),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(width: 8),
+            GestureDetector(
+              onTap: () {
+                rootScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+              },
+              child: Icon(Icons.close, color: Color(0XFFCD0000), size: 20),
+            ),
+          ],
+        ),
+        closeIconColor: Color(0XFFCD0000),
+        showCloseIcon: false,
+        padding: EdgeInsets.only(left: 12, top: 10, bottom: 10, right: 12),
+        margin: EdgeInsets.only(bottom: 14, left: 12, right: 12),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        duration: Duration(seconds: 3),
+        backgroundColor: Color(0XFFFFF0F0),
+        elevation: 0,
+      );
+
+      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
     }
   }
 }

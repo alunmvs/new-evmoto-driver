@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ThemeColorServices extends GetxService {
-  final primaryBlue = Color(0XFF0573EA).obs;
+  final primaryBlue = Color(0XFF0060C6).obs;
   final sematicColorRed500 = Color(0XFFA32A21).obs;
   final sematicColorRed400 = Color(0XFFF44336).obs;
   final sematicColorGreen100 = Color(0XFFCAEDDB).obs;
