@@ -71,8 +71,6 @@ class ChatDetailController extends GetxController {
         .get());
 
     if (result.data() != null) {
-      print("[DEBUG CHAT] ${result.data()}");
-
       evmotoOrderChatParticipants.value = EvmotoOrderChatParticipants.fromJson(
         result.data()!,
       );

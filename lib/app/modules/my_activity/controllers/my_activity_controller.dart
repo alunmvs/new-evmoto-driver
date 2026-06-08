@@ -301,7 +301,6 @@ class MyActivityController extends GetxController
       var logOnlineOfflineTextListNormalHour = [];
 
       for (var period in daily.periods ?? <Periods>[]) {
-        print("[DEBUG GUARANTEE] Period");
         // Working Hour
         if (period.hourType == 2) {
           workingTimeRushHour.value += period.onlineDurationMinutes ?? 0;

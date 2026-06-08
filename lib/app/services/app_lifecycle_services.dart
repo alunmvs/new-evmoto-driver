@@ -64,18 +64,12 @@ class AppLifecycleController extends GetxController
     var orderRepository = OrderRepository();
     var homeController = Get.find<HomeController>();
 
-    print("[DEBUG PENDING DISPATCH] start");
-
     orderPendingDispatch.value =
         (await orderRepository.getOrderPendingDispatch()) ??
         OrderPendingDispatch();
 
     if (orderPendingDispatch.value.order?.orderId != null) {
-      print(
-        "[DEBUG PENDING DISPATCH] start-1 ini reservation ${orderPendingDispatch.value.order?.reservation}",
-      );
       if (orderPendingDispatch.value.order?.reservation == 1) {
-        print("[DEBUG PENDING DISPATCH] start-2.1");
         await Future.wait([
           homeController.refreshAll(),
           homeController.showDialogOrderConfirmation(
@@ -98,7 +92,6 @@ class AppLifecycleController extends GetxController
           ),
         ]);
       } else {
-        print("[DEBUG PENDING DISPATCH] start-2.2");
         await Future.wait([
           homeController.refreshAll(),
           homeController.showDialogAdvancedBookingConfirmation(
@@ -122,7 +115,5 @@ class AppLifecycleController extends GetxController
         ]);
       }
     }
-
-    print("[DEBUG PENDING DISPATCH] end");
   }
 }
