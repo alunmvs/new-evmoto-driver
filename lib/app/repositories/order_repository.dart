@@ -4,6 +4,8 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_pending_dispatch_model.dart'
+    as orderPendingDispatch;
 import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
 import 'package:new_evmoto_driver/app/data/models/working_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
@@ -13,6 +15,27 @@ import 'package:new_evmoto_driver/environment.dart';
 class OrderRepository {
   final apiServices = Get.find<ApiServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
+
+  Future<orderPendingDispatch.OrderPendingDispatch?>
+  getOrderPendingDispatch() async {
+    try {
+      var url = "$baseUrl/orderServer/api/order/pendingDispatch";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {'Authorization': "Bearer $token"};
+
+      var dio = apiServices.dio;
+      var response = await dio.get(url, options: Options(headers: headers));
+
+      return orderPendingDispatch.OrderPendingDispatch.fromJson(
+        response.data['data'] ?? {},
+      );
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
 
   Future<Working?> getWorking({required int language}) async {
     try {

@@ -797,10 +797,20 @@ class HomeController extends GetxController
         ) ??
         false;
 
-    if (isDialogShow == false) {
+    var isDialogShown =
+        prefs.getBool(
+          'dialog_advance_booking_confirmation_${socketOrderStatusData.orderId}_shown',
+        ) ??
+        false;
+
+    if (isDialogShow == false && isDialogShown == false) {
       activeSocketAdvanceBookingStatusData.value = socketOrderStatusData;
       await prefs.setBool(
         'dialog_advance_booking_confirmation_${socketOrderStatusData.orderId}',
+        true,
+      );
+      await prefs.setBool(
+        'dialog_advance_booking_confirmation_${socketOrderStatusData.orderId}_shown',
         true,
       );
 
@@ -867,7 +877,7 @@ class HomeController extends GetxController
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Order EVMoto Motor",
+                                  "Pesanan Terjadwal",
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(
                                         color: themeColorServices
@@ -876,7 +886,13 @@ class HomeController extends GetxController
                                       ),
                                 ),
                                 Text(
-                                  "${formatDouble(orderData.startMileage!)} km",
+                                  DateFormat(
+                                    'EEEE, d MMMM yyyy · HH:mm',
+                                  ).format(
+                                    DateTime.parse(
+                                      socketOrderStatusData.travelTime!,
+                                    ),
+                                  ),
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
@@ -1370,11 +1386,22 @@ class HomeController extends GetxController
         ) ??
         false;
 
-    if (isDialogShow == false) {
+    var isDialogShown =
+        prefs.getBool(
+          'dialog_order_confirmation_${socketOrderStatusData.orderId}_shown',
+        ) ??
+        false;
+
+    if (isDialogShow == false && isDialogShown == false) {
       activeSocketOrderStatusData.value = socketOrderStatusData;
 
       await prefs.setBool(
         'dialog_order_confirmation_${socketOrderStatusData.orderId}',
+        true,
+      );
+
+      await prefs.setBool(
+        'dialog_order_confirmation_${socketOrderStatusData.orderId}_shown',
         true,
       );
 
@@ -1902,8 +1929,6 @@ class HomeController extends GetxController
       var isHaveActiveOrder = working.value.id != null;
       var is30minsBeforeSchedule =
           travelTime.difference(DateTime.now()).inMinutes <= 30;
-
-      print("[DEBUG ADVANCE ORDER] $isHaveActiveOrder $is30minsBeforeSchedule");
 
       if (isHaveActiveOrder == false && is30minsBeforeSchedule == true) {
         await advanceBookingRepository.advanceBookingConfirm(

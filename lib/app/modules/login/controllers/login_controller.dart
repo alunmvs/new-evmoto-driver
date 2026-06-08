@@ -52,6 +52,17 @@ class LoginController extends GetxController {
 
   Future<void> onTapSubmit() async {
     try {
+      var isPhoneRegistered = await loginRepository.checkPhoneRegistered(
+        phone: "62${mobileNumberTextEditingController.text}",
+      );
+
+      if (isPhoneRegistered == false) {
+        SnackbarHelper.showSnackbarError(
+          text:
+              "Nomor driver belum terdaftar. Silakan lakukan pendaftaran terlebih dahulu.",
+        );
+        return;
+      }
       Get.toNamed(
         Routes.LOGIN_VERIFICATION_OTP,
         arguments: {

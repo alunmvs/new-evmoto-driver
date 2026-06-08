@@ -173,11 +173,11 @@ class MyActivityController extends GetxController
   Future<void> onTapSelectDateRangeCouponIncome({
     required BuildContext context,
   }) async {
-    final pickedRange = await showDateRangePicker(
+    var result = await showDatePicker(
       context: context,
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
-      initialDateRange: couponIncomeSelectedDateRange.value,
+      initialDate: couponIncomeSelectedDateRange.value?.start,
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
@@ -205,8 +205,11 @@ class MyActivityController extends GetxController
       },
     );
 
-    if (pickedRange != null) {
-      couponIncomeSelectedDateRange.value = pickedRange;
+    if (result != null) {
+      couponIncomeSelectedDateRange.value = DateTimeRange(
+        start: result,
+        end: result,
+      );
       await getCouponIncome();
       await generateCouponIncomeTableData();
     }
@@ -378,7 +381,7 @@ class MyActivityController extends GetxController
 
           for (var onlineTime in period.onlineTimes ?? <OnlineTimes>[]) {
             logOnlineOfflineTextListRushHour.add(
-              "• ${onlineTime.start} - ${onlineTime.end}",
+              "${onlineTime.start} - ${onlineTime.end}",
             );
           }
         }
@@ -391,7 +394,11 @@ class MyActivityController extends GetxController
                 .round();
 
         guaranteeIncomeHourRushHourDropdown.add(
-          "• ${daily.date} : ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(dailyGuaranteeIncomeHourRushHour)}",
+          NumberFormat.currency(
+            locale: 'id_ID',
+            symbol: 'Rp',
+            decimalDigits: 0,
+          ).format(dailyGuaranteeIncomeHourRushHour),
         );
       }
       if (dailyCountGuaranteeIncomeNormalHour != 0) {
@@ -401,19 +408,23 @@ class MyActivityController extends GetxController
                 .round();
 
         guaranteeIncomeHourNormalHourDropdown.add(
-          "• ${daily.date} : ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(dailyGuaranteeIncomeHourNormalHour)}",
+          NumberFormat.currency(
+            locale: 'id_ID',
+            symbol: 'Rp',
+            decimalDigits: 0,
+          ).format(dailyGuaranteeIncomeHourNormalHour),
         );
       }
 
       if (logOnlineOfflineTextListRushHour.isNotEmpty) {
         workingTimeRushHourDropdown.add(
-          "${daily.date}\n${logOnlineOfflineTextListRushHour.join("\n")}",
+          logOnlineOfflineTextListRushHour.join("\n"),
         );
       }
 
       if (logOnlineOfflineTextListNormalHour.isNotEmpty) {
         workingTimeNormalHourDropdown.add(
-          "${daily.date}\n${logOnlineOfflineTextListNormalHour.join("\n")}",
+          logOnlineOfflineTextListNormalHour.join("\n"),
         );
       }
 

@@ -79,7 +79,6 @@ class ChatListView extends GetView<ChatListController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 16),
                             if (controller.roomList.isEmpty) ...[
                               Center(
                                 child: Padding(
@@ -154,6 +153,9 @@ class ChatListView extends GetView<ChatListController> {
                                     vertical: 16,
                                   ),
                                   child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       if (room.userProfileUrl == null ||
                                           room.userProfileUrl == "") ...[
@@ -170,12 +172,12 @@ class ChatListView extends GetView<ChatListController> {
                                           room.userProfileUrl != "") ...[
                                         CircleAvatar(
                                           radius: 42 / 2,
-                                          child: CachedNetworkImage(
-                                            imageUrl: room.userProfileUrl!,
-                                            width: 42,
-                                            height: 42,
-                                            fit: BoxFit.cover,
-                                          ),
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(
+                                                room.userProfileUrl!,
+                                                maxWidth: 42,
+                                                maxHeight: 42,
+                                              ),
                                         ),
                                       ],
                                       SizedBox(width: 8),

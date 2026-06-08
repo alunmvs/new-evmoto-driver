@@ -29,7 +29,7 @@ class MyActivityView extends GetView<MyActivityController> {
             child: Container(color: Color(0XFFD5D5D5), height: 1.0),
           ),
         ),
-        backgroundColor: controller.themeColorServices.backgroundColor.value,
+        backgroundColor: controller.themeColorServices.neutralsColorGrey0.value,
         body: controller.isFetch.value
             ? Center(
                 child: SizedBox(
