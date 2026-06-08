@@ -249,7 +249,7 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Pembayaran yang dibayar oleh penumpang",
+                            "Pendapatan",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular

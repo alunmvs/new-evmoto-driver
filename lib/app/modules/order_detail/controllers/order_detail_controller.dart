@@ -307,6 +307,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       language: languageServices.languageCodeSystem.value,
     );
 
+    print("[DEBUG ORDER] Order Id ${orderDetail.value.orderId}");
+
     state.value = orderDetail.value.state ?? 0;
 
     if (isCreateRoomLoading.value == false) {
@@ -1979,15 +1981,16 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           "userName": orderDetail.value.nickName,
           "userProfileUrl": orderDetail.value.userHeadImg,
           "driverId": orderDetail.value.driverId.toString(),
-          "driverName": orderDetail.value.driverName,
-          "driverProfileUrl": orderDetail.value.driverAvatar,
+          "driverName": userServices.userInfo.value.name,
+          "driverProfileUrl": userServices.userInfo.value.avatar,
           "createdAt": FieldValue.serverTimestamp(),
         };
 
-        // print("[DEBUG CHAT] $data");
+        print("[DEBUG CHAT] $data");
 
         await getExistingChatRoom();
         if (evmotoOrderChatParticipants.value.docId == null) {
+          print("[DEBUG CHAT] INSERT $data");
           await FirebaseFirestore.instance
               .collection('evmoto_order_chat_participants')
               .add(data);
@@ -2013,8 +2016,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       for (var doc in querySnapshot.docs) {
         batch.set(doc.reference, {
           "driverId": orderDetail.value.driverId.toString(),
-          "driverName": orderDetail.value.driverName,
-          "driverProfileUrl": orderDetail.value.driverAvatar,
+          "driverName": userServices.userInfo.value.name,
+          "driverProfileUrl": userServices.userInfo.value.avatar,
           "driverIsOnline": true,
           "driverLastSeen": FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
@@ -2035,8 +2038,8 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     for (var doc in querySnapshot.docs) {
       batch.set(doc.reference, {
         "driverId": orderDetail.value.driverId.toString(),
-        "driverName": orderDetail.value.driverName,
-        "driverProfileUrl": orderDetail.value.driverAvatar,
+        "driverName": userServices.userInfo.value.name,
+        "driverProfileUrl": userServices.userInfo.value.avatar,
         "driverIsOnline": false,
         "driverLastSeen": FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));

@@ -61,4 +61,25 @@ class LoginRepository {
       throw e.message.toString();
     }
   }
+
+  Future<bool> checkPhoneRegistered({String? phone}) async {
+    try {
+      var url = "$baseUrl/driver/base/driver/checkPhone";
+
+      var formData = FormData.fromMap({"phone": phone});
+
+      var dio = apiServices.dio;
+      var response = await dio.post(url, data: formData);
+
+      if (response.data['code'] != null && response.data['code'] != 200) {
+        if (response.data['msg'] != null) {
+          throw response.data['msg'];
+        }
+      }
+
+      return response.data['data'];
+    } on DioException {
+      rethrow;
+    }
+  }
 }
