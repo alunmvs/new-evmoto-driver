@@ -241,6 +241,14 @@ class SocketServices extends GetxService {
                       (prefs.getBool(
                             'dialog_advance_booking_confirmation_$orderId',
                           ) ??
+                          false) ||
+                      (prefs.getBool(
+                            'dialog_advance_booking_confirmation_${orderId}_shown',
+                          ) ??
+                          false) ||
+                      (prefs.getBool(
+                            'dialog_order_confirmation_${orderId}_shown',
+                          ) ??
                           false);
 
                   if (isDialogShow == true) {
