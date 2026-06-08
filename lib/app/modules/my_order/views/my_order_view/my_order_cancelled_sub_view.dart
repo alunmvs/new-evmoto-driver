@@ -108,7 +108,7 @@ class MyOrderCancelledSubView extends GetView<MyOrderController> {
                                   ),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(9999),
-                                    color: Color(0XFF0573EA),
+                                    color: Color(0XFF0060C6),
                                   ),
                                   child: Text(
                                     "Reguler",
@@ -186,7 +186,7 @@ class MyOrderCancelledSubView extends GetView<MyOrderController> {
                                     ),
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: Color(0XFF0573EA),
+                                        color: Color(0XFF0060C6),
                                       ),
                                       borderRadius: BorderRadius.circular(9999),
                                     ),
@@ -201,7 +201,7 @@ class MyOrderCancelledSubView extends GetView<MyOrderController> {
                                           .typographyServices
                                           .captionLargeRegular
                                           .value
-                                          .copyWith(color: Color(0XFF0573EA)),
+                                          .copyWith(color: Color(0XFF0060C6)),
                                     ),
                                   ),
                                 ],
@@ -243,7 +243,7 @@ class MyOrderCancelledSubView extends GetView<MyOrderController> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(9999),
                                       border: Border.all(
-                                        color: Color(0XFF0573EA),
+                                        color: Color(0XFF0060C6),
                                       ),
                                     ),
                                     child: Text(
@@ -252,7 +252,7 @@ class MyOrderCancelledSubView extends GetView<MyOrderController> {
                                           .typographyServices
                                           .captionLargeRegular
                                           .value
-                                          .copyWith(color: Color(0XFF0573EA)),
+                                          .copyWith(color: Color(0XFF0060C6)),
                                     ),
                                   ),
                                 ],

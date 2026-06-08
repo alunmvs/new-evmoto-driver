@@ -133,7 +133,7 @@ class MyOrderV2View extends GetView<MyOrderV2Controller> {
                                               vertical: 3,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: Color(0XFF0573EA),
+                                              color: Color(0XFF0060C6),
                                               borderRadius:
                                                   BorderRadius.circular(9999),
                                             ),
@@ -163,7 +163,7 @@ class MyOrderV2View extends GetView<MyOrderV2Controller> {
                                                   .neutralsColorGrey0
                                                   .value,
                                               border: Border.all(
-                                                color: Color(0XFF0573EA),
+                                                color: Color(0XFF0060C6),
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(9999),
@@ -175,7 +175,7 @@ class MyOrderV2View extends GetView<MyOrderV2Controller> {
                                                   .captionLargeRegular
                                                   .value
                                                   .copyWith(
-                                                    color: Color(0XFF0573EA),
+                                                    color: Color(0XFF0060C6),
                                                   ),
                                             ),
                                           ),
