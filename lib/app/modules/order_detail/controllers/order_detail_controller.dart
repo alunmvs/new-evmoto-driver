@@ -459,9 +459,22 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
     }
 
-    await googleMapController.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+    var movementDirection = compareLatLng(
+      originLat: originLatitude,
+      originLng: originLongitude,
+      destLat: destinationLatitude,
+      destLng: destinationLongitude,
     );
+
+    if (movementDirection == MovementDirection.vertical) {
+      await googleMapController.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+      );
+    } else {
+      await googleMapController.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+      );
+    }
   }
 
   Future<void> setupGoogleMapOriginToDestination() async {
@@ -569,9 +582,22 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       );
     }
 
-    await googleMapController.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, 200),
+    var movementDirection = compareLatLng(
+      originLat: originLatitude,
+      originLng: originLongitude,
+      destLat: destinationLatitude,
+      destLng: destinationLongitude,
     );
+
+    if (movementDirection == MovementDirection.vertical) {
+      await googleMapController.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+      );
+    } else {
+      await googleMapController.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+      );
+    }
   }
 
   Future<void> setupSchedulerDriverCurrentLocation() async {
@@ -739,9 +765,22 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           );
         }
 
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+        var movementDirection = compareLatLng(
+          originLat: originLatitude,
+          originLng: originLongitude,
+          destLat: destinationLatitude,
+          destLng: destinationLongitude,
         );
+
+        if (movementDirection == MovementDirection.vertical) {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+          );
+        } else {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+          );
+        }
       }
 
       if (orderDetail.value.state == 4 ||
@@ -832,9 +871,22 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
           );
         }
 
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+        var movementDirection = compareLatLng(
+          originLat: originLatitude,
+          originLng: originLongitude,
+          destLat: destinationLatitude,
+          destLng: destinationLongitude,
         );
+
+        if (movementDirection == MovementDirection.vertical) {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+          );
+        } else {
+          await googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+          );
+        }
       }
     }
   }
