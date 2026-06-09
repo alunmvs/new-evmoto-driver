@@ -28,6 +28,7 @@ class UserInfo {
   String? driveCardImgUrl;
   String? networkCarlssueImg;
   int? language;
+  String? referralCode;
 
   UserInfo({
     this.id,
@@ -59,10 +60,12 @@ class UserInfo {
     this.driveCardImgUrl,
     this.networkCarlssueImg,
     this.language,
+    this.referralCode,
   });
 
   UserInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    // print("[DEBUG ID] $id");
     avatar = json['avatar'];
     name = json['name'];
     phone = json['phone'];
@@ -91,6 +94,7 @@ class UserInfo {
     driveCardImgUrl = json['driveCardImgUrl'];
     networkCarlssueImg = json['networkCarlssueImg'];
     language = json['language'];
+    referralCode = json['referralCode'];
   }
 
   Map<String, dynamic> toJson() {
@@ -124,6 +128,7 @@ class UserInfo {
     data['driveCardImgUrl'] = this.driveCardImgUrl;
     data['networkCarlssueImg'] = this.networkCarlssueImg;
     data['language'] = this.language;
+    data['referralCode'] = this.referralCode;
     return data;
   }
 }

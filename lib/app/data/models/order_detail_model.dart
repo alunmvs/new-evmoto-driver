@@ -24,7 +24,7 @@ class OrderDetail {
   String? brand;
   String? carColor;
   double? score;
-  int? orderNum;
+  String? orderNum;
   int? historyNum;
   String? driverPhone;
   double? cancelPayMoney;
@@ -74,6 +74,8 @@ class OrderDetail {
   int? driverConfirm;
   int? userId;
   String? userHeadImg;
+  int? payType;
+  double? platformFee;
 
   OrderDetail({
     this.orderId,
@@ -151,6 +153,8 @@ class OrderDetail {
     this.driverConfirm,
     this.userId,
     this.userHeadImg,
+    this.payType,
+    this.platformFee,
   });
 
   OrderDetail.fromJson(Map<String, dynamic> json) {
@@ -228,6 +232,8 @@ class OrderDetail {
     driverConfirm = json['driverConfirm'];
     userId = json['userId'];
     userHeadImg = json['userHeadImg'];
+    payType = json['payType'];
+    platformFee = json['platformFee'];
   }
 
   Map<String, dynamic> toJson() {
@@ -306,6 +312,8 @@ class OrderDetail {
     data['driverConfirm'] = this.driverConfirm;
     data['userId'] = this.userId;
     data['userHeadImg'] = this.userHeadImg;
+    data['payType'] = this.payType;
+    data['platformFee'] = this.platformFee;
     return data;
   }
 }

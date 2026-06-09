@@ -2,6 +2,7 @@ class HistoryBalanceRecharge {
   int? id;
   String? name;
   double? amount;
+  String? paymentMethod;
 
   HistoryBalanceRecharge({this.id, this.name, this.amount});
 
@@ -9,6 +10,7 @@ class HistoryBalanceRecharge {
     id = json['id'];
     name = json['name'];
     amount = json['amount'];
+    paymentMethod = json['paymentMethod'];
   }
 
   Map<String, dynamic> toJson() {

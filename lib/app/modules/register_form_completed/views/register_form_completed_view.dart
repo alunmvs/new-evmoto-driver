@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 import 'package:get/get.dart';
-import 'package:reactive_forms/reactive_forms.dart';
-
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import '../controllers/register_form_completed_controller.dart';
 
 class RegisterFormCompletedView
@@ -27,8 +25,8 @@ class RegisterFormCompletedView
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 16),
-                SvgPicture.asset(
-                  "assets/logos/logo_evmoto.svg",
+                Image.asset(
+                  "assets/logos/logo_evmoto.png",
                   width: 95.46,
                   height: 29.56,
                 ),
@@ -179,26 +177,15 @@ class RegisterFormCompletedView
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 46,
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await controller.onTapSubmit();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        controller.themeColorServices.primaryBlue.value,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Text(
-                    controller.languageServices.language.value.confirmation ??
-                        "-",
-                    style: controller.typographyServices.bodySmallBold.value
-                        .copyWith(color: Colors.white),
-                  ),
+              LoaderElevatedButton(
+                onPressed: () async {
+                  await controller.onTapSubmit();
+                },
+                child: Text(
+                  controller.languageServices.language.value.confirmation ??
+                      "-",
+                  style: controller.typographyServices.bodySmallBold.value
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ],

@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/withdraw_amount_controller.dart';
@@ -210,7 +212,7 @@ class WithdrawAmountView extends GetView<WithdrawAmountController> {
                                                 ),
                                           ),
                                           Text(
-                                            "Minimal penarikan Rp10.000",
+                                            "Minimal penarikan ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(controller.firebaseRemoteConfigServices.remoteConfig.getInt("driver_withdraw_min"))}",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -253,27 +255,37 @@ class WithdrawAmountView extends GetView<WithdrawAmountController> {
                                   ),
                                 ),
                               ],
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Riwayat Tarik Dana",
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .textColor
-                                                .value,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(Routes.HISTORY_BALANCE_WITHDRAW);
+                                },
+                                child: Container(
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Riwayat Tarik Dana",
+                                          style: controller
+                                              .typographyServices
+                                              .bodySmallRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .textColor
+                                                    .value,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -443,7 +455,7 @@ class WithdrawAmountView extends GetView<WithdrawAmountController> {
                                                 ),
                                           ),
                                           Text(
-                                            "Minimal penarikan Rp10.000",
+                                            "Minimal penarikan ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(controller.firebaseRemoteConfigServices.remoteConfig.getInt("driver_withdraw_min"))}",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -629,12 +641,12 @@ class WithdrawAmountView extends GetView<WithdrawAmountController> {
                           ),
                           child: Row(
                             children: [
-                              SizedBox(
-                                width: 35,
-                                height: 35,
-                                child: Placeholder(),
-                              ),
-                              SizedBox(width: 16),
+                              // SizedBox(
+                              //   width: 35,
+                              //   height: 35,
+                              //   child: Placeholder(),
+                              // ),
+                              // SizedBox(width: 16),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -702,6 +714,8 @@ class WithdrawAmountView extends GetView<WithdrawAmountController> {
                           ),
                           SizedBox(height: 16),
                           ReactiveTextField(
+                            autofocus: false,
+                            canRequestFocus: controller.canRequestFocus.value,
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -832,28 +846,14 @@ class WithdrawAmountView extends GetView<WithdrawAmountController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 46,
-                      width: MediaQuery.of(context).size.width,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          await controller.onTapSubmit();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              controller.themeColorServices.primaryBlue.value,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                        ),
-                        child: Text(
-                          "Lanjutkan",
-                          style: controller
-                              .typographyServices
-                              .bodySmallBold
-                              .value
-                              .copyWith(color: Colors.white),
-                        ),
+                    LoaderElevatedButton(
+                      onPressed: () async {
+                        await controller.onTapSubmit();
+                      },
+                      child: Text(
+                        "Lanjutkan",
+                        style: controller.typographyServices.bodySmallBold.value
+                            .copyWith(color: Colors.white),
                       ),
                     ),
                   ],

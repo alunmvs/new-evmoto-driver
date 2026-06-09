@@ -168,9 +168,11 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                                   children: [
                                     SizedBox(height: 16 * 3),
                                     SizedBox(
-                                      height: 80,
-                                      width: 80,
-                                      child: Placeholder(),
+                                      height: 62,
+                                      width: 100,
+                                      child: Image.asset(
+                                        "assets/images/img_rating_empty.png",
+                                      ),
                                     ),
                                     SizedBox(height: 16),
                                     Text(
@@ -209,6 +211,7 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                                   index: controller.selectedIndex.value,
                                 )) ...[
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     mainAxisAlignment:
@@ -219,7 +222,8 @@ class AccountMyEvaluationView extends GetView<AccountMyEvaluationController> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Nama User",
+                                            ratingAndReviewData.customerName ??
+                                                "-",
                                             style: controller
                                                 .typographyServices
                                                 .bodySmallBold

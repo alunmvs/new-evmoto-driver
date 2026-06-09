@@ -24,8 +24,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<true/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MAPS_API_KEY</key>
+	<string>$(MAPS_API_KEY)</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Use the camera to quickly upload driver registration documents and easily communicate with customers about their orders</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -38,6 +42,11 @@
 	<string>Use the photo library to quickly upload driver registration documents and easily communicate with customers about their orders</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+		<string>location</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -51,7 +60,5 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
-	<key>MAPS_API_KEY</key>
-	<string>$(MAPS_API_KEY)</string>
 </dict>
 </plist>

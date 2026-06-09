@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/deposit_balance_controller.dart';
@@ -426,12 +427,7 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              controller
-                                      .languageServices
-                                      .language
-                                      .value
-                                      .minimumRechargeBalance ??
-                                  "-",
+                              "${controller.languageServices.language.value.minimumRechargeBalance!} ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(controller.firebaseRemoteConfigServices.remoteConfig.getInt("driver_deposit_min"))}",
                               style: controller
                                   .typographyServices
                                   .bodySmallRegular
@@ -453,26 +449,14 @@ class DepositBalanceView extends GetView<DepositBalanceController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 46,
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await controller.onTapSubmit();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        controller.themeColorServices.primaryBlue.value,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Text(
-                    controller.languageServices.language.value.rechargeNow ??
-                        "-",
-                    style: controller.typographyServices.bodyLargeBold.value
-                        .copyWith(color: Colors.white),
-                  ),
+              LoaderElevatedButton(
+                onPressed: () async {
+                  await controller.onTapSubmit();
+                },
+                child: Text(
+                  controller.languageServices.language.value.rechargeNow ?? "-",
+                  style: controller.typographyServices.bodyLargeBold.value
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ],

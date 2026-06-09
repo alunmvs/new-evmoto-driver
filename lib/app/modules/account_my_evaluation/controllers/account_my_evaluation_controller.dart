@@ -47,7 +47,7 @@ class AccountMyEvaluationController extends GetxController {
     ratingAndReview.value = await accountRepository.getRatingAndReviewDetail(
       size: size.value,
       pageNum: pageNum.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     );
 
     for (var i in ratingAndReview.value.ratingReview!) {

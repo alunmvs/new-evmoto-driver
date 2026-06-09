@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
 import 'package:new_evmoto_driver/app/repositories/payment_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
@@ -7,9 +8,12 @@ import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+
+import '../../../services/firebase_remote_config_services.dart';
 
 class DepositBalanceController extends GetxController {
   final PaymentRepository paymentRepository;
@@ -23,6 +27,7 @@ class DepositBalanceController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final formGroup = FormGroup({
     "money": FormControl<String>(validators: <Validator>[Validators.required]),
@@ -76,47 +81,35 @@ class DepositBalanceController extends GetxController {
           formGroup.control("money").value.toString().replaceAll(".", ""),
         );
 
-        if (money < 10000) {
-          final SnackBar snackBar = SnackBar(
-            behavior: SnackBarBehavior.fixed,
-            backgroundColor: themeColorServices.sematicColorRed400.value,
-            content: Text(
-              languageServices.language.value.minimumRechargeBalance ?? "-",
-              style: typographyServices.bodySmallRegular.value.copyWith(
-                color: themeColorServices.neutralsColorGrey0.value,
-              ),
-            ),
+        var depositAmountMin = firebaseRemoteConfigServices.remoteConfig.getInt(
+          "driver_deposit_min",
+        );
+
+        if (money < depositAmountMin) {
+          SnackbarHelper.showSnackbarError(
+            text:
+                "${languageServices.language.value.minimumRechargeBalance!} ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0).format(depositAmountMin)}",
           );
-          rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
           return;
         }
-        var depositBalance = await paymentRepository.depositBalance(
-          language: 2,
-          payType: 1,
+        var depositBalance = await paymentRepository.rechargeDriver(
+          language: languageServices.languageCodeSystem.value,
           money: double.parse(
             formGroup.control("money").value.toString().replaceAll(".", ""),
           ),
-          type: 2,
         );
 
         await Get.toNamed(
           Routes.DEPOSIT_BALANCE_PAYMENT_WEBVIEW,
-          arguments: {"redirect_url": depositBalance.redirectUrl},
+          arguments: {
+            "redirect_url": depositBalance.redirectUrl,
+            "order_id": depositBalance.orderId,
+          },
         );
 
         await getUserInfoDetail();
       } catch (e) {
-        final SnackBar snackBar = SnackBar(
-          behavior: SnackBarBehavior.fixed,
-          backgroundColor: themeColorServices.sematicColorRed400.value,
-          content: Text(
-            e.toString(),
-            style: typographyServices.bodySmallRegular.value.copyWith(
-              color: themeColorServices.neutralsColorGrey0.value,
-            ),
-          ),
-        );
-        rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+        SnackbarHelper.showSnackbarError(text: e.toString());
       }
     }
   }

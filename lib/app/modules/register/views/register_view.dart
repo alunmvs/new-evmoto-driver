@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/register_controller.dart';
@@ -29,8 +30,8 @@ class RegisterView extends GetView<RegisterController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 16),
-                SvgPicture.asset(
-                  "assets/logos/logo_evmoto.svg",
+                Image.asset(
+                  "assets/logos/logo_evmoto.png",
                   width: 95.46,
                   height: 29.56,
                 ),
@@ -275,28 +276,17 @@ class RegisterView extends GetView<RegisterController> {
                   ],
                 ),
                 SizedBox(height: 16 * 2),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 46,
-                  child: ElevatedButton(
-                    onPressed: controller.isFormValid.value
-                        ? () {
-                            controller.onTapSubmit();
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          controller.themeColorServices.primaryBlue.value,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    child: Text(
-                      controller.languageServices.language.value.buttonNext ??
-                          "-",
-                      style: controller.typographyServices.bodySmallBold.value
-                          .copyWith(color: Colors.white),
-                    ),
+                LoaderElevatedButton(
+                  onPressed: controller.isFormValid.value
+                      ? () async {
+                          controller.onTapSubmit();
+                        }
+                      : null,
+                  child: Text(
+                    controller.languageServices.language.value.buttonNext ??
+                        "-",
+                    style: controller.typographyServices.bodySmallBold.value
+                        .copyWith(color: Colors.white),
                   ),
                 ),
                 SizedBox(height: 16),

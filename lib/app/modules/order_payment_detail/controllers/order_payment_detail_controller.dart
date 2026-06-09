@@ -55,7 +55,7 @@ class OrderPaymentDetailController extends GetxController {
     orderDetail.value = await orderRepository.getOrderDetail(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     );
   }
 
@@ -63,7 +63,7 @@ class OrderPaymentDetailController extends GetxController {
     orderPayment.value = await orderRepository.getOrderPayment(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       payManner: orderDetail.value.payManner!,
     );
   }

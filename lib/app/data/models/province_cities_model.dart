@@ -30,7 +30,7 @@ class ProvinceCities {
 class Child {
   int? id;
   String? name;
-  Null? child;
+  dynamic child;
 
   Child({this.id, this.name, this.child});
 

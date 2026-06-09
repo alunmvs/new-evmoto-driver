@@ -1,4 +1,9 @@
 class Language {
+  String? noMessageYetStartConverstation;
+  String? tripHasEnded;
+  String? criticalErrorTitle;
+  String? criticalErrorDescription;
+  String? criticalErrorButton;
   String? loginTitle;
   String? loginSubtitle;
   String? mobilePhone;
@@ -225,8 +230,34 @@ class Language {
   String? successSaveChanges;
   String? formValidationMobileMaxLength;
   String? mobileNumberSuccessChanged;
+  String? locationAccessConsent;
+  String? needExactLocation;
+  String? enableLocation;
+  String? usingLatestVersion;
+  String? back;
+  String? updateLater;
+  String? updateNow;
+  String? appUpdateAvailable;
+  String? message;
+  String? noMessageYet;
+  String? conversationWillAppear;
 
   Language({
+    this.noMessageYetStartConverstation,
+    this.tripHasEnded,
+    this.noMessageYet,
+    this.message,
+    this.appUpdateAvailable,
+    this.updateNow,
+    this.updateLater,
+    this.back,
+    this.usingLatestVersion,
+    this.locationAccessConsent,
+    this.needExactLocation,
+    this.enableLocation,
+    this.criticalErrorTitle,
+    this.criticalErrorDescription,
+    this.criticalErrorButton,
     this.loginTitle,
     this.loginSubtitle,
     this.mobilePhone,
@@ -453,240 +484,348 @@ class Language {
     this.successSaveChanges,
     this.formValidationMobileMaxLength,
     this.mobileNumberSuccessChanged,
+    this.conversationWillAppear,
   });
 
   Language.fromJson(Map<String, dynamic> json) {
-    loginTitle = json['login_title'];
-    loginSubtitle = json['login_subtitle'];
-    mobilePhone = json['mobile_phone'];
-    loginButton = json['login_button'];
-    loginContactCs1 = json['login_contact_cs_1'];
-    loginContactCs2 = json['login_contact_cs_2'];
-    loginContactCs3 = json['login_contact_cs_3'];
-    termAndCondition = json['term_and_condition'];
-    privacyPolicy = json['privacy_policy'];
-    tncPrivacyConfirmation1 = json['tnc_privacy_confirmation_1'];
-    tncPrivacyConfirmation2 = json['tnc_privacy_confirmation_2'];
-    tncPrivacyConfirmation3 = json['tnc_privacy_confirmation_3'];
-    registerAsNewDriver = json['register_as_new_driver'];
-    registerTitle = json['register_title'];
-    registerSubtitle = json['register_subtitle'];
-    validateOtpTitle = json['validate_otp_title'];
-    validateOtpSubtitle = json['validate_otp_subtitle'];
-    verificationCode = json['verification_code'];
-    resendVerificationCode = json['resend_verification_code'];
-    buttonNext = json['button_next'];
-    registerFormTitle = json['register_form_title'];
-    registerFormDescription = json['register_form_description'];
-    formTitleIdCardPhoto = json['form_title_id_card_photo'];
-    formTitleFullName = json['form_title_full_name'];
-    formHintFullName = json['form_hint_full_name'];
-    formTitleGender = json['form_title_gender'];
-    formHintGender = json['form_hint_gender'];
-    formTitleDomicile = json['form_title_domicile'];
-    formHintDomicileProvince = json['form_hint_domicile_province'];
-    formHintDomicileCity = json['form_hint_domicile_city'];
-    formTitleIdCardNumber = json['form_title_id_card_number'];
-    formHintIdCardNumber = json['form_hint_id_card_number'];
-    formTitleDrivingStartAt = json['form_title_driving_start_at'];
-    formHintDrivingStartAt = json['form_hint_driving_start_at'];
-    formTitleDriverLicensePhoto = json['form_title_driver_license_photo'];
-    formTitleService = json['form_title_service'];
-    motorcycle = json['motorcycle'];
-    intraCityExpressDelivery = json['intra_city_express_delivery'];
-    formTitleLocationService = json['form_title_location_service'];
-    formHintLocationService = json['form_hint_location_service'];
-    formValidationRequired = json['form_validation_required'];
-    formValidationFirst8 = json['form_validation_first_8'];
-    formValidationLengthMin8 = json['form_validation_length_min_8'];
-    formTitleAvatarPhoto = json['form_title_avatar_photo'];
-    registerCompleteTitle = json['register_complete_title'];
-    registerCompleteDescription = json['register_complete_description'];
-    registerCompleteTitle1 = json['register_complete_title_1'];
-    registerCompleteDescription1 = json['register_complete_description_1'];
-    confirmation = json['confirmation'];
-    homeOrderToday = json['home_order_today'];
-    homeOrderThisMonth = json['home_order_this_month'];
-    homeMyRating = json['home_my_rating'];
-    homeSeeMyActivity = json['home_see_my_activity'];
-    homeYourBalance = json['home_your_balance'];
-    updatePhoto = json['update_photo'];
-    delete = json['delete'];
-    male = json['male'];
-    female = json['female'];
-    formValidationNikMinLength = json['form_validation_nik_min_length'];
-    formValidationNikMaxLength = json['form_validation_nik_max_length'];
-    onboardingTitle1 = json['onboarding_title_1'];
-    onboardingDescription1 = json['onboarding_description_1'];
-    onboardingTitle2 = json['onboarding_title_2'];
-    onboardingDescription2 = json['onboarding_description_2'];
-    onboardingTitle3 = json['onboarding_title_3'];
-    onboardingDescription3 = json['onboarding_description_3'];
-    skip = json['skip'];
-    dialogCoachmarkTitle = json['dialog_coachmark_title'];
-    dialogCoachmarkDescription = json['dialog_coachmark_description'];
-    dialogCoachmarkButton = json['dialog_coachmark_button'];
-    coachmarkTitle1 = json['coachmark_title_1'];
-    coachmarkDescription1 = json['coachmark_description_1'];
-    buttonNext1 = json['button_next_1'];
-    coachmarkTitle2 = json['coachmark_title_2'];
-    coachmarkDescription2 = json['coachmark_description_2'];
-    coachmarkTitle3 = json['coachmark_title_3'];
-    coachmarkDescription3 = json['coachmark_description_3'];
-    coachmarkTitle4 = json['coachmark_title_4'];
-    coachmarkDescription4 = json['coachmark_description_4'];
-    coachmarkTitle5 = json['coachmark_title_5'];
-    coachmarkDescription5 = json['coachmark_description_5'];
-    coachmarkTitle6 = json['coachmark_title_6'];
-    coachmarkDescription6 = json['coachmark_description_6'];
-    coachmarkTitle7 = json['coachmark_title_7'];
-    coachmarkDescription7 = json['coachmark_description_7'];
-    coachmarkTitle8 = json['coachmark_title_8'];
-    coachmarkDescription8 = json['coachmark_description_8'];
-    coachmarkButton8 = json['coachmark_button_8'];
-    recharge = json['recharge'];
-    history = json['history'];
-    acceptOrder = json['accept_order'];
-    inService = json['in_service'];
-    waiting = json['waiting'];
-    noOrderTitle = json['no_order_title'];
-    noOrderAcceptOrderDescription = json['no_order_accept_order_description'];
-    noOrderInServiceDescription = json['no_order_in_service_description'];
-    noOrderWaitingDescription = json['no_order_waiting_description'];
-    withdraw = json['withdraw'];
-    home = json['home'];
-    menu = json['menu'];
-    myBalance = json['my_balance'];
-    totalOrder = json['total_order'];
-    myRating = json['my_rating'];
-    online = json['online'];
-    offline = json['offline'];
-    status = json['status'];
-    currentStatus = json['current_status'];
-    yourTotalOrder = json['your_total_order'];
-    todayOrder = json['today_order'];
-    order = json['order'];
-    thisMonthOrder = json['this_month_order'];
-    chooseService = json['choose_service'];
-    myEvaluation = json['my_evaluation'];
-    provideFeedback = json['provide_feedback'];
-    overallRating = json['overall_rating'];
-    noteMax200Char = json['note_max_200_char'];
-    hintFeedback = json['hint_feedback'];
-    sendFeedback = json['send_feedback'];
-    selectService = json['select_service'];
-    save = json['save'];
-    changeVehicle = json['change_vehicle'];
-    currentVehicle = json['current_vehicle'];
-    vehicleAvailable = json['vehicle_available'];
-    currentlyNoVehicle = json['currently_no_vehicle'];
-    changeMobileNumber = json['change_mobile_number'];
-    enterOldMobileNumber = json['enter_old_mobile_number'];
-    enterNewMobileNumber = json['enter_new_mobile_number'];
-    sendOtpCode = json['send_otp_code'];
-    otpWillSentNewMobileNumber = json['otp_will_sent_new_mobile_number'];
-    recommendToFriend = json['recommend_to_friend'];
-    contactCs = json['contact_cs'];
-    otherSetting = json['other_setting'];
-    logout = json['logout'];
-    appVersion = json['app_version'];
-    userGuide = json['user_guide'];
-    legalTermsAndApplicationRules = json['legal_terms_and_application_rules'];
-    aboutUs = json['about_us'];
-    clearCache = json['clear_cache'];
-    currentVersion = json['current_version'];
-    versionUpdate = json['version_update'];
-    languageChange = json['language_change'];
-    selectLanguage = json['select_language'];
-    rechargeBalance = json['recharge_balance'];
-    pleaseSelect = json['please_select'];
-    enterAmount = json['enter_amount'];
-    numberOfRecharge = json['number_of_recharge'];
-    minimumRechargeBalance = json['minimum_recharge_balance'];
-    rechargeNow = json['recharge_now'];
-    pickedUp = json['picked_up'];
-    destinationLocation = json['destination_location'];
-    totalCost = json['total_cost'];
-    rides = json['rides'];
-    noMessagesYet = json['no_messages_yet'];
-    typeMessage = json['type_message'];
-    gallery = json['gallery'];
-    camera = json['camera'];
-    departToPickup = json['depart_to_pickup'];
-    cancel = json['cancel'];
-    pickingUp = json['picking_up'];
-    arriveAtThePickUpLocation = json['arrive_at_the_pick_up_location'];
-    deliveringPassengers = json['delivering_passengers'];
-    delivering = json['delivering'];
-    finishedDroppingOffPassenger = json['finished_dropping_off_passenger'];
-    paymentConfirmation = json['payment_confirmation'];
-    totalPayment = json['total_payment'];
-    basicExpense = json['basic_expense'];
-    km = json['km'];
-    startingPrice = json['starting_price'];
-    waitFee = json['wait_fee'];
-    minute = json['minute'];
-    mileageFee = json['mileage_fee'];
-    timeCost = json['time_cost'];
-    longDistanceFee = json['long_distance_fee'];
-    collectedByDrivers = json['collected_by_drivers'];
-    otherFee = json['other_fee'];
+    noMessageYetStartConverstation =
+        json['no_message_yet_start_converstation'] ?? "(Translate Not Found)";
+    tripHasEnded = json['trip_has_ended'] ?? "(Translate Not Found)";
+    conversationWillAppear =
+        json['conversation_will_appear'] ?? "(Translate Not Found)";
+    noMessageYet = json['no_message_yet'] ?? "(Translate Not Found)";
+    message = json['message'] ?? "(Translate Not Found)";
+    appUpdateAvailable =
+        json['app_update_available'] ?? "(Translate Not Found)";
+    updateNow = json['update_now'] ?? "(Translate Not Found)";
+    updateLater = json['update_later'] ?? "(Translate Not Found)";
+    back = json['back'] ?? "(Translate Not Found)";
+    usingLatestVersion =
+        json['using_latest_version'] ?? "(Translate Not Found)";
+    criticalErrorTitle =
+        json['critical_error_title'] ?? "(Translate Not Found)";
+    criticalErrorDescription =
+        json['critical_error_description'] ?? "(Translate Not Found)";
+    criticalErrorButton =
+        json['critical_error_button'] ?? "(Translate Not Found)";
+    loginTitle = json['login_title'] ?? "(Translate Not Found)";
+    loginSubtitle = json['login_subtitle'] ?? "(Translate Not Found)";
+    mobilePhone = json['mobile_phone'] ?? "(Translate Not Found)";
+    loginButton = json['login_button'] ?? "(Translate Not Found)";
+    loginContactCs1 = json['login_contact_cs_1'] ?? "(Translate Not Found)";
+    loginContactCs2 = json['login_contact_cs_2'] ?? "(Translate Not Found)";
+    loginContactCs3 = json['login_contact_cs_3'] ?? "(Translate Not Found)";
+    termAndCondition = json['term_and_condition'] ?? "(Translate Not Found)";
+    privacyPolicy = json['privacy_policy'] ?? "(Translate Not Found)";
+    tncPrivacyConfirmation1 =
+        json['tnc_privacy_confirmation_1'] ?? "(Translate Not Found)";
+    tncPrivacyConfirmation2 =
+        json['tnc_privacy_confirmation_2'] ?? "(Translate Not Found)";
+    tncPrivacyConfirmation3 =
+        json['tnc_privacy_confirmation_3'] ?? "(Translate Not Found)";
+    registerAsNewDriver =
+        json['register_as_new_driver'] ?? "(Translate Not Found)";
+    registerTitle = json['register_title'] ?? "(Translate Not Found)";
+    registerSubtitle = json['register_subtitle'] ?? "(Translate Not Found)";
+    validateOtpTitle = json['validate_otp_title'] ?? "(Translate Not Found)";
+    validateOtpSubtitle =
+        json['validate_otp_subtitle'] ?? "(Translate Not Found)";
+    verificationCode = json['verification_code'] ?? "(Translate Not Found)";
+    resendVerificationCode =
+        json['resend_verification_code'] ?? "(Translate Not Found)";
+    buttonNext = json['button_next'] ?? "(Translate Not Found)";
+    registerFormTitle = json['register_form_title'] ?? "(Translate Not Found)";
+    registerFormDescription =
+        json['register_form_description'] ?? "(Translate Not Found)";
+    formTitleIdCardPhoto =
+        json['form_title_id_card_photo'] ?? "(Translate Not Found)";
+    formTitleFullName = json['form_title_full_name'] ?? "(Translate Not Found)";
+    formHintFullName = json['form_hint_full_name'] ?? "(Translate Not Found)";
+    formTitleGender = json['form_title_gender'] ?? "(Translate Not Found)";
+    formHintGender = json['form_hint_gender'] ?? "(Translate Not Found)";
+    formTitleDomicile = json['form_title_domicile'] ?? "(Translate Not Found)";
+    formHintDomicileProvince =
+        json['form_hint_domicile_province'] ?? "(Translate Not Found)";
+    formHintDomicileCity =
+        json['form_hint_domicile_city'] ?? "(Translate Not Found)";
+    formTitleIdCardNumber =
+        json['form_title_id_card_number'] ?? "(Translate Not Found)";
+    formHintIdCardNumber =
+        json['form_hint_id_card_number'] ?? "(Translate Not Found)";
+    formTitleDrivingStartAt =
+        json['form_title_driving_start_at'] ?? "(Translate Not Found)";
+    formHintDrivingStartAt =
+        json['form_hint_driving_start_at'] ?? "(Translate Not Found)";
+    formTitleDriverLicensePhoto =
+        json['form_title_driver_license_photo'] ?? "(Translate Not Found)";
+    formTitleService = json['form_title_service'] ?? "(Translate Not Found)";
+    motorcycle = json['motorcycle'] ?? "(Translate Not Found)";
+    intraCityExpressDelivery =
+        json['intra_city_express_delivery'] ?? "(Translate Not Found)";
+    formTitleLocationService =
+        json['form_title_location_service'] ?? "(Translate Not Found)";
+    formHintLocationService =
+        json['form_hint_location_service'] ?? "(Translate Not Found)";
+    formValidationRequired =
+        json['form_validation_required'] ?? "(Translate Not Found)";
+    formValidationFirst8 =
+        json['form_validation_first_8'] ?? "(Translate Not Found)";
+    formValidationLengthMin8 =
+        json['form_validation_length_min_8'] ?? "(Translate Not Found)";
+    formTitleAvatarPhoto =
+        json['form_title_avatar_photo'] ?? "(Translate Not Found)";
+    registerCompleteTitle =
+        json['register_complete_title'] ?? "(Translate Not Found)";
+    registerCompleteDescription =
+        json['register_complete_description'] ?? "(Translate Not Found)";
+    registerCompleteTitle1 =
+        json['register_complete_title_1'] ?? "(Translate Not Found)";
+    registerCompleteDescription1 =
+        json['register_complete_description_1'] ?? "(Translate Not Found)";
+    confirmation = json['confirmation'] ?? "(Translate Not Found)";
+    homeOrderToday = json['home_order_today'] ?? "(Translate Not Found)";
+    homeOrderThisMonth =
+        json['home_order_this_month'] ?? "(Translate Not Found)";
+    homeMyRating = json['home_my_rating'] ?? "(Translate Not Found)";
+    homeSeeMyActivity = json['home_see_my_activity'] ?? "(Translate Not Found)";
+    homeYourBalance = json['home_your_balance'] ?? "(Translate Not Found)";
+    updatePhoto = json['update_photo'] ?? "(Translate Not Found)";
+    delete = json['delete'] ?? "(Translate Not Found)";
+    male = json['male'] ?? "(Translate Not Found)";
+    female = json['female'] ?? "(Translate Not Found)";
+    formValidationNikMinLength =
+        json['form_validation_nik_min_length'] ?? "(Translate Not Found)";
+    formValidationNikMaxLength =
+        json['form_validation_nik_max_length'] ?? "(Translate Not Found)";
+    onboardingTitle1 = json['onboarding_title_1'] ?? "(Translate Not Found)";
+    onboardingDescription1 =
+        json['onboarding_description_1'] ?? "(Translate Not Found)";
+    onboardingTitle2 = json['onboarding_title_2'] ?? "(Translate Not Found)";
+    onboardingDescription2 =
+        json['onboarding_description_2'] ?? "(Translate Not Found)";
+    onboardingTitle3 = json['onboarding_title_3'] ?? "(Translate Not Found)";
+    onboardingDescription3 =
+        json['onboarding_description_3'] ?? "(Translate Not Found)";
+    skip = json['skip'] ?? "(Translate Not Found)";
+    dialogCoachmarkTitle =
+        json['dialog_coachmark_title'] ?? "(Translate Not Found)";
+    dialogCoachmarkDescription =
+        json['dialog_coachmark_description'] ?? "(Translate Not Found)";
+    dialogCoachmarkButton =
+        json['dialog_coachmark_button'] ?? "(Translate Not Found)";
+    coachmarkTitle1 = json['coachmark_title_1'] ?? "(Translate Not Found)";
+    coachmarkDescription1 =
+        json['coachmark_description_1'] ?? "(Translate Not Found)";
+    buttonNext1 = json['button_next_1'] ?? "(Translate Not Found)";
+    coachmarkTitle2 = json['coachmark_title_2'] ?? "(Translate Not Found)";
+    coachmarkDescription2 =
+        json['coachmark_description_2'] ?? "(Translate Not Found)";
+    coachmarkTitle3 = json['coachmark_title_3'] ?? "(Translate Not Found)";
+    coachmarkDescription3 =
+        json['coachmark_description_3'] ?? "(Translate Not Found)";
+    coachmarkTitle4 = json['coachmark_title_4'] ?? "(Translate Not Found)";
+    coachmarkDescription4 =
+        json['coachmark_description_4'] ?? "(Translate Not Found)";
+    coachmarkTitle5 = json['coachmark_title_5'] ?? "(Translate Not Found)";
+    coachmarkDescription5 =
+        json['coachmark_description_5'] ?? "(Translate Not Found)";
+    coachmarkTitle6 = json['coachmark_title_6'] ?? "(Translate Not Found)";
+    coachmarkDescription6 =
+        json['coachmark_description_6'] ?? "(Translate Not Found)";
+    coachmarkTitle7 = json['coachmark_title_7'] ?? "(Translate Not Found)";
+    coachmarkDescription7 =
+        json['coachmark_description_7'] ?? "(Translate Not Found)";
+    coachmarkTitle8 = json['coachmark_title_8'] ?? "(Translate Not Found)";
+    coachmarkDescription8 =
+        json['coachmark_description_8'] ?? "(Translate Not Found)";
+    coachmarkButton8 = json['coachmark_button_8'] ?? "(Translate Not Found)";
+    recharge = json['recharge'] ?? "(Translate Not Found)";
+    history = json['history'] ?? "(Translate Not Found)";
+    acceptOrder = json['accept_order'] ?? "(Translate Not Found)";
+    inService = json['in_service'] ?? "(Translate Not Found)";
+    waiting = json['waiting'] ?? "(Translate Not Found)";
+    noOrderTitle = json['no_order_title'] ?? "(Translate Not Found)";
+    noOrderAcceptOrderDescription =
+        json['no_order_accept_order_description'] ?? "(Translate Not Found)";
+    noOrderInServiceDescription =
+        json['no_order_in_service_description'] ?? "(Translate Not Found)";
+    noOrderWaitingDescription =
+        json['no_order_waiting_description'] ?? "(Translate Not Found)";
+    withdraw = json['withdraw'] ?? "(Translate Not Found)";
+    home = json['home'] ?? "(Translate Not Found)";
+    menu = json['menu'] ?? "(Translate Not Found)";
+    myBalance = json['my_balance'] ?? "(Translate Not Found)";
+    totalOrder = json['total_order'] ?? "(Translate Not Found)";
+    myRating = json['my_rating'] ?? "(Translate Not Found)";
+    online = json['online'] ?? "(Translate Not Found)";
+    offline = json['offline'] ?? "(Translate Not Found)";
+    status = json['status'] ?? "(Translate Not Found)";
+    currentStatus = json['current_status'] ?? "(Translate Not Found)";
+    yourTotalOrder = json['your_total_order'] ?? "(Translate Not Found)";
+    todayOrder = json['today_order'] ?? "(Translate Not Found)";
+    order = json['order'] ?? "(Translate Not Found)";
+    thisMonthOrder = json['this_month_order'] ?? "(Translate Not Found)";
+    chooseService = json['choose_service'] ?? "(Translate Not Found)";
+    myEvaluation = json['my_evaluation'] ?? "(Translate Not Found)";
+    provideFeedback = json['provide_feedback'] ?? "(Translate Not Found)";
+    overallRating = json['overall_rating'] ?? "(Translate Not Found)";
+    noteMax200Char = json['note_max_200_char'] ?? "(Translate Not Found)";
+    hintFeedback = json['hint_feedback'] ?? "(Translate Not Found)";
+    sendFeedback = json['send_feedback'] ?? "(Translate Not Found)";
+    selectService = json['select_service'] ?? "(Translate Not Found)";
+    save = json['save'] ?? "(Translate Not Found)";
+    changeVehicle = json['change_vehicle'] ?? "(Translate Not Found)";
+    currentVehicle = json['current_vehicle'] ?? "(Translate Not Found)";
+    vehicleAvailable = json['vehicle_available'] ?? "(Translate Not Found)";
+    currentlyNoVehicle =
+        json['currently_no_vehicle'] ?? "(Translate Not Found)";
+    changeMobileNumber =
+        json['change_mobile_number'] ?? "(Translate Not Found)";
+    enterOldMobileNumber =
+        json['enter_old_mobile_number'] ?? "(Translate Not Found)";
+    enterNewMobileNumber =
+        json['enter_new_mobile_number'] ?? "(Translate Not Found)";
+    sendOtpCode = json['send_otp_code'] ?? "(Translate Not Found)";
+    otpWillSentNewMobileNumber =
+        json['otp_will_sent_new_mobile_number'] ?? "(Translate Not Found)";
+    recommendToFriend = json['recommend_to_friend'] ?? "(Translate Not Found)";
+    contactCs = json['contact_cs'] ?? "(Translate Not Found)";
+    otherSetting = json['other_setting'] ?? "(Translate Not Found)";
+    logout = json['logout'] ?? "(Translate Not Found)";
+    appVersion = json['app_version'] ?? "(Translate Not Found)";
+    userGuide = json['user_guide'] ?? "(Translate Not Found)";
+    legalTermsAndApplicationRules =
+        json['legal_terms_and_application_rules'] ?? "(Translate Not Found)";
+    aboutUs = json['about_us'] ?? "(Translate Not Found)";
+    clearCache = json['clear_cache'] ?? "(Translate Not Found)";
+    currentVersion = json['current_version'] ?? "(Translate Not Found)";
+    versionUpdate = json['version_update'] ?? "(Translate Not Found)";
+    languageChange = json['language_change'] ?? "(Translate Not Found)";
+    selectLanguage = json['select_language'] ?? "(Translate Not Found)";
+    rechargeBalance = json['recharge_balance'] ?? "(Translate Not Found)";
+    pleaseSelect = json['please_select'] ?? "(Translate Not Found)";
+    enterAmount = json['enter_amount'] ?? "(Translate Not Found)";
+    numberOfRecharge = json['number_of_recharge'] ?? "(Translate Not Found)";
+    minimumRechargeBalance =
+        json['minimum_recharge_balance'] ?? "(Translate Not Found)";
+    rechargeNow = json['recharge_now'] ?? "(Translate Not Found)";
+    pickedUp = json['picked_up'] ?? "(Translate Not Found)";
+    destinationLocation =
+        json['destination_location'] ?? "(Translate Not Found)";
+    totalCost = json['total_cost'] ?? "(Translate Not Found)";
+    rides = json['rides'] ?? "(Translate Not Found)";
+    noMessagesYet = json['no_messages_yet'] ?? "(Translate Not Found)";
+    typeMessage = json['type_message'] ?? "(Translate Not Found)";
+    gallery = json['gallery'] ?? "(Translate Not Found)";
+    camera = json['camera'] ?? "(Translate Not Found)";
+    departToPickup = json['depart_to_pickup'] ?? "(Translate Not Found)";
+    cancel = json['cancel'] ?? "(Translate Not Found)";
+    pickingUp = json['picking_up'] ?? "(Translate Not Found)";
+    arriveAtThePickUpLocation =
+        json['arrive_at_the_pick_up_location'] ?? "(Translate Not Found)";
+    deliveringPassengers =
+        json['delivering_passengers'] ?? "(Translate Not Found)";
+    delivering = json['delivering'] ?? "(Translate Not Found)";
+    finishedDroppingOffPassenger =
+        json['finished_dropping_off_passenger'] ?? "(Translate Not Found)";
+    paymentConfirmation =
+        json['payment_confirmation'] ?? "(Translate Not Found)";
+    totalPayment = json['total_payment'] ?? "(Translate Not Found)";
+    basicExpense = json['basic_expense'] ?? "(Translate Not Found)";
+    km = json['km'] ?? "(Translate Not Found)";
+    startingPrice = json['starting_price'] ?? "(Translate Not Found)";
+    waitFee = json['wait_fee'] ?? "(Translate Not Found)";
+    minute = json['minute'] ?? "(Translate Not Found)";
+    mileageFee = json['mileage_fee'] ?? "(Translate Not Found)";
+    timeCost = json['time_cost'] ?? "(Translate Not Found)";
+    longDistanceFee = json['long_distance_fee'] ?? "(Translate Not Found)";
+    collectedByDrivers =
+        json['collected_by_drivers'] ?? "(Translate Not Found)";
+    otherFee = json['other_fee'] ?? "(Translate Not Found)";
     youNeedToChargeAdditionalFeeForManualEntry =
-        json['you_need_to_charge_additional_fee_for_manual_entry'];
-    surcharge = json['surcharge'];
-    pleaseEnter = json['please_enter'];
-    surchargeFeeDescription = json['surcharge_fee_description'];
-    waitingForPayment = json['waiting_for_payment'];
-    paymentsPaidByPassengers = json['payments_paid_by_passengers'];
-    viewPaymentDetails = json['view_payment_details'];
-    confirmWithPassengerForPayment = json['confirm_with_passenger_for_payment'];
-    paymentDetails = json['payment_details'];
-    cashPayment = json['cash_payment'];
-    expenseDetail = json['expense_detail'];
-    paidByPassengers = json['paid_by_passengers'];
-    paymentReceived = json['payment_received'];
-    meter = json['meter'];
-    onlinePayment = json['online_payment'];
-    myActivities = json['my_activities'];
+        json['you_need_to_charge_additional_fee_for_manual_entry'] ??
+        "(Translate Not Found)";
+    surcharge = json['surcharge'] ?? "(Translate Not Found)";
+    pleaseEnter = json['please_enter'] ?? "(Translate Not Found)";
+    surchargeFeeDescription =
+        json['surcharge_fee_description'] ?? "(Translate Not Found)";
+    waitingForPayment = json['waiting_for_payment'] ?? "(Translate Not Found)";
+    paymentsPaidByPassengers =
+        json['payments_paid_by_passengers'] ?? "(Translate Not Found)";
+    viewPaymentDetails =
+        json['view_payment_details'] ?? "(Translate Not Found)";
+    confirmWithPassengerForPayment =
+        json['confirm_with_passenger_for_payment'] ?? "(Translate Not Found)";
+    paymentDetails = json['payment_details'] ?? "(Translate Not Found)";
+    cashPayment = json['cash_payment'] ?? "(Translate Not Found)";
+    expenseDetail = json['expense_detail'] ?? "(Translate Not Found)";
+    paidByPassengers = json['paid_by_passengers'] ?? "(Translate Not Found)";
+    paymentReceived = json['payment_received'] ?? "(Translate Not Found)";
+    meter = json['meter'] ?? "(Translate Not Found)";
+    onlinePayment = json['online_payment'] ?? "(Translate Not Found)";
+    myActivities = json['my_activities'] ?? "(Translate Not Found)";
     all = json['all'];
-    toBePaid = json['to_be_paid'];
-    cancelOrder = json['cancel_order'];
-    canceled = json['canceled'];
-    noActivityYet = json['no_activity_yet'];
+    toBePaid = json['to_be_paid'] ?? "(Translate Not Found)";
+    cancelOrder = json['cancel_order'] ?? "(Translate Not Found)";
+    canceled = json['canceled'] ?? "(Translate Not Found)";
+    noActivityYet = json['no_activity_yet'] ?? "(Translate Not Found)";
     thereIsNoActivityAllActivities =
-        json['there_is_no_activity_all_activities'];
+        json['there_is_no_activity_all_activities'] ?? "(Translate Not Found)";
     thereIsNoActivityWaitingForPayment =
-        json['there_is_no_activity_waiting_for_payment'];
-    thereIsNoActivityCancelled = json['there_is_no_activity_cancelled'];
+        json['there_is_no_activity_waiting_for_payment'] ??
+        "(Translate Not Found)";
+    thereIsNoActivityCancelled =
+        json['there_is_no_activity_cancelled'] ?? "(Translate Not Found)";
     finished = json['finished'];
-    orderStateWaitingList = json['order_state_waiting_list'];
-    orderStateToBeStarted = json['order_state_to_be_started'];
+    orderStateWaitingList =
+        json['order_state_waiting_list'] ?? "(Translate Not Found)";
+    orderStateToBeStarted =
+        json['order_state_to_be_started'] ?? "(Translate Not Found)";
     orderStateScheduledArrivalPlace =
-        json['order_state_scheduled_arrival_place'];
+        json['order_state_scheduled_arrival_place'] ?? "(Translate Not Found)";
     orderStateWaitForPassengersToBoard =
-        json['order_state_wait_for_passengers_to_board'];
-    orderStateServing = json['order_state_serving'];
-    orderStateCompletionService = json['order_state_completion_service'];
-    orderStateToBePaid = json['order_state_to_be_paid'];
-    orderStateToBeEvaluated = json['order_state_to_be_evaluated'];
-    orderStateCompleted = json['order_state_completed'];
-    orderStateCancelled = json['order_state_cancelled'];
-    orderStateBeingReassigned = json['order_state_being_reassigned'];
-    orderStateCancelPendingPayment = json['order_state_cancel_pending_payment'];
-    orderCanceled = json['order_canceled'];
-    travelActivities = json['travel_activities'];
-    informationCanceled = json['information_canceled'];
-    canceledBy = json['canceled_by'];
-    costReduction = json['cost_reduction'];
-    reasonForCancellation = json['reason_for_cancellation'];
-    user = json['user'];
-    driver = json['driver'];
-    evaluationNotFoundTitle = json['evaluation_not_found_title'];
-    evaluationNotFoundDescription = json['evaluation_not_found_description'];
-    formNotValid = json['form_not_valid'];
-    successSaveChanges = json['success_save_changes'];
-    formValidationMobileMaxLength = json['form_validation_mobile_max_length'];
-    mobileNumberSuccessChanged = json['mobile_number_success_changed'];
+        json['order_state_wait_for_passengers_to_board'] ??
+        "(Translate Not Found)";
+    orderStateServing = json['order_state_serving'] ?? "(Translate Not Found)";
+    orderStateCompletionService =
+        json['order_state_completion_service'] ?? "(Translate Not Found)";
+    orderStateToBePaid =
+        json['order_state_to_be_paid'] ?? "(Translate Not Found)";
+    orderStateToBeEvaluated =
+        json['order_state_to_be_evaluated'] ?? "(Translate Not Found)";
+    orderStateCompleted =
+        json['order_state_completed'] ?? "(Translate Not Found)";
+    orderStateCancelled =
+        json['order_state_cancelled'] ?? "(Translate Not Found)";
+    orderStateBeingReassigned =
+        json['order_state_being_reassigned'] ?? "(Translate Not Found)";
+    orderStateCancelPendingPayment =
+        json['order_state_cancel_pending_payment'] ?? "(Translate Not Found)";
+    orderCanceled = json['order_canceled'] ?? "(Translate Not Found)";
+    travelActivities = json['travel_activities'] ?? "(Translate Not Found)";
+    informationCanceled =
+        json['information_canceled'] ?? "(Translate Not Found)";
+    canceledBy = json['canceled_by'] ?? "(Translate Not Found)";
+    costReduction = json['cost_reduction'] ?? "(Translate Not Found)";
+    reasonForCancellation =
+        json['reason_for_cancellation'] ?? "(Translate Not Found)";
+    user = json['user'] ?? "(Translate Not Found)";
+    driver = json['driver'] ?? "(Translate Not Found)";
+    evaluationNotFoundTitle =
+        json['evaluation_not_found_title'] ?? "(Translate Not Found)";
+    evaluationNotFoundDescription =
+        json['evaluation_not_found_description'] ?? "(Translate Not Found)";
+    formNotValid = json['form_not_valid'] ?? "(Translate Not Found)";
+    successSaveChanges =
+        json['success_save_changes'] ?? "(Translate Not Found)";
+    formValidationMobileMaxLength =
+        json['form_validation_mobile_max_length'] ?? "(Translate Not Found)";
+    mobileNumberSuccessChanged =
+        json['mobile_number_success_changed'] ?? "(Translate Not Found)";
+    locationAccessConsent =
+        json['location_access_consent'] ?? "(Translate Not Found)";
+    needExactLocation = json['need_exact_location'] ?? "(Translate Not Found)";
+    enableLocation = json['enable_location'] ?? "(Translate Not Found)";
   }
 
   Map<String, dynamic> toJson() {

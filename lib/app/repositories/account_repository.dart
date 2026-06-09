@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
@@ -7,6 +5,7 @@ import 'package:new_evmoto_driver/app/data/models/rating_and_review_model.dart';
 import 'package:new_evmoto_driver/app/data/models/service_order_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 class AccountRepository {
   final apiServices = Get.find<ApiServices>();
@@ -18,8 +17,7 @@ class AccountRepository {
     int? language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/driver/updatePhone";
+      var url = "$baseUrl/driver/api/driver/updatePhone";
 
       var formData = FormData.fromMap({
         "password": password,
@@ -46,7 +44,7 @@ class AccountRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -56,8 +54,7 @@ class AccountRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/app/api/driver/querySetOrders";
+      var url = "$baseUrl/app/api/driver/querySetOrders";
 
       var formData = FormData.fromMap({
         "size": size,
@@ -92,14 +89,13 @@ class AccountRepository {
 
       return serviceOrderList;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
   Future<void> updateServiceOrderStatus({int? language, int? type}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/driver/updateOrders";
+      var url = "$baseUrl/driver/api/driver/updateOrders";
 
       var formData = FormData.fromMap({"language": language, "type": type});
 
@@ -122,7 +118,7 @@ class AccountRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -132,8 +128,7 @@ class AccountRepository {
     String? content,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/evaluation/api/feedback/feedback";
+      var url = "$baseUrl/evaluation/api/feedback/feedback";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -160,7 +155,7 @@ class AccountRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -170,8 +165,7 @@ class AccountRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/evaluation/api/orderEvaluate/queryEvaluate";
+      var url = "$baseUrl/evaluation/api/orderEvaluate/queryEvaluate";
 
       var formData = FormData.fromMap({
         "size": size,
@@ -200,7 +194,7 @@ class AccountRepository {
 
       return RatingAndReview.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

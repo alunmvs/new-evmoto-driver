@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/modules/account/controllers/account_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/login_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
+import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 
 class LoginVerificationOtpController extends GetxController {
@@ -57,50 +60,31 @@ class LoginVerificationOtpController extends GetxController {
       );
       isButtonResendEnable.value = false;
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 
   Future<void> onTapSubmit() async {
     try {
-      await otpRepository.checkOTP(
+      var token = await loginRepository.loginByMobileNumberOtp(
         phone: mobilePhone.value,
-        code: otpCode.value,
-        language: languageServices.languageCodeSystem.value,
-      );
-
-      var token = await loginRepository.loginByMobileNumber(
-        phone: mobilePhone.value,
-        password: "123456789",
+        otp: otpCode.value,
         language: languageServices.languageCodeSystem.value,
       );
 
       var storage = FlutterSecureStorage();
       await storage.write(key: "token", value: token);
 
+      // Get.lazyPut<AccountController>(
+      //   () => AccountController(
+      //     otpRepository: OtpRepository(),
+      //     userRepository: UserRepository(),
+      //   ),
+      // );
+
       Get.offAllNamed(Routes.HOME);
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 }

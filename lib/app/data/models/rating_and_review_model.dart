@@ -28,13 +28,15 @@ class RatingReview {
   String? time;
   String? content;
   double? fraction;
+  String? customerName;
 
-  RatingReview({this.time, this.content, this.fraction});
+  RatingReview({this.time, this.content, this.fraction, this.customerName});
 
   RatingReview.fromJson(Map<String, dynamic> json) {
     time = json['time'];
     content = json['content'];
     fraction = json['fraction'];
+    customerName = json['customerName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +44,7 @@ class RatingReview {
     data['time'] = this.time;
     data['content'] = this.content;
     data['fraction'] = this.fraction;
+    data['customerName'] = this.customerName;
     return data;
   }
 }

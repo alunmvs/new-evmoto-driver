@@ -108,18 +108,35 @@ class SwitchVehicleView extends GetView<SwitchVehicleController> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(
-                                      controller.myVehicle.value.car ?? "-",
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallBold
-                                          .value
-                                          .copyWith(
-                                            color: controller
-                                                .themeColorServices
-                                                .primaryBlue
-                                                .value,
-                                          ),
+                                    Expanded(
+                                      child: Text(
+                                        controller.myVehicle.value.car ==
+                                                    null ||
+                                                controller
+                                                        .myVehicle
+                                                        .value
+                                                        .car ==
+                                                    ""
+                                            ? "Saat ini akses kendaraan anda belum tersedia, Silahkan hubungi layanan kami!"
+                                            : controller.myVehicle.value.car!,
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallBold
+                                            .value
+                                            .copyWith(
+                                              color:
+                                                  controller
+                                                          .myVehicle
+                                                          .value
+                                                          .car ==
+                                                      null
+                                                  ? Color(0XFFCFCFCF)
+                                                  : controller
+                                                        .themeColorServices
+                                                        .primaryBlue
+                                                        .value,
+                                            ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -204,6 +221,7 @@ class SwitchVehicleView extends GetView<SwitchVehicleController> {
                               ),
                             ],
                           ),
+                          SizedBox(height: 16),
                         ],
                       ],
                     ),

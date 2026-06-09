@@ -4,6 +4,7 @@ import 'package:new_evmoto_driver/app/repositories/account_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -41,38 +42,20 @@ class AccountFeedbackController extends GetxController {
     formGroup.markAllAsTouched();
 
     if (formGroup.valid == false) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          "Harap lengkapi data yang dibutuhkan",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+      SnackbarHelper.showSnackbarError(
+        text: "Harap lengkapi data yang dibutuhkan",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       return;
     }
 
     await accountRepository.createFeedback(
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       type: 2,
       content: formGroup.control("content").value,
     );
 
     Get.back();
-    final SnackBar snackBar = SnackBar(
-      behavior: SnackBarBehavior.fixed,
-      backgroundColor: themeColorServices.sematicColorGreen400.value,
-      content: Text(
-        languageServices.language.value.formNotValid ?? "-",
-        style: typographyServices.bodySmallRegular.value.copyWith(
-          color: themeColorServices.neutralsColorGrey0.value,
-        ),
-      ),
-    );
-    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+    SnackbarHelper.showSnackbarSuccess(text: "Masukan anda berhasil terkirim!");
     return;
   }
 }

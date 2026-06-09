@@ -4,12 +4,69 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_payment_model.dart';
+import 'package:new_evmoto_driver/app/data/models/order_pending_dispatch_model.dart'
+    as orderPendingDispatch;
+import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
+import 'package:new_evmoto_driver/app/data/models/working_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 class OrderRepository {
   final apiServices = Get.find<ApiServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
+
+  Future<orderPendingDispatch.OrderPendingDispatch?>
+  getOrderPendingDispatch() async {
+    try {
+      var url = "$baseUrl/orderServer/api/order/pendingDispatch";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {'Authorization': "Bearer $token"};
+
+      var dio = apiServices.dio;
+      var response = await dio.get(url, options: Options(headers: headers));
+
+      return orderPendingDispatch.OrderPendingDispatch.fromJson(
+        response.data['data'] ?? {},
+      );
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
+
+  Future<Working?> getWorking({required int language}) async {
+    try {
+      var url = "$baseUrl/orderServer/order/working";
+
+      var formData = FormData.fromMap({"language": language});
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      // if (response.data['code'] != 200) {
+      //   throw response.data['msg'];
+      // }
+
+      return Working.fromJson(response.data['data'] ?? {});
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
 
   Future<List<Order>> getOrderList({
     required int size,
@@ -18,8 +75,59 @@ class OrderRepository {
     required int pageNum,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/orderServer/api/order/queryOrderList";
+      var url = "$baseUrl/orderServer/api/order/queryOrderList";
+
+      var formData = FormData.fromMap({
+        "language": language,
+        "size": size,
+        "state": state,
+        "pageNum": pageNum,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      var orderList = <Order>[];
+
+      for (var order in response.data['data']) {
+        var orderObj = Order.fromJson(order);
+        orderObj.orderUser = await getOrderUserDetail(
+          orderType: orderObj.type!,
+          orderId: orderObj.id.toString(),
+        );
+        orderList.add(orderObj);
+      }
+
+      return orderList;
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
+
+  Future<List<Order>> getHistoryOrderListV2({
+    required int size,
+    required int language,
+    required int state,
+    required int pageNum,
+  }) async {
+    try {
+      var url = "$baseUrl/orderServer/api/order/queryMyAllOrderV2";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -55,7 +163,7 @@ class OrderRepository {
 
       return orderList;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -66,8 +174,7 @@ class OrderRepository {
     required int pageNum,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/orderServer/api/order/queryMyAllOrder";
+      var url = "$baseUrl/orderServer/api/order/queryMyAllOrder";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -103,7 +210,44 @@ class OrderRepository {
 
       return orderList;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
+    }
+  }
+
+  Future<bool> orderPushConfirm({
+    required String orderId,
+    required int language,
+  }) async {
+    try {
+      var url = "$baseUrl/orderServer/push/confirm";
+
+      var formData = FormData.fromMap({
+        "language": language,
+        "orderId": orderId,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      return response.data['data'];
+    } on DioException catch (e) {
+      throw e.message.toString();
     }
   }
 
@@ -113,8 +257,7 @@ class OrderRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/businessProcess/api/order/grabOrder";
+      var url = "$baseUrl/businessProcess/api/order/grabOrder";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -141,7 +284,42 @@ class OrderRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
+    }
+  }
+
+  Future<void> cashCollected({
+    required String orderId,
+    required int language,
+  }) async {
+    try {
+      var url = "$baseUrl/account/driver/pay/confirm";
+
+      var formData = FormData.fromMap({
+        "orderId": orderId,
+        "language": language,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      throw e.message.toString();
     }
   }
 
@@ -151,8 +329,7 @@ class OrderRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/orderServer/api/order/queryOrderInfo_driver";
+      var url = "$baseUrl/orderServer/api/order/queryOrderInfo_driver";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -181,7 +358,7 @@ class OrderRepository {
 
       return OrderDetail.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -194,8 +371,7 @@ class OrderRepository {
     required int state,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/businessProcess/api/order/process";
+      var url = "$baseUrl/businessProcess/api/order/process";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -225,7 +401,7 @@ class OrderRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -236,8 +412,7 @@ class OrderRepository {
     required int payManner,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/businessProcess/api/order/queryMoneyInfo";
+      var url = "$baseUrl/businessProcess/api/order/queryMoneyInfo";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -267,7 +442,50 @@ class OrderRepository {
 
       return OrderPayment.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
+    }
+  }
+
+  Future<void> completeOrderDirect({
+    required int orderType,
+    required String orderId,
+    required int language,
+    required int payType,
+    int? additionalCharge,
+    String? surchargeDescription,
+  }) async {
+    try {
+      var url = "$baseUrl/payment/api/taxi/completeOrderDirect";
+
+      var formData = {
+        "orderType": orderType,
+        "orderId": orderId,
+        "payType": payType,
+        "language": language,
+        "additionalCharge": additionalCharge,
+        "surchargeDescription": surchargeDescription,
+      };
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/x-www-form-urlencoded",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      throw e.message.toString();
     }
   }
 
@@ -280,8 +498,7 @@ class OrderRepository {
     String? surchargeDescription,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/businessProcess/api/order/confirmFees";
+      var url = "$baseUrl/businessProcess/api/order/confirmFees";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -311,7 +528,7 @@ class OrderRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -321,8 +538,7 @@ class OrderRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/businessProcess/api/order/completeOrder";
+      var url = "$baseUrl/businessProcess/api/order/completeOrder";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -349,7 +565,7 @@ class OrderRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -359,8 +575,7 @@ class OrderRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/cancelOrder/api/cancel/addCancle_driver";
+      var url = "$baseUrl/cancelOrder/api/cancel/addCancle_driver";
 
       var formData = FormData.fromMap({
         "orderType": orderType,
@@ -387,7 +602,44 @@ class OrderRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
+    }
+  }
+
+  Future<OrderUser> getOrderUserDetail({
+    required int orderType,
+    required String orderId,
+  }) async {
+    try {
+      var url = "$baseUrl/orderServer/api/order/queryOrderUserName";
+
+      var formData = FormData.fromMap({
+        "orderType": orderType,
+        "orderId": orderId,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "x-www-form-urlencoded",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      return OrderUser.fromJson(response.data['data']);
+    } on DioException catch (e) {
+      throw e.message.toString();
     }
   }
 }

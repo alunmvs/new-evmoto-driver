@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../controllers/account_update_mobile_phone_controller.dart';
@@ -344,40 +345,27 @@ class AccountUpdateMobilePhoneView
                                 ),
                               ),
                               SizedBox(height: 16),
-                              SizedBox(
-                                width: Get.width,
-                                height: 46,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    await controller.onTapSubmit();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: controller
-                                        .themeColorServices
-                                        .primaryBlue
-                                        .value,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    controller
-                                            .languageServices
-                                            .language
-                                            .value
-                                            .sendOtpCode ??
-                                        "-",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(
-                                          color: controller
-                                              .themeColorServices
-                                              .neutralsColorGrey0
-                                              .value,
-                                        ),
-                                  ),
+                              LoaderElevatedButton(
+                                onPressed: () async {
+                                  await controller.onTapSubmit();
+                                },
+                                child: Text(
+                                  controller
+                                          .languageServices
+                                          .language
+                                          .value
+                                          .sendOtpCode ??
+                                      "-",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallBold
+                                      .value
+                                      .copyWith(
+                                        color: controller
+                                            .themeColorServices
+                                            .neutralsColorGrey0
+                                            .value,
+                                      ),
                                 ),
                               ),
                               SizedBox(height: 8),

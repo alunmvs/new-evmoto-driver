@@ -13,6 +13,8 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
+import 'package:new_evmoto_driver/app/utils/image_upload_helper.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -58,7 +60,17 @@ class RegisterFormController extends GetxController {
       validators: <Validator>[],
       value: false,
     ),
+    "is_ecgo_driver": FormControl<bool?>(
+      validators: <Validator>[Validators.required],
+      value: null,
+    ),
     "place_of_employment_id": FormControl<int>(
+      validators: <Validator>[Validators.required],
+    ),
+    "referral_code": FormControl<String>(
+      validators: <Validator>[Validators.minLength(8), Validators.maxLength(8)],
+    ),
+    "license_plate": FormControl<String>(
       validators: <Validator>[Validators.required],
     ),
   });
@@ -70,6 +82,15 @@ class RegisterFormController extends GetxController {
   final idPhotoUrl = "".obs;
   final drivingLicensePhotoUrl = "".obs;
   final avatarPhotoUrl = "".obs;
+  final vehicleRegistrationCertificateFrontPhotoUrl = "".obs;
+  final vehicleRegistrationCertificateBackPhotoUrl = "".obs;
+
+  final policeClearanceCertificatePhotoUrl = "".obs;
+
+  final driverSelfieKtpPhotoUrl = "".obs;
+  final placeOfEmployment = "".obs;
+
+  final isECGODriver = Rx<bool?>(null);
 
   final uid = "".obs;
   final mobilePhone = "".obs;
@@ -123,12 +144,7 @@ class RegisterFormController extends GetxController {
   }
 
   Future<void> onTapUploadIdPhoto() async {
-    var imagePicker = ImagePicker();
-    var image = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 720,
-      preferredCameraDevice: CameraDevice.rear,
-    );
+    var image = await onTapImageUpload(title: 'Foto ID KTP');
 
     if (image != null) {
       showLoadingDialog();
@@ -138,13 +154,7 @@ class RegisterFormController extends GetxController {
   }
 
   Future<void> onTapUploadDriverLicense() async {
-    var imagePicker = ImagePicker();
-
-    var image = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 720,
-      preferredCameraDevice: CameraDevice.rear,
-    );
+    var image = await onTapImageUpload(title: 'Foto SIM');
 
     if (image != null) {
       showLoadingDialog();
@@ -156,11 +166,8 @@ class RegisterFormController extends GetxController {
   }
 
   Future<void> onTapUploadAvatar() async {
-    var imagePicker = ImagePicker();
-
-    var image = await imagePicker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 720,
+    var image = await onTapImageUpload(
+      title: 'Foto Avatar',
       preferredCameraDevice: CameraDevice.front,
     );
 
@@ -169,6 +176,54 @@ class RegisterFormController extends GetxController {
       avatarPhotoUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
+      Get.close(1);
+    }
+  }
+
+  Future<void> onTapDriverSelfieWithKtp() async {
+    var image = await onTapImageUpload(
+      title: 'Driver Selfie dengan KTP',
+      preferredCameraDevice: CameraDevice.front,
+    );
+
+    if (image != null) {
+      showLoadingDialog();
+      driverSelfieKtpPhotoUrl.value = await uploadImageRepository.uploadImage(
+        file: image,
+      );
+      Get.close(1);
+    }
+  }
+
+  Future<void> onTapUploadVehicleRegistrationCertificateFront() async {
+    var image = await onTapImageUpload(title: 'Foto STNK Depan');
+
+    if (image != null) {
+      showLoadingDialog();
+      vehicleRegistrationCertificateFrontPhotoUrl.value =
+          await uploadImageRepository.uploadImage(file: image);
+      Get.close(1);
+    }
+  }
+
+  Future<void> onTapUploadVehicleRegistrationCertificateBack() async {
+    var image = await onTapImageUpload(title: 'Foto STNK Belakang');
+
+    if (image != null) {
+      showLoadingDialog();
+      vehicleRegistrationCertificateBackPhotoUrl.value =
+          await uploadImageRepository.uploadImage(file: image);
+      Get.close(1);
+    }
+  }
+
+  Future<void> onTapUploadPoliceClearanceCertificate() async {
+    var image = await onTapImageUpload(title: 'Foto SKCK');
+
+    if (image != null) {
+      showLoadingDialog();
+      policeClearanceCertificatePhotoUrl.value = await uploadImageRepository
+          .uploadImage(file: image);
       Get.close(1);
     }
   }
@@ -229,24 +284,20 @@ class RegisterFormController extends GetxController {
                 false) ||
         idPhotoUrl.value == "" ||
         drivingLicensePhotoUrl.value == "" ||
-        avatarPhotoUrl.value == "") {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          "Harap lengkapi data yang dibutuhkan",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
+        avatarPhotoUrl.value == "" ||
+        vehicleRegistrationCertificateFrontPhotoUrl.value == "" ||
+        vehicleRegistrationCertificateBackPhotoUrl.value == "" ||
+        driverSelfieKtpPhotoUrl.value == "") {
+      SnackbarHelper.showSnackbarError(
+        text: "Harap lengkapi data yang dibutuhkan",
       );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
       isFormValid.value = false;
       return;
     }
 
     try {
       await registerRepository.updateDriver(
+        isEcgo: isECGODriver.value == true ? 1 : 0,
         idCardImgUrl1: idPhotoUrl.value,
         idCardImgUrl2: "",
         driveCardImgUrl: drivingLicensePhotoUrl.value,
@@ -257,26 +308,28 @@ class RegisterFormController extends GetxController {
         password: md5.convert(utf8.encode("123456789")).toString(),
         phone: "62${mobilePhone.value}",
         uid: uid.value,
-        placeOfEmployment: formGroup.control("place_of_employment_id").value,
+        placeOfEmployment: placeOfEmployment.value,
+        placeOfEmploymentId: formGroup.control("place_of_employment_id").value,
         getDriverLicenseDate: formGroup.control("driving_experience").value,
         language: languageServices.languageCodeSystem.value,
         type: generateType(),
         driverContactAddress: generateDriverContactAddress(),
         driverContactAddress_: generateDriverContactAddress_(),
+        usedReferralCode: formGroup.control("referral_code").value,
+        licensePlate: formGroup.control("license_plate").value,
+        selfieWithIdCardImg: driverSelfieKtpPhotoUrl.value,
+        skckImg: policeClearanceCertificatePhotoUrl.value == ""
+            ? null
+            : policeClearanceCertificatePhotoUrl.value,
+        stnkBackImg: vehicleRegistrationCertificateBackPhotoUrl.value,
+        stnkFrontImg: vehicleRegistrationCertificateFrontPhotoUrl.value,
+        networkCarlssueImg: policeClearanceCertificatePhotoUrl.value == ""
+            ? null
+            : policeClearanceCertificatePhotoUrl.value,
       );
       Get.offAllNamed(Routes.REGISTER_FORM_COMPLETED);
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 }

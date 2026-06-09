@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/bank_account_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/bank_account_repository.dart';
+import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 
 class WithdrawController extends GetxController {
@@ -16,6 +19,7 @@ class WithdrawController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+  final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
 
   final homeController = Get.find<HomeController>();
 
@@ -139,81 +143,39 @@ class WithdrawController extends GetxController {
                           ),
                           SizedBox(width: 16),
                           Expanded(
-                            child: SizedBox(
-                              width: Get.width,
-                              height: 46,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  try {
-                                    await bankAccountRepository
-                                        .deleteBankAccountById(
-                                          id: bankAccount.id,
-                                          language: languageServices
-                                              .languageCodeSystem
-                                              .value,
-                                        );
-                                    Get.close(1);
-
-                                    var snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorGreen400
-                                          .value,
-                                      content: Text(
-                                        "Berhasil menghapus nomor rekening",
-                                        style: typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
-                                    );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
-
-                                    await getBankAccountList();
-                                  } catch (e) {
-                                    var snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.fixed,
-                                      backgroundColor: themeColorServices
-                                          .sematicColorRed400
-                                          .value,
-                                      content: Text(
-                                        e.toString(),
-                                        style: typographyServices
-                                            .bodySmallRegular
-                                            .value
-                                            .copyWith(
-                                              color: themeColorServices
-                                                  .neutralsColorGrey0
-                                                  .value,
-                                            ),
-                                      ),
-                                    );
-                                    rootScaffoldMessengerKey.currentState
-                                        ?.showSnackBar(snackBar);
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: themeColorServices
-                                      .sematicColorRed400
-                                      .value,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                child: Text(
-                                  "Hapus",
-                                  style: typographyServices.bodySmallBold.value
-                                      .copyWith(
-                                        color: themeColorServices
-                                            .neutralsColorGrey0
+                            child: LoaderElevatedButton(
+                              onPressed: () async {
+                                try {
+                                  await bankAccountRepository
+                                      .deleteBankAccountById(
+                                        id: bankAccount.id,
+                                        language: languageServices
+                                            .languageCodeSystem
                                             .value,
-                                      ),
-                                ),
+                                      );
+                                  Get.close(1);
+
+                                  SnackbarHelper.showSnackbarSuccess(
+                                    text: "Berhasil menghapus nomor rekening",
+                                  );
+
+                                  await getBankAccountList();
+                                } catch (e) {
+                                  SnackbarHelper.showSnackbarError(
+                                    text: e.toString(),
+                                  );
+                                }
+                              },
+                              buttonColor:
+                                  themeColorServices.sematicColorRed400.value,
+                              child: Text(
+                                "Hapus",
+                                style: typographyServices.bodySmallBold.value
+                                    .copyWith(
+                                      color: themeColorServices
+                                          .neutralsColorGrey0
+                                          .value,
+                                    ),
                               ),
                             ),
                           ),

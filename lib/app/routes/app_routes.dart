@@ -5,7 +5,6 @@ abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
   static const SPLASH_SCREEN = _Paths.SPLASH_SCREEN;
-  static const ONBOARDING_INTRODUCTION = _Paths.ONBOARDING_INTRODUCTION;
   static const LOGIN = _Paths.LOGIN;
   static const REGISTER = _Paths.REGISTER;
   static const TERMS_AND_CONDITIONS = _Paths.TERMS_AND_CONDITIONS;
@@ -33,10 +32,6 @@ abstract class Routes {
   static const ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES =
       _Paths.ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES;
   static const ACCOUNT_ABOUT_US = _Paths.ACCOUNT_ABOUT_US;
-  static const ACTIVITY = _Paths.ACTIVITY;
-  static const ORDER_DETAIL_DONE = _Paths.ORDER_DETAIL_DONE;
-  static const ORDER_DETAIL_CANCEL = _Paths.ORDER_DETAIL_CANCEL;
-  static const ORDER_CHAT = _Paths.ORDER_CHAT;
   static const SWITCH_VEHICLE = _Paths.SWITCH_VEHICLE;
   static const WITHDRAW = _Paths.WITHDRAW;
   static const ADD_EDIT_WITHDRAW_BANK_ACCOUNT =
@@ -48,14 +43,24 @@ abstract class Routes {
   static const HISTORY_BALANCE_REVENUE = _Paths.HISTORY_BALANCE_REVENUE;
   static const HISTORY_BALANCE_WITHDRAW = _Paths.HISTORY_BALANCE_WITHDRAW;
   static const HISTORY_BALANCE_RECHARGE = _Paths.HISTORY_BALANCE_RECHARGE;
-  static const ORDER_CALL = _Paths.ORDER_CALL;
+  static const NOTIFICATION = _Paths.NOTIFICATION;
+  static const ORDER_PAYMENT_PENDING = _Paths.ORDER_PAYMENT_PENDING;
+  static const ORDER_PAYMENT_PENDING_FEE_DETAIL =
+      _Paths.ORDER_PAYMENT_PENDING_FEE_DETAIL;
+  static const CHAT_LIST = _Paths.CHAT_LIST;
+  static const MY_ACTIVITY = _Paths.MY_ACTIVITY;
+  static const MY_ORDER = _Paths.MY_ORDER;
+  static const AGREEMENT_GUARANTEE_INCOME = _Paths.AGREEMENT_GUARANTEE_INCOME;
+  static const AGREEMENT_COUPON_INCOME = _Paths.AGREEMENT_COUPON_INCOME;
+  static const CHAT_DETAIL = _Paths.CHAT_DETAIL;
+  static const HISTORY_GUARANTEE_INCOME = _Paths.HISTORY_GUARANTEE_INCOME;
+  static const MY_ORDER_V2 = _Paths.MY_ORDER_V2;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
   static const SPLASH_SCREEN = '/splash-screen';
-  static const ONBOARDING_INTRODUCTION = '/onboarding-introduction';
   static const LOGIN = '/login';
   static const REGISTER = '/register';
   static const TERMS_AND_CONDITIONS = '/terms-and-conditions';
@@ -83,10 +88,6 @@ abstract class _Paths {
   static const ACCOUNT_LEGAL_TERMS_AND_PLATFORM_RULES =
       '/account-legal-terms-and-platform-rules';
   static const ACCOUNT_ABOUT_US = '/account-about-us';
-  static const ACTIVITY = '/activity';
-  static const ORDER_DETAIL_DONE = '/order-detail-done';
-  static const ORDER_DETAIL_CANCEL = '/order-detail-cancel';
-  static const ORDER_CHAT = '/order-chat';
   static const SWITCH_VEHICLE = '/switch-vehicle';
   static const WITHDRAW = '/withdraw';
   static const ADD_EDIT_WITHDRAW_BANK_ACCOUNT =
@@ -98,5 +99,16 @@ abstract class _Paths {
   static const HISTORY_BALANCE_REVENUE = '/history-balance-revenue';
   static const HISTORY_BALANCE_WITHDRAW = '/history-balance-withdraw';
   static const HISTORY_BALANCE_RECHARGE = '/history-balance-recharge';
-  static const ORDER_CALL = '/order-call';
+  static const NOTIFICATION = '/notification';
+  static const ORDER_PAYMENT_PENDING = '/order-payment-pending';
+  static const ORDER_PAYMENT_PENDING_FEE_DETAIL =
+      '/order-payment-pending-fee-detail';
+  static const CHAT_LIST = '/chat-list';
+  static const MY_ACTIVITY = '/my-activity';
+  static const MY_ORDER = '/my-order';
+  static const AGREEMENT_GUARANTEE_INCOME = '/agreement-guarantee-income';
+  static const AGREEMENT_COUPON_INCOME = '/agreement-coupon-income';
+  static const CHAT_DETAIL = '/chat-detail';
+  static const HISTORY_GUARANTEE_INCOME = '/history-guarantee-income';
+  static const MY_ORDER_V2 = '/my-order-v2';
 }

@@ -10,6 +10,13 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		5B7E00DF2FB836AD000045BF /* arrived_destination.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00D82FB836AD000045BF /* arrived_destination.caf */; };
+		5B7E00E02FB836AD000045BF /* order_accepted.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DC2FB836AD000045BF /* order_accepted.caf */; };
+		5B7E00E12FB836AD000045BF /* order_cancelled.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DD2FB836AD000045BF /* order_cancelled.caf */; };
+		5B7E00E22FB836AD000045BF /* driver_offline.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00D92FB836AD000045BF /* driver_offline.caf */; };
+		5B7E00E32FB836AD000045BF /* new_order_incoming.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DB2FB836AD000045BF /* new_order_incoming.caf */; };
+		5B7E00E42FB836AD000045BF /* driver_online.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DA2FB836AD000045BF /* driver_online.caf */; };
+		5B7E00E52FB836AD000045BF /* passenger_boarded.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DE2FB836AD000045BF /* passenger_boarded.caf */; };
 		5FBE802F9C2C02F42E7BD8DB /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3717A3394F05E8C34D10D01E /* Pods_RunnerTests.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -49,6 +56,14 @@
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3717A3394F05E8C34D10D01E /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		5B7E00D82FB836AD000045BF /* arrived_destination.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = arrived_destination.caf; sourceTree = "<group>"; };
+		5B7E00D92FB836AD000045BF /* driver_offline.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = driver_offline.caf; sourceTree = "<group>"; };
+		5B7E00DA2FB836AD000045BF /* driver_online.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = driver_online.caf; sourceTree = "<group>"; };
+		5B7E00DB2FB836AD000045BF /* new_order_incoming.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = new_order_incoming.caf; sourceTree = "<group>"; };
+		5B7E00DC2FB836AD000045BF /* order_accepted.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = order_accepted.caf; sourceTree = "<group>"; };
+		5B7E00DD2FB836AD000045BF /* order_cancelled.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = order_cancelled.caf; sourceTree = "<group>"; };
+		5B7E00DE2FB836AD000045BF /* passenger_boarded.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = passenger_boarded.caf; sourceTree = "<group>"; };
+		5B9C98F72F1B34790068B2AC /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		62C6A97893201D0C63DBEF26 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -155,6 +170,14 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				5B7E00D82FB836AD000045BF /* arrived_destination.caf */,
+				5B7E00D92FB836AD000045BF /* driver_offline.caf */,
+				5B7E00DA2FB836AD000045BF /* driver_online.caf */,
+				5B7E00DB2FB836AD000045BF /* new_order_incoming.caf */,
+				5B7E00DC2FB836AD000045BF /* order_accepted.caf */,
+				5B7E00DD2FB836AD000045BF /* order_cancelled.caf */,
+				5B7E00DE2FB836AD000045BF /* passenger_boarded.caf */,
+				5B9C98F72F1B34790068B2AC /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -268,6 +291,13 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				5B7E00DF2FB836AD000045BF /* arrived_destination.caf in Resources */,
+				5B7E00E02FB836AD000045BF /* order_accepted.caf in Resources */,
+				5B7E00E12FB836AD000045BF /* order_cancelled.caf in Resources */,
+				5B7E00E22FB836AD000045BF /* driver_offline.caf in Resources */,
+				5B7E00E32FB836AD000045BF /* new_order_incoming.caf in Resources */,
+				5B7E00E42FB836AD000045BF /* driver_online.caf in Resources */,
+				5B7E00E52FB836AD000045BF /* passenger_boarded.caf in Resources */,
 				F3B035D995FCB79C46E5A6AD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -519,7 +549,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = 7GQ9U982M7;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = "";
@@ -527,11 +558,12 @@
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Evmoto Driver";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evmoto.driver.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -708,7 +740,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = 7GQ9U982M7;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = "";
@@ -716,11 +749,12 @@
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Evmoto Driver";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evmoto.driver.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -737,7 +771,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = 7GQ9U982M7;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = "";
@@ -745,11 +780,12 @@
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Evmoto Driver";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evmoto.driver.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

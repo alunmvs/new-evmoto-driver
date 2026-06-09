@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/agreement_model.dart';
 import 'package:new_evmoto_driver/app/repositories/agreement_repository.dart';
+import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 
@@ -11,6 +12,7 @@ class PrivacyPolicyController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
+  final languageServices = Get.find<LanguageServices>();
 
   final agreement = Agreement().obs;
 
@@ -36,7 +38,7 @@ class PrivacyPolicyController extends GetxController {
 
   Future<void> getPrivacyPolicyAgreement() async {
     agreement.value = await agreementRepository.getAgreementDetail(
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       userType: 2,
       type: 1,
     );

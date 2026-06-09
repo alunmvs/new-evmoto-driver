@@ -7,6 +7,7 @@ import 'package:new_evmoto_driver/app/data/models/language_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageServices extends GetxService {
+  final languageGeocoding = "id".obs;
   final languageCode = "ID".obs;
   final languageCodeSystem = 2.obs;
   final language = Language().obs;
@@ -15,14 +16,14 @@ class LanguageServices extends GetxService {
   Future<void> onInit() async {
     super.onInit();
 
-    var prefs = await SharedPreferences.getInstance();
-    var languageCode = prefs.getString('language_code');
+    // var prefs = await SharedPreferences.getInstance();
+    // var languageCode = prefs.getString('language_code');
 
-    if (languageCode != null) {
-      await switchLanguage(languageCode: languageCode);
-    } else {
-      await switchLanguage(languageCode: "ID");
-    }
+    // if (languageCode != null) {
+    //   await switchLanguage(languageCode: languageCode);
+    // } else {
+    await switchLanguage(languageCode: "ID");
+    // }
   }
 
   @override

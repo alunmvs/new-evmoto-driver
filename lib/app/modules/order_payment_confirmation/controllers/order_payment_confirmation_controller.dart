@@ -9,7 +9,7 @@ import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
-import 'package:new_evmoto_driver/main.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -26,6 +26,8 @@ class OrderPaymentConfirmationController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
+
+  final homeController = Get.find<HomeController>();
 
   final refreshController = RefreshController();
 
@@ -70,7 +72,7 @@ class OrderPaymentConfirmationController extends GetxController {
     orderDetail.value = await orderRepository.getOrderDetail(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     );
   }
 
@@ -78,7 +80,7 @@ class OrderPaymentConfirmationController extends GetxController {
     orderPayment.value = await orderRepository.getOrderPayment(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       payManner: orderDetail.value.payManner!,
     );
   }
@@ -87,7 +89,7 @@ class OrderPaymentConfirmationController extends GetxController {
     await orderRepository.confirmCashReceived(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
     );
   }
 
@@ -95,7 +97,7 @@ class OrderPaymentConfirmationController extends GetxController {
     await orderRepository.confirmOrderPayment(
       orderType: orderType.value,
       orderId: orderId.value,
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       payManner: orderDetail.value.payManner!,
       additionalCharge: formGroup.control("additional_charge").value == null
           ? 0
@@ -119,36 +121,60 @@ class OrderPaymentConfirmationController extends GetxController {
       await orderRepository.confirmCashReceived(
         orderType: orderType.value,
         orderId: orderId.value,
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
 
       Get.back();
       Get.back();
       Get.find<HomeController>().refreshAll();
-
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorGreen400.value,
-        content: Text(
-          "Pesanan berhasil diselesaikan",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarSuccess(text: "Pesanan berhasil diselesaikan");
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
+  }
+
+  Future<void> onTapCompleteOrderDirect() async {
+    try {
+      await orderRepository.confirmOrderPayment(
+        orderType: orderType.value,
+        orderId: orderId.value,
+        language: languageServices.languageCodeSystem.value,
+        payManner: orderDetail.value.payType!,
+        additionalCharge: formGroup.control("additional_charge").value == null
+            ? 0
+            : int.tryParse(
+                    formGroup
+                        .control("additional_charge")
+                        .value
+                        .toString()
+                        .replaceAll("Rp", "")
+                        .replaceAll(".", ""),
+                  ) ??
+                  0,
+        surchargeDescription: formGroup.control("surcharge_description").value,
+      );
+
+      homeController.setInitialLatitudeLongitude();
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.back();
+
+        Get.toNamed(
+          Routes.ORDER_PAYMENT_PENDING,
+          arguments: {"order_id": orderId.value, "order_type": orderType.value},
+        );
+      });
+    } catch (e) {
+      SnackbarHelper.showSnackbarError(text: e.toString());
+    }
+  }
+
+  String getPaymentMethodName() {
+    if (orderDetail.value.payType == 3) {
+      return 'Cash';
+    } else if (orderDetail.value.payType == 2) {
+      return 'Saldo EVMoto';
+    }
+    return '';
   }
 }

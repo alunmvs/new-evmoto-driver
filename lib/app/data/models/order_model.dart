@@ -1,3 +1,5 @@
+import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
+
 class Order {
   int? id;
   int? type;
@@ -18,6 +20,12 @@ class Order {
   double? ordersMileage;
   double? passengersFrom;
   double? orderMoney;
+  double? totalOrderCost;
+  OrderUser? orderUser;
+  int? historyNum;
+  int? reservation; // 1 (Order); 2 (Advance Booking)
+  String? advanceBookingTravelTime;
+  int? advanceBookingState;
 
   Order({
     this.id,
@@ -39,6 +47,12 @@ class Order {
     this.ordersMileage,
     this.passengersFrom,
     this.orderMoney,
+    this.totalOrderCost,
+    this.orderUser,
+    this.historyNum,
+    this.reservation,
+    this.advanceBookingTravelTime,
+    this.advanceBookingState,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -61,6 +75,12 @@ class Order {
     ordersMileage = json['ordersMileage'];
     passengersFrom = json['passengersFrom'];
     orderMoney = json['orderMoney'];
+    totalOrderCost = json['totalOrderCost'];
+    orderUser = json['orderUser'];
+    historyNum = json['historyNum'];
+    reservation = json['reservation'];
+    advanceBookingState = json['advanceBookingState'];
+    advanceBookingTravelTime = json['advanceBookingTravelTime'];
   }
 
   Map<String, dynamic> toJson() {
@@ -84,6 +104,12 @@ class Order {
     data['ordersMileage'] = this.ordersMileage;
     data['passengersFrom'] = this.passengersFrom;
     data['orderMoney'] = this.orderMoney;
+    data['totalOrderCost'] = this.totalOrderCost;
+    data['orderUser'] = this.orderUser;
+    data['historyNum'] = this.historyNum;
+    data['reservation'] = this.reservation;
+    data['advanceBookingState'] = this.advanceBookingState;
+    data['advanceBookingTravelTime'] = this.advanceBookingTravelTime;
     return data;
   }
 }

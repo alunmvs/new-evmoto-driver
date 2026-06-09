@@ -3,6 +3,7 @@ import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/agreement_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 class AgreementRepository {
   final apiServices = Get.find<ApiServices>();
@@ -14,8 +15,7 @@ class AgreementRepository {
     int? type,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/app/base/agreement/queryByType";
+      var url = "$baseUrl/app/base/agreement/queryByType";
 
       var formData = FormData.fromMap({
         "userType": userType,
@@ -28,7 +28,7 @@ class AgreementRepository {
 
       return Agreement.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

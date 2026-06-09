@@ -5,6 +5,7 @@ import 'package:new_evmoto_driver/app/data/models/my_vehicle_model.dart';
 import 'package:new_evmoto_driver/app/data/models/vehicle_statistics_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 class VehicleRepository {
   final apiServices = Get.find<ApiServices>();
@@ -14,8 +15,7 @@ class VehicleRepository {
     required int language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/driver/queryHomeData";
+      var url = "$baseUrl/driver/api/driver/queryHomeData";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -40,14 +40,13 @@ class VehicleRepository {
 
       return VehicleStatistics.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
   Future<MyVehicle> getMyVehicleDetail({required int language}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/driver/queryMyCar";
+      var url = "$baseUrl/driver/api/driver/queryMyCar";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -72,7 +71,7 @@ class VehicleRepository {
 
       return MyVehicle.fromJson(response.data['data']);
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -81,8 +80,7 @@ class VehicleRepository {
     required int carId,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/driver/replaceCar";
+      var url = "$baseUrl/driver/api/driver/replaceCar";
 
       var formData = FormData.fromMap({"language": language, "carId": carId});
 
@@ -105,7 +103,7 @@ class VehicleRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

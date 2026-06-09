@@ -40,7 +40,7 @@ class AccountLegalTermsAndPlatformRulesController extends GetxController {
 
   Future<void> getLegalTermsAndPlatformRulesAgreement() async {
     agreement.value = await agreementRepository.getAgreementDetail(
-      language: 2,
+      language: languageServices.languageCodeSystem.value,
       userType: 2,
       type: 4,
     );

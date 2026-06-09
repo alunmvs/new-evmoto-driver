@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/repositories/account_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
-import 'package:new_evmoto_driver/main.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 
 class AccountUpdateMobilePhoneVerificationOtpController extends GetxController {
   final AccountRepository accountRepository;
@@ -51,37 +50,18 @@ class AccountUpdateMobilePhoneVerificationOtpController extends GetxController {
       await accountRepository.updateMobilePhone(
         password: "123456789",
         phone: "62${mobilePhone.value}",
-        language: 2,
+        language: languageServices.languageCodeSystem.value,
       );
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
       Get.back();
       return;
     }
 
     Get.back();
     Get.back();
-
-    final SnackBar snackBar = SnackBar(
-      behavior: SnackBarBehavior.fixed,
-      backgroundColor: themeColorServices.sematicColorGreen400.value,
-      content: Text(
-        languageServices.language.value.mobileNumberSuccessChanged ?? "-",
-        style: typographyServices.bodySmallRegular.value.copyWith(
-          color: themeColorServices.neutralsColorGrey0.value,
-        ),
-      ),
+    SnackbarHelper.showSnackbarSuccess(
+      text: languageServices.language.value.mobileNumberSuccessChanged ?? "-",
     );
-    rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
   }
 }

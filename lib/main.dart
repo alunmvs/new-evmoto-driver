@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -7,22 +9,32 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
+import 'package:new_evmoto_driver/app/services/app_lifecycle_services.dart';
+import 'package:new_evmoto_driver/app/services/background_services.dart';
+import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
-import 'package:new_evmoto_driver/app/services/push_notification_services.dart';
+import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
+import 'package:new_evmoto_driver/app/services/user_services.dart';
+import 'package:new_evmoto_driver/app/services/voice_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'app/routes/app_pages.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  DartPluginRegistrant.ensureInitialized();
+  tz.initializeTimeZones();
 
   await initializeDateFormatting('id_ID', null);
 
@@ -53,12 +65,19 @@ Future<void> main() async {
   Get.put(TypographyServices(), permanent: true);
   Get.put(LanguageServices(), permanent: true);
   Get.put(ApiServices(), permanent: true);
-  Get.put(PushNotificationServices(), permanent: true);
-  Get.put(SocketServices(), permanent: true);
   Get.put(FirebaseRemoteConfigServices(), permanent: true);
+  await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
+  Get.put(FirebasePushNotificationServices(), permanent: true);
+  Get.put(UserServices(), permanent: true);
+  Get.put(VoiceServices(), permanent: true);
+  Get.put(BackgroundServices(), permanent: true);
+  Get.put(AppLifecycleController(), permanent: true);
+  Get.put(LocationServices(), permanent: true);
+  Get.put(SocketServices(), permanent: true);
 
   runApp(
     GetMaterialApp(
+      navigatorKey: navigatorKey,
       title: "Evmoto Driver",
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -82,6 +101,21 @@ Future<void> main() async {
               Get.find<ThemeColorServices>().primaryBlue.value,
         ),
       ),
+
+      routingCallback: (routing) async {
+        if (routing?.current == Routes.HOME) {
+          var userServices = Get.find<UserServices>();
+          userServices.isLoadingRefreshHome.value = true;
+          var prefs = await SharedPreferences.getInstance();
+          var processList = <Future>[];
+          if (prefs.getBool('home_controller_registered') == true) {
+            var homeController = Get.find<HomeController>();
+            processList.add(homeController.refreshAll());
+          }
+          await Future.wait(processList);
+          userServices.isLoadingRefreshHome.value = false;
+        }
+      },
       builder: (context, child) {
         return SafeArea(
           top: false,

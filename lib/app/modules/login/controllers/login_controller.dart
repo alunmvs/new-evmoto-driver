@@ -7,6 +7,7 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -51,6 +52,17 @@ class LoginController extends GetxController {
 
   Future<void> onTapSubmit() async {
     try {
+      var isPhoneRegistered = await loginRepository.checkPhoneRegistered(
+        phone: "62${mobileNumberTextEditingController.text}",
+      );
+
+      if (isPhoneRegistered == false) {
+        SnackbarHelper.showSnackbarError(
+          text:
+              "Nomor driver belum terdaftar. Silakan lakukan pendaftaran terlebih dahulu.",
+        );
+        return;
+      }
       Get.toNamed(
         Routes.LOGIN_VERIFICATION_OTP,
         arguments: {
@@ -58,17 +70,7 @@ class LoginController extends GetxController {
         },
       );
     } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          e.toString(),
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: e.toString());
     }
   }
 
@@ -81,17 +83,7 @@ class LoginController extends GetxController {
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
-      final SnackBar snackBar = SnackBar(
-        behavior: SnackBarBehavior.fixed,
-        backgroundColor: themeColorServices.sematicColorRed400.value,
-        content: Text(
-          "Tidak dapat membuka whatsapp",
-          style: typographyServices.bodySmallRegular.value.copyWith(
-            color: themeColorServices.neutralsColorGrey0.value,
-          ),
-        ),
-      );
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+      SnackbarHelper.showSnackbarError(text: "Tidak dapat membuka whatsapp");
     }
   }
 }

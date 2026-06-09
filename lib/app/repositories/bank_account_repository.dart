@@ -5,6 +5,7 @@ import 'package:new_evmoto_driver/app/data/models/bank_account_model.dart';
 import 'package:new_evmoto_driver/app/data/models/bank_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 class BankAccountRepository {
   final apiServices = Get.find<ApiServices>();
@@ -12,8 +13,7 @@ class BankAccountRepository {
 
   Future<List<Bank>> getBankList({int? language}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/base/withdrawal/getBankList";
+      var url = "$baseUrl/driver/base/withdrawal/getBankList";
 
       var formData = FormData.fromMap({"language": language});
 
@@ -43,7 +43,7 @@ class BankAccountRepository {
 
       return bankList;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -53,8 +53,7 @@ class BankAccountRepository {
     int? pageNum,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/queryBankCard";
+      var url = "$baseUrl/driver/api/bankCard/queryBankCard";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -88,7 +87,7 @@ class BankAccountRepository {
 
       return bankAccountList;
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 
@@ -100,8 +99,7 @@ class BankAccountRepository {
     int? language,
   }) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/saveBankCard";
+      var url = "$baseUrl/driver/api/bankCard/saveBankCard";
 
       var formData = FormData.fromMap({
         "language": language,
@@ -130,14 +128,56 @@ class BankAccountRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
+    }
+  }
+
+  Future<void> updateBankAccount({
+    required int id,
+    String? bankCode,
+    String? bank,
+    String? code,
+    String? name,
+    int? language,
+  }) async {
+    try {
+      var url = "$baseUrl/driver/api/bankCard/updateBankCard";
+
+      var formData = FormData.fromMap({
+        "id": id,
+        "language": language,
+        "bankCode": bankCode,
+        "bank": bank,
+        "code": code,
+        "name": name,
+      });
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "multipart/form-data",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: formData,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+    } on DioException catch (e) {
+      throw e.message.toString();
     }
   }
 
   Future<void> deleteBankAccountById({int? id, int? language}) async {
     try {
-      var url =
-          "${firebaseRemoteConfigServices.remoteConfig.getString("driver_base_url")}/driver/api/bankCard/delBankCard";
+      var url = "$baseUrl/driver/api/bankCard/delBankCard";
 
       var formData = FormData.fromMap({"language": language, "id": id});
 
@@ -160,7 +200,7 @@ class BankAccountRepository {
         throw response.data['msg'];
       }
     } on DioException catch (e) {
-      rethrow;
+      throw e.message.toString();
     }
   }
 }

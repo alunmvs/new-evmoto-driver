@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/data/models/history_balance_revenue_model.dart';
@@ -7,8 +6,7 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 
-class HistoryBalanceRevenueController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+class HistoryBalanceRevenueController extends GetxController {
   final HistoryBalanceRepository historyBalanceRepository;
 
   HistoryBalanceRevenueController({required this.historyBalanceRepository});
@@ -16,8 +14,6 @@ class HistoryBalanceRevenueController extends GetxController
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
-
-  late TabController tabController;
 
   final historyBalanceRevenue = HistoryBalanceRevenue().obs;
   final historyBalancePageNum = 1.obs;
@@ -38,10 +34,6 @@ class HistoryBalanceRevenueController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    tabController = TabController(length: 2, vsync: this);
-    tabController.addListener(() {
-      index.value = tabController.index;
-    });
     await getHistoryBalanceRevenue();
     isFetch.value = false;
   }

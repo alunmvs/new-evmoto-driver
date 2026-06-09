@@ -22,10 +22,16 @@ import '../modules/account_update_mobile_phone_verification_otp/bindings/account
 import '../modules/account_update_mobile_phone_verification_otp/views/account_update_mobile_phone_verification_otp_view.dart';
 import '../modules/account_user_guide/bindings/account_user_guide_binding.dart';
 import '../modules/account_user_guide/views/account_user_guide_view.dart';
-import '../modules/activity/bindings/activity_binding.dart';
-import '../modules/activity/views/activity_view.dart';
 import '../modules/add_edit_withdraw_bank_account/bindings/add_edit_withdraw_bank_account_binding.dart';
 import '../modules/add_edit_withdraw_bank_account/views/add_edit_withdraw_bank_account_view.dart';
+import '../modules/agreement_coupon_income/bindings/agreement_coupon_income_binding.dart';
+import '../modules/agreement_coupon_income/views/agreement_coupon_income_view.dart';
+import '../modules/agreement_guarantee_income/bindings/agreement_guarantee_income_binding.dart';
+import '../modules/agreement_guarantee_income/views/agreement_guarantee_income_view.dart';
+import '../modules/chat_detail/bindings/chat_detail_binding.dart';
+import '../modules/chat_detail/views/chat_detail_view.dart';
+import '../modules/chat_list/bindings/chat_list_binding.dart';
+import '../modules/chat_list/views/chat_list_view.dart';
 import '../modules/deposit_balance/bindings/deposit_balance_binding.dart';
 import '../modules/deposit_balance/views/deposit_balance_view.dart';
 import '../modules/deposit_balance_payment_webview/bindings/deposit_balance_payment_webview_binding.dart';
@@ -38,28 +44,32 @@ import '../modules/history_balance_revenue/bindings/history_balance_revenue_bind
 import '../modules/history_balance_revenue/views/history_balance_revenue_view.dart';
 import '../modules/history_balance_withdraw/bindings/history_balance_withdraw_binding.dart';
 import '../modules/history_balance_withdraw/views/history_balance_withdraw_view.dart';
+import '../modules/history_guarantee_income/bindings/history_guarantee_income_binding.dart';
+import '../modules/history_guarantee_income/views/history_guarantee_income_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/login_verification_otp/bindings/login_verification_otp_binding.dart';
 import '../modules/login_verification_otp/views/login_verification_otp_view.dart';
-import '../modules/onboarding_introduction/bindings/onboarding_introduction_binding.dart';
-import '../modules/onboarding_introduction/views/onboarding_introduction_view.dart';
-import '../modules/order_call/bindings/order_call_binding.dart';
-import '../modules/order_call/views/order_call_view.dart';
-import '../modules/order_chat/bindings/order_chat_binding.dart';
-import '../modules/order_chat/views/order_chat_view.dart';
+import '../modules/my_activity/bindings/my_activity_binding.dart';
+import '../modules/my_activity/views/my_activity_view.dart';
+import '../modules/my_order/bindings/my_order_binding.dart';
+import '../modules/my_order/views/my_order_view.dart';
+import '../modules/my_order_v2/bindings/my_order_v2_binding.dart';
+import '../modules/my_order_v2/views/my_order_v2_view.dart';
+import '../modules/notification/bindings/notification_binding.dart';
+import '../modules/notification/views/notification_view.dart';
 import '../modules/order_detail/bindings/order_detail_binding.dart';
 import '../modules/order_detail/views/order_detail_view.dart';
-import '../modules/order_detail_cancel/bindings/order_detail_cancel_binding.dart';
-import '../modules/order_detail_cancel/views/order_detail_cancel_view.dart';
-import '../modules/order_detail_done/bindings/order_detail_done_binding.dart';
-import '../modules/order_detail_done/views/order_detail_done_view.dart';
 import '../modules/order_payment_confirmation/bindings/order_payment_confirmation_binding.dart';
 import '../modules/order_payment_confirmation/views/order_payment_confirmation_view.dart';
 import '../modules/order_payment_detail/bindings/order_payment_detail_binding.dart';
 import '../modules/order_payment_detail/views/order_payment_detail_view.dart';
+import '../modules/order_payment_pending/bindings/order_payment_pending_binding.dart';
+import '../modules/order_payment_pending/views/order_payment_pending_view.dart';
+import '../modules/order_payment_pending_fee_detail/bindings/order_payment_pending_fee_detail_binding.dart';
+import '../modules/order_payment_pending_fee_detail/views/order_payment_pending_fee_detail_view.dart';
 import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
 import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
@@ -102,11 +112,6 @@ class AppPages {
       name: _Paths.SPLASH_SCREEN,
       page: () => const SplashScreenView(),
       binding: SplashScreenBinding(),
-    ),
-    GetPage(
-      name: _Paths.ONBOARDING_INTRODUCTION,
-      page: () => const OnboardingIntroductionView(),
-      binding: OnboardingIntroductionBinding(),
     ),
     GetPage(
       name: _Paths.LOGIN,
@@ -229,26 +234,6 @@ class AppPages {
       binding: AccountAboutUsBinding(),
     ),
     GetPage(
-      name: _Paths.ACTIVITY,
-      page: () => const ActivityView(),
-      binding: ActivityBinding(),
-    ),
-    GetPage(
-      name: _Paths.ORDER_DETAIL_DONE,
-      page: () => const OrderDetailDoneView(),
-      binding: OrderDetailDoneBinding(),
-    ),
-    GetPage(
-      name: _Paths.ORDER_DETAIL_CANCEL,
-      page: () => const OrderDetailCancelView(),
-      binding: OrderDetailCancelBinding(),
-    ),
-    GetPage(
-      name: _Paths.ORDER_CHAT,
-      page: () => const OrderChatView(),
-      binding: OrderChatBinding(),
-    ),
-    GetPage(
       name: _Paths.SWITCH_VEHICLE,
       page: () => const SwitchVehicleView(),
       binding: SwitchVehicleBinding(),
@@ -299,9 +284,59 @@ class AppPages {
       binding: HistoryBalanceRechargeBinding(),
     ),
     GetPage(
-      name: _Paths.ORDER_CALL,
-      page: () => const OrderCallView(),
-      binding: OrderCallBinding(),
+      name: _Paths.NOTIFICATION,
+      page: () => const NotificationView(),
+      binding: NotificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_PAYMENT_PENDING,
+      page: () => const OrderPaymentPendingView(),
+      binding: OrderPaymentPendingBinding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_PAYMENT_PENDING_FEE_DETAIL,
+      page: () => const OrderPaymentPendingFeeDetailView(),
+      binding: OrderPaymentPendingFeeDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT_LIST,
+      page: () => const ChatListView(),
+      binding: ChatListBinding(),
+    ),
+    GetPage(
+      name: _Paths.MY_ACTIVITY,
+      page: () => const MyActivityView(),
+      binding: MyActivityBinding(),
+    ),
+    GetPage(
+      name: _Paths.MY_ORDER,
+      page: () => const MyOrderView(),
+      binding: MyOrderBinding(),
+    ),
+    GetPage(
+      name: _Paths.AGREEMENT_GUARANTEE_INCOME,
+      page: () => const AgreementGuaranteeIncomeView(),
+      binding: AgreementGuaranteeIncomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.AGREEMENT_COUPON_INCOME,
+      page: () => const AgreementCouponIncomeView(),
+      binding: AgreementCouponIncomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT_DETAIL,
+      page: () => const ChatDetailView(),
+      binding: ChatDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.HISTORY_GUARANTEE_INCOME,
+      page: () => const HistoryGuaranteeIncomeView(),
+      binding: HistoryGuaranteeIncomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.MY_ORDER_V2,
+      page: () => const MyOrderV2View(),
+      binding: MyOrderV2Binding(),
     ),
   ];
 }
