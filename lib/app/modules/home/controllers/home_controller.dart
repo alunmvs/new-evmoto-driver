@@ -15,9 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mapsToolkit;
 import 'package:new_evmoto_driver/app/data/consts/order_state_const.dart';
 import 'package:new_evmoto_driver/app/data/models/guarantee_income_progress_bar_model.dart';
-import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
-import 'package:new_evmoto_driver/app/data/models/order_user_model.dart';
 import 'package:new_evmoto_driver/app/data/models/service_order_model.dart';
 import 'package:new_evmoto_driver/app/data/models/service_time_schedule_model.dart';
 import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
@@ -849,7 +847,9 @@ class HomeController extends GetxController
             false,
           );
           timerDuration.cancel();
-          Get.close(1);
+          if (Get.isDialogOpen == true) {
+            Get.close(1);
+          }
         }
       });
 
@@ -1440,7 +1440,9 @@ class HomeController extends GetxController
             false,
           );
           timerDuration.cancel();
-          Get.close(1);
+          if (Get.isDialogOpen == true) {
+            Get.close(1);
+          }
         }
       });
 
