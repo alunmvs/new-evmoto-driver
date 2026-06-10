@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/bank_account_model.dart';
 import 'package:new_evmoto_driver/app/data/models/bank_model.dart';
@@ -8,7 +7,6 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class AddEditWithdrawBankAccountController extends GetxController {

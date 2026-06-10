@@ -30,6 +30,85 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     },
   );
 
+  // if (message.data['notification_type'] == 'ORDER_STATE_CHANGES') {
+  //   var socketOrderStatusData = SocketOrderStatusData.fromJson(message.data);
+  //   var homeController = Get.find<HomeController>();
+
+  //   if (socketOrderStatusData.state == 1) {
+  //     if (Get.currentRoute == Routes.ORDER_DETAIL) {
+  //       var orderDetailController = Get.find<OrderDetailController>();
+
+  //       if (orderDetailController.orderId.value !=
+  //           socketOrderStatusData.orderId.toString()) {
+  //         if (socketOrderStatusData.travelTime == null) {
+  //           await Future.wait([
+  //             homeController.refreshAll(),
+  //             homeController.showDialogOrderConfirmation(
+  //               socketOrderStatusData: socketOrderStatusData,
+  //             ),
+  //           ]);
+  //         }
+
+  //         if (socketOrderStatusData.travelTime != null) {
+  //           await Future.wait([
+  //             homeController.refreshAll(),
+  //             homeController.showDialogAdvancedBookingConfirmation(
+  //               socketOrderStatusData: socketOrderStatusData,
+  //             ),
+  //           ]);
+  //         }
+  //       }
+  //     } else {
+  //       if (socketOrderStatusData.travelTime == null) {
+  //         await Future.wait([
+  //           homeController.refreshAll(),
+  //           homeController.showDialogOrderConfirmation(
+  //             socketOrderStatusData: socketOrderStatusData,
+  //           ),
+  //         ]);
+  //       }
+
+  //       if (socketOrderStatusData.travelTime != null) {
+  //         await Future.wait([
+  //           homeController.refreshAll(),
+  //           homeController.showDialogAdvancedBookingConfirmation(
+  //             socketOrderStatusData: socketOrderStatusData,
+  //           ),
+  //         ]);
+  //       }
+  //     }
+  //   }
+
+  //   if (socketOrderStatusData.state == 8 &&
+  //       Get.currentRoute == Routes.ORDER_PAYMENT_CONFIRMATION) {
+  //     var orderPaymentConfirmationController =
+  //         Get.find<OrderPaymentConfirmationController>();
+
+  //     if (orderPaymentConfirmationController.orderId.value ==
+  //         socketOrderStatusData.orderId.toString()) {
+  //       await orderPaymentConfirmationController.refreshAll();
+  //     }
+  //   }
+  //   if (socketOrderStatusData.state == 10 &&
+  //       (Get.currentRoute == Routes.ORDER_DETAIL ||
+  //           Get.routing.previous == Routes.ORDER_DETAIL)) {
+  //     var orderDetailController = Get.find<OrderDetailController>();
+
+  //     if (orderDetailController.orderId.value ==
+  //         socketOrderStatusData.orderId.toString()) {
+  //       Get.back();
+  //       await Get.find<HomeController>().refreshAll();
+
+  //       SnackbarHelper.showSnackbarError(text: "Pelanggan membatalkan pesanan");
+  //     }
+  //   }
+  //   if (socketOrderStatusData.state == 10 &&
+  //       Get.currentRoute != Routes.ORDER_DETAIL) {
+  //     await Get.find<HomeController>().refreshAll();
+  //   }
+  //   return;
+  // }
+
   flutterLocalNotificationsPlugin.show(
     DateTime.now().millisecondsSinceEpoch ~/ 1000,
     message.data['title'],
@@ -226,6 +305,89 @@ class FirebasePushNotificationServices extends GetxService {
         }
       }
 
+      // if (message.data['notification_type'] == 'ORDER_STATE_CHANGES') {
+      //   var socketOrderStatusData = SocketOrderStatusData.fromJson(
+      //     message.data,
+      //   );
+      //   var homeController = Get.find<HomeController>();
+
+      //   if (socketOrderStatusData.state == 1) {
+      //     if (Get.currentRoute == Routes.ORDER_DETAIL) {
+      //       var orderDetailController = Get.find<OrderDetailController>();
+
+      //       if (orderDetailController.orderId.value !=
+      //           socketOrderStatusData.orderId.toString()) {
+      //         if (socketOrderStatusData.travelTime == null) {
+      //           await Future.wait([
+      //             homeController.refreshAll(),
+      //             homeController.showDialogOrderConfirmation(
+      //               socketOrderStatusData: socketOrderStatusData,
+      //             ),
+      //           ]);
+      //         }
+
+      //         if (socketOrderStatusData.travelTime != null) {
+      //           await Future.wait([
+      //             homeController.refreshAll(),
+      //             homeController.showDialogAdvancedBookingConfirmation(
+      //               socketOrderStatusData: socketOrderStatusData,
+      //             ),
+      //           ]);
+      //         }
+      //       }
+      //     } else {
+      //       if (socketOrderStatusData.travelTime == null) {
+      //         await Future.wait([
+      //           homeController.refreshAll(),
+      //           homeController.showDialogOrderConfirmation(
+      //             socketOrderStatusData: socketOrderStatusData,
+      //           ),
+      //         ]);
+      //       }
+
+      //       if (socketOrderStatusData.travelTime != null) {
+      //         await Future.wait([
+      //           homeController.refreshAll(),
+      //           homeController.showDialogAdvancedBookingConfirmation(
+      //             socketOrderStatusData: socketOrderStatusData,
+      //           ),
+      //         ]);
+      //       }
+      //     }
+      //   }
+
+      //   if (socketOrderStatusData.state == 8 &&
+      //       Get.currentRoute == Routes.ORDER_PAYMENT_CONFIRMATION) {
+      //     var orderPaymentConfirmationController =
+      //         Get.find<OrderPaymentConfirmationController>();
+
+      //     if (orderPaymentConfirmationController.orderId.value ==
+      //         socketOrderStatusData.orderId.toString()) {
+      //       await orderPaymentConfirmationController.refreshAll();
+      //     }
+      //   }
+      //   if (socketOrderStatusData.state == 10 &&
+      //       (Get.currentRoute == Routes.ORDER_DETAIL ||
+      //           Get.routing.previous == Routes.ORDER_DETAIL)) {
+      //     var orderDetailController = Get.find<OrderDetailController>();
+
+      //     if (orderDetailController.orderId.value ==
+      //         socketOrderStatusData.orderId.toString()) {
+      //       Get.back();
+      //       await Get.find<HomeController>().refreshAll();
+
+      //       SnackbarHelper.showSnackbarError(
+      //         text: "Pelanggan membatalkan pesanan",
+      //       );
+      //     }
+      //   }
+      //   if (socketOrderStatusData.state == 10 &&
+      //       Get.currentRoute != Routes.ORDER_DETAIL) {
+      //     await Get.find<HomeController>().refreshAll();
+      //   }
+      //   return;
+      // }
+
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,
         message.data['title'],
@@ -326,6 +488,89 @@ class FirebasePushNotificationServices extends GetxService {
           }
         }
       }
+
+      // if (message.data['notification_type'] == 'ORDER_STATE_CHANGES') {
+      //   var socketOrderStatusData = SocketOrderStatusData.fromJson(
+      //     message.data,
+      //   );
+      //   var homeController = Get.find<HomeController>();
+
+      //   if (socketOrderStatusData.state == 1) {
+      //     if (Get.currentRoute == Routes.ORDER_DETAIL) {
+      //       var orderDetailController = Get.find<OrderDetailController>();
+
+      //       if (orderDetailController.orderId.value !=
+      //           socketOrderStatusData.orderId.toString()) {
+      //         if (socketOrderStatusData.travelTime == null) {
+      //           await Future.wait([
+      //             homeController.refreshAll(),
+      //             homeController.showDialogOrderConfirmation(
+      //               socketOrderStatusData: socketOrderStatusData,
+      //             ),
+      //           ]);
+      //         }
+
+      //         if (socketOrderStatusData.travelTime != null) {
+      //           await Future.wait([
+      //             homeController.refreshAll(),
+      //             homeController.showDialogAdvancedBookingConfirmation(
+      //               socketOrderStatusData: socketOrderStatusData,
+      //             ),
+      //           ]);
+      //         }
+      //       }
+      //     } else {
+      //       if (socketOrderStatusData.travelTime == null) {
+      //         await Future.wait([
+      //           homeController.refreshAll(),
+      //           homeController.showDialogOrderConfirmation(
+      //             socketOrderStatusData: socketOrderStatusData,
+      //           ),
+      //         ]);
+      //       }
+
+      //       if (socketOrderStatusData.travelTime != null) {
+      //         await Future.wait([
+      //           homeController.refreshAll(),
+      //           homeController.showDialogAdvancedBookingConfirmation(
+      //             socketOrderStatusData: socketOrderStatusData,
+      //           ),
+      //         ]);
+      //       }
+      //     }
+      //   }
+
+      //   if (socketOrderStatusData.state == 8 &&
+      //       Get.currentRoute == Routes.ORDER_PAYMENT_CONFIRMATION) {
+      //     var orderPaymentConfirmationController =
+      //         Get.find<OrderPaymentConfirmationController>();
+
+      //     if (orderPaymentConfirmationController.orderId.value ==
+      //         socketOrderStatusData.orderId.toString()) {
+      //       await orderPaymentConfirmationController.refreshAll();
+      //     }
+      //   }
+      //   if (socketOrderStatusData.state == 10 &&
+      //       (Get.currentRoute == Routes.ORDER_DETAIL ||
+      //           Get.routing.previous == Routes.ORDER_DETAIL)) {
+      //     var orderDetailController = Get.find<OrderDetailController>();
+
+      //     if (orderDetailController.orderId.value ==
+      //         socketOrderStatusData.orderId.toString()) {
+      //       Get.back();
+      //       await Get.find<HomeController>().refreshAll();
+
+      //       SnackbarHelper.showSnackbarError(
+      //         text: "Pelanggan membatalkan pesanan",
+      //       );
+      //     }
+      //   }
+      //   if (socketOrderStatusData.state == 10 &&
+      //       Get.currentRoute != Routes.ORDER_DETAIL) {
+      //     await Get.find<HomeController>().refreshAll();
+      //   }
+      //   return;
+      // }
 
       flutterLocalNotificationsPlugin.show(
         DateTime.now().millisecondsSinceEpoch ~/ 1000,

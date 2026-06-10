@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_evmoto_driver/app/data/models/open_city_model.dart';
@@ -15,7 +14,6 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
 import 'package:new_evmoto_driver/app/utils/image_upload_helper.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_driver/main.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class RegisterFormController extends GetxController {

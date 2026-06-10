@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
-import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model.dart';
 import 'package:new_evmoto_driver/app/modules/account/views/account_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_balance_sub_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_guarantee_income_progress_bar_card_full_screen_sub_view.dart';
@@ -14,9 +13,7 @@ import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_guarante
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_statistics_card_sub_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/order_card_home_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
-import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
-import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';

@@ -43,6 +43,11 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_notification_small"/>
+            <meta-data
+                android:name="com.dexterous.flutterlocalnotifications.icon"
+                android:resource="@mipmap/ic_notification_small" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -59,6 +64,12 @@
             android:value="2" />
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="${MAPS_API_KEY}"/>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_notification_small"/>
+        <meta-data
+            android:name="com.dexterous.flutterlocalnotifications.icon"
+            android:resource="@mipmap/ic_notification_small" />
+
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

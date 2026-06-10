@@ -18,8 +18,10 @@ class OrderPayment {
   double? discountMoney;
   double? discount;
   double? collectionFees;
+  double? freeWaitTime;
 
   OrderPayment({
+    this.freeWaitTime,
     this.orderMoney,
     this.startMileage,
     this.startMoney,
@@ -42,6 +44,7 @@ class OrderPayment {
   });
 
   OrderPayment.fromJson(Map<String, dynamic> json) {
+    freeWaitTime = json['freeWaitTime'];
     orderMoney = json['orderMoney'];
     startMileage = json['startMileage'];
     startMoney = json['startMoney'];

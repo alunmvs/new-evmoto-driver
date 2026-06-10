@@ -133,7 +133,7 @@ class OrderPaymentPendingFeeDetailView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${controller.languageServices.language.value.startingPrice} (${controller.orderDetail.value.startMileage!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.km}",
+                                          "${controller.languageServices.language.value.startingPrice} (${controller.orderDetail.value.mileage! < controller.orderDetail.value.startMileage! ? controller.orderDetail.value.mileage! : controller.orderDetail.value.startMileage!}) ${controller.languageServices.language.value.km}",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -176,24 +176,42 @@ class OrderPaymentPendingFeeDetailView
                                           null &&
                                       controller.orderDetail.value.waitMoney !=
                                           0) ...[
-                                    SizedBox(height: 8),
+                                    SizedBox(height: 12),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          "${controller.languageServices.language.value.waitFee} (${controller.orderDetail.value.wait!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.minute}",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              "${controller.languageServices.language.value.waitFee} (${(controller.orderDetail.value.wait ?? 0.0) + (controller.orderDetail.value.freeWaitTime ?? 0.0)}) ${controller.languageServices.language.value.minute}",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .thirdTextColor
+                                                        .value,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              "Bebas biaya tunggu sampai ${controller.orderDetail.value.freeWaitTime ?? 0.0} ${controller.languageServices.language.value.minute}",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: Color(0XFFB3B3B3),
+                                                  ),
+                                            ),
+                                          ],
                                         ),
                                         Text(
                                           NumberFormat.currency(
@@ -231,13 +249,13 @@ class OrderPaymentPendingFeeDetailView
                                               .value
                                               .mileageMoney !=
                                           0) ...[
-                                    SizedBox(height: 8),
+                                    SizedBox(height: 12),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${controller.languageServices.language.value.mileageFee} (${controller.orderDetail.value.mileage!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.mileageFee} (${controller.orderDetail.value.mileage}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -286,13 +304,13 @@ class OrderPaymentPendingFeeDetailView
                                               .value
                                               .durationMoney !=
                                           0) ...[
-                                    SizedBox(height: 8),
+                                    SizedBox(height: 12),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${controller.languageServices.language.value.timeCost} (${controller.orderDetail.value.duration!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.timeCost} (${controller.orderDetail.value.duration!}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -341,13 +359,13 @@ class OrderPaymentPendingFeeDetailView
                                               .value
                                               .longDistanceMoney !=
                                           0) ...[
-                                    SizedBox(height: 8),
+                                    SizedBox(height: 12),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${controller.languageServices.language.value.longDistanceFee} (${controller.orderDetail.value.longDistance!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.longDistanceFee} (${controller.orderDetail.value.longDistance!}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -396,7 +414,7 @@ class OrderPaymentPendingFeeDetailView
                                               .value
                                               .collectionFees !=
                                           0) ...[
-                                    SizedBox(height: 8),
+                                    SizedBox(height: 12),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -456,7 +474,7 @@ class OrderPaymentPendingFeeDetailView
                                               .value
                                               .additionalCharge !=
                                           0) ...[
-                                    SizedBox(height: 8),
+                                    SizedBox(height: 12),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
