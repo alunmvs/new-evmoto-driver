@@ -1482,7 +1482,7 @@ class HomeController extends GetxController
                                       ),
                                 ),
                                 Text(
-                                  "${formatDouble(orderData.startMileage!)} km",
+                                  "${formatDouble(orderData.mileage!)} km",
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
