@@ -133,7 +133,7 @@ class OrderPaymentPendingFeeDetailView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${controller.languageServices.language.value.startingPrice} (${controller.orderDetail.value.startMileage!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.km}",
+                                          "${controller.languageServices.language.value.startingPrice} (${controller.orderDetail.value.startMileage!}) ${controller.languageServices.language.value.km}",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -182,7 +182,7 @@ class OrderPaymentPendingFeeDetailView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${controller.languageServices.language.value.waitFee} (${controller.orderDetail.value.wait!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.minute}",
+                                          "${controller.languageServices.language.value.waitFee} (${(controller.orderDetail.value.wait ?? 0.0) + (controller.orderDetail.value.freeWaitTime ?? 0.0)}) ${controller.languageServices.language.value.minute}",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -237,7 +237,7 @@ class OrderPaymentPendingFeeDetailView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${controller.languageServices.language.value.mileageFee} (${controller.orderDetail.value.mileage!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.mileageFee} (${controller.orderDetail.value.mileage}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -292,7 +292,7 @@ class OrderPaymentPendingFeeDetailView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${controller.languageServices.language.value.timeCost} (${controller.orderDetail.value.duration!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.timeCost} (${controller.orderDetail.value.duration!}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -347,7 +347,7 @@ class OrderPaymentPendingFeeDetailView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${controller.languageServices.language.value.longDistanceFee} (${controller.orderDetail.value.longDistance!.toStringAsPrecision(2)}) km",
+                                          "${controller.languageServices.language.value.longDistanceFee} (${controller.orderDetail.value.longDistance!}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular

@@ -76,8 +76,10 @@ class OrderDetail {
   String? userHeadImg;
   int? payType;
   double? platformFee;
+  double? freeWaitTime;
 
   OrderDetail({
+    this.freeWaitTime,
     this.orderId,
     this.orderType,
     this.type,
@@ -158,6 +160,7 @@ class OrderDetail {
   });
 
   OrderDetail.fromJson(Map<String, dynamic> json) {
+    freeWaitTime = json['freeWaitTime'];
     orderId = json['orderId'];
     orderType = json['orderType'];
     type = json['type'];

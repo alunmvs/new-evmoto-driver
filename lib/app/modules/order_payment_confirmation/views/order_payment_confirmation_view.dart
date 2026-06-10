@@ -248,7 +248,7 @@ class OrderPaymentConfirmationView
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${controller.languageServices.language.value.startingPrice} (${controller.orderPayment.value.startMileage!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.km}",
+                                            "${controller.languageServices.language.value.startingPrice} (${controller.orderPayment.value.startMileage!}) ${controller.languageServices.language.value.km}",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -292,7 +292,7 @@ class OrderPaymentConfirmationView
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${controller.languageServices.language.value.waitFee} (${controller.orderPayment.value.wait!.toStringAsPrecision(2)}) ${controller.languageServices.language.value.minute}",
+                                            "${controller.languageServices.language.value.waitFee} (${(controller.orderPayment.value.wait ?? 0.0) + (controller.orderPayment.value.freeWaitTime ?? 0.0)}) ${controller.languageServices.language.value.minute}",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -336,7 +336,7 @@ class OrderPaymentConfirmationView
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${controller.languageServices.language.value.mileageFee} (${controller.orderPayment.value.mileage!.toStringAsPrecision(2)}) km",
+                                            "${controller.languageServices.language.value.mileageFee} (${controller.orderPayment.value.mileage}) km",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -380,7 +380,7 @@ class OrderPaymentConfirmationView
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${controller.languageServices.language.value.timeCost} (${controller.orderPayment.value.duration!.toStringAsPrecision(2)}) km",
+                                            "${controller.languageServices.language.value.timeCost} (${controller.orderPayment.value.duration!}) km",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -424,7 +424,7 @@ class OrderPaymentConfirmationView
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${controller.languageServices.language.value.longDistanceFee} (${controller.orderPayment.value.longDistance!.toStringAsPrecision(2)}) km",
+                                            "${controller.languageServices.language.value.longDistanceFee} (${controller.orderPayment.value.longDistance!}) km",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
