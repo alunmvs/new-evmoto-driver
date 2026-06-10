@@ -24,6 +24,7 @@ class BackgroundServices extends GetxService {
   @override
   Future<void> onInit() async {
     super.onInit();
+
     await initializeNotification();
     await initializeService();
   }
@@ -94,6 +95,18 @@ class BackgroundServices extends GetxService {
   }
 
   Future<void> initializeNotification() async {
+    await flutterLocalNotificationsPlugin.initialize(
+      InitializationSettings(
+        android: AndroidInitializationSettings('ic_notification_small'),
+        iOS: DarwinInitializationSettings(
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
+        ),
+      ),
+      onDidReceiveNotificationResponse: (NotificationResponse response) {},
+    );
+
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
       'foreground',
       'EVMOTO DRIVER FOREGROUND SERVICE',
@@ -126,9 +139,9 @@ class BackgroundServices extends GetxService {
           AndroidForegroundType.dataSync,
         ],
         notificationChannelId: 'foreground',
-        initialNotificationTitle: 'Latar Aktif',
+        initialNotificationTitle: 'Berjalan di Latar Belakang',
         initialNotificationContent:
-            'Aplikasi Anda berjalan dengan lancar di latar belakang.',
+            'Aplikasi tetap aktif untuk memastikan layanan berjalan dengan lancar.',
       ),
     );
 
@@ -183,6 +196,26 @@ void onStart(ServiceInstance service) {
         );
   }
 
+  // final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  // Timer backgroundServiceTimer = Timer.periodic(const Duration(seconds: 1), (
+  //   timer,
+  // ) async {
+  //   flutterLocalNotificationsPlugin.show(
+  //     9191,
+  //     'Berjalan di Latar Belakang',
+  //     'Aplikasi tetap aktif untuk memastikan layanan berjalan dengan lancar.',
+  //     const NotificationDetails(
+  //       android: AndroidNotificationDetails(
+  //         "foreground",
+  //         'EVMOTO DRIVER FOREGROUND SERVICE',
+  //         icon: "ic_notification_small",
+  //         ongoing: true,
+  //       ),
+  //     ),
+  //   );
+  // });
+
   var schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
     timer,
   ) async {
@@ -235,6 +268,9 @@ void onStart(ServiceInstance service) {
     try {
       schedulerDataSocketTimer.cancel();
     } catch (e) {}
+    // try {
+    //   backgroundServiceTimer.cancel();
+    // } catch (e) {}
     try {
       positionStream?.cancel();
     } catch (e) {}
