@@ -16,6 +16,8 @@ class PrivacyPolicyController extends GetxController {
 
   final agreement = Agreement().obs;
 
+  final privacyPolicyUrl = "https://ecgoevmoto.com/privacy-policy".obs;
+
   final isFetch = false.obs;
 
   @override
