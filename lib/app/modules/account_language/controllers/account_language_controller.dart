@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_driver/main.dart';
 
 class AccountLanguageController extends GetxController {
   final themeColorServices = Get.find<ThemeColorServices>();

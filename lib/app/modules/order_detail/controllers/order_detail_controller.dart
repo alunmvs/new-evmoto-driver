@@ -1601,6 +1601,18 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         var destinationLatitude = orderDetail.value.startLat!;
         var destinationLongitude = orderDetail.value.startLon!;
 
+        var margin = 0;
+        var distanceInMeters = Geolocator.distanceBetween(
+          originLatitude,
+          originLongitude,
+          destinationLatitude,
+          destinationLongitude,
+        );
+
+        if (distanceInMeters <= 1000) {
+          margin = 0;
+        }
+
         if (originLatitude > destinationLatitude &&
             originLongitude > destinationLongitude) {
           bounds = LatLngBounds(
@@ -1633,12 +1645,42 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
         if (isClosed) return;
         if (movementDirection == MovementDirection.vertical) {
+          var padding = 0.0;
+
+          var distanceInMeters = Geolocator.distanceBetween(
+            originLatitude,
+            originLongitude,
+            destinationLatitude,
+            destinationLongitude,
+          );
+
+          if (distanceInMeters <= 1000) {
+            padding = 80.0 * 2;
+          } else {
+            padding = 50.0 * 3.5;
+          }
+
           await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+            CameraUpdate.newLatLngBounds(bounds, padding),
           );
         } else {
+          var padding = 0.0;
+
+          var distanceInMeters = Geolocator.distanceBetween(
+            originLatitude,
+            originLongitude,
+            destinationLatitude,
+            destinationLongitude,
+          );
+
+          if (distanceInMeters <= 1000) {
+            padding = 80.0;
+          } else {
+            padding = 50.0;
+          }
+
           await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+            CameraUpdate.newLatLngBounds(bounds, padding),
           );
         }
       }
@@ -1683,13 +1725,44 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
         );
 
         if (isClosed) return;
+
         if (movementDirection == MovementDirection.vertical) {
+          var padding = 0.0;
+
+          var distanceInMeters = Geolocator.distanceBetween(
+            originLatitude,
+            originLongitude,
+            destinationLatitude,
+            destinationLongitude,
+          );
+
+          if (distanceInMeters <= 1000) {
+            padding = 80.0 * 2;
+          } else {
+            padding = 50.0 * 3.5;
+          }
+
           await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
+            CameraUpdate.newLatLngBounds(bounds, padding),
           );
         } else {
+          var padding = 0.0;
+
+          var distanceInMeters = Geolocator.distanceBetween(
+            originLatitude,
+            originLongitude,
+            destinationLatitude,
+            destinationLongitude,
+          );
+
+          if (distanceInMeters <= 1000) {
+            padding = 80.0;
+          } else {
+            padding = 50.0;
+          }
+
           await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+            CameraUpdate.newLatLngBounds(bounds, padding),
           );
         }
       }
@@ -1734,12 +1807,42 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
         if (isClosed) return;
         if (movementDirection == MovementDirection.vertical) {
+          var padding = 0.0;
+
+          var distanceInMeters = Geolocator.distanceBetween(
+            originLatitude,
+            originLongitude,
+            destinationLatitude,
+            destinationLongitude,
+          );
+
+          if (distanceInMeters <= 1000) {
+            padding = 80.0 * 2;
+          } else {
+            padding = 50.0 * 3.5;
+          }
+
           await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, Get.height * 0.2),
+            CameraUpdate.newLatLngBounds(bounds, padding),
           );
         } else {
+          var padding = 0.0;
+
+          var distanceInMeters = Geolocator.distanceBetween(
+            originLatitude,
+            originLongitude,
+            destinationLatitude,
+            destinationLongitude,
+          );
+
+          if (distanceInMeters <= 1000) {
+            padding = 80.0;
+          } else {
+            padding = 50.0;
+          }
+
           await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
+            CameraUpdate.newLatLngBounds(bounds, padding),
           );
         }
       }

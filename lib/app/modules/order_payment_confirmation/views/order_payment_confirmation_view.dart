@@ -248,7 +248,7 @@ class OrderPaymentConfirmationView
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${controller.languageServices.language.value.startingPrice} (${controller.orderPayment.value.startMileage!}) ${controller.languageServices.language.value.km}",
+                                            "${controller.languageServices.language.value.startingPrice} (${controller.orderDetail.value.mileage! < controller.orderDetail.value.startMileage! ? controller.orderDetail.value.mileage! : controller.orderDetail.value.startMileage!}) ${controller.languageServices.language.value.km}",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -286,25 +286,68 @@ class OrderPaymentConfirmationView
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 8),
+                                      SizedBox(height: 12),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
+                                        mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          Text(
-                                            "${controller.languageServices.language.value.waitFee} (${(controller.orderPayment.value.wait ?? 0.0) + (controller.orderPayment.value.freeWaitTime ?? 0.0)}) ${controller.languageServices.language.value.minute}",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .thirdTextColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
+                                          if ((controller
+                                                      .orderPayment
+                                                      .value
+                                                      .wait ??
+                                                  0.0) >
+                                              0) ...[
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${controller.languageServices.language.value.waitFee} (${(controller.orderPayment.value.wait ?? 0.0) + (controller.orderPayment.value.freeWaitTime ?? 0.0)}) ${controller.languageServices.language.value.minute}",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .captionLargeRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: controller
+                                                            .themeColorServices
+                                                            .thirdTextColor
+                                                            .value,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
                                                 ),
-                                          ),
+                                                SizedBox(height: 4),
+                                                Text(
+                                                  "Bebas biaya tunggu sampai ${controller.orderPayment.value.freeWaitTime ?? 0.0} ${controller.languageServices.language.value.minute}",
+                                                  style: controller
+                                                      .typographyServices
+                                                      .captionLargeRegular
+                                                      .value
+                                                      .copyWith(
+                                                        color: Color(
+                                                          0XFFB3B3B3,
+                                                        ),
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ] else ...[
+                                            Text(
+                                              "${controller.languageServices.language.value.waitFee}",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .thirdTextColor
+                                                        .value,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                          ],
                                           Text(
                                             NumberFormat.currency(
                                               locale: 'id_ID',
@@ -330,7 +373,7 @@ class OrderPaymentConfirmationView
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 8),
+                                      SizedBox(height: 12),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -374,7 +417,7 @@ class OrderPaymentConfirmationView
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 8),
+                                      SizedBox(height: 12),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -418,7 +461,7 @@ class OrderPaymentConfirmationView
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 8),
+                                      SizedBox(height: 12),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -462,7 +505,7 @@ class OrderPaymentConfirmationView
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 8),
+                                      SizedBox(height: 12),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
