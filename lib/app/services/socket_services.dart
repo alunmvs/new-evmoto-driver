@@ -252,7 +252,9 @@ class SocketServices extends GetxService {
                           false);
 
                   if (isDialogShow == true) {
-                    Get.close(1);
+                    if (Get.isDialogOpen == true) {
+                      Get.close(1);
+                    }
                   }
                 }
               default:
