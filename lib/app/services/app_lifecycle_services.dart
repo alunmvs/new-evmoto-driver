@@ -6,6 +6,7 @@ import 'package:new_evmoto_driver/app/data/models/socket_order_status_data_model
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppLifecycleController extends GetxController
     with WidgetsBindingObserver {
@@ -61,6 +62,11 @@ class AppLifecycleController extends GetxController
   void onAppBackground() {}
 
   Future<void> getOrderPendingDispatch() async {
+    var prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('home_controller_registered') != true) {
+      return;
+    }
+
     var orderRepository = OrderRepository();
     var homeController = Get.find<HomeController>();
 
