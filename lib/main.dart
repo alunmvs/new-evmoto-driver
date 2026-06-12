@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
+import 'package:new_evmoto_driver/app/services/auth_service.dart';
 import 'package:new_evmoto_driver/app/services/app_lifecycle_services.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
@@ -65,6 +66,7 @@ Future<void> main() async {
   Get.put(TypographyServices(), permanent: true);
   Get.put(LanguageServices(), permanent: true);
   Get.put(ApiServices(), permanent: true);
+  Get.put(AuthService(), permanent: true);
   Get.put(FirebaseRemoteConfigServices(), permanent: true);
   await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
   Get.put(FirebasePushNotificationServices(), permanent: true);

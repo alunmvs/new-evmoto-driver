@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/repositories/login_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
@@ -71,12 +72,7 @@ class LoginVerificationOtpController extends GetxController {
       var storage = FlutterSecureStorage();
       await storage.write(key: "token", value: token);
 
-      // Get.lazyPut<AccountController>(
-      //   () => AccountController(
-      //     otpRepository: OtpRepository(),
-      //     userRepository: UserRepository(),
-      //   ),
-      // );
+      Get.find<ApiServices>().resetSession();
 
       Get.offAllNamed(Routes.HOME);
     } catch (e) {

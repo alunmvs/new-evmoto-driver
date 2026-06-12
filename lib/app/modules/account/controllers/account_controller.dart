@@ -1,29 +1,22 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/otp_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
-import 'package:new_evmoto_driver/app/routes/app_pages.dart';
-import 'package:new_evmoto_driver/app/services/background_services.dart';
-import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
+import 'package:new_evmoto_driver/app/services/auth_service.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
-import 'package:new_evmoto_driver/app/services/location_services.dart';
-import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
-import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pinput/pinput.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -38,7 +31,6 @@ class AccountController extends GetxController {
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();
-  final socketServices = Get.find<SocketServices>();
   final firebaseRemoteConfigServices = Get.find<FirebaseRemoteConfigServices>();
   final languageServices = Get.find<LanguageServices>();
 
@@ -155,32 +147,8 @@ class AccountController extends GetxController {
                     SizedBox(height: 16),
                     LoaderElevatedButton(
                       onPressed: () async {
-                        final backgroundServices =
-                            Get.find<BackgroundServices>();
-                        final userServices = Get.find<UserServices>();
-                        final firebasePushNotificationServices =
-                            Get.find<FirebasePushNotificationServices>();
-                        final locationServices = Get.find<LocationServices>();
-                        var prefs = await SharedPreferences.getInstance();
-                        var storage = FlutterSecureStorage();
-
-                        await backgroundServices.clearAllState();
-                        await locationServices.positionStream?.cancel();
-                        await firebasePushNotificationServices.onUnsubscribe();
-
-                        await Future.wait([
-                          backgroundServices.stopService(),
-                          storage.deleteAll(),
-                          socketServices.closeWebsocket(),
-                          prefs.clear(),
-                        ]);
-
-                        userServices.clearUserInfo();
-
-                        Get.offAllNamed(Routes.LOGIN);
-
-                        SnackbarHelper.showSnackbarSuccess(
-                          text: "Berhasil keluar akun",
+                        await Get.find<AuthService>().logout(
+                          successMessage: "Berhasil keluar akun",
                         );
                       },
                       child: Text(
@@ -711,13 +679,8 @@ class AccountController extends GetxController {
                                 }
                                 await onTapSuccessDeleteAccountDialog();
 
-                                var storage = FlutterSecureStorage();
-                                await storage.deleteAll();
-                                await socketServices.closeWebsocket();
-
-                                Get.offAllNamed(Routes.LOGIN);
-                                SnackbarHelper.showSnackbarSuccess(
-                                  text: "Berhasil menghapus akun",
+                                await Get.find<AuthService>().logout(
+                                  successMessage: "Berhasil menghapus akun",
                                 );
                               },
                         child: Text(

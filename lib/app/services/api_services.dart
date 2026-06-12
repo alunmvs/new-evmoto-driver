@@ -8,17 +8,14 @@ import 'package:dio_curl_logger/dio_curl_logger.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
-import 'package:new_evmoto_driver/app/services/background_services.dart';
-import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
-import 'package:new_evmoto_driver/app/services/location_services.dart';
-import 'package:new_evmoto_driver/app/services/socket_services.dart';
-import 'package:new_evmoto_driver/app/services/user_services.dart';
-import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_driver/app/services/auth_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class ApiServices extends GetxService {
+  CancelToken _sessionCancelToken = CancelToken();
+  bool isSessionEnding = false;
+
   final Dio dio = Dio(
     BaseOptions(
       connectTimeout: Duration(seconds: 10),
@@ -55,6 +52,18 @@ class ApiServices extends GetxService {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
+          if (isSessionEnding) {
+            return handler.reject(
+              DioException(
+                requestOptions: options,
+                type: DioExceptionType.cancel,
+                message: 'Session ended',
+              ),
+            );
+          }
+
+          options.cancelToken = _sessionCancelToken;
+
           options.headers['version'] = packageVersion.value;
           options.headers['deviceid'] = deviceId.value;
           options.headers['timestamp'] = DateTime.now().millisecondsSinceEpoch
@@ -76,33 +85,9 @@ class ApiServices extends GetxService {
               if (response.data['code'] == 600 &&
                   response.realUri.path.contains('/notification/unsubscribe') ==
                       false) {
-                if (Get.currentRoute != Routes.LOGIN) {
-                  final socketServices = Get.find<SocketServices>();
-                  final backgroundServices = Get.find<BackgroundServices>();
-                  final userServices = Get.find<UserServices>();
-                  final locationServices = Get.find<LocationServices>();
-                  final firebasePushNotificationServices =
-                      Get.find<FirebasePushNotificationServices>();
-                  var prefs = await SharedPreferences.getInstance();
-                  var storage = FlutterSecureStorage();
-
-                  await backgroundServices.clearAllState();
-                  await firebasePushNotificationServices.onUnsubscribe();
-                  await locationServices.positionStream?.cancel();
-
-                  await Future.wait([
-                    backgroundServices.stopService(),
-                    storage.deleteAll(),
-                    socketServices.closeWebsocket(),
-                    prefs.clear(),
-                  ]);
-
-                  userServices.clearUserInfo();
-
-                  Get.offAllNamed(Routes.LOGIN);
-
-                  SnackbarHelper.showSnackbarError(
-                    text: "Anda sedang Login di perangkat lain",
+                if (!isSessionEnding && Get.currentRoute != Routes.LOGIN) {
+                  await Get.find<AuthService>().logout(
+                    errorMessage: "Anda sedang Login di perangkat lain",
                   );
                 }
               }
@@ -180,5 +165,18 @@ class ApiServices extends GetxService {
     final digest = md5.convert(bytes);
 
     return digest.toString();
+  }
+
+  void beginSessionEnd() {
+    if (isSessionEnding) return;
+    isSessionEnding = true;
+    if (!_sessionCancelToken.isCancelled) {
+      _sessionCancelToken.cancel('Session ended');
+    }
+  }
+
+  void resetSession() {
+    isSessionEnding = false;
+    _sessionCancelToken = CancelToken();
   }
 }
