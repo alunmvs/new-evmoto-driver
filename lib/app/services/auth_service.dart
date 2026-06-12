@@ -46,6 +46,8 @@ class AuthService extends GetxService {
       Get.offAllNamed(Routes.LOGIN);
     }
 
+    apiServices.resetSession();
+
     if (successMessage != null) {
       SnackbarHelper.showSnackbarSuccess(text: successMessage);
     } else if (errorMessage != null) {
