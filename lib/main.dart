@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -22,6 +23,7 @@ import 'package:new_evmoto_driver/app/services/socket_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:native_flutter_proxy/native_flutter_proxy.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/services/voice_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,8 +34,27 @@ final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+Future<void> applyProxy(ProxySetting settings) async {
+  if (!settings.enabled || settings.host == null) {
+    HttpOverrides.global = null;
+    return;
+  }
+
+  CustomProxy(ipAddress: settings.host!, port: settings.port).enable();
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    final settings = await NativeProxyReader.proxySetting;
+    await applyProxy(settings);
+  } catch (e) {}
+
+  NativeProxyReader.setProxyChangedCallback((settings) async {
+    await applyProxy(settings);
+  });
+
   DartPluginRegistrant.ensureInitialized();
   tz.initializeTimeZones();
 
