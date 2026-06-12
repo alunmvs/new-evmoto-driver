@@ -26,6 +26,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:native_flutter_proxy/native_flutter_proxy.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/services/voice_services.dart';
+import 'package:new_evmoto_driver/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app/routes/app_pages.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -115,6 +116,7 @@ Future<void> main() async {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       scaffoldMessengerKey: rootScaffoldMessengerKey,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: Get.find<ThemeColorServices>().primaryBlue.value,
@@ -140,16 +142,68 @@ Future<void> main() async {
         }
       },
       builder: (context, child) {
-        return SafeArea(
-          top: false,
-          bottom: true,
-          left: false,
-          right: false,
-          child: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: child!,
-          ),
-        );
+        return env == "dev"
+            ? Banner(
+                message: "Dev",
+                location: BannerLocation.topEnd,
+                color: Color(0XFF0060C6),
+                shadow: BoxShadow(
+                  color: Colors.transparent,
+                  blurRadius: 0,
+                  spreadRadius: 0,
+                  offset: Offset(0, 0),
+                ),
+                textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                child: SafeArea(
+                  top: false,
+                  left: false,
+                  right: false,
+                  bottom: true,
+                  child: GestureDetector(
+                    onTap: () => FocusScope.of(context).unfocus(),
+                    child: Stack(
+                      children: [
+                        child!,
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              margin: EdgeInsets.only(right: 16),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withValues(alpha: 0.3),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Obx(
+                                () => Text(
+                                  Get.find<SocketServices>().isSocketClose.value
+                                      ? "Ping : Disconnected"
+                                      : "Ping : Connected",
+                                  style: Get.find<TypographyServices>()
+                                      .captionSmallRegular
+                                      .value
+                                      .copyWith(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            : SafeArea(
+                top: false,
+                left: false,
+                right: false,
+                bottom: true,
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: child!,
+                ),
+              );
       },
     ),
   );
