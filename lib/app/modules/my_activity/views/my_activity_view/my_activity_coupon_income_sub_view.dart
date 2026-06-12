@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/modules/my_activity/controllers/my_activity_controller.dart';
 
 class MyActivityCouponIncomeSubView extends GetView<MyActivityController> {
-  const MyActivityCouponIncomeSubView({super.key});
+  MyActivityCouponIncomeSubView({super.key});
+
+  final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -288,9 +290,11 @@ class MyActivityCouponIncomeSubView extends GetView<MyActivityController> {
               if (controller.couponIncomeTableData.isNotEmpty) ...[
                 SizedBox(height: 16),
                 Scrollbar(
+                  controller: scrollController,
                   thumbVisibility: true,
                   trackVisibility: true,
                   child: SingleChildScrollView(
+                    controller: scrollController,
                     scrollDirection: Axis.horizontal,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/modules/my_activity/controllers/my_activity_controller.dart';
 
 class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
-  const MyActivityGuaranteeIncomeSubView({super.key});
+  MyActivityGuaranteeIncomeSubView({super.key});
+
+  final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -149,9 +151,11 @@ class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
                 ),
                 SizedBox(height: 16),
                 Scrollbar(
+                  controller: scrollController,
                   thumbVisibility: true,
                   trackVisibility: true,
                   child: SingleChildScrollView(
+                    controller: scrollController,
                     scrollDirection: Axis.horizontal,
                     child: Column(
                       children: [
