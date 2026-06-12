@@ -285,234 +285,49 @@ class MyActivityCouponIncomeSubView extends GetView<MyActivityController> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
               if (controller.couponIncomeTableData.isNotEmpty) ...[
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Table(
-                        border: TableBorder.all(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Color(0XFFEEEEEE),
-                        ),
-                        columnWidths: {
-                          0: FixedColumnWidth(150),
-                          1: FixedColumnWidth(150),
-                          2: FixedColumnWidth(150),
-                          3: FixedColumnWidth(150),
-                          4: FixedColumnWidth(150),
-                          5: FixedColumnWidth(150),
-                          6: FixedColumnWidth(150),
-                        },
-                        children: [
-                          TableRow(
-                            children: [
-                              TableCell(
-                                child: Container(
-                                  padding: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFF319758),
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(12),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Date",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              TableCell(
-                                child: Container(
-                                  padding: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFF319758),
-                                  ),
-                                  child: Text(
-                                    "Order Time",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              TableCell(
-                                child: Container(
-                                  padding: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFF319758),
-                                  ),
-                                  child: Text(
-                                    "Pick Up Point",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              TableCell(
-                                child: Container(
-                                  padding: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFF319758),
-                                  ),
-                                  child: Text(
-                                    "Destination",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              TableCell(
-                                child: Container(
-                                  padding: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFF319758),
-                                  ),
-                                  child: Text(
-                                    "Cash Income",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              TableCell(
-                                child: Container(
-                                  padding: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFF319758),
-                                  ),
-                                  child: Text(
-                                    "Coupon Income",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              TableCell(
-                                child: Container(
-                                  padding: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFF319758),
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(12),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    "Order Amount",
-                                    style: controller
-                                        .typographyServices
-                                        .bodySmallBold
-                                        .value
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            ],
+                SizedBox(height: 16),
+                Scrollbar(
+                  thumbVisibility: true,
+                  trackVisibility: true,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Table(
+                          border: TableBorder.all(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Color(0XFFEEEEEE),
                           ),
-                          for (var data
-                              in controller.couponIncomeTableData) ...[
+                          columnWidths: {
+                            0: FixedColumnWidth(150),
+                            1: FixedColumnWidth(150),
+                            2: FixedColumnWidth(150),
+                            3: FixedColumnWidth(150),
+                            4: FixedColumnWidth(150),
+                            5: FixedColumnWidth(150),
+                            6: FixedColumnWidth(150),
+                          },
+                          children: [
                             TableRow(
                               children: [
                                 TableCell(
                                   child: Container(
                                     padding: EdgeInsets.all(12),
                                     decoration: BoxDecoration(
+                                      color: Color(0XFF319758),
                                       borderRadius: BorderRadius.only(
-                                        bottomLeft:
-                                            controller
-                                                    .couponIncomeTableData
-                                                    .last ==
-                                                data
-                                            ? Radius.circular(12)
-                                            : Radius.zero,
+                                        topLeft: Radius.circular(12),
                                       ),
                                     ),
                                     child: Text(
-                                      data[0],
+                                      "Date",
                                       style: controller
                                           .typographyServices
-                                          .bodySmallRegular
-                                          .value,
-                                    ),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Container(
-                                    padding: EdgeInsets.all(12),
-                                    child: Text(
-                                      data[1],
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value,
-                                    ),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Container(
-                                    padding: EdgeInsets.all(12),
-                                    child: Text(
-                                      data[2],
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value,
-                                    ),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Container(
-                                    padding: EdgeInsets.all(12),
-                                    child: Text(
-                                      data[3],
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value,
-                                    ),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Container(
-                                    padding: EdgeInsets.all(12),
-                                    child: Text(
-                                      data[4],
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value,
-                                    ),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Container(
-                                    padding: EdgeInsets.all(12),
-                                    child: Text(
-                                      data[5],
-                                      style: controller
-                                          .typographyServices
-                                          .bodySmallRegular
-                                          .value,
+                                          .bodySmallBold
+                                          .value
+                                          .copyWith(color: Colors.white),
                                     ),
                                   ),
                                 ),
@@ -520,34 +335,224 @@ class MyActivityCouponIncomeSubView extends GetView<MyActivityController> {
                                   child: Container(
                                     padding: EdgeInsets.all(12),
                                     decoration: BoxDecoration(
+                                      color: Color(0XFF319758),
+                                    ),
+                                    child: Text(
+                                      "Order Time",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallBold
+                                          .value
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Color(0XFF319758),
+                                    ),
+                                    child: Text(
+                                      "Pick Up Point",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallBold
+                                          .value
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Color(0XFF319758),
+                                    ),
+                                    child: Text(
+                                      "Destination",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallBold
+                                          .value
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Color(0XFF319758),
+                                    ),
+                                    child: Text(
+                                      "Cash Income",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallBold
+                                          .value
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Color(0XFF319758),
+                                    ),
+                                    child: Text(
+                                      "Coupon Income",
+                                      style: controller
+                                          .typographyServices
+                                          .bodySmallBold
+                                          .value
+                                          .copyWith(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    padding: EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Color(0XFF319758),
                                       borderRadius: BorderRadius.only(
-                                        bottomRight:
-                                            controller
-                                                    .couponIncomeTableData
-                                                    .last ==
-                                                data
-                                            ? Radius.circular(12)
-                                            : Radius.zero,
+                                        topRight: Radius.circular(12),
                                       ),
                                     ),
                                     child: Text(
-                                      data[6],
+                                      "Order Amount",
                                       style: controller
                                           .typographyServices
-                                          .bodySmallRegular
-                                          .value,
+                                          .bodySmallBold
+                                          .value
+                                          .copyWith(color: Colors.white),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
+                            for (var data
+                                in controller.couponIncomeTableData) ...[
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: Container(
+                                      padding: EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft:
+                                              controller
+                                                      .couponIncomeTableData
+                                                      .last ==
+                                                  data
+                                              ? Radius.circular(12)
+                                              : Radius.zero,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        data[0],
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallRegular
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    child: Container(
+                                      padding: EdgeInsets.all(12),
+                                      child: Text(
+                                        data[1],
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallRegular
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    child: Container(
+                                      padding: EdgeInsets.all(12),
+                                      child: Text(
+                                        data[2],
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallRegular
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    child: Container(
+                                      padding: EdgeInsets.all(12),
+                                      child: Text(
+                                        data[3],
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallRegular
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    child: Container(
+                                      padding: EdgeInsets.all(12),
+                                      child: Text(
+                                        data[4],
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallRegular
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    child: Container(
+                                      padding: EdgeInsets.all(12),
+                                      child: Text(
+                                        data[5],
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallRegular
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    child: Container(
+                                      padding: EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          bottomRight:
+                                              controller
+                                                      .couponIncomeTableData
+                                                      .last ==
+                                                  data
+                                              ? Radius.circular(12)
+                                              : Radius.zero,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        data[6],
+                                        style: controller
+                                            .typographyServices
+                                            .bodySmallRegular
+                                            .value,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ],
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
+              SizedBox(height: 16),
             ],
           ),
         ),
