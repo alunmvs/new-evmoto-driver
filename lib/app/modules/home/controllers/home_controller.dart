@@ -1430,6 +1430,7 @@ class HomeController extends GetxController
 
       final durationAccept = 0.obs;
       durationAccept.value = socketOrderStatusData.time ?? 0;
+      var shouldRejectPushOrder = true;
 
       late Timer timerDuration;
       timerDuration = Timer.periodic(Duration(seconds: 1), (timer) async {
@@ -1740,6 +1741,7 @@ class HomeController extends GetxController
                             ActionSlider.custom(
                               height: 60,
                               action: (actionController) async {
+                                shouldRejectPushOrder = false;
                                 await onSlideOrderConfirmation(
                                   actionController: actionController,
                                   socketOrderStatusData: socketOrderStatusData,
@@ -1903,6 +1905,14 @@ class HomeController extends GetxController
           ],
         ),
       );
+
+      if (shouldRejectPushOrder) {
+        try {
+          await orderRepository.orderPushReject(
+            orderId: socketOrderStatusData.orderId.toString(),
+          );
+        } catch (_) {}
+      }
 
       await prefs.setBool(
         'dialog_order_confirmation_${socketOrderStatusData.orderId}',
