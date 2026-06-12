@@ -131,11 +131,11 @@ class MyActivityController extends GetxController
   Future<void> onTapSelectDateRangeGuaranteeIncome({
     required BuildContext context,
   }) async {
-    final pickedRange = await showDateRangePicker(
+    var result = await showDatePicker(
       context: context,
       firstDate: DateTime(2020),
       lastDate: DateTime(2100),
-      initialDateRange: guaranteeIncomeSelectedDateRange.value,
+      initialDate: guaranteeIncomeSelectedDateRange.value?.start,
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
@@ -163,8 +163,11 @@ class MyActivityController extends GetxController
       },
     );
 
-    if (pickedRange != null) {
-      guaranteeIncomeSelectedDateRange.value = pickedRange;
+    if (result != null) {
+      guaranteeIncomeSelectedDateRange.value = DateTimeRange(
+        start: result,
+        end: result,
+      );
       await getGuaranteeIncome();
       await generateGuaranteeIncomeTableData();
     }
