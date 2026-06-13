@@ -63,6 +63,8 @@ Future<void> setupLoginTestEnvironment() async {
   SharedPreferences.setMockInitialValues({});
 }
 
+Future<void> setupModuleTestEnvironment() => setupLoginTestEnvironment();
+
 void registerTestTypographyServices() {
   Get.put<TypographyServices>(TestTypographyServices());
 }
