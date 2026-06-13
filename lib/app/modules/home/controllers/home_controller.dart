@@ -887,13 +887,7 @@ class HomeController extends GetxController
                                       ),
                                 ),
                                 Text(
-                                  DateFormat(
-                                    'EEEE, d MMMM yyyy · HH:mm',
-                                  ).format(
-                                    DateTime.parse(
-                                      socketOrderStatusData.travelTime!,
-                                    ),
-                                  ),
+                                  "${formatDouble(orderData.mileage!)} km · ${DateFormat('d MMMM yyyy · HH:mm').format(DateTime.parse(socketOrderStatusData.travelTime!))}",
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
@@ -902,6 +896,8 @@ class HomeController extends GetxController
                                             .neutralsColorGrey0
                                             .value,
                                       ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),

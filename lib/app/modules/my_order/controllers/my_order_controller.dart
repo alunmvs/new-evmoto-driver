@@ -255,7 +255,7 @@ class MyOrderController extends GetxController
                                       ),
                                 ),
                                 Text(
-                                  "${formatDouble(orderData.startMileage!)} km",
+                                  "${formatDouble(orderData.mileage!)} km · ${DateFormat('d MMMM yyyy · HH:mm').format(DateTime.parse(orderData.travelTime!))}",
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
