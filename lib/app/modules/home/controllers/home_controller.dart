@@ -154,6 +154,7 @@ class HomeController extends GetxController
   );
   Timer? guaranteeIncomeProgressBarTimer;
   final isActiveGuaranteeIncomeProgressBarOpen = false.obs;
+  final isGuaranteeIncomeProgressBarVisible = false.obs;
   final guaranteeIncomeProgress = 0.0.obs;
   final startTimeLocal = Rx<DateTime?>(null);
   final endTimeLocal = Rx<DateTime?>(null);
@@ -2674,6 +2675,34 @@ class HomeController extends GetxController
         .getActiveEnsureIncomeRuleId();
   }
 
+  bool isWithinGuaranteeIncomeTimeRange(String startTime, String endTime) {
+    final now = DateTime.now();
+    final start = parseToToday(now, startTime).toLocal();
+    final end = parseToToday(now, endTime).toLocal();
+    return now.isAfter(start) && now.isBefore(end);
+  }
+
+  void updateGuaranteeIncomeProgressBarVisibility() {
+    final activeBar = activeGuaranteeIncomeProgressBar.value;
+    final startTime = activeBar?.startTime;
+    final endTime = activeBar?.endTime;
+
+    if (startTime == null || endTime == null || activeBar?.id == null) {
+      isGuaranteeIncomeProgressBarVisible.value = false;
+      isActiveGuaranteeIncomeProgressBarOpen.value = false;
+      return;
+    }
+
+    isGuaranteeIncomeProgressBarVisible.value = isWithinGuaranteeIncomeTimeRange(
+      startTime,
+      endTime,
+    );
+
+    if (!isGuaranteeIncomeProgressBarVisible.value) {
+      isActiveGuaranteeIncomeProgressBarOpen.value = false;
+    }
+  }
+
   Future<void> getGuaranteeIncomeProgressBarList() async {
     if (ensureIncomeRuleId.value != null) {
       guaranteeIncomeProgressBarList.value = await guaranteeIncomeRepository
@@ -2685,18 +2714,10 @@ class HomeController extends GetxController
       for (var guaranteeIncomeProgressBar in guaranteeIncomeProgressBarList) {
         if (guaranteeIncomeProgressBar.startTime != null &&
             guaranteeIncomeProgressBar.endTime != null) {
-          var now = DateTime.now();
-
-          var start = parseToToday(
-            now,
+          var isInRange = isWithinGuaranteeIncomeTimeRange(
             guaranteeIncomeProgressBar.startTime!,
-          ).toLocal();
-          var end = parseToToday(
-            now,
             guaranteeIncomeProgressBar.endTime!,
-          ).toLocal();
-
-          var isInRange = now.isAfter(start) && now.isBefore(end);
+          );
 
           if (isInRange == true) {
             activeGuaranteeIncomeProgressBar.value = guaranteeIncomeProgressBar;
@@ -2729,19 +2750,27 @@ class HomeController extends GetxController
         }
       }
 
-      if (isInRangeExist == false) {
+      if (isInRangeExist) {
+        updateGuaranteeIncomeProgressBarVisibility();
+      } else {
         activeGuaranteeIncomeProgressBar.value = GuaranteeIncomeProgressBar();
         guaranteeIncomeProgress.value = 0.0;
+        startTimeLocal.value = null;
+        endTimeLocal.value = null;
         startTimeAdjustTz.value = null;
         endTimeAdjustTz.value = null;
+        isGuaranteeIncomeProgressBarVisible.value = false;
         isActiveGuaranteeIncomeProgressBarOpen.value = false;
       }
     } else {
       guaranteeIncomeProgressBarList.value = <GuaranteeIncomeProgressBar>[];
       activeGuaranteeIncomeProgressBar.value = GuaranteeIncomeProgressBar();
       guaranteeIncomeProgress.value = 0.0;
+      startTimeLocal.value = null;
+      endTimeLocal.value = null;
       startTimeAdjustTz.value = null;
       endTimeAdjustTz.value = null;
+      isGuaranteeIncomeProgressBarVisible.value = false;
       isActiveGuaranteeIncomeProgressBarOpen.value = false;
     }
   }
