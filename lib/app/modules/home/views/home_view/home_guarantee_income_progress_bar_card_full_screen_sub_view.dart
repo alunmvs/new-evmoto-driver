@@ -64,9 +64,9 @@ class HomeGuaranteeIncomeProgressBarCardFullScreenSubView
                       }(),
                       shouldShowMinutes: (duration) => duration.inDays == 0,
                       onDone: () async {
+                        controller.updateGuaranteeIncomeProgressBarVisibility();
                         await controller.getEnsureIncomeRuleId();
                         await controller.getGuaranteeIncomeProgressBarList();
-                        controller.updateGuaranteeIncomeProgressBarVisibility();
                       },
                       style: controller
                           .typographyServices

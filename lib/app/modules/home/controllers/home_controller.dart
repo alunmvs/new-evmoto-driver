@@ -153,6 +153,7 @@ class HomeController extends GetxController
     null,
   );
   Timer? guaranteeIncomeProgressBarTimer;
+  Timer? guaranteeIncomeVisibilityTimer;
   final isActiveGuaranteeIncomeProgressBarOpen = false.obs;
   final isGuaranteeIncomeProgressBarVisible = false.obs;
   final guaranteeIncomeProgress = 0.0.obs;
@@ -188,6 +189,7 @@ class HomeController extends GetxController
       await Future.wait([
         setupAutoOfflineTimer(),
         setupGuaranteeIncomeProgressBarTimer(),
+        setupGuaranteeIncomeVisibilityTimer(),
       ]);
       await backgroundServices.refreshState();
 
@@ -207,6 +209,7 @@ class HomeController extends GetxController
     await socketServices.closeWebsocket();
     autoOfflineTimer?.cancel();
     guaranteeIncomeProgressBarTimer?.cancel();
+    guaranteeIncomeVisibilityTimer?.cancel();
   }
 
   // Working Time Schedule
@@ -683,6 +686,18 @@ class HomeController extends GetxController
       await getEnsureIncomeRuleId();
       await getGuaranteeIncomeProgressBarList();
     });
+  }
+
+  Future<void> setupGuaranteeIncomeVisibilityTimer() async {
+    guaranteeIncomeVisibilityTimer?.cancel();
+    guaranteeIncomeVisibilityTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) {
+        if (activeGuaranteeIncomeProgressBar.value?.id != null) {
+          updateGuaranteeIncomeProgressBarVisibility();
+        }
+      },
+    );
   }
 
   void setInitialLatitudeLongitude() {
