@@ -255,7 +255,7 @@ class OrderPaymentPendingFeeDetailView
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "${controller.languageServices.language.value.mileageFee} (${controller.orderDetail.value.mileage}) km",
+                                          "${controller.languageServices.language.value.mileageFee} (${controller.orderDetail.value.driverMileageKilometers}) km",
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular

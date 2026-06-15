@@ -33,6 +33,7 @@ class OrderDetail {
   double? startMileage;
   double? startMoney;
   double? mileage;
+  double? driverMileageKilometers;
   double? mileageMoney;
   double? duration;
   double? durationMoney;
@@ -114,6 +115,7 @@ class OrderDetail {
     this.startMileage,
     this.startMoney,
     this.mileage,
+    this.driverMileageKilometers,
     this.mileageMoney,
     this.duration,
     this.durationMoney,
@@ -195,6 +197,7 @@ class OrderDetail {
     startMileage = json['startMileage'];
     startMoney = json['startMoney'];
     mileage = json['mileage'];
+    driverMileageKilometers = json['driverMileageKilometers'];
     mileageMoney = json['mileageMoney'];
     duration = json['duration'];
     durationMoney = json['durationMoney'];
@@ -275,6 +278,7 @@ class OrderDetail {
     data['startMileage'] = this.startMileage;
     data['startMoney'] = this.startMoney;
     data['mileage'] = this.mileage;
+    data['driverMileageKilometers'] = this.driverMileageKilometers;
     data['mileageMoney'] = this.mileageMoney;
     data['duration'] = this.duration;
     data['durationMoney'] = this.durationMoney;
