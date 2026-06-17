@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_messages_model.dart';
 import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_participants_model.dart';
+import 'package:new_evmoto_driver/app/modules/chat_list/controllers/chat_list_controller.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/upload_image_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
@@ -139,6 +140,11 @@ class ChatDetailController extends GetxController {
           'totalUnreadChatDriver': await getTotalUnreadChatDriver(),
           'totalUnreadChatUser': await getTotalUnreadChatUser(),
         }, SetOptions(merge: true));
+
+    unawaited(homeController.getTotalUnreadFirebaseChat());
+    if (Get.isRegistered<ChatListController>()) {
+      unawaited(Get.find<ChatListController>().getChatList());
+    }
   }
 
   Future<void> sendMessage() async {
@@ -174,6 +180,10 @@ class ChatDetailController extends GetxController {
       message.value = "";
       attachmentUrl.value = "";
       isAttachmentOptionOpen.value = false;
+
+      if (Get.isRegistered<ChatListController>()) {
+        unawaited(Get.find<ChatListController>().getChatList());
+      }
     }
   }
 
