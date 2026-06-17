@@ -8,6 +8,8 @@ import 'package:new_evmoto_driver/app/repositories/payment_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -65,8 +67,9 @@ class DepositBalancePaymentWebviewController extends GetxController {
   }
 
   Future<void> showDialogBackButton() async {
-    await Get.dialog(
-      Padding(
+    await DialogHelper.show(
+      tag: DialogTags.depositBalanceCancel,
+      widget: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +109,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.depositBalanceCancel);
                                 },
                                 child: Text(
                                   "Tutup",
@@ -135,7 +138,7 @@ class DepositBalancePaymentWebviewController extends GetxController {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.depositBalanceCancel);
                                   Get.back();
                                 },
                                 child: Text(

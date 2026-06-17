@@ -11,6 +11,7 @@ import 'package:new_evmoto_driver/app/modules/order_payment_confirmation/control
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/app_lifecycle_services.dart';
 import 'package:new_evmoto_driver/app/services/auth_service.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
@@ -225,9 +226,7 @@ class SocketServices extends GetxService {
                           false);
 
                   if (isDialogShow == true) {
-                    if (Get.isDialogOpen == true) {
-                      Get.close(1);
-                    }
+                    DialogHelper.dismissOrderDialogs(orderId.toString());
                   }
                 }
               default:

@@ -24,6 +24,8 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/utils/time_process_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -1085,8 +1087,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> onTapCancelOrder() async {
-    Get.dialog(
-      Padding(
+    DialogHelper.show(
+      tag: DialogTags.cancelOrder,
+      widget: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -1126,7 +1129,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.cancelOrder);
                                 },
                                 child: Text(
                                   "Tutup",
@@ -1163,7 +1166,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                                           .languageCodeSystem
                                           .value,
                                     );
-                                    Get.close(1);
+                                    DialogHelper.dismiss(DialogTags.cancelOrder);
                                     Get.back();
                                     Get.find<HomeController>().refreshAll();
                                     SnackbarHelper.showSnackbarSuccess(

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
@@ -102,6 +103,7 @@ Future<void> main() async {
   runApp(
     GetMaterialApp(
       navigatorKey: navigatorKey,
+      navigatorObservers: [FlutterSmartDialog.observer],
       title: "Evmoto Driver",
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -141,8 +143,9 @@ Future<void> main() async {
           userServices.isLoadingRefreshHome.value = false;
         }
       },
-      builder: (context, child) {
-        return env == "dev"
+      builder: FlutterSmartDialog.init(
+        builder: (context, child) {
+          return env == "dev"
             ? Banner(
                 message: "Dev",
                 location: BannerLocation.topEnd,
@@ -204,7 +207,8 @@ Future<void> main() async {
                   child: child!,
                 ),
               );
-      },
+        },
+      ),
     ),
   );
 }

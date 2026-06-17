@@ -13,6 +13,8 @@ import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
@@ -101,17 +103,22 @@ class MyOrderV2Controller extends GetxController
     final durationAccept = 0.obs;
     durationAccept.value = socketOrderStatusData.time ?? 0;
 
+    final confirmationTag = DialogTags.advanceBookingConfirmation(
+      socketOrderStatusData.orderId.toString(),
+    );
+
     late Timer timerDuration;
     timerDuration = Timer.periodic(Duration(seconds: 1), (timer) async {
       durationAccept.value -= 1;
       if (durationAccept.value == 0) {
         timerDuration.cancel();
-        Get.close(1);
+        DialogHelper.dismissIfExists(confirmationTag);
       }
     });
 
-    var result = await Get.dialog(
-      Column(
+    var result = await DialogHelper.show<bool>(
+      tag: confirmationTag,
+      widget: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Padding(
@@ -156,7 +163,10 @@ class MyOrderV2Controller extends GetxController
                           ),
                           GestureDetector(
                             onTap: () async {
-                              Get.back(result: true);
+                              DialogHelper.dismiss<bool>(
+                                confirmationTag,
+                                result: true,
+                              );
                             },
                             child: Container(
                               width: 24,
@@ -580,7 +590,7 @@ class MyOrderV2Controller extends GetxController
                                 ),
                               ),
                               onPressed: () async {
-                                Get.close(1);
+                                DialogHelper.dismiss(confirmationTag);
                                 await onTapCancelOrder();
                               },
                               child: Text(
@@ -610,8 +620,9 @@ class MyOrderV2Controller extends GetxController
   }
 
   Future<void> onTapCancelOrder() async {
-    Get.dialog(
-      Padding(
+    DialogHelper.show(
+      tag: DialogTags.cancelOrder,
+      widget: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -651,7 +662,7 @@ class MyOrderV2Controller extends GetxController
                                   ),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.cancelOrder);
                                 },
                                 child: Text(
                                   "Tutup",

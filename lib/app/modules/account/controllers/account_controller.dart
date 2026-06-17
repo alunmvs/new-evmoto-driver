@@ -11,6 +11,8 @@ import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.d
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -729,8 +731,11 @@ class AccountController extends GetxController {
   }
 
   Future<void> onTapSuccessDeleteAccountDialog() async {
-    Get.dialog(
-      Padding(
+    DialogHelper.show(
+      tag: DialogTags.accountDeletedSuccess,
+      barrierDismissible: false,
+      backDismiss: false,
+      widget: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -781,11 +786,10 @@ class AccountController extends GetxController {
           ],
         ),
       ),
-      barrierDismissible: false,
     );
 
     await Future.delayed(Duration(seconds: 3)).then((value) {
-      Get.close(1);
+      DialogHelper.dismiss(DialogTags.accountDeletedSuccess);
     });
   }
 }
