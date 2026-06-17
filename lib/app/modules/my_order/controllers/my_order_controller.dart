@@ -506,7 +506,10 @@ class MyOrderController extends GetxController
                                 aspectRatio: 298 / 75,
                                 child: GoogleMap(
                                   mapType: MapType.normal,
-                                  zoomControlsEnabled: true,
+                                  zoomControlsEnabled: false,
+                                  mapToolbarEnabled: false,
+                                  myLocationButtonEnabled: false,
+                                  compassEnabled: false,
                                   tiltGesturesEnabled: true,
                                   zoomGesturesEnabled: true,
                                   rotateGesturesEnabled: true,

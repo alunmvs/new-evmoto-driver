@@ -107,6 +107,10 @@ class OrderDetailView extends GetView<OrderDetailController> {
                   height: MediaQuery.of(context).size.height,
                   child: GoogleMap(
                     mapType: MapType.normal,
+                    zoomControlsEnabled: false,
+                    mapToolbarEnabled: false,
+                    myLocationButtonEnabled: false,
+                    compassEnabled: false,
                     padding: EdgeInsets.only(
                       top:
                           MediaQuery.of(context).padding.top +
