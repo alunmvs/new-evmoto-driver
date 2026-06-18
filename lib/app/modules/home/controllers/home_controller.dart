@@ -613,6 +613,7 @@ class HomeController extends GetxController
     }
 
     try {
+      print("[DEBUG SERVICE AREA] oke-1");
       final areaId = await userRepository.getServiceAreaIdWithin(
         lat: lat,
         lng: lng,
@@ -635,16 +636,23 @@ class HomeController extends GetxController
         return;
       }
 
-      final isWithin = await guaranteeIncomeRepository.isWithinGuaranteeIncomeArea(
-        serviceAreaId: areaId,
-        lat: lat,
-        lng: lng,
-      );
+      print("[DEBUG SERVICE AREA] oke-2");
+      final isWithin = await guaranteeIncomeRepository
+          .isWithinGuaranteeIncomeArea(
+            serviceAreaId: areaId,
+            lat: lat,
+            lng: lng,
+          );
       isWithinGuaranteeIncomeArea.value = isWithin;
+      print("[DEBUG SERVICE AREA] oke-3");
 
       if (isWithin) {
+        print("[DEBUG SERVICE AREA] oke-4");
         await getEnsureIncomeRuleId();
+        print("[DEBUG SERVICE AREA] oke-4 ${ensureIncomeRuleId.value}");
         await getGuaranteeIncomeProgressBarList();
+
+        print("[DEBUG SERVICE AREA] oke-8");
       } else {
         clearGuaranteeIncomeData();
       }
@@ -2733,6 +2741,7 @@ class HomeController extends GetxController
 
   Future<void> getGuaranteeIncomeProgressBarList() async {
     if (ensureIncomeRuleId.value != null) {
+      print("[DEBUG SERVICE AREA] ${ensureIncomeRuleId.value}");
       guaranteeIncomeProgressBarList.value = await guaranteeIncomeRepository
           .getGuaranteeIncomeProgressBarList(
             ensureIncomeRuleId: ensureIncomeRuleId.value,
@@ -2745,6 +2754,9 @@ class HomeController extends GetxController
           var isInRange = isWithinGuaranteeIncomeTimeRange(
             guaranteeIncomeProgressBar.startTime!,
             guaranteeIncomeProgressBar.endTime!,
+          );
+          print(
+            "[DEBUG SERVICE AREA] ${guaranteeIncomeProgressBar.startTime} ${guaranteeIncomeProgressBar.endTime} $isInRange",
           );
 
           if (isInRange) {
@@ -2776,8 +2788,11 @@ class HomeController extends GetxController
         }
       }
 
+      print("[DEBUG SERVICE AREA] oke-5");
       if (isInRangeExist) {
+        print("[DEBUG SERVICE AREA] oke-6");
         updateGuaranteeIncomeProgressBarVisibility();
+        print("[DEBUG SERVICE AREA] oke-7");
       } else {
         clearGuaranteeIncomeProgressBarUi();
       }
@@ -2797,10 +2812,8 @@ class HomeController extends GetxController
       return;
     }
 
-    isGuaranteeIncomeProgressBarVisible.value = isWithinGuaranteeIncomeTimeRange(
-      startTime,
-      endTime,
-    );
+    isGuaranteeIncomeProgressBarVisible.value =
+        isWithinGuaranteeIncomeTimeRange(startTime, endTime);
 
     if (!isGuaranteeIncomeProgressBarVisible.value) {
       isActiveGuaranteeIncomeProgressBarOpen.value = false;

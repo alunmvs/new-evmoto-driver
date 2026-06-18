@@ -102,7 +102,11 @@ class GuaranteeIncomeRepository {
     try {
       var url = "$baseUrl/app/ensureIncomeFoundation/getListByEnsureIncomeId";
 
+      print("[DEBUG SERVICE AREA] ${url}");
+
       var data = {"ensureIncomeRuleId": ensureIncomeRuleId};
+
+      print("[DEBUG SERVICE AREA] ${data}");
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
