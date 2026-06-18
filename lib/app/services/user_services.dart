@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
-import 'package:new_evmoto_driver/app/data/models/working_area_model.dart';
+// import 'package:new_evmoto_driver/app/data/models/working_area_model.dart';
 import 'package:new_evmoto_driver/app/repositories/user_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 
@@ -11,12 +11,13 @@ class UserServices extends GetxService {
   final languageServices = Get.find<LanguageServices>();
 
   final userInfo = UserInfo().obs;
-  final workingAreaList = <WorkingArea>[].obs;
+  // final workingAreaList = <WorkingArea>[].obs;
 
   final isLoadingRefreshHome = false.obs;
 
   Future<void> manualOnInit() async {
-    await Future.wait([getUserInfo(), getWorkingArea()]);
+    await getUserInfo();
+    // await Future.wait([getUserInfo(), getWorkingArea()]);
   }
 
   Future<void> getUserInfo() async {
@@ -25,12 +26,12 @@ class UserServices extends GetxService {
     ));
   }
 
-  Future<void> getWorkingArea() async {
-    workingAreaList.value = (await userRepository.getWorkingAreaList());
-  }
+  // Future<void> getWorkingArea() async {
+  //   workingAreaList.value = (await userRepository.getWorkingAreaList());
+  // }
 
   void clearUserInfo() {
     userInfo.value = UserInfo();
-    workingAreaList.value = [];
+    // workingAreaList.value = [];
   }
 }
