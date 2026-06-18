@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:new_evmoto_driver/app/data/models/language_model.dart';
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
-import 'package:new_evmoto_driver/app/data/models/working_area_model.dart';
+// import 'package:new_evmoto_driver/app/data/models/working_area_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/account_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/advance_booking_repository.dart';
@@ -89,8 +89,8 @@ class TestUserServices extends GetxService implements UserServices {
   @override
   final userInfo = UserInfo(balance: 50000, name: 'Test Driver', id: 1).obs;
 
-  @override
-  final workingAreaList = <WorkingArea>[].obs;
+  // @override
+  // final workingAreaList = <WorkingArea>[].obs;
 
   @override
   final isLoadingRefreshHome = false.obs;
@@ -101,13 +101,13 @@ class TestUserServices extends GetxService implements UserServices {
   @override
   Future<void> getUserInfo() async {}
 
-  @override
-  Future<void> getWorkingArea() async {}
+  // @override
+  // Future<void> getWorkingArea() async {}
 
   @override
   void clearUserInfo() {
     userInfo.value = UserInfo();
-    workingAreaList.clear();
+    // workingAreaList.clear();
   }
 }
 
