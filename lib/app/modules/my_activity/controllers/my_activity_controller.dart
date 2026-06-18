@@ -419,14 +419,14 @@ class MyActivityController extends GetxController
       }
 
       if (logOnlineOfflineTextListRushHour.isNotEmpty &&
-          daily.subsidyEligible != false) {
+          daily.subsidyEligible == true) {
         workingTimeRushHourDropdown.add(
           logOnlineOfflineTextListRushHour.join("\n"),
         );
       }
 
       if (logOnlineOfflineTextListNormalHour.isNotEmpty &&
-          daily.subsidyEligible != false) {
+          daily.subsidyEligible == true) {
         workingTimeNormalHourDropdown.add(
           logOnlineOfflineTextListNormalHour.join("\n"),
         );
