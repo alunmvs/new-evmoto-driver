@@ -312,7 +312,10 @@ class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
                                         if (controller
                                                 .isDropdownWorkingTimeRushHourShow
                                                 .value ==
-                                            true) ...[
+                                            true &&
+                                            controller
+                                                .workingTimeRushHourDropdown
+                                                .isNotEmpty) ...[
                                           SizedBox(height: 8),
                                           Container(
                                             padding: EdgeInsets.all(8),
@@ -405,7 +408,10 @@ class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
                                         if (controller
                                                 .isDropdownWorkingTimeNormalHourShow
                                                 .value ==
-                                            true) ...[
+                                            true &&
+                                            controller
+                                                .workingTimeNormalHourDropdown
+                                                .isNotEmpty) ...[
                                           SizedBox(height: 8),
                                           Container(
                                             padding: EdgeInsets.all(8),
