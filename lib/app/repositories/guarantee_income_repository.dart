@@ -176,6 +176,40 @@ class GuaranteeIncomeRepository {
     }
   }
 
+  Future<bool> isWithinGuaranteeIncomeArea({
+    required int serviceAreaId,
+    required double lat,
+    required double lng,
+  }) async {
+    try {
+      var url =
+          "$baseUrl/app/service-area/$serviceAreaId/guarantee-income/within";
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.get(
+        url,
+        queryParameters: {"lat": lat, "lng": lng},
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      return response.data['data']?['within'] == true;
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
+
   Future<int?> getActiveEnsureIncomeRuleId() async {
     try {
       var url = "$baseUrl/app/ensureIncomeRule/getActiveEnsureIncomeRuleId";
