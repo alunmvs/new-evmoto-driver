@@ -12,7 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:maps_toolkit/maps_toolkit.dart' as mapsToolkit;
+// import 'package:maps_toolkit/maps_toolkit.dart' as mapsToolkit;
 import 'package:new_evmoto_driver/app/data/consts/order_state_const.dart';
 import 'package:new_evmoto_driver/app/data/models/guarantee_income_progress_bar_model.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
@@ -45,8 +45,8 @@ import 'package:new_evmoto_driver/app/utils/common_helper.dart';
 import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
 import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
-import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_in_dialog.dart';
-import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_out_dialog.dart';
+// import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_in_dialog.dart';
+// import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_out_dialog.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -144,10 +144,14 @@ class HomeController extends GetxController
   final totalUnreadMessageCount = 0.obs;
   final isFetchTotalUnreadMessageCount = false.obs;
 
-  Timer? autoOfflineTimer;
+  Timer? locationSchedulerTimer;
+  var _locationSchedulerTick = 0;
   final initialLatitude = Rx<double?>(null);
   final initialLongitude = Rx<double?>(null);
   final onlineAt = Rx<DateTime?>(null);
+
+  final serviceAreaId = Rx<int?>(null);
+  final isWithinGuaranteeIncomeArea = Rx<bool?>(null);
 
   // Guarantee Income Progress Bar
   final ensureIncomeRuleId = Rx<int?>(null);
@@ -155,8 +159,6 @@ class HomeController extends GetxController
   final activeGuaranteeIncomeProgressBar = Rx<GuaranteeIncomeProgressBar?>(
     null,
   );
-  Timer? guaranteeIncomeProgressBarTimer;
-  Timer? guaranteeIncomeVisibilityTimer;
   final isActiveGuaranteeIncomeProgressBarOpen = false.obs;
   final isGuaranteeIncomeProgressBarVisible = false.obs;
   final guaranteeIncomeProgress = 0.0.obs;
@@ -189,11 +191,7 @@ class HomeController extends GetxController
       await firebasePushNotificationServices.requestPermission();
       await backgroundServices.startService();
       await setHomeControllerRegistered();
-      await Future.wait([
-        setupAutoOfflineTimer(),
-        setupGuaranteeIncomeProgressBarTimer(),
-        setupGuaranteeIncomeVisibilityTimer(),
-      ]);
+      await setupLocationScheduler();
       await backgroundServices.refreshState();
 
       await getServiceTimeScheduleList();
@@ -210,9 +208,7 @@ class HomeController extends GetxController
   Future<void> onClose() async {
     super.onClose();
     await socketServices.closeWebsocket();
-    autoOfflineTimer?.cancel();
-    guaranteeIncomeProgressBarTimer?.cancel();
-    guaranteeIncomeVisibilityTimer?.cancel();
+    locationSchedulerTimer?.cancel();
   }
 
   // Working Time Schedule
@@ -424,16 +420,16 @@ class HomeController extends GetxController
       getUserInfoDetail(),
       getVehicleStatistics(),
       userServices.getUserInfo(),
-      userServices.getWorkingArea(),
+      // userServices.getWorkingArea(),
       voiceServices.manualOnInit(),
       getServiceOrderList(),
       getWorking(),
-      getEnsureIncomeRuleId(),
+      // getEnsureIncomeRuleId(),
     ]);
 
     await Future.wait([
       getTotalUnreadFirebaseChat(),
-      getGuaranteeIncomeProgressBarList(),
+      // getGuaranteeIncomeProgressBarList(),
     ]);
 
     workStatus.value = vehicleStatistics.value.work ?? 2;
@@ -573,139 +569,110 @@ class HomeController extends GetxController
     userInfo.refresh();
   }
 
-  Future<void> setupAutoOfflineTimer() async {
+  Future<void> setupLocationScheduler() async {
+    locationSchedulerTimer?.cancel();
+    _locationSchedulerTick = 0;
+
     if (workStatus.value != 2) {
       onlineAt.value = DateTime.now();
       setInitialLatitudeLongitude();
     }
 
-    autoOfflineTimer = Timer.periodic(Duration(seconds: 3), (timer) async {
-      if (vehicleStatistics.value.work != 2) {
-        if (working.value.id == null) {
-          // Auto Offline Outside Working Area
-          if (locationServices.currentLatitude.value != null) {
-            var point = mapsToolkit.LatLng(
-              locationServices.currentLatitude.value!,
-              locationServices.currentLongitude.value!,
-            );
+    await refreshServiceArea();
 
-            if (userServices.workingAreaList.isNotEmpty) {
-              var isInside = false;
+    locationSchedulerTimer = Timer.periodic(const Duration(seconds: 1), (
+      _,
+    ) async {
+      _locationSchedulerTick++;
 
-              for (var workingArea in userServices.workingAreaList) {
-                var polygonList = <mapsToolkit.LatLng>[];
+      if (activeGuaranteeIncomeProgressBar.value?.id != null) {
+        updateGuaranteeIncomeProgressBarVisibility();
+      }
 
-                if (workingArea.center?.isNotEmpty ?? false) {
-                  for (var pointPolygon in workingArea.center ?? <String>[]) {
-                    var pointPolygonList = pointPolygon.split(",");
-                    polygonList.add(
-                      mapsToolkit.LatLng(
-                        double.parse(pointPolygonList[0]),
-                        double.parse(pointPolygonList[1]),
-                      ),
-                    );
-                  }
-
-                  var isInsideLoop = mapsToolkit.PolygonUtil.containsLocation(
-                    point,
-                    polygonList,
-                    false,
-                  );
-
-                  if (isInsideLoop == true) {
-                    isInside = true;
-                    break;
-                  }
-                }
-              }
-
-              if (isInside == false) {
-                await userRepository.stopWork(language: 2);
-                workStatus.value = 2;
-                SnackbarHelper.showSnackbarError(
-                  text:
-                      "Saat ini anda berada diluar dari Working Area. Status Anda akan offline.",
-                );
-                await getVehicleStatistics();
-                return;
-              }
-            }
-          }
-
-          // Auto Offline 200 m Initial Latitude Longitude
-          // if (initialLatitude.value != null &&
-          //     locationServices.currentLatitude.value != null) {
-          //   var distanceInMeters = Geolocator.distanceBetween(
-          //     initialLatitude.value!,
-          //     initialLongitude.value!,
-          //     locationServices.currentLatitude.value!,
-          //     locationServices.currentLongitude.value!,
-          //   );
-          //   if (distanceInMeters >= 200) {
-          //     await userRepository.stopWork(language: 2);
-          //     workStatus.value = 2;
-          //     SnackbarHelper.showSnackbarError(
-          //       text:
-          //           "Anda sudah menempuh 200 meter dan belum mendapatkan order, status Anda akan Offline.",
-          //     );
-          //     await getVehicleStatistics();
-          //     return;
-          //   }
-          // }
-
-          // Auto Offline 1 min After Online
-          // if (onlineAt.value != null) {
-          //   if (DateTime.now().difference(onlineAt.value!).inMinutes >= 1) {
-          //     var distanceInMeters = Geolocator.distanceBetween(
-          //       initialLatitude.value!,
-          //       initialLongitude.value!,
-          //       locationServices.currentLatitude.value!,
-          //       locationServices.currentLongitude.value!,
-          //     );
-
-          //     if (distanceInMeters >= 10) {
-          //       await userRepository.stopWork(language: 2);
-          //       workStatus.value = 2;
-          //       SnackbarHelper.showSnackbarError(
-          //         text:
-          //             "Tidak ada aktivitas dalam 1 menit sejak Anda Online. Status Anda akan Offline.",
-          //       );
-          //       await getVehicleStatistics();
-          //     } else {
-          //       onlineAt.value = DateTime.now();
-          //     }
-
-          //     return;
-          //   }
-          // }
-        }
+      if (_locationSchedulerTick % 3 == 0) {
+        await refreshServiceArea();
+        await runAutoOfflineChecks();
       }
     });
   }
 
-  // Future<void> setupBackgroundServices() async {
-  //   await backgroundServices.service.startService();
-  // }
+  Future<void> runAutoOfflineChecks() async {
+    if (vehicleStatistics.value.work == 2 || working.value.id != null) {
+      return;
+    }
 
-  Future<void> setupGuaranteeIncomeProgressBarTimer() async {
-    guaranteeIncomeProgressBarTimer = Timer.periodic(Duration(minutes: 1), (
-      timer,
-    ) async {
-      await getEnsureIncomeRuleId();
-      await getGuaranteeIncomeProgressBarList();
-    });
+    // Additional auto-offline rules (e.g. distance, idle time) can be added here.
   }
 
-  Future<void> setupGuaranteeIncomeVisibilityTimer() async {
-    guaranteeIncomeVisibilityTimer?.cancel();
-    guaranteeIncomeVisibilityTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (_) {
-        if (activeGuaranteeIncomeProgressBar.value?.id != null) {
-          updateGuaranteeIncomeProgressBarVisibility();
+  Future<void> refreshServiceArea() async {
+    final lat = locationServices.currentLatitude.value;
+    final lng = locationServices.currentLongitude.value;
+
+    if (lat == null || lng == null) {
+      return;
+    }
+
+    try {
+      final areaId = await userRepository.getServiceAreaIdWithin(
+        lat: lat,
+        lng: lng,
+      );
+      serviceAreaId.value = areaId;
+
+      if (areaId == null) {
+        isWithinGuaranteeIncomeArea.value = null;
+        clearGuaranteeIncomeData();
+
+        if (workStatus.value == 1) {
+          await userRepository.stopWork(language: 2);
+          workStatus.value = 2;
+          SnackbarHelper.showSnackbarError(
+            text:
+                "Saat ini anda berada diluar dari Working Area. Status Anda akan offline.",
+          );
+          await getVehicleStatistics();
         }
-      },
-    );
+        return;
+      }
+
+      final isWithin = await guaranteeIncomeRepository.isWithinGuaranteeIncomeArea(
+        serviceAreaId: areaId,
+        lat: lat,
+        lng: lng,
+      );
+      isWithinGuaranteeIncomeArea.value = isWithin;
+
+      if (isWithin) {
+        await getEnsureIncomeRuleId();
+        await getGuaranteeIncomeProgressBarList();
+      } else {
+        clearGuaranteeIncomeData();
+      }
+    } catch (_) {}
+  }
+
+  void clearGuaranteeIncomeData() {
+    ensureIncomeRuleId.value = null;
+    guaranteeIncomeProgressBarList.value = [];
+    activeGuaranteeIncomeProgressBar.value = null;
+    guaranteeIncomeProgress.value = 0.0;
+    startTimeLocal.value = null;
+    endTimeLocal.value = null;
+    startTimeAdjustTz.value = null;
+    endTimeAdjustTz.value = null;
+    isGuaranteeIncomeProgressBarVisible.value = false;
+    isActiveGuaranteeIncomeProgressBarOpen.value = false;
+  }
+
+  void clearGuaranteeIncomeProgressBarUi() {
+    activeGuaranteeIncomeProgressBar.value = null;
+    guaranteeIncomeProgress.value = 0.0;
+    startTimeLocal.value = null;
+    endTimeLocal.value = null;
+    startTimeAdjustTz.value = null;
+    endTimeAdjustTz.value = null;
+    isGuaranteeIncomeProgressBarVisible.value = false;
+    isActiveGuaranteeIncomeProgressBarOpen.value = false;
   }
 
   void setInitialLatitudeLongitude() {
@@ -728,7 +695,7 @@ class HomeController extends GetxController
         workStatus.value = 2;
       }
 
-      await userServices.getWorkingArea();
+      // await userServices.getWorkingArea();
       await getVehicleStatistics();
     } catch (e) {
       errorInfoBottomSheet.value = e.toString();
@@ -2077,9 +2044,7 @@ class HomeController extends GetxController
       actionController.reset();
 
       DialogHelper.dismiss<bool>(
-        DialogTags.orderConfirmation(
-          socketOrderStatusData.orderId.toString(),
-        ),
+        DialogTags.orderConfirmation(socketOrderStatusData.orderId.toString()),
         result: true,
       );
       Get.until((route) => route.settings.name == Routes.HOME);
@@ -2098,9 +2063,7 @@ class HomeController extends GetxController
       actionController.success();
       actionController.reset();
       DialogHelper.dismiss<bool>(
-        DialogTags.orderConfirmation(
-          socketOrderStatusData.orderId.toString(),
-        ),
+        DialogTags.orderConfirmation(socketOrderStatusData.orderId.toString()),
         result: true,
       );
       Get.until((route) => route.settings.name == Routes.HOME);
@@ -2482,7 +2445,9 @@ class HomeController extends GetxController
                                     .copyWith(color: Colors.white),
                               ),
                               onPressed: () async {
-                                DialogHelper.dismiss(DialogTags.appVersionNewest);
+                                DialogHelper.dismiss(
+                                  DialogTags.appVersionNewest,
+                                );
                               },
                             ),
                             SizedBox(height: 16),
@@ -2698,7 +2663,9 @@ class HomeController extends GetxController
                                       .copyWith(color: Colors.white),
                                 ),
                                 onPressed: () async {
-                                  DialogHelper.dismiss(DialogTags.appVersionNewest);
+                                  DialogHelper.dismiss(
+                                    DialogTags.appVersionNewest,
+                                  );
                                 },
                               ),
                               SizedBox(height: 16),
@@ -2764,6 +2731,61 @@ class HomeController extends GetxController
     return now.isAfter(start) && now.isBefore(end);
   }
 
+  Future<void> getGuaranteeIncomeProgressBarList() async {
+    if (ensureIncomeRuleId.value != null) {
+      guaranteeIncomeProgressBarList.value = await guaranteeIncomeRepository
+          .getGuaranteeIncomeProgressBarList(
+            ensureIncomeRuleId: ensureIncomeRuleId.value,
+          );
+
+      var isInRangeExist = false;
+      for (var guaranteeIncomeProgressBar in guaranteeIncomeProgressBarList) {
+        if (guaranteeIncomeProgressBar.startTime != null &&
+            guaranteeIncomeProgressBar.endTime != null) {
+          var isInRange = isWithinGuaranteeIncomeTimeRange(
+            guaranteeIncomeProgressBar.startTime!,
+            guaranteeIncomeProgressBar.endTime!,
+          );
+
+          if (isInRange) {
+            activeGuaranteeIncomeProgressBar.value = guaranteeIncomeProgressBar;
+            isInRangeExist = true;
+
+            if (guaranteeIncomeProgressBar.onlineDurationMinutes != null) {
+              var start = parseTime(guaranteeIncomeProgressBar.startTime!);
+              var end = parseTime(guaranteeIncomeProgressBar.endTime!);
+              guaranteeIncomeProgress.value =
+                  guaranteeIncomeProgressBar.onlineDurationMinutes! /
+                  end.difference(start).inMinutes;
+            } else {
+              guaranteeIncomeProgress.value = 0.0;
+            }
+
+            var startTimeLocalValue = convertToLocal(
+              guaranteeIncomeProgressBar.startTime!,
+            );
+            var endTimeLocalValue = convertToLocal(
+              guaranteeIncomeProgressBar.endTime!,
+            );
+            startTimeLocal.value = startTimeLocalValue;
+            endTimeLocal.value = endTimeLocalValue;
+            startTimeAdjustTz.value = formatTime(startTimeLocalValue);
+            endTimeAdjustTz.value = formatTime(endTimeLocalValue);
+            break;
+          }
+        }
+      }
+
+      if (isInRangeExist) {
+        updateGuaranteeIncomeProgressBarVisibility();
+      } else {
+        clearGuaranteeIncomeProgressBarUi();
+      }
+    } else {
+      clearGuaranteeIncomeData();
+    }
+  }
+
   void updateGuaranteeIncomeProgressBarVisibility() {
     final activeBar = activeGuaranteeIncomeProgressBar.value;
     final startTime = activeBar?.startTime;
@@ -2785,221 +2807,149 @@ class HomeController extends GetxController
     }
   }
 
-  Future<void> getGuaranteeIncomeProgressBarList() async {
-    if (ensureIncomeRuleId.value != null) {
-      guaranteeIncomeProgressBarList.value = await guaranteeIncomeRepository
-          .getGuaranteeIncomeProgressBarList(
-            ensureIncomeRuleId: ensureIncomeRuleId.value,
-          );
+  // Guarantee Income Area (legacy - does not use isWithinGuaranteeIncomeArea)
+  // Future<void> showDialogAndSnackbarGuaranteeIncomeAreaIn() async {
+  //   var prefs = await SharedPreferences.getInstance();
+  //   var isGuaranteeIncomeAreaInDialogShown =
+  //       prefs.getBool("is_guarantee_income_area_in_dialog_shown") ?? false;
+  //
+  //   if (isGuaranteeIncomeAreaInDialogShown == false) {
+  //     await DialogHelper.show(
+  //       tag: DialogTags.guaranteeIncomeAreaIn,
+  //       widget: GuaranteeIncomeAreaInDialog(),
+  //     );
+  //     await prefs.setBool("is_guarantee_income_area_in_dialog_shown", true);
+  //   } else {
+  //     // Snackbar
+  //     final themeColorServices = Get.find<ThemeColorServices>();
+  //     final typographyServices = Get.find<TypographyServices>();
+  //
+  //     var snackBar = SnackBar(
+  //       content: Row(
+  //         mainAxisAlignment: MainAxisAlignment.start,
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           SvgPicture.asset("assets/icons/icon_guarantee_income_area_in.svg"),
+  //           SizedBox(width: 8),
+  //           Expanded(
+  //             child: RichText(
+  //               textAlign: TextAlign.left,
+  //               text: TextSpan(
+  //                 text: 'Anda telah memasuki wilayah ',
+  //                 style: typographyServices.bodySmallRegular.value.copyWith(
+  //                   color: Color(0XFF005216),
+  //                 ),
+  //                 children: <TextSpan>[
+  //                   TextSpan(
+  //                     text: "Gurantee Income.",
+  //                     style: typographyServices.bodySmallBold.value.copyWith(
+  //                       color: Color(0XFF005216),
+  //                     ),
+  //                   ),
+  //                   TextSpan(
+  //                     text:
+  //                         " Selesaikan perjalanannya untuk mendapatkan manfaatnya.",
+  //                     style: typographyServices.bodySmallRegular.value.copyWith(
+  //                       color: Color(0XFF005216),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //           SizedBox(width: 8),
+  //           GestureDetector(
+  //             onTap: () {
+  //               rootScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+  //             },
+  //             child: Icon(Icons.close, color: Color(0XFF005216), size: 20),
+  //           ),
+  //         ],
+  //       ),
+  //       closeIconColor: Color(0XFF005216),
+  //       showCloseIcon: false,
+  //       padding: EdgeInsets.only(left: 12, top: 10, bottom: 10, right: 12),
+  //       margin: EdgeInsets.only(bottom: 14, left: 12, right: 12),
+  //       behavior: SnackBarBehavior.floating,
+  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+  //       duration: Duration(seconds: 3),
+  //       backgroundColor: Color(0XFFE1FFE9),
+  //       elevation: 0,
+  //     );
+  //
+  //     rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+  //   }
+  // }
 
-      var isInRangeExist = false;
-      for (var guaranteeIncomeProgressBar in guaranteeIncomeProgressBarList) {
-        if (guaranteeIncomeProgressBar.startTime != null &&
-            guaranteeIncomeProgressBar.endTime != null) {
-          var isInRange = isWithinGuaranteeIncomeTimeRange(
-            guaranteeIncomeProgressBar.startTime!,
-            guaranteeIncomeProgressBar.endTime!,
-          );
-
-          if (isInRange == true) {
-            activeGuaranteeIncomeProgressBar.value = guaranteeIncomeProgressBar;
-            isInRangeExist = true;
-
-            // Guarantee Income Progress
-            if (guaranteeIncomeProgressBar.onlineDurationMinutes != null) {
-              var start = parseTime(guaranteeIncomeProgressBar.startTime!);
-              var end = parseTime(guaranteeIncomeProgressBar.endTime!);
-              guaranteeIncomeProgress.value =
-                  guaranteeIncomeProgressBar.onlineDurationMinutes! /
-                  end.difference(start).inMinutes;
-            } else {
-              guaranteeIncomeProgress.value = 0.0;
-            }
-
-            // Start Time & End Time
-            var startTimeLocal = convertToLocal(
-              guaranteeIncomeProgressBar.startTime!,
-            );
-            var endTimeLocal = convertToLocal(
-              guaranteeIncomeProgressBar.endTime!,
-            );
-            this.startTimeLocal.value = startTimeLocal;
-            this.endTimeLocal.value = endTimeLocal;
-            startTimeAdjustTz.value = formatTime(startTimeLocal);
-            endTimeAdjustTz.value = formatTime(endTimeLocal);
-            break;
-          }
-        }
-      }
-
-      if (isInRangeExist) {
-        updateGuaranteeIncomeProgressBarVisibility();
-      } else {
-        activeGuaranteeIncomeProgressBar.value = GuaranteeIncomeProgressBar();
-        guaranteeIncomeProgress.value = 0.0;
-        startTimeLocal.value = null;
-        endTimeLocal.value = null;
-        startTimeAdjustTz.value = null;
-        endTimeAdjustTz.value = null;
-        isGuaranteeIncomeProgressBarVisible.value = false;
-        isActiveGuaranteeIncomeProgressBarOpen.value = false;
-      }
-    } else {
-      guaranteeIncomeProgressBarList.value = <GuaranteeIncomeProgressBar>[];
-      activeGuaranteeIncomeProgressBar.value = GuaranteeIncomeProgressBar();
-      guaranteeIncomeProgress.value = 0.0;
-      startTimeLocal.value = null;
-      endTimeLocal.value = null;
-      startTimeAdjustTz.value = null;
-      endTimeAdjustTz.value = null;
-      isGuaranteeIncomeProgressBarVisible.value = false;
-      isActiveGuaranteeIncomeProgressBarOpen.value = false;
-    }
-  }
-
-  // Guarantee Income Area
-  Future<void> showDialogAndSnackbarGuaranteeIncomeAreaIn() async {
-    var prefs = await SharedPreferences.getInstance();
-    var isGuaranteeIncomeAreaInDialogShown =
-        prefs.getBool("is_guarantee_income_area_in_dialog_shown") ?? false;
-
-    if (isGuaranteeIncomeAreaInDialogShown == false) {
-      await DialogHelper.show(
-        tag: DialogTags.guaranteeIncomeAreaIn,
-        widget: GuaranteeIncomeAreaInDialog(),
-      );
-      await prefs.setBool("is_guarantee_income_area_in_dialog_shown", true);
-    } else {
-      // Snackbar
-      final themeColorServices = Get.find<ThemeColorServices>();
-      final typographyServices = Get.find<TypographyServices>();
-
-      var snackBar = SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SvgPicture.asset("assets/icons/icon_guarantee_income_area_in.svg"),
-            SizedBox(width: 8),
-            Expanded(
-              child: RichText(
-                textAlign: TextAlign.left,
-                text: TextSpan(
-                  text: 'Anda telah memasuki wilayah ',
-                  style: typographyServices.bodySmallRegular.value.copyWith(
-                    color: Color(0XFF005216),
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: "Gurantee Income.",
-                      style: typographyServices.bodySmallBold.value.copyWith(
-                        color: Color(0XFF005216),
-                      ),
-                    ),
-                    TextSpan(
-                      text:
-                          " Selesaikan perjalanannya untuk mendapatkan manfaatnya.",
-                      style: typographyServices.bodySmallRegular.value.copyWith(
-                        color: Color(0XFF005216),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(width: 8),
-            GestureDetector(
-              onTap: () {
-                rootScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
-              },
-              child: Icon(Icons.close, color: Color(0XFF005216), size: 20),
-            ),
-          ],
-        ),
-        closeIconColor: Color(0XFF005216),
-        showCloseIcon: false,
-        padding: EdgeInsets.only(left: 12, top: 10, bottom: 10, right: 12),
-        margin: EdgeInsets.only(bottom: 14, left: 12, right: 12),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        duration: Duration(seconds: 3),
-        backgroundColor: Color(0XFFE1FFE9),
-        elevation: 0,
-      );
-
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-    }
-  }
-
-  Future<void> showDialogAndSnackbarGuaranteeIncomeAreaOut() async {
-    var prefs = await SharedPreferences.getInstance();
-    var isGuaranteeIncomeAreaOutDialogShown =
-        prefs.getBool("is_guarantee_income_area_out_dialog_shown") ?? false;
-
-    if (isGuaranteeIncomeAreaOutDialogShown == false) {
-      await DialogHelper.show(
-        tag: DialogTags.guaranteeIncomeAreaOut,
-        widget: GuaranteeIncomeAreaOutDialog(),
-      );
-      await prefs.setBool("is_guarantee_income_area_out_dialog_shown", true);
-    } else {
-      final themeColorServices = Get.find<ThemeColorServices>();
-      final typographyServices = Get.find<TypographyServices>();
-
-      var snackBar = SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SvgPicture.asset("assets/icons/icon_guarantee_income_area_out.svg"),
-            SizedBox(width: 8),
-            Expanded(
-              child: RichText(
-                textAlign: TextAlign.left,
-                text: TextSpan(
-                  text: 'Anda telah keluar wilayah ',
-                  style: typographyServices.bodySmallRegular.value.copyWith(
-                    color: Color(0XFFCD0000),
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: "Gurantee Income.",
-                      style: typographyServices.bodySmallBold.value.copyWith(
-                        color: Color(0XFFCD0000),
-                      ),
-                    ),
-                    TextSpan(
-                      text:
-                          " Manfaat Gurantee Income tidak berlaku didalam area ini.",
-                      style: typographyServices.bodySmallRegular.value.copyWith(
-                        color: Color(0XFFCD0000),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(width: 8),
-            GestureDetector(
-              onTap: () {
-                rootScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
-              },
-              child: Icon(Icons.close, color: Color(0XFFCD0000), size: 20),
-            ),
-          ],
-        ),
-        closeIconColor: Color(0XFFCD0000),
-        showCloseIcon: false,
-        padding: EdgeInsets.only(left: 12, top: 10, bottom: 10, right: 12),
-        margin: EdgeInsets.only(bottom: 14, left: 12, right: 12),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        duration: Duration(seconds: 3),
-        backgroundColor: Color(0XFFFFF0F0),
-        elevation: 0,
-      );
-
-      rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-    }
-  }
+  // Future<void> showDialogAndSnackbarGuaranteeIncomeAreaOut() async {
+  //   var prefs = await SharedPreferences.getInstance();
+  //   var isGuaranteeIncomeAreaOutDialogShown =
+  //       prefs.getBool("is_guarantee_income_area_out_dialog_shown") ?? false;
+  //
+  //   if (isGuaranteeIncomeAreaOutDialogShown == false) {
+  //     await DialogHelper.show(
+  //       tag: DialogTags.guaranteeIncomeAreaOut,
+  //       widget: GuaranteeIncomeAreaOutDialog(),
+  //     );
+  //     await prefs.setBool("is_guarantee_income_area_out_dialog_shown", true);
+  //   } else {
+  //     final themeColorServices = Get.find<ThemeColorServices>();
+  //     final typographyServices = Get.find<TypographyServices>();
+  //
+  //     var snackBar = SnackBar(
+  //       content: Row(
+  //         mainAxisAlignment: MainAxisAlignment.start,
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           SvgPicture.asset("assets/icons/icon_guarantee_income_area_out.svg"),
+  //           SizedBox(width: 8),
+  //           Expanded(
+  //             child: RichText(
+  //               textAlign: TextAlign.left,
+  //               text: TextSpan(
+  //                 text: 'Anda telah keluar wilayah ',
+  //                 style: typographyServices.bodySmallRegular.value.copyWith(
+  //                   color: Color(0XFFCD0000),
+  //                 ),
+  //                 children: <TextSpan>[
+  //                   TextSpan(
+  //                     text: "Gurantee Income.",
+  //                     style: typographyServices.bodySmallBold.value.copyWith(
+  //                       color: Color(0XFFCD0000),
+  //                     ),
+  //                   ),
+  //                   TextSpan(
+  //                     text:
+  //                         " Manfaat Gurantee Income tidak berlaku didalam area ini.",
+  //                     style: typographyServices.bodySmallRegular.value.copyWith(
+  //                       color: Color(0XFFCD0000),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //           SizedBox(width: 8),
+  //           GestureDetector(
+  //             onTap: () {
+  //               rootScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+  //             },
+  //             child: Icon(Icons.close, color: Color(0XFFCD0000), size: 20),
+  //           ),
+  //         ],
+  //       ),
+  //       closeIconColor: Color(0XFFCD0000),
+  //       showCloseIcon: false,
+  //       padding: EdgeInsets.only(left: 12, top: 10, bottom: 10, right: 12),
+  //       margin: EdgeInsets.only(bottom: 14, left: 12, right: 12),
+  //       behavior: SnackBarBehavior.floating,
+  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+  //       duration: Duration(seconds: 3),
+  //       backgroundColor: Color(0XFFFFF0F0),
+  //       elevation: 0,
+  //     );
+  //
+  //     rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+  //   }
+  // }
 }

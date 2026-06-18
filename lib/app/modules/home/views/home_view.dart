@@ -82,8 +82,8 @@ class HomeView extends GetView<HomeController> {
                                                       controller
                                                               .isGuaranteeIncomeProgressBarVisible
                                                               .value
-                                                      ? 200
-                                                      : 140,
+                                                          ? 200
+                                                          : 140,
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
