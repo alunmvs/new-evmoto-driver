@@ -6,12 +6,14 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_messages_model.dart';
 import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_participants_model.dart';
+import 'package:new_evmoto_driver/app/modules/chat_list/controllers/chat_list_controller.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/upload_image_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
 
 class ChatDetailController extends GetxController {
   final UploadImageRepository uploadImageRepository;
@@ -92,10 +94,11 @@ class ChatDetailController extends GetxController {
               doc.data(),
             );
             evmotoOrderChatMessages.evmotoOrderChatMessagesId = doc.id;
+            evmotoOrderChatMessages.isPending = doc.metadata.hasPendingWrites;
             evmotoOrderChatMessagesList.add(evmotoOrderChatMessages);
           }
           this.evmotoOrderChatMessagesList.value = evmotoOrderChatMessagesList;
-          await markAllMessageRead();
+          unawaited(markAllMessageRead());
         });
   }
 
@@ -113,37 +116,50 @@ class ChatDetailController extends GetxController {
   }
 
   Future<void> markAllMessageRead() async {
-    final batch = FirebaseFirestore.instance.batch();
+    try {
+      final batch = FirebaseFirestore.instance.batch();
 
-    final querySnapshot = await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_messages')
-        .where('evmotoOrderChatParticipantsDocumentId', isEqualTo: docId.value)
-        .where('senderType', isEqualTo: "user")
-        .where('isRead', isEqualTo: false)
-        .get();
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_messages')
+          .where(
+            'evmotoOrderChatParticipantsDocumentId',
+            isEqualTo: docId.value,
+          )
+          .where('senderType', isEqualTo: "user")
+          .where('isRead', isEqualTo: false)
+          .get();
 
-    for (var doc in querySnapshot.docs) {
-      batch.set(doc.reference, {
-        "isRead": true,
-        "readAt": FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true));
-    }
-
-    await batch.commit();
-
-    await FirebaseFirestore.instance
-        .collection('evmoto_order_chat_participants')
-        .doc(docId.value)
-        .set({
-          'totalUnreadChatDriver': await getTotalUnreadChatDriver(),
-          'totalUnreadChatUser': await getTotalUnreadChatUser(),
+      for (var doc in querySnapshot.docs) {
+        batch.set(doc.reference, {
+          "isRead": true,
+          "readAt": FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
+      }
+
+      await batch.commit();
+
+      await FirebaseFirestore.instance
+          .collection('evmoto_order_chat_participants')
+          .doc(docId.value)
+          .set({
+            'totalUnreadChatDriver': await getTotalUnreadChatDriver(),
+            'totalUnreadChatUser': await getTotalUnreadChatUser(),
+          }, SetOptions(merge: true));
+
+      unawaited(homeController.getTotalUnreadFirebaseChat());
+      if (Get.isRegistered<ChatListController>()) {
+        unawaited(Get.find<ChatListController>().getChatList());
+      }
+    } catch (_) {}
   }
 
   Future<void> sendMessage() async {
     if ((message.value != "" && textEditingController.text.trim() != "") ||
         attachmentUrl.value != "") {
-      var data = {
+      final lastMessageText =
+          message.value != "" ? message.value : "Attachment";
+
+      final data = {
         "evmotoOrderChatParticipantsDocumentId": docId.value,
         "senderAttachmentUrl": attachmentUrl.value,
         "senderId": evmotoOrderChatParticipants.value.driverId,
@@ -154,25 +170,30 @@ class ChatDetailController extends GetxController {
         "createdAt": FieldValue.serverTimestamp(),
       };
 
-      await FirebaseFirestore.instance
-          .collection('evmoto_order_chat_messages')
-          .add(data);
-
       textEditingController.clear();
-
-      await FirebaseFirestore.instance
-          .collection('evmoto_order_chat_participants')
-          .doc(docId.value)
-          .set({
-            'totalUnreadChatDriver': await getTotalUnreadChatDriver(),
-            'totalUnreadChatUser': await getTotalUnreadChatUser(),
-            'lastMessage': message.value != "" ? message.value : "Attachment",
-            'lastMessageAt': FieldValue.serverTimestamp(),
-          }, SetOptions(merge: true));
-
       message.value = "";
       attachmentUrl.value = "";
       isAttachmentOptionOpen.value = false;
+
+      try {
+        await FirebaseFirestore.instance
+            .collection('evmoto_order_chat_messages')
+            .add(data);
+
+        await FirebaseFirestore.instance
+            .collection('evmoto_order_chat_participants')
+            .doc(docId.value)
+            .set({
+              'totalUnreadChatDriver': await getTotalUnreadChatDriver(),
+              'totalUnreadChatUser': await getTotalUnreadChatUser(),
+              'lastMessage': lastMessageText,
+              'lastMessageAt': FieldValue.serverTimestamp(),
+            }, SetOptions(merge: true));
+
+        if (Get.isRegistered<ChatListController>()) {
+          unawaited(Get.find<ChatListController>().getChatList());
+        }
+      } catch (_) {}
     }
   }
 
@@ -189,7 +210,7 @@ class ChatDetailController extends GetxController {
       attachmentUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
-      Get.close(1);
+      DialogHelper.dismissLoading();
     }
   }
 
@@ -206,7 +227,7 @@ class ChatDetailController extends GetxController {
       attachmentUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
-      Get.close(1);
+      DialogHelper.dismissLoading();
     }
   }
 

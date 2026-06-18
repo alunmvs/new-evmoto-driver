@@ -80,12 +80,10 @@ class HomeView extends GetView<HomeController> {
                                                   ).size.width,
                                                   height:
                                                       controller
-                                                              .activeGuaranteeIncomeProgressBar
+                                                              .isGuaranteeIncomeProgressBarVisible
                                                               .value
-                                                              ?.id ==
-                                                          null
-                                                      ? 140
-                                                      : 200,
+                                                      ? 200
+                                                      : 140,
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
@@ -111,10 +109,8 @@ class HomeView extends GetView<HomeController> {
                                                     SizedBox(height: 40),
                                                     SizedBox(height: 16),
                                                     if (controller
-                                                            .activeGuaranteeIncomeProgressBar
-                                                            .value
-                                                            ?.id !=
-                                                        null) ...[
+                                                        .isGuaranteeIncomeProgressBarVisible
+                                                        .value) ...[
                                                       HomeGuaranteeIncomeProgressBarCardSubView(),
                                                       SizedBox(height: 16),
                                                     ],
@@ -1671,8 +1667,10 @@ class HomeView extends GetView<HomeController> {
                             ),
                             if (controller
                                     .isActiveGuaranteeIncomeProgressBarOpen
-                                    .value ==
-                                true) ...[
+                                    .value &&
+                                controller
+                                    .isGuaranteeIncomeProgressBarVisible
+                                    .value) ...[
                               Positioned(
                                 top: 40 + 16,
                                 left: 16,

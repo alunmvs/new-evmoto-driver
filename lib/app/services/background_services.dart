@@ -16,6 +16,49 @@ import 'package:new_evmoto_driver/app/utils/socket_helper.dart';
 import 'package:new_evmoto_driver/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+const _foregroundNotificationId = 9191;
+const _foregroundNotificationChannelId = 'foreground';
+const _foregroundNotificationChannelName = 'EVMOTO DRIVER FOREGROUND SERVICE';
+
+Future<void> showForegroundServiceNotification() async {
+  if (!Platform.isAndroid) return;
+
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  await flutterLocalNotificationsPlugin.initialize(
+    const InitializationSettings(
+      android: AndroidInitializationSettings('ic_notification_small'),
+    ),
+  );
+
+  const channel = AndroidNotificationChannel(
+    _foregroundNotificationChannelId,
+    _foregroundNotificationChannelName,
+    description: 'This channel is used for important notifications.',
+    importance: Importance.max,
+  );
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin
+      >()
+      ?.createNotificationChannel(channel);
+
+  await flutterLocalNotificationsPlugin.show(
+    _foregroundNotificationId,
+    'Berjalan di Latar Belakang',
+    'Aplikasi tetap aktif untuk memastikan layanan berjalan dengan lancar.',
+    const NotificationDetails(
+      android: AndroidNotificationDetails(
+        _foregroundNotificationChannelId,
+        _foregroundNotificationChannelName,
+        icon: 'ic_notification_small',
+        ongoing: true,
+      ),
+    ),
+  );
+}
+
 class BackgroundServices extends GetxService {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -52,7 +95,7 @@ class BackgroundServices extends GetxService {
   }
 
   Future<void> stopService() async {
-    await FlutterLocalNotificationsPlugin().cancel(9191);
+    await FlutterLocalNotificationsPlugin().cancel(_foregroundNotificationId);
     FlutterBackgroundService().invoke("stopService");
   }
 
@@ -108,8 +151,8 @@ class BackgroundServices extends GetxService {
     );
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'foreground',
-      'EVMOTO DRIVER FOREGROUND SERVICE',
+      _foregroundNotificationChannelId,
+      _foregroundNotificationChannelName,
       description: 'This channel is used for important notifications.',
       importance: Importance.max,
     );
@@ -129,7 +172,7 @@ class BackgroundServices extends GetxService {
         onBackground: onIosBackground,
       ),
       androidConfiguration: AndroidConfiguration(
-        foregroundServiceNotificationId: 9191,
+        foregroundServiceNotificationId: _foregroundNotificationId,
         autoStart: false,
         onStart: onStart,
         isForegroundMode: true,
@@ -138,7 +181,7 @@ class BackgroundServices extends GetxService {
           AndroidForegroundType.location,
           AndroidForegroundType.dataSync,
         ],
-        notificationChannelId: 'foreground',
+        notificationChannelId: _foregroundNotificationChannelId,
         initialNotificationTitle: 'Berjalan di Latar Belakang',
         initialNotificationContent:
             'Aplikasi tetap aktif untuk memastikan layanan berjalan dengan lancar.',
@@ -161,6 +204,8 @@ Future<bool> onIosBackground(ServiceInstance service) async {
 void onStart(ServiceInstance service) {
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
+
+  unawaited(showForegroundServiceNotification());
 
   bool? isForeground;
   bool? isPermissionLocationAllow;
@@ -195,26 +240,6 @@ void onStart(ServiceInstance service) {
           },
         );
   }
-
-  // final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-  // Timer backgroundServiceTimer = Timer.periodic(const Duration(seconds: 1), (
-  //   timer,
-  // ) async {
-  //   flutterLocalNotificationsPlugin.show(
-  //     9191,
-  //     'Berjalan di Latar Belakang',
-  //     'Aplikasi tetap aktif untuk memastikan layanan berjalan dengan lancar.',
-  //     const NotificationDetails(
-  //       android: AndroidNotificationDetails(
-  //         "foreground",
-  //         'EVMOTO DRIVER FOREGROUND SERVICE',
-  //         icon: "ic_notification_small",
-  //         ongoing: true,
-  //       ),
-  //     ),
-  //   );
-  // });
 
   var schedulerDataSocketTimer = Timer.periodic(Duration(seconds: 5), (
     timer,
@@ -268,9 +293,6 @@ void onStart(ServiceInstance service) {
     try {
       schedulerDataSocketTimer.cancel();
     } catch (e) {}
-    // try {
-    //   backgroundServiceTimer.cancel();
-    // } catch (e) {}
     try {
       positionStream?.cancel();
     } catch (e) {}

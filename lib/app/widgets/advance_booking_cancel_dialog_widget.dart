@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 
 class AdvanceBookingCancelDialogWidget extends StatelessWidget {
@@ -55,7 +57,7 @@ class AdvanceBookingCancelDialogWidget extends StatelessWidget {
                             alignment: Alignment.topRight,
                             child: GestureDetector(
                               onTap: () {
-                                Get.close(1);
+                                DialogHelper.dismiss(DialogTags.advancedBookingCancel);
                               },
                               child: Container(
                                 color: Colors.transparent,
@@ -103,7 +105,7 @@ class AdvanceBookingCancelDialogWidget extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () async {
-                                Get.close(1);
+                                DialogHelper.dismiss(DialogTags.advancedBookingCancel);
                               },
                               child: Text(
                                 "Kembali",

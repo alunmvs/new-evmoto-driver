@@ -57,17 +57,14 @@ class HomeGuaranteeIncomeProgressBarCardFullScreenSubView
                     SlideCountdown(
                       padding: EdgeInsets.all(0),
                       decoration: BoxDecoration(color: Colors.transparent),
-                      duration: Duration(
-                        minutes: controller.endTimeLocal.value!
-                            .difference(DateTime.now())
-                            .inMinutes,
-                      ),
+                      duration: () {
+                        final remaining = controller.endTimeLocal.value!
+                            .difference(DateTime.now());
+                        return remaining.isNegative ? Duration.zero : remaining;
+                      }(),
                       shouldShowMinutes: (duration) => duration.inDays == 0,
                       onDone: () async {
-                        controller
-                                .isActiveGuaranteeIncomeProgressBarOpen
-                                .value =
-                            false;
+                        controller.updateGuaranteeIncomeProgressBarVisibility();
                         await controller.getEnsureIncomeRuleId();
                         await controller.getGuaranteeIncomeProgressBarList();
                       },

@@ -251,6 +251,37 @@ class OrderRepository {
     }
   }
 
+  Future<bool> orderPushReject({required String orderId}) async {
+    try {
+      var url = "$baseUrl/orderServer/api/push/reject";
+
+      var data = {"orderId": int.parse(orderId)};
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: data,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      return response.data['data'];
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
+
   Future<void> grabOrder({
     required int orderType,
     required String orderId,

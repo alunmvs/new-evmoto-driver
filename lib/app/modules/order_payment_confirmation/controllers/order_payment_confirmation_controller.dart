@@ -174,6 +174,8 @@ class OrderPaymentConfirmationController extends GetxController {
       return 'Cash';
     } else if (orderDetail.value.payType == 2) {
       return 'Saldo EVMoto';
+    } else if (orderDetail.value.payType == 4) {
+      return 'GoPay';
     }
     return '';
   }

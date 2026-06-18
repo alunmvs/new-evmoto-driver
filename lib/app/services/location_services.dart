@@ -12,6 +12,8 @@ import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 
 class LocationServices extends GetxService with WidgetsBindingObserver {
@@ -218,8 +220,9 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
   Future<void> showRequiredAccessPermission() async {
     if (isRequiredAccessPermissionDialogActive.value == false) {
       isRequiredAccessPermissionDialogActive.value = true;
-      await Get.dialog(
-        Padding(
+      await DialogHelper.show(
+        tag: DialogTags.locationPermission,
+        widget: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -251,7 +254,7 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Get.close(1);
+                                DialogHelper.dismiss(DialogTags.locationPermission);
                               },
                               child: Container(
                                 width: 24,
@@ -305,7 +308,7 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
                           ),
                           onPressed: () async {
                             await openAppSettings();
-                            Get.close(1);
+                            DialogHelper.dismiss(DialogTags.locationPermission);
                           },
                         ),
                       ],

@@ -12,6 +12,8 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/advance_booking_cancel_dialog_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -221,8 +223,13 @@ class MyOrderController extends GetxController
       );
       markers.add(newMarkers);
 
-      var result = await Get.dialog(
-        Column(
+      final reconfirmationTag = DialogTags.advanceBookingReconfirmation(
+        selectedOrder.id.toString(),
+      );
+
+      var result = await DialogHelper.show<bool>(
+        tag: reconfirmationTag,
+        widget: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
@@ -255,7 +262,7 @@ class MyOrderController extends GetxController
                                       ),
                                 ),
                                 Text(
-                                  "${formatDouble(orderData.startMileage!)} km",
+                                  "${formatDouble(orderData.mileage!)} km · ${DateFormat('d MMMM yyyy · HH:mm').format(DateTime.parse(orderData.travelTime!))}",
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
@@ -269,7 +276,10 @@ class MyOrderController extends GetxController
                             ),
                             GestureDetector(
                               onTap: () async {
-                                Get.back(result: true);
+                                DialogHelper.dismiss<bool>(
+                                  reconfirmationTag,
+                                  result: true,
+                                );
                               },
                               child: Container(
                                 width: 24,
@@ -496,7 +506,10 @@ class MyOrderController extends GetxController
                                 aspectRatio: 298 / 75,
                                 child: GoogleMap(
                                   mapType: MapType.normal,
-                                  zoomControlsEnabled: true,
+                                  zoomControlsEnabled: false,
+                                  mapToolbarEnabled: false,
+                                  myLocationButtonEnabled: false,
+                                  compassEnabled: false,
                                   tiltGesturesEnabled: true,
                                   zoomGesturesEnabled: true,
                                   rotateGesturesEnabled: true,
@@ -756,15 +769,20 @@ class MyOrderController extends GetxController
   }
 
   Future<void> onTapCancelAdvanceBooking({required Order selectedOrder}) async {
-    Get.dialog(
-      AdvanceBookingCancelDialogWidget(
+    final reconfirmationTag = DialogTags.advanceBookingReconfirmation(
+      selectedOrder.id.toString(),
+    );
+
+    DialogHelper.show(
+      tag: DialogTags.advancedBookingCancel,
+      widget: AdvanceBookingCancelDialogWidget(
         onTapConfirm: () async {
           await advanceBookingRepository.advanceBookingCancel(
             orderId: selectedOrder.id.toString(),
           );
           await refreshAll();
-          Get.close(1);
-          Get.close(1);
+          DialogHelper.dismiss(DialogTags.advancedBookingCancel);
+          DialogHelper.dismiss(reconfirmationTag);
         },
       ),
     );

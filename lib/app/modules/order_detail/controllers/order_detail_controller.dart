@@ -24,6 +24,8 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/utils/bitmap_descriptor_helper.dart';
 import 'package:new_evmoto_driver/app/utils/google_maps_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/utils/time_process_helper.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -72,6 +74,10 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
   Timer? driverCurrentLocationTimer;
   Timer? refocusMapBoundsTimer;
+  Timer? cameraAutoFocusDebounceTimer;
+
+  bool isGoogleMapReady = false;
+  Completer<void>? googleMapReadyCompleter;
 
   final isSchedulerDriverCurrentLocationIsProcess = false.obs;
   final evmotoOrderChatParticipants = EvmotoOrderChatParticipants().obs;
@@ -211,6 +217,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     } catch (e) {}
     try {
       refocusMapBoundsTimer?.cancel();
+    } catch (e) {}
+    try {
+      cameraAutoFocusDebounceTimer?.cancel();
     } catch (e) {}
     try {
       globalSchedulerTimer?.cancel();
@@ -1024,101 +1033,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> onTapRefocus() async {
-    if (orderDetail.value.state == 2 || orderDetail.value.state == 3) {
-      LatLngBounds bounds;
-
-      var originLatitude = double.parse(currentLatitude.value);
-      var originLongitude = double.parse(currentLongitude.value);
-      var destinationLatitude = this.orderDetail.value.startLat!;
-      var destinationLongitude = this.orderDetail.value.startLon!;
-
-      if (originLatitude > destinationLatitude &&
-          originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, destinationLongitude),
-          northeast: LatLng(originLatitude, originLongitude),
-        );
-      } else if (originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, destinationLongitude),
-          northeast: LatLng(destinationLatitude, originLongitude),
-        );
-      } else if (originLatitude > destinationLatitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, originLongitude),
-          northeast: LatLng(originLatitude, destinationLongitude),
-        );
-      } else {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, originLongitude),
-          northeast: LatLng(destinationLatitude, destinationLongitude),
-        );
-      }
-
-      var movementDirection = compareLatLng(
-        originLat: originLatitude,
-        originLng: originLongitude,
-        destLat: destinationLatitude,
-        destLng: destinationLongitude,
-      );
-
-      if (movementDirection == MovementDirection.vertical) {
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
-        );
-      } else {
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
-        );
-      }
-    } else {
-      LatLngBounds bounds;
-
-      var originLatitude = double.parse(currentLatitude.value);
-      var originLongitude = double.parse(currentLongitude.value);
-      var destinationLatitude = this.orderDetail.value.endLat!;
-      var destinationLongitude = this.orderDetail.value.endLon!;
-
-      if (originLatitude > destinationLatitude &&
-          originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, destinationLongitude),
-          northeast: LatLng(originLatitude, originLongitude),
-        );
-      } else if (originLongitude > destinationLongitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, destinationLongitude),
-          northeast: LatLng(destinationLatitude, originLongitude),
-        );
-      } else if (originLatitude > destinationLatitude) {
-        bounds = LatLngBounds(
-          southwest: LatLng(destinationLatitude, originLongitude),
-          northeast: LatLng(originLatitude, destinationLongitude),
-        );
-      } else {
-        bounds = LatLngBounds(
-          southwest: LatLng(originLatitude, originLongitude),
-          northeast: LatLng(destinationLatitude, destinationLongitude),
-        );
-      }
-
-      var movementDirection = compareLatLng(
-        originLat: originLatitude,
-        originLng: originLongitude,
-        destLat: destinationLatitude,
-        destLng: destinationLongitude,
-      );
-
-      if (movementDirection == MovementDirection.vertical) {
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, Get.height * 0.3),
-        );
-      } else {
-        await googleMapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, Get.width * 0.3),
-        );
-      }
-    }
+    await updateCameraAutoFocus();
   }
 
   MovementDirection compareLatLng({
@@ -1172,8 +1087,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> onTapCancelOrder() async {
-    Get.dialog(
-      Padding(
+    DialogHelper.show(
+      tag: DialogTags.cancelOrder,
+      widget: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -1213,7 +1129,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.cancelOrder);
                                 },
                                 child: Text(
                                   "Tutup",
@@ -1250,7 +1166,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                                           .languageCodeSystem
                                           .value,
                                     );
-                                    Get.close(1);
+                                    DialogHelper.dismiss(DialogTags.cancelOrder);
                                     Get.back();
                                     Get.find<HomeController>().refreshAll();
                                     SnackbarHelper.showSnackbarSuccess(
@@ -1569,284 +1485,108 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  void onGoogleMapCreated(GoogleMapController controller) {
+    googleMapController = controller;
+    isGoogleMapReady = true;
+    if (googleMapReadyCompleter != null &&
+        !googleMapReadyCompleter!.isCompleted) {
+      googleMapReadyCompleter!.complete();
+    }
+  }
+
+  Future<void> ensureGoogleMapReady() async {
+    if (isGoogleMapReady) return;
+
+    googleMapReadyCompleter ??= Completer<void>();
+    await googleMapReadyCompleter!.future.timeout(
+      const Duration(seconds: 5),
+      onTimeout: () {},
+    );
+  }
+
+  void scheduleCameraAutoFocus() {
+    cameraAutoFocusDebounceTimer?.cancel();
+    cameraAutoFocusDebounceTimer = Timer(const Duration(seconds: 2), () {
+      if (!isClosed) {
+        updateCameraAutoFocus();
+      }
+    });
+  }
+
+  LatLng? _driverPositionForCamera() {
+    final driverLat = locationServices.currentLatitude.value;
+    final driverLng = locationServices.currentLongitude.value;
+    final hasDriverLocation =
+        driverLat != null &&
+        driverLng != null &&
+        driverLat != 0 &&
+        driverLng != 0;
+
+    if (!hasDriverLocation) return null;
+
+    return LatLng(driverLat, driverLng);
+  }
+
+  LatLng _destinationForCurrentState() {
+    if ([1, 2, 3, 4].contains(orderDetail.value.state)) {
+      return LatLng(orderDetail.value.startLat!, orderDetail.value.startLon!);
+    }
+
+    return LatLng(orderDetail.value.endLat!, orderDetail.value.endLon!);
+  }
+
   // googleMapController
   Future<void> updateCameraAutoFocus() async {
-    // waiting driver accept
-    // if ([1].contains(orderDetail.value.state)) {
-    //   if (isClosed) return;
-    //   await googleMapController.animateCamera(
-    //     CameraUpdate.newLatLngZoom(
-    //       LatLng(orderDetail.value.startLat!, orderDetail.value.startLon!),
-    //       16,
-    //     ),
-    //   );
-    // }
+    if (isClosed) return;
 
-    var driverLatitude =
-        (double.tryParse(locationServices.currentLatitude.value.toString()) ??
-                0.0)
-            .toInt();
-    var driverLongitude =
-        (double.tryParse(locationServices.currentLongitude.value.toString()) ??
-                0.0)
-            .toInt();
+    await ensureGoogleMapReady();
+    if (isClosed) return;
 
-    if (driverLatitude != 0 && driverLongitude != 0) {
-      // driver to origin
-      if ([1, 2, 3, 4].contains(orderDetail.value.state)) {
-        LatLngBounds bounds;
+    // Tunggu layout map + overlay UI selesai sebelum mengatur kamera.
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (isClosed) return;
 
-        var originLatitude = locationServices.currentLatitude.value!;
-        var originLongitude = locationServices.currentLongitude.value!;
-        var destinationLatitude = orderDetail.value.startLat!;
-        var destinationLongitude = orderDetail.value.startLon!;
+    final orderState = orderDetail.value.state;
+    if (![1, 2, 3, 4, 5, 6, 7, 8].contains(orderState)) return;
 
-        var margin = 0;
-        var distanceInMeters = Geolocator.distanceBetween(
-          originLatitude,
-          originLongitude,
-          destinationLatitude,
-          destinationLongitude,
-        );
-
-        if (distanceInMeters <= 1000) {
-          margin = 0;
-        }
-
-        if (originLatitude > destinationLatitude &&
-            originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, destinationLongitude),
-            northeast: LatLng(originLatitude, originLongitude),
-          );
-        } else if (originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, destinationLongitude),
-            northeast: LatLng(destinationLatitude, originLongitude),
-          );
-        } else if (originLatitude > destinationLatitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, originLongitude),
-            northeast: LatLng(originLatitude, destinationLongitude),
-          );
-        } else {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, originLongitude),
-            northeast: LatLng(destinationLatitude, destinationLongitude),
-          );
-        }
-
-        var movementDirection = compareLatLng(
-          originLat: originLatitude,
-          originLng: originLongitude,
-          destLat: destinationLatitude,
-          destLng: destinationLongitude,
-        );
-
-        if (isClosed) return;
-        if (movementDirection == MovementDirection.vertical) {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0 * 2;
-          } else {
-            padding = 50.0 * 3.5;
-          }
-
-          await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        } else {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0;
-          } else {
-            padding = 50.0;
-          }
-
-          await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        }
-      }
-
-      // driver to destination
-      if ([5, 6, 7, 8].contains(orderDetail.value.state)) {
-        LatLngBounds bounds;
-
-        var originLatitude = locationServices.currentLatitude.value!;
-        var originLongitude = locationServices.currentLongitude.value!;
-        var destinationLatitude = orderDetail.value.endLat!;
-        var destinationLongitude = orderDetail.value.endLon!;
-
-        if (originLatitude > destinationLatitude &&
-            originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, destinationLongitude),
-            northeast: LatLng(originLatitude, originLongitude),
-          );
-        } else if (originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, destinationLongitude),
-            northeast: LatLng(destinationLatitude, originLongitude),
-          );
-        } else if (originLatitude > destinationLatitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, originLongitude),
-            northeast: LatLng(originLatitude, destinationLongitude),
-          );
-        } else {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, originLongitude),
-            northeast: LatLng(destinationLatitude, destinationLongitude),
-          );
-        }
-
-        var movementDirection = compareLatLng(
-          originLat: originLatitude,
-          originLng: originLongitude,
-          destLat: destinationLatitude,
-          destLng: destinationLongitude,
-        );
-
-        if (isClosed) return;
-
-        if (movementDirection == MovementDirection.vertical) {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0 * 2;
-          } else {
-            padding = 50.0 * 3.5;
-          }
-
-          await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        } else {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0;
-          } else {
-            padding = 50.0;
-          }
-
-          await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        }
-      }
-    } else {
-      if ([1, 2, 3, 4, 5, 6, 7, 8].contains(orderDetail.value.state)) {
-        LatLngBounds bounds;
-
-        var originLatitude = orderDetail.value.startLat!;
-        var originLongitude = orderDetail.value.startLon!;
-        var destinationLatitude = orderDetail.value.endLat!;
-        var destinationLongitude = orderDetail.value.endLon!;
-
-        if (originLatitude > destinationLatitude &&
-            originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, destinationLongitude),
-            northeast: LatLng(originLatitude, originLongitude),
-          );
-        } else if (originLongitude > destinationLongitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, destinationLongitude),
-            northeast: LatLng(destinationLatitude, originLongitude),
-          );
-        } else if (originLatitude > destinationLatitude) {
-          bounds = LatLngBounds(
-            southwest: LatLng(destinationLatitude, originLongitude),
-            northeast: LatLng(originLatitude, destinationLongitude),
-          );
-        } else {
-          bounds = LatLngBounds(
-            southwest: LatLng(originLatitude, originLongitude),
-            northeast: LatLng(destinationLatitude, destinationLongitude),
-          );
-        }
-
-        var movementDirection = compareLatLng(
-          originLat: originLatitude,
-          originLng: originLongitude,
-          destLat: destinationLatitude,
-          destLng: destinationLongitude,
-        );
-
-        if (isClosed) return;
-        if (movementDirection == MovementDirection.vertical) {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0 * 2;
-          } else {
-            padding = 50.0 * 3.5;
-          }
-
-          await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        } else {
-          var padding = 0.0;
-
-          var distanceInMeters = Geolocator.distanceBetween(
-            originLatitude,
-            originLongitude,
-            destinationLatitude,
-            destinationLongitude,
-          );
-
-          if (distanceInMeters <= 1000) {
-            padding = 80.0;
-          } else {
-            padding = 50.0;
-          }
-
-          await googleMapController.animateCamera(
-            CameraUpdate.newLatLngBounds(bounds, padding),
-          );
-        }
-      }
+    final driver = _driverPositionForCamera();
+    if (driver == null) {
+      await animateMapToFitPoints(
+        googleMapController,
+        [
+          LatLng(orderDetail.value.startLat!, orderDetail.value.startLon!),
+          LatLng(orderDetail.value.endLat!, orderDetail.value.endLon!),
+        ],
+      );
+      return;
     }
+
+    final routePoints = polylinesCoordinate.toList();
+    if (routePoints.isEmpty) {
+      final destination = _destinationForCurrentState();
+      final distanceToDestination = Geolocator.distanceBetween(
+        driver.latitude,
+        driver.longitude,
+        destination.latitude,
+        destination.longitude,
+      );
+
+      await animateMapToDriverWithRoute(
+        googleMapController,
+        driver: driver,
+        routePoints: const [],
+        defaultZoom: zoomLevelForRouteLookAhead(
+          distanceToDestination.clamp(150, 2000),
+        ),
+      );
+      return;
+    }
+
+    await animateMapToDriverWithRoute(
+      googleMapController,
+      driver: driver,
+      routePoints: routePoints,
+    );
   }
 
   // polylines & polylinesCoordinate
@@ -2023,7 +1763,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
       upsertMarker(markerId: markerId, newMarker: newMarker);
       await updateDriverPositionReducedPolyline();
       await updateDriverPositionReroutingOffRoute();
-      await updateCameraAutoFocus();
+      scheduleCameraAutoFocus();
     }
   }
 

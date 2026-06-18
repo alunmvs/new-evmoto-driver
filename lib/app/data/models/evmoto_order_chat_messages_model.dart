@@ -8,6 +8,7 @@ class EvmotoOrderChatMessages {
   String? senderMessage;
   String? senderType;
   bool? isRead;
+  bool? isPending;
 
   EvmotoOrderChatMessages({
     this.evmotoOrderChatMessagesId,
@@ -19,6 +20,7 @@ class EvmotoOrderChatMessages {
     this.senderMessage,
     this.senderType,
     this.isRead,
+    this.isPending,
   });
 
   EvmotoOrderChatMessages.fromJson(Map<String, dynamic> json) {

@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_outlined_button_widget.dart';
 
@@ -19,8 +21,9 @@ Future<void> showNoConnectivityInternetDialog({
     final typographyServices = Get.find<TypographyServices>();
     final languageServices = Get.find<LanguageServices>();
 
-    var result = await Get.dialog(
-      Padding(
+    var result = await DialogHelper.show<bool>(
+      tag: DialogTags.noConnectivity,
+      widget: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -46,7 +49,7 @@ Future<void> showNoConnectivityInternetDialog({
                           ),
                           GestureDetector(
                             onTap: () async {
-                              Get.back();
+                              DialogHelper.dismiss(DialogTags.noConnectivity);
                             },
                             child: Container(
                               width: 24,
@@ -112,7 +115,7 @@ Future<void> showNoConnectivityInternetDialog({
                           color: themeColorServices.neutralsColorGrey300.value,
                         ),
                         onPressed: () async {
-                          Get.back();
+                          DialogHelper.dismiss(DialogTags.noConnectivity);
                         },
                         child: Text(
                           "Coba Lagi",

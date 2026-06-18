@@ -10,14 +10,14 @@ import 'package:new_evmoto_driver/app/modules/order_detail/controllers/order_det
 import 'package:new_evmoto_driver/app/modules/order_payment_confirmation/controllers/order_payment_confirmation_controller.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/app_lifecycle_services.dart';
+import 'package:new_evmoto_driver/app/services/auth_service.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
-import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
-import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/utils/socket_helper.dart';
 import 'package:new_evmoto_driver/environment.dart';
@@ -201,32 +201,8 @@ class SocketServices extends GetxService {
                 }
                 break;
               case 'OFFLINE':
-                final backgroundServices = Get.find<BackgroundServices>();
-                final userServices = Get.find<UserServices>();
-                final firebasePushNotificationServices =
-                    Get.find<FirebasePushNotificationServices>();
-                final locationServices = Get.find<LocationServices>();
-                var prefs = await SharedPreferences.getInstance();
-                var storage = FlutterSecureStorage();
-                final socketServices = Get.find<SocketServices>();
-
-                await backgroundServices.clearAllState();
-                await locationServices.positionStream?.cancel();
-                await firebasePushNotificationServices.onUnsubscribe();
-
-                await Future.wait([
-                  backgroundServices.stopService(),
-                  storage.deleteAll(),
-                  socketServices.closeWebsocket(),
-                  prefs.clear(),
-                ]);
-
-                userServices.clearUserInfo();
-
-                Get.offAllNamed(Routes.LOGIN);
-
-                SnackbarHelper.showSnackbarError(
-                  text: "Anda sedang Login di perangkat lain",
+                await Get.find<AuthService>().logout(
+                  errorMessage: "Anda sedang Login di perangkat lain",
                 );
                 break;
               case 'USER_CANCEL_ORDER':
@@ -250,9 +226,7 @@ class SocketServices extends GetxService {
                           false);
 
                   if (isDialogShow == true) {
-                    if (Get.isDialogOpen == true) {
-                      Get.close(1);
-                    }
+                    DialogHelper.dismissOrderDialogs(orderId.toString());
                   }
                 }
               default:

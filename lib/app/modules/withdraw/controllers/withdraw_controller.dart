@@ -7,6 +7,8 @@ import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.d
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 
@@ -85,8 +87,9 @@ class WithdrawController extends GetxController {
   Future<void> onTapDeleteBankAccount({
     required BankAccount bankAccount,
   }) async {
-    await Get.dialog(
-      Padding(
+    await DialogHelper.show(
+      tag: DialogTags.deleteBankAccount,
+      widget: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -126,7 +129,7 @@ class WithdrawController extends GetxController {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.deleteBankAccount);
                                 },
                                 child: Text(
                                   "Batal",
@@ -152,7 +155,7 @@ class WithdrawController extends GetxController {
                                             .languageCodeSystem
                                             .value,
                                       );
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.deleteBankAccount);
 
                                   SnackbarHelper.showSnackbarSuccess(
                                     text: "Berhasil menghapus nomor rekening",

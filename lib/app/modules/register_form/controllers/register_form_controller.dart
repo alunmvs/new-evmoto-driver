@@ -12,6 +12,7 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
 import 'package:new_evmoto_driver/app/utils/image_upload_helper.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -147,7 +148,7 @@ class RegisterFormController extends GetxController {
     if (image != null) {
       showLoadingDialog();
       idPhotoUrl.value = await uploadImageRepository.uploadImage(file: image);
-      Get.close(1);
+      DialogHelper.dismissLoading();
     }
   }
 
@@ -159,7 +160,7 @@ class RegisterFormController extends GetxController {
       drivingLicensePhotoUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
-      Get.close(1);
+      DialogHelper.dismissLoading();
     }
   }
 
@@ -174,7 +175,7 @@ class RegisterFormController extends GetxController {
       avatarPhotoUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
-      Get.close(1);
+      DialogHelper.dismissLoading();
     }
   }
 
@@ -189,7 +190,7 @@ class RegisterFormController extends GetxController {
       driverSelfieKtpPhotoUrl.value = await uploadImageRepository.uploadImage(
         file: image,
       );
-      Get.close(1);
+      DialogHelper.dismissLoading();
     }
   }
 
@@ -200,7 +201,7 @@ class RegisterFormController extends GetxController {
       showLoadingDialog();
       vehicleRegistrationCertificateFrontPhotoUrl.value =
           await uploadImageRepository.uploadImage(file: image);
-      Get.close(1);
+      DialogHelper.dismissLoading();
     }
   }
 
@@ -211,7 +212,7 @@ class RegisterFormController extends GetxController {
       showLoadingDialog();
       vehicleRegistrationCertificateBackPhotoUrl.value =
           await uploadImageRepository.uploadImage(file: image);
-      Get.close(1);
+      DialogHelper.dismissLoading();
     }
   }
 
@@ -222,7 +223,7 @@ class RegisterFormController extends GetxController {
       showLoadingDialog();
       policeClearanceCertificatePhotoUrl.value = await uploadImageRepository
           .uploadImage(file: image);
-      Get.close(1);
+      DialogHelper.dismissLoading();
     }
   }
 

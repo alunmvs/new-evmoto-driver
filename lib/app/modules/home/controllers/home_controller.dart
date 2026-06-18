@@ -42,7 +42,10 @@ import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/services/voice_services.dart';
 import 'package:new_evmoto_driver/app/utils/common_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_in_dialog.dart';
 import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_out_dialog.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -153,7 +156,9 @@ class HomeController extends GetxController
     null,
   );
   Timer? guaranteeIncomeProgressBarTimer;
+  Timer? guaranteeIncomeVisibilityTimer;
   final isActiveGuaranteeIncomeProgressBarOpen = false.obs;
+  final isGuaranteeIncomeProgressBarVisible = false.obs;
   final guaranteeIncomeProgress = 0.0.obs;
   final startTimeLocal = Rx<DateTime?>(null);
   final endTimeLocal = Rx<DateTime?>(null);
@@ -187,6 +192,7 @@ class HomeController extends GetxController
       await Future.wait([
         setupAutoOfflineTimer(),
         setupGuaranteeIncomeProgressBarTimer(),
+        setupGuaranteeIncomeVisibilityTimer(),
       ]);
       await backgroundServices.refreshState();
 
@@ -206,6 +212,7 @@ class HomeController extends GetxController
     await socketServices.closeWebsocket();
     autoOfflineTimer?.cancel();
     guaranteeIncomeProgressBarTimer?.cancel();
+    guaranteeIncomeVisibilityTimer?.cancel();
   }
 
   // Working Time Schedule
@@ -250,8 +257,9 @@ class HomeController extends GetxController
       }
 
       if (isInServiceTimeSchedule == false) {
-        Get.dialog(
-          Column(
+        DialogHelper.show(
+          tag: DialogTags.serviceTimeValidation,
+          widget: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -312,7 +320,9 @@ class HomeController extends GetxController
                                         ),
                                   ),
                                   onPressed: () async {
-                                    Get.close(1);
+                                    DialogHelper.dismiss(
+                                      DialogTags.serviceTimeValidation,
+                                    );
                                   },
                                 ),
                               ],
@@ -322,7 +332,9 @@ class HomeController extends GetxController
                               right: 0,
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(
+                                    DialogTags.serviceTimeValidation,
+                                  );
                                 },
                                 child: Container(
                                   color: Colors.transparent,
@@ -684,6 +696,18 @@ class HomeController extends GetxController
     });
   }
 
+  Future<void> setupGuaranteeIncomeVisibilityTimer() async {
+    guaranteeIncomeVisibilityTimer?.cancel();
+    guaranteeIncomeVisibilityTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) {
+        if (activeGuaranteeIncomeProgressBar.value?.id != null) {
+          updateGuaranteeIncomeProgressBarVisibility();
+        }
+      },
+    );
+  }
+
   void setInitialLatitudeLongitude() {
     initialLatitude.value = locationServices.currentLatitude.value;
     initialLongitude.value = locationServices.currentLongitude.value;
@@ -835,6 +859,10 @@ class HomeController extends GetxController
       );
       markers.add(newMarkers);
 
+      final advanceBookingTag = DialogTags.advanceBookingConfirmation(
+        socketOrderStatusData.orderId.toString(),
+      );
+
       final durationAccept = 0.obs;
       durationAccept.value = socketOrderStatusData.time ?? 0;
 
@@ -847,14 +875,13 @@ class HomeController extends GetxController
             false,
           );
           timerDuration.cancel();
-          if (Get.isDialogOpen == true) {
-            Get.close(1);
-          }
+          DialogHelper.dismissIfExists(advanceBookingTag);
         }
       });
 
-      var result = await Get.dialog(
-        Column(
+      var result = await DialogHelper.show<bool>(
+        tag: advanceBookingTag,
+        widget: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
@@ -887,13 +914,7 @@ class HomeController extends GetxController
                                       ),
                                 ),
                                 Text(
-                                  DateFormat(
-                                    'EEEE, d MMMM yyyy · HH:mm',
-                                  ).format(
-                                    DateTime.parse(
-                                      socketOrderStatusData.travelTime!,
-                                    ),
-                                  ),
+                                  "${formatDouble(orderData.mileage!)} km · ${DateFormat('d MMMM yyyy · HH:mm').format(DateTime.parse(socketOrderStatusData.travelTime!))}",
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
@@ -902,12 +923,17 @@ class HomeController extends GetxController
                                             .neutralsColorGrey0
                                             .value,
                                       ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
                             GestureDetector(
                               onTap: () async {
-                                Get.back(result: true);
+                                DialogHelper.dismiss<bool>(
+                                  advanceBookingTag,
+                                  result: true,
+                                );
                               },
                               child: Container(
                                 width: 24,
@@ -1134,7 +1160,10 @@ class HomeController extends GetxController
                                 aspectRatio: 298 / 75,
                                 child: GoogleMap(
                                   mapType: MapType.normal,
-                                  zoomControlsEnabled: true,
+                                  zoomControlsEnabled: false,
+                                  mapToolbarEnabled: false,
+                                  myLocationButtonEnabled: false,
+                                  compassEnabled: false,
                                   tiltGesturesEnabled: true,
                                   zoomGesturesEnabled: true,
                                   rotateGesturesEnabled: true,
@@ -1428,8 +1457,13 @@ class HomeController extends GetxController
       );
       markers.add(newMarkers);
 
+      final orderConfirmationTag = DialogTags.orderConfirmation(
+        socketOrderStatusData.orderId.toString(),
+      );
+
       final durationAccept = 0.obs;
       durationAccept.value = socketOrderStatusData.time ?? 0;
+      var shouldRejectPushOrder = true;
 
       late Timer timerDuration;
       timerDuration = Timer.periodic(Duration(seconds: 1), (timer) async {
@@ -1440,14 +1474,13 @@ class HomeController extends GetxController
             false,
           );
           timerDuration.cancel();
-          if (Get.isDialogOpen == true) {
-            Get.close(1);
-          }
+          DialogHelper.dismissIfExists(orderConfirmationTag);
         }
       });
 
-      await Get.dialog(
-        Column(
+      await DialogHelper.show(
+        tag: orderConfirmationTag,
+        widget: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
@@ -1482,7 +1515,7 @@ class HomeController extends GetxController
                                       ),
                                 ),
                                 Text(
-                                  "${formatDouble(orderData.startMileage!)} km",
+                                  "${formatDouble(orderData.mileage!)} km",
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
@@ -1496,7 +1529,10 @@ class HomeController extends GetxController
                             ),
                             GestureDetector(
                               onTap: () async {
-                                Get.back(result: true);
+                                DialogHelper.dismiss<bool>(
+                                  orderConfirmationTag,
+                                  result: true,
+                                );
                               },
                               child: Container(
                                 width: 24,
@@ -1699,7 +1735,10 @@ class HomeController extends GetxController
                                 aspectRatio: 298 / 75,
                                 child: GoogleMap(
                                   mapType: MapType.normal,
-                                  zoomControlsEnabled: true,
+                                  zoomControlsEnabled: false,
+                                  mapToolbarEnabled: false,
+                                  myLocationButtonEnabled: false,
+                                  compassEnabled: false,
                                   tiltGesturesEnabled: true,
                                   zoomGesturesEnabled: true,
                                   rotateGesturesEnabled: true,
@@ -1740,6 +1779,7 @@ class HomeController extends GetxController
                             ActionSlider.custom(
                               height: 60,
                               action: (actionController) async {
+                                shouldRejectPushOrder = false;
                                 await onSlideOrderConfirmation(
                                   actionController: actionController,
                                   socketOrderStatusData: socketOrderStatusData,
@@ -1904,6 +1944,14 @@ class HomeController extends GetxController
         ),
       );
 
+      if (shouldRejectPushOrder) {
+        try {
+          await orderRepository.orderPushReject(
+            orderId: socketOrderStatusData.orderId.toString(),
+          );
+        } catch (_) {}
+      }
+
       await prefs.setBool(
         'dialog_order_confirmation_${socketOrderStatusData.orderId}',
         false,
@@ -1944,7 +1992,12 @@ class HomeController extends GetxController
         actionController.success();
         actionController.reset();
 
-        Get.back(result: true);
+        DialogHelper.dismiss<bool>(
+          DialogTags.advanceBookingConfirmation(
+            socketOrderStatusData.orderId.toString(),
+          ),
+          result: true,
+        );
         Get.until((route) => route.settings.name == Routes.HOME);
 
         await Get.toNamed(
@@ -1963,7 +2016,12 @@ class HomeController extends GetxController
         actionController.success();
         actionController.reset();
 
-        Get.back(result: true);
+        DialogHelper.dismiss<bool>(
+          DialogTags.advanceBookingConfirmation(
+            socketOrderStatusData.orderId.toString(),
+          ),
+          result: true,
+        );
         Get.until((route) => route.settings.name == Routes.HOME);
 
         await Get.toNamed(
@@ -1980,7 +2038,12 @@ class HomeController extends GetxController
 
       actionController.success();
       actionController.reset();
-      Get.back(result: true);
+      DialogHelper.dismiss<bool>(
+        DialogTags.advanceBookingConfirmation(
+          socketOrderStatusData.orderId.toString(),
+        ),
+        result: true,
+      );
       Get.until((route) => route.settings.name == Routes.HOME);
       await refreshAll();
     }
@@ -2000,7 +2063,12 @@ class HomeController extends GetxController
       if (result == false) {
         actionController.success();
         actionController.reset();
-        Get.back(result: true);
+        DialogHelper.dismiss<bool>(
+          DialogTags.orderConfirmation(
+            socketOrderStatusData.orderId.toString(),
+          ),
+          result: true,
+        );
         Get.until((route) => route.settings.name == Routes.HOME);
         return;
       }
@@ -2008,7 +2076,12 @@ class HomeController extends GetxController
       actionController.success();
       actionController.reset();
 
-      Get.back(result: true);
+      DialogHelper.dismiss<bool>(
+        DialogTags.orderConfirmation(
+          socketOrderStatusData.orderId.toString(),
+        ),
+        result: true,
+      );
       Get.until((route) => route.settings.name == Routes.HOME);
 
       await Get.toNamed(
@@ -2024,7 +2097,12 @@ class HomeController extends GetxController
 
       actionController.success();
       actionController.reset();
-      Get.back(result: true);
+      DialogHelper.dismiss<bool>(
+        DialogTags.orderConfirmation(
+          socketOrderStatusData.orderId.toString(),
+        ),
+        result: true,
+      );
       Get.until((route) => route.settings.name == Routes.HOME);
       await refreshAll();
     }
@@ -2057,9 +2135,11 @@ class HomeController extends GetxController
     var isCoachmarkDisplayed = prefs.getBool('is_coachmark_displayed') ?? false;
 
     if (isCoachmarkDisplayed == false) {
-      await Get.dialog(
+      await DialogHelper.show(
+        tag: DialogTags.coachmark,
         barrierDismissible: false,
-        PopScope(
+        backDismiss: false,
+        widget: PopScope(
           canPop: false,
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -2114,7 +2194,7 @@ class HomeController extends GetxController
                               SizedBox(height: 16),
                               LoaderElevatedButton(
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.coachmark);
 
                                   isCoachmarkActive.value = true;
 
@@ -2189,8 +2269,9 @@ class HomeController extends GetxController
   }
 
   Future<void> showDialogSoftUpdate() async {
-    await Get.dialog(
-      Padding(
+    await DialogHelper.show(
+      tag: DialogTags.appSoftUpdate,
+      widget: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -2253,8 +2334,11 @@ class HomeController extends GetxController
   }
 
   Future<void> showDialogForceUpdate() async {
-    await Get.dialog(
-      PopScope(
+    await DialogHelper.show(
+      tag: DialogTags.appForceUpdate,
+      barrierDismissible: false,
+      backDismiss: false,
+      widget: PopScope(
         canPop: false,
         child: Material(
           color: themeColorServices.neutralsColorGrey0.value,
@@ -2311,7 +2395,6 @@ class HomeController extends GetxController
           ),
         ),
       ),
-      barrierDismissible: false,
     );
   }
 
@@ -2349,8 +2432,9 @@ class HomeController extends GetxController
 
       if (versioningServer.value.version == null) {
         if (isShowVersionNewestConfirmationDialog == true) {
-          Get.dialog(
-            Padding(
+          DialogHelper.show(
+            tag: DialogTags.appVersionNewest,
+            widget: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -2398,7 +2482,7 @@ class HomeController extends GetxController
                                     .copyWith(color: Colors.white),
                               ),
                               onPressed: () async {
-                                Get.close(1);
+                                DialogHelper.dismiss(DialogTags.appVersionNewest);
                               },
                             ),
                             SizedBox(height: 16),
@@ -2448,8 +2532,11 @@ class HomeController extends GetxController
           }
 
           if (isShow == true) {
-            await Get.dialog(
-              PopScope(
+            await DialogHelper.show(
+              tag: DialogTags.appVersionUpdate,
+              barrierDismissible: false,
+              backDismiss: false,
+              widget: PopScope(
                 canPop: false,
                 child: Padding(
                   padding: const EdgeInsets.all(32),
@@ -2525,7 +2612,9 @@ class HomeController extends GetxController
                                         ),
                                       ),
                                       onPressed: () async {
-                                        Get.close(1);
+                                        DialogHelper.dismiss(
+                                          DialogTags.appVersionUpdate,
+                                        );
 
                                         var prefs =
                                             await SharedPreferences.getInstance();
@@ -2555,13 +2644,13 @@ class HomeController extends GetxController
                   ),
                 ),
               ),
-              barrierDismissible: false,
             );
           }
         } else {
           if (isShowVersionNewestConfirmationDialog == true) {
-            Get.dialog(
-              Padding(
+            DialogHelper.show(
+              tag: DialogTags.appVersionNewest,
+              widget: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -2609,7 +2698,7 @@ class HomeController extends GetxController
                                       .copyWith(color: Colors.white),
                                 ),
                                 onPressed: () async {
-                                  Get.close(1);
+                                  DialogHelper.dismiss(DialogTags.appVersionNewest);
                                 },
                               ),
                               SizedBox(height: 16),
@@ -2668,6 +2757,34 @@ class HomeController extends GetxController
         .getActiveEnsureIncomeRuleId();
   }
 
+  bool isWithinGuaranteeIncomeTimeRange(String startTime, String endTime) {
+    final now = DateTime.now();
+    final start = parseToToday(now, startTime).toLocal();
+    final end = parseToToday(now, endTime).toLocal();
+    return now.isAfter(start) && now.isBefore(end);
+  }
+
+  void updateGuaranteeIncomeProgressBarVisibility() {
+    final activeBar = activeGuaranteeIncomeProgressBar.value;
+    final startTime = activeBar?.startTime;
+    final endTime = activeBar?.endTime;
+
+    if (startTime == null || endTime == null || activeBar?.id == null) {
+      isGuaranteeIncomeProgressBarVisible.value = false;
+      isActiveGuaranteeIncomeProgressBarOpen.value = false;
+      return;
+    }
+
+    isGuaranteeIncomeProgressBarVisible.value = isWithinGuaranteeIncomeTimeRange(
+      startTime,
+      endTime,
+    );
+
+    if (!isGuaranteeIncomeProgressBarVisible.value) {
+      isActiveGuaranteeIncomeProgressBarOpen.value = false;
+    }
+  }
+
   Future<void> getGuaranteeIncomeProgressBarList() async {
     if (ensureIncomeRuleId.value != null) {
       guaranteeIncomeProgressBarList.value = await guaranteeIncomeRepository
@@ -2679,18 +2796,10 @@ class HomeController extends GetxController
       for (var guaranteeIncomeProgressBar in guaranteeIncomeProgressBarList) {
         if (guaranteeIncomeProgressBar.startTime != null &&
             guaranteeIncomeProgressBar.endTime != null) {
-          var now = DateTime.now();
-
-          var start = parseToToday(
-            now,
+          var isInRange = isWithinGuaranteeIncomeTimeRange(
             guaranteeIncomeProgressBar.startTime!,
-          ).toLocal();
-          var end = parseToToday(
-            now,
             guaranteeIncomeProgressBar.endTime!,
-          ).toLocal();
-
-          var isInRange = now.isAfter(start) && now.isBefore(end);
+          );
 
           if (isInRange == true) {
             activeGuaranteeIncomeProgressBar.value = guaranteeIncomeProgressBar;
@@ -2723,19 +2832,27 @@ class HomeController extends GetxController
         }
       }
 
-      if (isInRangeExist == false) {
+      if (isInRangeExist) {
+        updateGuaranteeIncomeProgressBarVisibility();
+      } else {
         activeGuaranteeIncomeProgressBar.value = GuaranteeIncomeProgressBar();
         guaranteeIncomeProgress.value = 0.0;
+        startTimeLocal.value = null;
+        endTimeLocal.value = null;
         startTimeAdjustTz.value = null;
         endTimeAdjustTz.value = null;
+        isGuaranteeIncomeProgressBarVisible.value = false;
         isActiveGuaranteeIncomeProgressBarOpen.value = false;
       }
     } else {
       guaranteeIncomeProgressBarList.value = <GuaranteeIncomeProgressBar>[];
       activeGuaranteeIncomeProgressBar.value = GuaranteeIncomeProgressBar();
       guaranteeIncomeProgress.value = 0.0;
+      startTimeLocal.value = null;
+      endTimeLocal.value = null;
       startTimeAdjustTz.value = null;
       endTimeAdjustTz.value = null;
+      isGuaranteeIncomeProgressBarVisible.value = false;
       isActiveGuaranteeIncomeProgressBarOpen.value = false;
     }
   }
@@ -2747,7 +2864,10 @@ class HomeController extends GetxController
         prefs.getBool("is_guarantee_income_area_in_dialog_shown") ?? false;
 
     if (isGuaranteeIncomeAreaInDialogShown == false) {
-      await Get.dialog(GuaranteeIncomeAreaOutDialog());
+      await DialogHelper.show(
+        tag: DialogTags.guaranteeIncomeAreaIn,
+        widget: GuaranteeIncomeAreaInDialog(),
+      );
       await prefs.setBool("is_guarantee_income_area_in_dialog_shown", true);
     } else {
       // Snackbar
@@ -2817,7 +2937,10 @@ class HomeController extends GetxController
         prefs.getBool("is_guarantee_income_area_out_dialog_shown") ?? false;
 
     if (isGuaranteeIncomeAreaOutDialogShown == false) {
-      await Get.dialog(GuaranteeIncomeAreaOutDialog());
+      await DialogHelper.show(
+        tag: DialogTags.guaranteeIncomeAreaOut,
+        widget: GuaranteeIncomeAreaOutDialog(),
+      );
       await prefs.setBool("is_guarantee_income_area_out_dialog_shown", true);
     } else {
       final themeColorServices = Get.find<ThemeColorServices>();

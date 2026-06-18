@@ -369,7 +369,12 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                                           ),
                                                     ),
                                                     if (chatMessage.sendAt !=
-                                                        null) ...[
+                                                            null ||
+                                                        chatMessage
+                                                                .createdAt !=
+                                                            null ||
+                                                        chatMessage.isPending ==
+                                                            true) ...[
                                                       SizedBox(height: 8),
                                                       Row(
                                                         mainAxisSize:
@@ -383,7 +388,11 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                                               'HH:mm',
                                                             ).format(
                                                               chatMessage
-                                                                  .sendAt!,
+                                                                      .sendAt ??
+                                                                  chatMessage
+                                                                      .createdAt ??
+                                                                  DateTime
+                                                                      .now(),
                                                             ),
                                                             style: controller
                                                                 .typographyServices
@@ -397,8 +406,12 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                                           ),
                                                           SizedBox(width: 4),
                                                           SvgPicture.asset(
-                                                            chatMessage.isRead ==
+                                                            chatMessage
+                                                                        .isPending ==
                                                                     true
+                                                                ? "assets/icons/icon_msg_pending.svg"
+                                                                : chatMessage.isRead ==
+                                                                      true
                                                                 ? "assets/icons/icon_msg_read.svg"
                                                                 : "assets/icons/icon_msg_delivery.svg",
                                                             width: 20,
@@ -678,7 +691,7 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                     .value) ...[
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       SizedBox(height: 32),
                                       Row(
@@ -757,6 +770,7 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                                         .typographyServices
                                                         .bodySmallRegular
                                                         .value,
+                                                    textAlign: TextAlign.center,
                                                   ),
                                                 ],
                                               ),
@@ -835,6 +849,7 @@ class ChatDetailView extends GetView<ChatDetailController> {
                                                         .typographyServices
                                                         .bodySmallRegular
                                                         .value,
+                                                    textAlign: TextAlign.center,
                                                   ),
                                                 ],
                                               ),

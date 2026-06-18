@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
+import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/main.dart';
 
@@ -50,7 +52,7 @@ class GuaranteeIncomeAreaInDialog extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              Get.close(1);
+                              DialogHelper.dismiss(DialogTags.guaranteeIncomeAreaIn);
                             },
                             child: Container(
                               color: Colors.transparent,
@@ -173,7 +175,7 @@ class GuaranteeIncomeAreaInDialog extends StatelessWidget {
                       SizedBox(height: 16),
                       LoaderElevatedButton(
                         onPressed: () async {
-                          Get.close(1);
+                          DialogHelper.dismiss(DialogTags.guaranteeIncomeAreaIn);
                         },
                         child: Text(
                           "Lanjutkan",
