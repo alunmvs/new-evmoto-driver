@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:new_evmoto_driver/app/data/models/user_info_model.dart';
-import 'package:new_evmoto_driver/app/data/models/working_area_model.dart';
+// import 'package:new_evmoto_driver/app/data/models/working_area_model.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/environment.dart';
@@ -48,15 +46,54 @@ class UserRepository {
     }
   }
 
-  Future<List<WorkingArea>> getWorkingAreaList() async {
+  // Future<List<WorkingArea>> getWorkingAreaList() async {
+  //   try {
+  //     var url = "$baseUrl/driver/api/driver/workingArea";
+  //
+  //     var storage = FlutterSecureStorage();
+  //     var token = await storage.read(key: 'token');
+  //
+  //     if (token == null) {
+  //       return <WorkingArea>[];
+  //     }
+  //
+  //     var headers = {
+  //       "Content-Type": "application/json",
+  //       'Authorization': "Bearer $token",
+  //     };
+  //
+  //     var dio = apiServices.dio;
+  //     var response = await dio.get(url, options: Options(headers: headers));
+  //
+  //     if (response.data['code'] != 200) {
+  //       throw response.data['msg'];
+  //     }
+  //
+  //     var workingAreaList = <WorkingArea>[];
+  //
+  //     for (var workingArea in response.data?['data'] ?? []) {
+  //       workingAreaList.add(WorkingArea.fromJson(jsonDecode(workingArea)[0]));
+  //       // print("[DEBUG OFFLINE] ${workingArea}");
+  //     }
+  //
+  //     return workingAreaList;
+  //   } on DioException catch (e) {
+  //     throw e.message.toString();
+  //   }
+  // }
+
+  Future<int?> getServiceAreaIdWithin({
+    required double lat,
+    required double lng,
+  }) async {
     try {
-      var url = "$baseUrl/driver/api/driver/workingArea";
+      var url = "$baseUrl/app/service-area/within";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
 
       if (token == null) {
-        return <WorkingArea>[];
+        return null;
       }
 
       var headers = {
@@ -65,20 +102,17 @@ class UserRepository {
       };
 
       var dio = apiServices.dio;
-      var response = await dio.get(url, options: Options(headers: headers));
+      var response = await dio.get(
+        url,
+        queryParameters: {"lat": lat, "lng": lng},
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
       }
 
-      var workingAreaList = <WorkingArea>[];
-
-      for (var workingArea in response.data?['data'] ?? []) {
-        workingAreaList.add(WorkingArea.fromJson(jsonDecode(workingArea)[0]));
-        // print("[DEBUG OFFLINE] ${workingArea}");
-      }
-
-      return workingAreaList;
+      return response.data['data']?['serviceAreaId'] as int?;
     } on DioException catch (e) {
       throw e.message.toString();
     }
