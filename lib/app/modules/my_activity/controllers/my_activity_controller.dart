@@ -382,7 +382,7 @@ class MyActivityController extends GetxController
           // }
 
           for (var onlineTime in period.onlineTimes ?? <OnlineTimes>[]) {
-            logOnlineOfflineTextListRushHour.add(
+            logOnlineOfflineTextListNormalHour.add(
               "${onlineTime.start} - ${onlineTime.end}",
             );
           }
