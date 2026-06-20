@@ -303,7 +303,7 @@ class HomeController extends GetxController
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
-                                      .copyWith(color: Color(0XFFB3B3B3)),
+                                      .copyWith(),
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(height: 16),
@@ -2077,9 +2077,7 @@ class HomeController extends GetxController
       actionController.reset();
 
       DialogHelper.dismiss<bool>(
-        DialogTags.orderConfirmation(
-          socketOrderStatusData.orderId.toString(),
-        ),
+        DialogTags.orderConfirmation(socketOrderStatusData.orderId.toString()),
         result: true,
       );
       Get.until((route) => route.settings.name == Routes.HOME);
@@ -2098,9 +2096,7 @@ class HomeController extends GetxController
       actionController.success();
       actionController.reset();
       DialogHelper.dismiss<bool>(
-        DialogTags.orderConfirmation(
-          socketOrderStatusData.orderId.toString(),
-        ),
+        DialogTags.orderConfirmation(socketOrderStatusData.orderId.toString()),
         result: true,
       );
       Get.until((route) => route.settings.name == Routes.HOME);
@@ -2482,7 +2478,9 @@ class HomeController extends GetxController
                                     .copyWith(color: Colors.white),
                               ),
                               onPressed: () async {
-                                DialogHelper.dismiss(DialogTags.appVersionNewest);
+                                DialogHelper.dismiss(
+                                  DialogTags.appVersionNewest,
+                                );
                               },
                             ),
                             SizedBox(height: 16),
@@ -2698,7 +2696,9 @@ class HomeController extends GetxController
                                       .copyWith(color: Colors.white),
                                 ),
                                 onPressed: () async {
-                                  DialogHelper.dismiss(DialogTags.appVersionNewest);
+                                  DialogHelper.dismiss(
+                                    DialogTags.appVersionNewest,
+                                  );
                                 },
                               ),
                               SizedBox(height: 16),
@@ -2775,10 +2775,8 @@ class HomeController extends GetxController
       return;
     }
 
-    isGuaranteeIncomeProgressBarVisible.value = isWithinGuaranteeIncomeTimeRange(
-      startTime,
-      endTime,
-    );
+    isGuaranteeIncomeProgressBarVisible.value =
+        isWithinGuaranteeIncomeTimeRange(startTime, endTime);
 
     if (!isGuaranteeIncomeProgressBarVisible.value) {
       isActiveGuaranteeIncomeProgressBarOpen.value = false;
