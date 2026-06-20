@@ -18,6 +18,9 @@ class OrderPayment {
   double? discountMoney;
   double? discount;
   double? collectionFees;
+  double? netIncome;
+  double? platformFee;
+  double? platformFeePercentage;
   double? freeWaitTime;
 
   OrderPayment({
@@ -41,6 +44,9 @@ class OrderPayment {
     this.discountMoney,
     this.discount,
     this.collectionFees,
+    this.netIncome,
+    this.platformFee,
+    this.platformFeePercentage,
   });
 
   OrderPayment.fromJson(Map<String, dynamic> json) {
@@ -64,6 +70,9 @@ class OrderPayment {
     discountMoney = json['discountMoney'];
     discount = json['discount'];
     collectionFees = json['collectionFees'];
+    netIncome = json['netIncome'];
+    platformFee = json['platformFee'];
+    platformFeePercentage = json['platformFeePercentage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -87,6 +96,9 @@ class OrderPayment {
     data['discountMoney'] = this.discountMoney;
     data['discount'] = this.discount;
     data['collectionFees'] = this.collectionFees;
+    data['netIncome'] = this.netIncome;
+    data['platformFee'] = this.platformFee;
+    data['platformFeePercentage'] = this.platformFeePercentage;
     return data;
   }
 }
