@@ -1166,7 +1166,9 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
                                           .languageCodeSystem
                                           .value,
                                     );
-                                    DialogHelper.dismiss(DialogTags.cancelOrder);
+                                    DialogHelper.dismiss(
+                                      DialogTags.cancelOrder,
+                                    );
                                     Get.back();
                                     Get.find<HomeController>().refreshAll();
                                     SnackbarHelper.showSnackbarSuccess(
@@ -1551,13 +1553,10 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
 
     final driver = _driverPositionForCamera();
     if (driver == null) {
-      await animateMapToFitPoints(
-        googleMapController,
-        [
-          LatLng(orderDetail.value.startLat!, orderDetail.value.startLon!),
-          LatLng(orderDetail.value.endLat!, orderDetail.value.endLon!),
-        ],
-      );
+      await animateMapToFitPoints(googleMapController, [
+        LatLng(orderDetail.value.startLat!, orderDetail.value.startLon!),
+        LatLng(orderDetail.value.endLat!, orderDetail.value.endLon!),
+      ]);
       return;
     }
 
@@ -1798,6 +1797,14 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
               "order_type": orderType.value,
             },
           );
+
+          // Get.toNamed(
+          //   Routes.ORDER_PAYMENT_CONFIRMATION,
+          //   arguments: {
+          //     "order_id": orderId.value,
+          //     "order_type": orderType.value,
+          //   },
+          // );
         }
       });
     }
