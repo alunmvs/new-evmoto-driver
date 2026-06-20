@@ -32,6 +32,7 @@ import 'package:new_evmoto_driver/app/repositories/vehicle_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/versioning_server_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
+import 'package:new_evmoto_driver/app/services/chat_room_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
@@ -87,6 +88,7 @@ class HomeController extends GetxController
   final voiceServices = Get.find<VoiceServices>();
   final locationServices = Get.find<LocationServices>();
   final backgroundServices = Get.find<BackgroundServices>();
+  final chatRoomServices = Get.find<ChatRoomServices>();
 
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
@@ -1965,6 +1967,22 @@ class HomeController extends GetxController
     }
   }
 
+  Future<void> ensureAdvanceBookingChatRoom({
+    required SocketOrderStatusData socketOrderStatusData,
+  }) async {
+    var orderData = await orderRepository.getOrderDetail(
+      orderType: socketOrderStatusData.orderType!,
+      orderId: socketOrderStatusData.orderId.toString(),
+      language: languageServices.languageCodeSystem.value,
+    );
+
+    await chatRoomServices.ensureChatRoomFromOrderDetail(
+      orderDetail: orderData,
+      driverName: userServices.userInfo.value.name ?? '',
+      driverProfileUrl: userServices.userInfo.value.avatar,
+    );
+  }
+
   Future<void> onSlideAdvanceBookingConfirmation({
     required ActionSliderController actionController,
     required SocketOrderStatusData socketOrderStatusData,
@@ -1987,6 +2005,9 @@ class HomeController extends GetxController
         );
         await advanceBookingRepository.advanceBookingSecondConfirm(
           orderId: socketOrderStatusData.orderId.toString(),
+        );
+        await ensureAdvanceBookingChatRoom(
+          socketOrderStatusData: socketOrderStatusData,
         );
 
         actionController.success();
@@ -2011,6 +2032,9 @@ class HomeController extends GetxController
       } else {
         await advanceBookingRepository.advanceBookingConfirm(
           orderId: socketOrderStatusData.orderId.toString(),
+        );
+        await ensureAdvanceBookingChatRoom(
+          socketOrderStatusData: socketOrderStatusData,
         );
 
         actionController.success();

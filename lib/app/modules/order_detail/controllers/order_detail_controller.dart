@@ -16,6 +16,7 @@ import 'package:new_evmoto_driver/app/repositories/google_maps_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/open_maps_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/order_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/services/chat_room_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/socket_services.dart';
@@ -50,6 +51,7 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   final languageServices = Get.find<LanguageServices>();
   final homeController = Get.find<HomeController>();
   final userServices = Get.find<UserServices>();
+  final chatRoomServices = Get.find<ChatRoomServices>();
   final socketServices = Get.find<SocketServices>();
 
   final initialCameraPosition = CameraPosition(
@@ -1827,73 +1829,26 @@ class OrderDetailController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<void> getExistingChatRoom() async {
-    var result =
-        (await FirebaseFirestore.instance
-                .collection('evmoto_order_chat_participants')
-                .where(
-                  "orderId",
-                  isEqualTo: orderDetail.value.orderId.toString(),
-                )
-                .where("userId", isEqualTo: orderDetail.value.userId.toString())
-                .where(
-                  "driverId",
-                  isEqualTo: orderDetail.value.driverId.toString(),
-                )
-                .orderBy("createdAt", descending: true)
-                .get())
-            .docs;
+    var result = await chatRoomServices.getExistingChatRoom(
+      orderId: orderDetail.value.orderId.toString(),
+      userId: orderDetail.value.userId.toString(),
+      driverId: orderDetail.value.driverId.toString(),
+    );
 
-    if (result.isNotEmpty) {
-      evmotoOrderChatParticipants.value = EvmotoOrderChatParticipants.fromJson(
-        result.first.data(),
-      );
-      evmotoOrderChatParticipants.value.docId = result.first.id;
+    if (result != null) {
+      evmotoOrderChatParticipants.value = result;
     }
   }
 
   Future<void> userCreateChatRoom() async {
-    if (orderDetail.value.userId != null &&
-        orderDetail.value.driverId != null &&
-        orderDetail.value.driverId != 0 &&
-        orderDetail.value.orderId != null) {
-      var evmotoOrderChatParticipantsList =
-          (await FirebaseFirestore.instance
-                  .collection('evmoto_order_chat_participants')
-                  .where(
-                    "orderId",
-                    isEqualTo: orderDetail.value.orderId.toString(),
-                  )
-                  .where(
-                    "userId",
-                    isEqualTo: orderDetail.value.userId.toString(),
-                  )
-                  .where(
-                    "driverId",
-                    isEqualTo: orderDetail.value.driverId.toString(),
-                  )
-                  .get())
-              .docs;
+    var result = await chatRoomServices.ensureChatRoomFromOrderDetail(
+      orderDetail: orderDetail.value,
+      driverName: userServices.userInfo.value.name ?? '',
+      driverProfileUrl: userServices.userInfo.value.avatar,
+    );
 
-      if (evmotoOrderChatParticipantsList.isEmpty) {
-        var data = {
-          "orderId": orderDetail.value.orderId.toString(),
-          "userId": orderDetail.value.userId.toString(),
-          "userName": orderDetail.value.nickName,
-          "userProfileUrl": orderDetail.value.userHeadImg,
-          "driverId": orderDetail.value.driverId.toString(),
-          "driverName": userServices.userInfo.value.name,
-          "driverProfileUrl": userServices.userInfo.value.avatar,
-          "createdAt": FieldValue.serverTimestamp(),
-        };
-
-        await getExistingChatRoom();
-        if (evmotoOrderChatParticipants.value.docId == null) {
-          await FirebaseFirestore.instance
-              .collection('evmoto_order_chat_participants')
-              .add(data);
-          await getExistingChatRoom();
-        }
-      }
+    if (result != null) {
+      evmotoOrderChatParticipants.value = result;
     }
   }
 
