@@ -190,7 +190,12 @@ class OrderPaymentConfirmationView
                                       decimalDigits: 0,
                                     ).format(
                                       controller.orderDetail.value.orderMoney! +
-                                          controller.subcharge.value,
+                                          controller.subcharge.value -
+                                          (controller
+                                                  .orderPayment
+                                                  .value
+                                                  .couponMoney ??
+                                              0.0),
                                     ),
                                     style: controller
                                         .typographyServices
@@ -243,12 +248,13 @@ class OrderPaymentConfirmationView
                                   SizedBox(height: 16),
                                   Column(
                                     children: [
+                                      // Total biaya jarak tempuh (startMoney  + mileageMoney + longDistanceMoney)
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "${controller.languageServices.language.value.startingPrice} (${controller.orderDetail.value.mileage! < controller.orderDetail.value.startMileage! ? controller.orderDetail.value.mileage! : controller.orderDetail.value.startMileage!}) ${controller.languageServices.language.value.km}",
+                                            "Total biaya jarak tempuh (${controller.orderDetail.value.mileage!} ${controller.languageServices.language.value.km})",
                                             style: controller
                                                 .typographyServices
                                                 .captionLargeRegular
@@ -267,10 +273,21 @@ class OrderPaymentConfirmationView
                                               symbol: 'Rp ',
                                               decimalDigits: 0,
                                             ).format(
-                                              controller
-                                                  .orderPayment
-                                                  .value
-                                                  .startMoney,
+                                              (controller
+                                                          .orderPayment
+                                                          .value
+                                                          .startMoney ??
+                                                      0.0) +
+                                                  (controller
+                                                          .orderPayment
+                                                          .value
+                                                          .mileageMoney ??
+                                                      0.0) +
+                                                  (controller
+                                                          .orderPayment
+                                                          .value
+                                                          .longDistanceMoney ??
+                                                      0.0),
                                             ),
                                             style: controller
                                                 .typographyServices
@@ -290,268 +307,60 @@ class OrderPaymentConfirmationView
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        mainAxisSize: MainAxisSize.max,
                                         children: [
-                                          if ((controller
-                                                      .orderPayment
-                                                      .value
-                                                      .wait ??
-                                                  0.0) >
-                                              0) ...[
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                          Text(
+                                            "Metode pembayaran",
+                                            style: controller
+                                                .typographyServices
+                                                .captionLargeRegular
+                                                .value
+                                                .copyWith(
+                                                  color: controller
+                                                      .themeColorServices
+                                                      .thirdTextColor
+                                                      .value,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+                                          if (controller
+                                                  .orderDetail
+                                                  .value
+                                                  .payType ==
+                                              4)
+                                            Image.asset(
+                                              "assets/icons/icon_gopay_horizontal.png",
+                                              height: 21,
+                                            )
+                                          else if (controller
+                                                  .orderDetail
+                                                  .value
+                                                  .payType ==
+                                              3)
+                                            Row(
                                               children: [
+                                                SvgPicture.asset(
+                                                  "assets/icons/icon_cash.svg",
+                                                  height: 12,
+                                                  width: 20,
+                                                ),
+                                                SizedBox(width: 4),
                                                 Text(
-                                                  "${controller.languageServices.language.value.waitFee} (${(controller.orderPayment.value.wait ?? 0.0) + (controller.orderPayment.value.freeWaitTime ?? 0.0)}) ${controller.languageServices.language.value.minute}",
+                                                  "Cash",
                                                   style: controller
                                                       .typographyServices
-                                                      .captionLargeRegular
+                                                      .bodySmallRegular
                                                       .value
                                                       .copyWith(
                                                         color: controller
                                                             .themeColorServices
-                                                            .thirdTextColor
+                                                            .textColor
                                                             .value,
                                                         fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                ),
-                                                SizedBox(height: 4),
-                                                Text(
-                                                  "Bebas biaya tunggu sampai ${controller.orderPayment.value.freeWaitTime ?? 0.0} ${controller.languageServices.language.value.minute}",
-                                                  style: controller
-                                                      .typographyServices
-                                                      .captionLargeRegular
-                                                      .value
-                                                      .copyWith(
-                                                        color: Color(
-                                                          0XFFB3B3B3,
-                                                        ),
+                                                            FontWeight.w700,
                                                       ),
                                                 ),
                                               ],
                                             ),
-                                          ] else ...[
-                                            Text(
-                                              "${controller.languageServices.language.value.waitFee}",
-                                              style: controller
-                                                  .typographyServices
-                                                  .captionLargeRegular
-                                                  .value
-                                                  .copyWith(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .thirdTextColor
-                                                        .value,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                            ),
-                                          ],
-                                          Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: 'Rp ',
-                                              decimalDigits: 0,
-                                            ).format(
-                                              controller
-                                                  .orderPayment
-                                                  .value
-                                                  .waitMoney,
-                                            ),
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .textColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 12),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "${controller.languageServices.language.value.mileageFee} (${controller.orderPayment.value.mileage}) km",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .thirdTextColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                          Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: 'Rp ',
-                                              decimalDigits: 0,
-                                            ).format(
-                                              controller
-                                                  .orderPayment
-                                                  .value
-                                                  .mileageMoney,
-                                            ),
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .textColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 12),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "${controller.languageServices.language.value.timeCost} (${controller.orderPayment.value.duration!}) km",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .thirdTextColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                          Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: 'Rp ',
-                                              decimalDigits: 0,
-                                            ).format(
-                                              controller
-                                                  .orderPayment
-                                                  .value
-                                                  .durationMoney,
-                                            ),
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .textColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 12),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "${controller.languageServices.language.value.longDistanceFee} (${controller.orderPayment.value.longDistance!}) km",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .thirdTextColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                          Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: 'Rp ',
-                                              decimalDigits: 0,
-                                            ).format(
-                                              controller
-                                                  .orderPayment
-                                                  .value
-                                                  .longDistanceMoney,
-                                            ),
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .textColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 12),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            controller
-                                                    .languageServices
-                                                    .language
-                                                    .value
-                                                    .collectedByDrivers ??
-                                                "-",
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .thirdTextColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                          Text(
-                                            NumberFormat.currency(
-                                              locale: 'id_ID',
-                                              symbol: 'Rp ',
-                                              decimalDigits: 0,
-                                            ).format(
-                                              controller
-                                                  .orderPayment
-                                                  .value
-                                                  .collectionFees,
-                                            ),
-                                            style: controller
-                                                .typographyServices
-                                                .captionLargeRegular
-                                                .value
-                                                .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .textColor
-                                                      .value,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
                                         ],
                                       ),
                                     ],
@@ -611,6 +420,7 @@ class OrderPaymentConfirmationView
                                         .captionLargeRegular
                                         .value
                                         .copyWith(color: Color(0XFFC5C5C5)),
+                                    textAlign: TextAlign.center,
                                   ),
                                   SizedBox(height: 16),
                                   ReactiveForm(
@@ -619,10 +429,80 @@ class OrderPaymentConfirmationView
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        // Biaya tunggu (waitMoney)
                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisSize: MainAxisSize.max,
                                           children: [
+                                            if ((controller
+                                                        .orderPayment
+                                                        .value
+                                                        .wait ??
+                                                    0.0) >
+                                                0) ...[
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "${controller.languageServices.language.value.waitFee} (${(controller.orderPayment.value.wait ?? 0.0) + (controller.orderPayment.value.freeWaitTime ?? 0.0)}) ${controller.languageServices.language.value.minute}",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .captionLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .thirdTextColor
+                                                              .value,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                  ),
+                                                  SizedBox(height: 4),
+                                                  Text(
+                                                    "Bebas biaya tunggu sampai ${controller.orderPayment.value.freeWaitTime ?? 0.0} ${controller.languageServices.language.value.minute}",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .captionLargeRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: Color(
+                                                            0XFFB3B3B3,
+                                                          ),
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ] else ...[
+                                              Text(
+                                                "${controller.languageServices.language.value.waitFee}",
+                                                style: controller
+                                                    .typographyServices
+                                                    .captionLargeRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .thirdTextColor
+                                                          .value,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                              ),
+                                            ],
                                             Text(
-                                              "Subcharge",
+                                              NumberFormat.currency(
+                                                locale: 'id_ID',
+                                                symbol: 'Rp ',
+                                                decimalDigits: 0,
+                                              ).format(
+                                                controller
+                                                    .orderPayment
+                                                    .value
+                                                    .waitMoney,
+                                              ),
                                               style: controller
                                                   .typographyServices
                                                   .captionLargeRegular
@@ -635,18 +515,103 @@ class OrderPaymentConfirmationView
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                             ),
-                                            SizedBox(width: 16),
+                                          ],
+                                        ),
+                                        // Kupon (couponMoney)
+                                        if ((controller
+                                                    .orderPayment
+                                                    .value
+                                                    .couponMoney ??
+                                                0) >
+                                            0) ...[
+                                          SizedBox(height: 8),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Kupon",
+                                                style: controller
+                                                    .typographyServices
+                                                    .captionLargeRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .thirdTextColor
+                                                          .value,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                              ),
+                                              Text(
+                                                NumberFormat.currency(
+                                                  locale: 'id_ID',
+                                                  symbol: '-Rp',
+                                                  decimalDigits: 0,
+                                                ).format(
+                                                  controller
+                                                      .orderPayment
+                                                      .value
+                                                      .couponMoney,
+                                                ),
+                                                style: controller
+                                                    .typographyServices
+                                                    .captionLargeRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .redColor
+                                                          .value,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                        SizedBox(height: 8),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Biaya tambahan",
+                                              style: controller
+                                                  .typographyServices
+                                                  .captionLargeRegular
+                                                  .value
+                                                  .copyWith(
+                                                    color: controller
+                                                        .themeColorServices
+                                                        .thirdTextColor
+                                                        .value,
+                                                  ),
+                                            ),
                                             Expanded(
                                               child: ReactiveTextField(
                                                 formControlName:
                                                     'additional_charge',
                                                 keyboardType:
                                                     TextInputType.number,
+                                                textAlign: TextAlign.right,
+                                                textAlignVertical:
+                                                    TextAlignVertical.center,
                                                 style: controller
                                                     .typographyServices
-                                                    .bodySmallRegular
-                                                    .value,
-                                                textAlign: TextAlign.right,
+                                                    .captionLargeRegular
+                                                    .value
+                                                    .copyWith(
+                                                      color: controller
+                                                          .themeColorServices
+                                                          .textColor
+                                                          .value,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
                                                 onChanged: (control) {
                                                   controller.subcharge.value =
                                                       int.tryParse(
@@ -671,6 +636,9 @@ class OrderPaymentConfirmationView
                                                   ),
                                                 ],
                                                 decoration: InputDecoration(
+                                                  isDense: true,
+                                                  contentPadding:
+                                                      EdgeInsets.zero,
                                                   hintText:
                                                       controller
                                                           .languageServices
@@ -680,13 +648,14 @@ class OrderPaymentConfirmationView
                                                       "-",
                                                   hintStyle: controller
                                                       .typographyServices
-                                                      .bodySmallRegular
+                                                      .captionLargeRegular
                                                       .value
                                                       .copyWith(
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .neutralsColorGrey500
-                                                            .value,
+                                                        color: Color(
+                                                          0XFFB3B3B3,
+                                                        ),
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                       ),
                                                   border: InputBorder.none,
                                                   errorBorder: InputBorder.none,
@@ -705,7 +674,25 @@ class OrderPaymentConfirmationView
                                         ),
                                         SizedBox(height: 8),
                                         Text(
-                                          "Subcharge (Fee Description)",
+                                          "Biaya tambahan (Deskripsi biaya)",
+                                          style: controller
+                                              .typographyServices
+                                              .captionLargeRegular
+                                              .value
+                                              .copyWith(
+                                                color: controller
+                                                    .themeColorServices
+                                                    .thirdTextColor
+                                                    .value,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        ReactiveTextField(
+                                          formControlName:
+                                              'surcharge_description',
+                                          maxLines: 3,
+                                          keyboardType: TextInputType.multiline,
                                           style: controller
                                               .typographyServices
                                               .captionLargeRegular
@@ -717,17 +704,9 @@ class OrderPaymentConfirmationView
                                                     .value,
                                                 fontWeight: FontWeight.w600,
                                               ),
-                                        ),
-                                        ReactiveTextField(
-                                          formControlName:
-                                              'surcharge_description',
-                                          maxLines: 3,
-                                          keyboardType: TextInputType.multiline,
-                                          style: controller
-                                              .typographyServices
-                                              .bodySmallRegular
-                                              .value,
                                           decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.zero,
                                             hintText:
                                                 controller
                                                     .languageServices
@@ -737,13 +716,11 @@ class OrderPaymentConfirmationView
                                                 "-",
                                             hintStyle: controller
                                                 .typographyServices
-                                                .bodySmallRegular
+                                                .captionLargeRegular
                                                 .value
                                                 .copyWith(
-                                                  color: controller
-                                                      .themeColorServices
-                                                      .neutralsColorGrey500
-                                                      .value,
+                                                  color: Color(0XFFB3B3B3),
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                             border: InputBorder.none,
                                             errorBorder: InputBorder.none,
