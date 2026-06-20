@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
+import 'package:new_evmoto_driver/app/widgets/dashed_line.dart';
 
 import '../controllers/order_payment_pending_fee_detail_controller.dart';
 
 class OrderPaymentPendingFeeDetailView
     extends GetView<OrderPaymentPendingFeeDetailController> {
   const OrderPaymentPendingFeeDetailView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
           title: Text(
-            "Fee Details",
+            controller.languageServices.language.value.paymentDetails ??
+                "Detail Pembayaran",
             style: controller.typographyServices.bodyLargeBold.value,
           ),
           centerTitle: false,
@@ -42,499 +46,325 @@ class OrderPaymentPendingFeeDetailView
                     children: [
                       SizedBox(height: 16),
                       Container(
+                        padding: EdgeInsets.all(16),
+                        width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Color(0XFFE1E1E1)),
                           color: controller
                               .themeColorServices
                               .neutralsColorGrey0
                               .value,
-                          borderRadius: BorderRadius.circular(8),
                           boxShadow: [
                             BoxShadow(
                               color: controller
                                   .themeColorServices
                                   .overlayDark200
                                   .value
-                                  .withValues(alpha: 0.10),
-                              blurRadius: 18,
+                                  .withValues(alpha: 0.15),
+                              blurRadius: 4,
                               spreadRadius: 0,
-                              offset: Offset(0, 0),
+                              offset: Offset(0, 4),
                             ),
                           ],
                         ),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            _buildDriverSection(context),
                             SizedBox(height: 16),
-                            Text(
-                              "Order Amount",
-                              style: controller
-                                  .typographyServices
-                                  .bodySmallBold
-                                  .value
-                                  .copyWith(),
-                            ),
+                            Divider(height: 0, color: Color(0XFFD7D7D7)),
                             SizedBox(height: 16),
-                            Text(
-                              NumberFormat.currency(
-                                locale: 'id_ID',
-                                symbol: 'Rp ',
-                                decimalDigits: 0,
-                              ).format(
-                                controller.orderDetail.value.orderMoney ?? 0.0,
-                              ),
-                              style: controller
-                                  .typographyServices
-                                  .headingLargeBold
-                                  .value
-                                  .copyWith(color: Color(0XFF34A853)),
-                            ),
-                            SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 36,
-                                  child: Divider(
-                                    height: 0,
-                                    color: Color(0XFFD7D7D7),
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  "Fee Details",
-                                  style: controller
-                                      .typographyServices
-                                      .captionLargeRegular
-                                      .value,
-                                ),
-                                SizedBox(width: 8),
-                                SizedBox(
-                                  width: 36,
-                                  child: Divider(
-                                    height: 0,
-                                    color: Color(0XFFD7D7D7),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                              ),
-                              child: Column(
-                                children: [
-                                  if (controller.orderDetail.value.startMoney !=
-                                          null &&
-                                      controller.orderDetail.value.startMoney !=
-                                          0) ...[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${controller.languageServices.language.value.startingPrice} (${controller.orderDetail.value.mileage! < controller.orderDetail.value.startMileage! ? controller.orderDetail.value.mileage! : controller.orderDetail.value.startMileage!}) ${controller.languageServices.language.value.km}",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp ',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .startMoney,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .textColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (controller.orderDetail.value.waitMoney !=
-                                          null &&
-                                      controller.orderDetail.value.waitMoney !=
-                                          0) ...[
-                                    SizedBox(height: 12),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              "${controller.languageServices.language.value.waitFee} (${(controller.orderDetail.value.wait ?? 0.0) + (controller.orderDetail.value.freeWaitTime ?? 0.0)}) ${controller.languageServices.language.value.minute}",
-                                              style: controller
-                                                  .typographyServices
-                                                  .captionLargeRegular
-                                                  .value
-                                                  .copyWith(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .thirdTextColor
-                                                        .value,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                            ),
-                                            SizedBox(height: 4),
-                                            Text(
-                                              "Bebas biaya tunggu sampai ${controller.orderDetail.value.freeWaitTime ?? 0.0} ${controller.languageServices.language.value.minute}",
-                                              style: controller
-                                                  .typographyServices
-                                                  .captionLargeRegular
-                                                  .value
-                                                  .copyWith(
-                                                    color: Color(0XFFB3B3B3),
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp ',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .waitMoney,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .textColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (controller
-                                              .orderDetail
-                                              .value
-                                              .mileageMoney !=
-                                          null &&
-                                      controller
-                                              .orderDetail
-                                              .value
-                                              .mileageMoney !=
-                                          0) ...[
-                                    SizedBox(height: 12),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${controller.languageServices.language.value.mileageFee} (${controller.orderDetail.value.driverMileageKilometers}) km",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp ',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .mileageMoney,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .textColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (controller
-                                              .orderDetail
-                                              .value
-                                              .durationMoney !=
-                                          null &&
-                                      controller
-                                              .orderDetail
-                                              .value
-                                              .durationMoney !=
-                                          0) ...[
-                                    SizedBox(height: 12),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${controller.languageServices.language.value.timeCost} (${controller.orderDetail.value.duration!}) km",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp ',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .durationMoney,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .textColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (controller
-                                              .orderDetail
-                                              .value
-                                              .longDistanceMoney !=
-                                          null &&
-                                      controller
-                                              .orderDetail
-                                              .value
-                                              .longDistanceMoney !=
-                                          0) ...[
-                                    SizedBox(height: 12),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${controller.languageServices.language.value.longDistanceFee} (${controller.orderDetail.value.longDistance!}) km",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp ',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .longDistanceMoney,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .textColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (controller
-                                              .orderDetail
-                                              .value
-                                              .collectionFees !=
-                                          null &&
-                                      controller
-                                              .orderDetail
-                                              .value
-                                              .collectionFees !=
-                                          0) ...[
-                                    SizedBox(height: 12),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          controller
-                                                  .languageServices
-                                                  .language
-                                                  .value
-                                                  .collectedByDrivers ??
-                                              "-",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp ',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .collectionFees,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .textColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                  if (controller
-                                              .orderDetail
-                                              .value
-                                              .additionalCharge !=
-                                          null &&
-                                      controller
-                                              .orderDetail
-                                              .value
-                                              .additionalCharge !=
-                                          0) ...[
-                                    SizedBox(height: 12),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          controller
-                                                  .languageServices
-                                                  .language
-                                                  .value
-                                                  .surcharge ??
-                                              "-",
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .thirdTextColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          NumberFormat.currency(
-                                            locale: 'id_ID',
-                                            symbol: 'Rp ',
-                                            decimalDigits: 0,
-                                          ).format(
-                                            controller
-                                                .orderDetail
-                                                .value
-                                                .additionalCharge,
-                                          ),
-                                          style: controller
-                                              .typographyServices
-                                              .captionLargeRegular
-                                              .value
-                                              .copyWith(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .textColor
-                                                    .value,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 16),
+                            _buildPassengerSection(context),
                           ],
                         ),
                       ),
+                      SizedBox(height: 32),
                     ],
                   ),
                 ),
               ),
+      ),
+    );
+  }
+
+  Widget _buildDriverSection(BuildContext context) {
+    final detail = controller.orderDetail.value;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Yang didapatkan driver",
+          style: controller.typographyServices.bodySmallRegular.value,
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 4),
+        Text(
+          controller.formatCurrency(
+            (controller.orderDetail.value.orderMoney ?? 0.0) -
+                (controller.orderDetail.value.platformFee ?? 0.0) +
+                (controller.orderDetail.value.waitMoney ?? 0.0) +
+                (controller.orderDetail.value.additionalCharge ?? 0.0),
+          ),
+          style: controller.typographyServices.headingLargeBold.value.copyWith(
+            color: Color(0XFF34A853),
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 16),
+        _buildSectionDivider(
+          controller.languageServices.language.value.expenseDetail ??
+              "Expense Detail",
+        ),
+        SizedBox(height: 16),
+        _buildFeeRow(
+          label: "Pendapatan driver",
+          subLabel:
+              "(${controller.driverSharePercentage}% dari total biaya jarak tempuh)",
+          value: controller.formatCurrency(detail.netIncome),
+        ),
+        SizedBox(height: 12),
+        _buildFeeRow(
+          label:
+              controller.languageServices.language.value.surcharge ??
+              "Biaya tambahan",
+          subLabel: controller.surchargeSubLabel,
+          value: controller.formatCurrency(detail.additionalCharge),
+        ),
+        SizedBox(height: 12),
+        _buildFeeRow(
+          label:
+              controller.languageServices.language.value.waitFee ??
+              "Biaya tunggu",
+          value: controller.formatCurrency(detail.waitMoney),
+        ),
+        SizedBox(height: 16),
+        DashedLine(color: Color(0XFFD5D5D5)),
+        SizedBox(height: 8),
+        _buildTotalRow(
+          label: "Total pendapatan driver",
+          value: controller.formatCurrency(
+            (controller.orderDetail.value.orderMoney ?? 0.0) -
+                (controller.orderDetail.value.platformFee ?? 0.0) +
+                (controller.orderDetail.value.waitMoney ?? 0.0) +
+                (controller.orderDetail.value.additionalCharge ?? 0.0),
+          ),
+          valueStyle: controller.typographyServices.bodySmallBold.value
+              .copyWith(color: controller.themeColorServices.textColor.value),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPassengerSection(BuildContext context) {
+    final detail = controller.orderDetail.value;
+    final startMileage = detail.startMileage ?? 0;
+    final mileageKm = detail.driverMileageKilometers ?? detail.mileage ?? 0;
+    final totalMileage = detail.mileage ?? 0;
+    final couponMoney = detail.couponMoney ?? 0;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Dibayarkan penumpang",
+          style: controller.typographyServices.bodySmallBold.value.copyWith(
+            color: controller.themeColorServices.textColor.value,
+          ),
+        ),
+        SizedBox(height: 12),
+        _buildFeeRow(
+          label:
+              "Total biaya jarak tempuh (${controller.orderDetail.value.mileage} ${controller.languageServices.language.value.km})",
+          value: controller.formatCurrency(
+            controller.orderDetail.value.orderMoney! +
+                (controller.orderDetail.value.waitMoney ?? 0),
+          ),
+        ),
+        if ((controller.orderDetail.value.couponMoney ?? 0) > 0) ...[
+          SizedBox(height: 12),
+          _buildFeeRow(
+            label:
+                controller.languageServices.language.value.surcharge ??
+                "Biaya tambahan",
+            subLabel: controller.surchargeSubLabel,
+            value: controller.formatCurrency(detail.additionalCharge),
+          ),
+          SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Kupon",
+                style: controller.typographyServices.captionLargeRegular.value
+                    .copyWith(
+                      color: Color(0XFF7D7D7D),
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              Text(
+                "-${controller.formatCurrency(couponMoney)}",
+                style: controller.typographyServices.captionLargeRegular.value
+                    .copyWith(
+                      color: Color(0XFFE53935),
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ],
+          ),
+        ],
+        SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Metode Pembayaran",
+              style: controller.typographyServices.captionLargeRegular.value
+                  .copyWith(
+                    color: controller.themeColorServices.thirdTextColor.value,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+            _buildPaymentMethodWidget(),
+          ],
+        ),
+        SizedBox(height: 16),
+        DashedLine(color: Color(0XFFD5D5D5)),
+        SizedBox(height: 16),
+        _buildTotalRow(
+          label: "Total yang dibayarkan",
+          value: controller.formatCurrency(detail.payMoney),
+          valueStyle: controller.typographyServices.bodyLargeBold.value
+              .copyWith(color: controller.themeColorServices.textColor.value),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSectionDivider(String label) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 36,
+          child: Divider(height: 0, color: Color(0XFFD7D7D7)),
+        ),
+        SizedBox(width: 8),
+        Text(
+          label,
+          style: controller.typographyServices.captionLargeRegular.value
+              .copyWith(color: controller.themeColorServices.textColor.value),
+        ),
+        SizedBox(width: 8),
+        SizedBox(
+          width: 36,
+          child: Divider(height: 0, color: Color(0XFFD7D7D7)),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFeeRow({
+    required String label,
+    String? subLabel,
+    required String value,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: controller.typographyServices.captionLargeRegular.value
+                    .copyWith(
+                      color: Color(0XFF7D7D7D),
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              if (subLabel != null) ...[
+                SizedBox(height: 4),
+                Text(
+                  subLabel,
+                  style: controller.typographyServices.captionLargeRegular.value
+                      .copyWith(color: Color(0XFFB3B3B3)),
+                ),
+              ],
+            ],
+          ),
+        ),
+        SizedBox(width: 8),
+        Text(
+          value,
+          style: controller.typographyServices.captionLargeRegular.value
+              .copyWith(
+                color: controller.themeColorServices.textColor.value,
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTotalRow({
+    required String label,
+    required String value,
+    required TextStyle valueStyle,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          label,
+          style: controller.typographyServices.captionLargeRegular.value
+              .copyWith(
+                color: controller.themeColorServices.thirdTextColor.value,
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+        Text(value, style: valueStyle),
+      ],
+    );
+  }
+
+  Widget _buildPaymentMethodWidget() {
+    final payType = controller.orderDetail.value.payType;
+
+    if (payType == 4) {
+      return Image.asset("assets/icons/icon_gopay_horizontal.png", height: 21);
+    }
+
+    if (payType == 3) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset("assets/icons/icon_cash.svg", height: 12, width: 20),
+          SizedBox(width: 4),
+          Text(
+            controller.getPaymentMethodName(),
+            style: controller.typographyServices.bodySmallRegular.value
+                .copyWith(
+                  color: controller.themeColorServices.textColor.value,
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+        ],
+      );
+    }
+
+    return Text(
+      controller.getPaymentMethodName(),
+      style: controller.typographyServices.captionLargeRegular.value.copyWith(
+        color: controller.themeColorServices.textColor.value,
+        fontWeight: FontWeight.w600,
       ),
     );
   }
