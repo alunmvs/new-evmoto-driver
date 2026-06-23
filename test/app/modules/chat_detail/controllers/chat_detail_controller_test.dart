@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:new_evmoto_driver/app/data/models/active_advance_booking_model.dart';
 import 'package:new_evmoto_driver/app/data/models/evmoto_order_chat_participants_model.dart';
 import 'package:new_evmoto_driver/app/data/models/working_model.dart';
 import 'package:new_evmoto_driver/app/modules/chat_detail/controllers/chat_detail_controller.dart';
@@ -30,11 +31,18 @@ class TestableHomeController extends HomeController {
   }
 }
 
-HomeController registerTestableHomeController() {
+HomeController registerTestableHomeController({
+  MockAdvanceBookingRepository? advanceBookingRepository,
+}) {
   registerHomeControllerDependencies();
   if (!Get.isRegistered<UserServices>()) {
     registerMockUserServices();
   }
+  final mockAdvanceBookingRepository =
+      advanceBookingRepository ?? MockAdvanceBookingRepository();
+  when(
+    () => mockAdvanceBookingRepository.getActiveAdvanceBooking(),
+  ).thenAnswer((_) async => null);
   final homeController = TestableHomeController(
     vehicleRepository: MockVehicleRepository(),
     orderRepository: MockOrderRepository(),
@@ -42,7 +50,7 @@ HomeController registerTestableHomeController() {
     accountRepository: MockAccountRepository(),
     versioningServerRepository: MockVersioningServerRepository(),
     guaranteeIncomeRepository: MockGuaranteeIncomeRepository(),
-    advanceBookingRepository: MockAdvanceBookingRepository(),
+    advanceBookingRepository: mockAdvanceBookingRepository,
   );
   Get.put<HomeController>(homeController);
   return homeController;
@@ -55,11 +63,15 @@ void main() {
     late ChatDetailController controller;
     late MockUploadImageRepository mockUploadImageRepository;
     late HomeController homeController;
+    late MockAdvanceBookingRepository mockAdvanceBookingRepository;
 
     setUp(() async {
       await setupModuleTestEnvironment();
       registerCommonModuleDependencies();
-      homeController = registerTestableHomeController();
+      mockAdvanceBookingRepository = MockAdvanceBookingRepository();
+      homeController = registerTestableHomeController(
+        advanceBookingRepository: mockAdvanceBookingRepository,
+      );
       mockUploadImageRepository = MockUploadImageRepository();
       controller = ChatDetailController(
         uploadImageRepository: mockUploadImageRepository,
@@ -156,6 +168,50 @@ void main() {
             language: any(named: 'language'),
           ),
         ).thenAnswer((_) async => Working());
+
+        controller.evmotoOrderChatParticipants.value =
+            EvmotoOrderChatParticipants(orderId: '42');
+
+        await controller.checkIfTripHasEnded();
+
+        expect(controller.isTripHasEnded.value, isTrue);
+      },
+    );
+
+    test(
+      'checkIfTripHasEnded should set isTripHasEnded to false when order matches active advance booking',
+      () async {
+        when(
+          () => homeController.orderRepository.getWorking(
+            language: any(named: 'language'),
+          ),
+        ).thenAnswer((_) async => Working());
+
+        when(
+          () => mockAdvanceBookingRepository.getActiveAdvanceBooking(),
+        ).thenAnswer((_) async => ActiveAdvanceBooking(orderId: 42));
+
+        controller.evmotoOrderChatParticipants.value =
+            EvmotoOrderChatParticipants(orderId: '42');
+
+        await controller.checkIfTripHasEnded();
+
+        expect(controller.isTripHasEnded.value, isFalse);
+      },
+    );
+
+    test(
+      'checkIfTripHasEnded should keep isTripHasEnded true when active advance booking order does not match',
+      () async {
+        when(
+          () => homeController.orderRepository.getWorking(
+            language: any(named: 'language'),
+          ),
+        ).thenAnswer((_) async => Working());
+
+        when(
+          () => mockAdvanceBookingRepository.getActiveAdvanceBooking(),
+        ).thenAnswer((_) async => ActiveAdvanceBooking(orderId: 99));
 
         controller.evmotoOrderChatParticipants.value =
             EvmotoOrderChatParticipants(orderId: '42');

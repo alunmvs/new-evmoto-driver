@@ -156,8 +156,9 @@ class ChatDetailController extends GetxController {
   Future<void> sendMessage() async {
     if ((message.value != "" && textEditingController.text.trim() != "") ||
         attachmentUrl.value != "") {
-      final lastMessageText =
-          message.value != "" ? message.value : "Attachment";
+      final lastMessageText = message.value != ""
+          ? message.value
+          : "Attachment";
 
       final data = {
         "evmotoOrderChatParticipantsDocumentId": docId.value,
@@ -258,11 +259,23 @@ class ChatDetailController extends GetxController {
   Future<void> checkIfTripHasEnded() async {
     await homeController.getWorking();
 
+    final chatOrderId = evmotoOrderChatParticipants.value.orderId;
+
     if (homeController.working.value.id != null) {
-      if (homeController.working.value.id.toString() ==
-          evmotoOrderChatParticipants.value.orderId) {
+      if (homeController.working.value.id.toString() == chatOrderId) {
         isTripHasEnded.value = false;
+        return;
       }
     }
+
+    try {
+      final activeAdvanceBooking = await homeController.advanceBookingRepository
+          .getActiveAdvanceBooking();
+
+      if (activeAdvanceBooking?.orderId != null &&
+          activeAdvanceBooking!.orderId.toString() == chatOrderId) {
+        isTripHasEnded.value = false;
+      }
+    } catch (_) {}
   }
 }
