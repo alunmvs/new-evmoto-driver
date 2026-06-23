@@ -246,7 +246,7 @@ class OrderDetail {
     driverConfirm = json['driverConfirm'];
     userId = json['userId'];
     userHeadImg = json['userHeadImg'];
-    payType = json['payType'];
+    payType = int.tryParse(json['payType']?.toString() ?? '');
     platformFee = json['platformFee'];
     netIncome = json['netIncome'];
     platformFeePercentage = json['platformFeePercentage'];

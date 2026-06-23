@@ -4,6 +4,7 @@ class SocketOrderStatusData {
   int? state;
   int? time;
   String? travelTime;
+  int? payType;
 
   SocketOrderStatusData({
     this.orderType,
@@ -11,14 +12,20 @@ class SocketOrderStatusData {
     this.state,
     this.time,
     this.travelTime,
+    this.payType,
   });
 
   SocketOrderStatusData.fromJson(Map<String, dynamic> json) {
-    orderType = json['orderType'];
-    orderId = json['orderId'];
-    state = json['state'];
-    time = json['time'];
-    travelTime = json['travelTime'];
+    orderType = int.tryParse(
+      (json['orderType'] ?? json['order_type']).toString(),
+    );
+    orderId = int.tryParse((json['orderId'] ?? json['order_id']).toString());
+    state = int.tryParse(json['state'].toString());
+    time = int.tryParse(json['time'].toString());
+    travelTime = json['travelTime'] ?? json['travel_time'];
+    payType = int.tryParse(
+      (json['payType'] ?? json['pay_type']).toString(),
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +35,7 @@ class SocketOrderStatusData {
     data['state'] = this.state;
     data['time'] = this.time;
     data['travelTime'] = this.travelTime;
+    data['payType'] = this.payType;
     return data;
   }
 }

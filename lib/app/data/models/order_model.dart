@@ -26,6 +26,7 @@ class Order {
   int? reservation; // 1 (Order); 2 (Advance Booking)
   String? advanceBookingTravelTime;
   int? advanceBookingState;
+  int? payType;
 
   Order({
     this.id,
@@ -53,6 +54,7 @@ class Order {
     this.reservation,
     this.advanceBookingTravelTime,
     this.advanceBookingState,
+    this.payType,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -81,6 +83,7 @@ class Order {
     reservation = json['reservation'];
     advanceBookingState = json['advanceBookingState'];
     advanceBookingTravelTime = json['advanceBookingTravelTime'];
+    payType = int.tryParse(json['payType']?.toString() ?? '');
   }
 
   Map<String, dynamic> toJson() {
@@ -110,6 +113,7 @@ class Order {
     data['reservation'] = this.reservation;
     data['advanceBookingState'] = this.advanceBookingState;
     data['advanceBookingTravelTime'] = this.advanceBookingTravelTime;
+    data['payType'] = this.payType;
     return data;
   }
 }
