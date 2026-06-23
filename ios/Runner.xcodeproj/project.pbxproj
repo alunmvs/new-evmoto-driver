@@ -14,7 +14,7 @@
 		5B7E00E02FB836AD000045BF /* order_accepted.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DC2FB836AD000045BF /* order_accepted.caf */; };
 		5B7E00E12FB836AD000045BF /* order_cancelled.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DD2FB836AD000045BF /* order_cancelled.caf */; };
 		5B7E00E22FB836AD000045BF /* driver_offline.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00D92FB836AD000045BF /* driver_offline.caf */; };
-		5B7E00E32FB836AD000045BF /* new_order_incoming.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DB2FB836AD000045BF /* new_order_incoming.caf */; };
+		5B7E00E32FB836AD000045BF /* new_order_incoming_1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DB2FB836AD000045BF /* new_order_incoming_1.caf */; };
 		5B7E00E42FB836AD000045BF /* driver_online.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DA2FB836AD000045BF /* driver_online.caf */; };
 		5B7E00E52FB836AD000045BF /* passenger_boarded.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5B7E00DE2FB836AD000045BF /* passenger_boarded.caf */; };
 		5FBE802F9C2C02F42E7BD8DB /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3717A3394F05E8C34D10D01E /* Pods_RunnerTests.framework */; };
@@ -59,7 +59,7 @@
 		5B7E00D82FB836AD000045BF /* arrived_destination.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = arrived_destination.caf; sourceTree = "<group>"; };
 		5B7E00D92FB836AD000045BF /* driver_offline.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = driver_offline.caf; sourceTree = "<group>"; };
 		5B7E00DA2FB836AD000045BF /* driver_online.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = driver_online.caf; sourceTree = "<group>"; };
-		5B7E00DB2FB836AD000045BF /* new_order_incoming.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = new_order_incoming.caf; sourceTree = "<group>"; };
+		5B7E00DB2FB836AD000045BF /* new_order_incoming_1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = new_order_incoming_1.caf; sourceTree = "<group>"; };
 		5B7E00DC2FB836AD000045BF /* order_accepted.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = order_accepted.caf; sourceTree = "<group>"; };
 		5B7E00DD2FB836AD000045BF /* order_cancelled.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = order_cancelled.caf; sourceTree = "<group>"; };
 		5B7E00DE2FB836AD000045BF /* passenger_boarded.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = passenger_boarded.caf; sourceTree = "<group>"; };
@@ -173,7 +173,7 @@
 				5B7E00D82FB836AD000045BF /* arrived_destination.caf */,
 				5B7E00D92FB836AD000045BF /* driver_offline.caf */,
 				5B7E00DA2FB836AD000045BF /* driver_online.caf */,
-				5B7E00DB2FB836AD000045BF /* new_order_incoming.caf */,
+				5B7E00DB2FB836AD000045BF /* new_order_incoming_1.caf */,
 				5B7E00DC2FB836AD000045BF /* order_accepted.caf */,
 				5B7E00DD2FB836AD000045BF /* order_cancelled.caf */,
 				5B7E00DE2FB836AD000045BF /* passenger_boarded.caf */,
@@ -295,7 +295,7 @@
 				5B7E00E02FB836AD000045BF /* order_accepted.caf in Resources */,
 				5B7E00E12FB836AD000045BF /* order_cancelled.caf in Resources */,
 				5B7E00E22FB836AD000045BF /* driver_offline.caf in Resources */,
-				5B7E00E32FB836AD000045BF /* new_order_incoming.caf in Resources */,
+				5B7E00E32FB836AD000045BF /* new_order_incoming_1.caf in Resources */,
 				5B7E00E42FB836AD000045BF /* driver_online.caf in Resources */,
 				5B7E00E52FB836AD000045BF /* passenger_boarded.caf in Resources */,
 				F3B035D995FCB79C46E5A6AD /* GoogleService-Info.plist in Resources */,
@@ -550,7 +550,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 60;
 				DEVELOPMENT_TEAM = 7GQ9U982M7;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = "";
@@ -563,7 +563,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.7;
+				MARKETING_VERSION = 1.9.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evmoto.driver.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -741,7 +741,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 60;
 				DEVELOPMENT_TEAM = 7GQ9U982M7;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = "";
@@ -754,7 +754,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.7;
+				MARKETING_VERSION = 1.9.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evmoto.driver.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -772,7 +772,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 60;
 				DEVELOPMENT_TEAM = 7GQ9U982M7;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphoneos*]" = "";
@@ -785,7 +785,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.7;
+				MARKETING_VERSION = 1.9.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.evmoto.driver.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
