@@ -8,6 +8,7 @@ import 'package:new_evmoto_driver/app/modules/order_detail/views/order_detail_vi
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/utils/general_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
+import 'package:new_evmoto_driver/app/widgets/order_payment_method_row.dart';
 
 import '../controllers/order_detail_controller.dart';
 
@@ -647,6 +648,34 @@ class OrderDetailView extends GetView<OrderDetailController> {
                                                     color: Color(0XFFE2E2E2),
                                                   ),
                                                   SizedBox(height: 16),
+                                                  OrderPaymentMethodRow(
+                                                    payType: controller
+                                                        .orderDetail
+                                                        .value
+                                                        .payType,
+                                                    showBackground: false,
+                                                    labelStyle: controller
+                                                        .typographyServices
+                                                        .bodySmallRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color:
+                                                              Color(0xFF7D7D7D),
+                                                        ),
+                                                    valueStyle: controller
+                                                        .typographyServices
+                                                        .bodySmallRegular
+                                                        .value
+                                                        .copyWith(
+                                                          color: controller
+                                                              .themeColorServices
+                                                              .textColor
+                                                              .value,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                  ),
+                                                  SizedBox(height: 8),
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment

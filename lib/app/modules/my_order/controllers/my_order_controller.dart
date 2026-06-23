@@ -16,6 +16,7 @@ import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
 import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/advance_booking_cancel_dialog_widget.dart';
+import 'package:new_evmoto_driver/app/widgets/order_payment_method_row.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -477,6 +478,22 @@ class MyOrderController extends GetxController
                             ),
                             SizedBox(height: 8),
                             Divider(height: 0, color: Color(0XFFE7E7E7)),
+                            SizedBox(height: 8),
+                            OrderPaymentMethodRow(
+                              payType:
+                                  orderData.payType ?? selectedOrder.payType,
+                              labelStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(),
+                              valueStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: themeColorServices.textColor.value,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
                             SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

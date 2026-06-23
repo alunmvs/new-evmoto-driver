@@ -49,6 +49,7 @@ import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_in_dialog.dart';
 import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_out_dialog.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
+import 'package:new_evmoto_driver/app/widgets/order_payment_method_row.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -1134,6 +1135,23 @@ class HomeController extends GetxController
                             SizedBox(height: 8),
                             Divider(height: 0, color: Color(0XFFE7E7E7)),
                             SizedBox(height: 8),
+                            OrderPaymentMethodRow(
+                              payType:
+                                  orderData.payType ??
+                                  socketOrderStatusData.payType,
+                              labelStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(),
+                              valueStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: themeColorServices.textColor.value,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                            SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -1731,6 +1749,47 @@ class HomeController extends GetxController
                               ],
                             ),
                             SizedBox(height: 8),
+                            Divider(height: 0, color: Color(0XFFE7E7E7)),
+                            SizedBox(height: 8),
+                            OrderPaymentMethodRow(
+                              payType:
+                                  orderData.payType ??
+                                  socketOrderStatusData.payType,
+                              labelStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(),
+                              valueStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: themeColorServices.textColor.value,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Total Biaya",
+                                  style: typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(),
+                                ),
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'id_ID',
+                                    symbol: 'Rp ',
+                                    decimalDigits: 0,
+                                  ).format(orderData.orderMoney),
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(fontSize: 20),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 16),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: AspectRatio(
