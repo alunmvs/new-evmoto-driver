@@ -424,6 +424,7 @@ class MyOrderController extends GetxController
                                                   .textColor
                                                   .value,
                                             ),
+                                        maxLines: 2,
                                       ),
                                     ],
                                   ),
@@ -470,6 +471,7 @@ class MyOrderController extends GetxController
                                                   .textColor
                                                   .value,
                                             ),
+                                        maxLines: 2,
                                       ),
                                     ],
                                   ),
