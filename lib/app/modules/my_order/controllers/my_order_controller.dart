@@ -510,7 +510,7 @@ class MyOrderController extends GetxController
                                     locale: 'id_ID',
                                     symbol: 'Rp ',
                                     decimalDigits: 0,
-                                  ).format(orderData.orderMoney),
+                                  ).format(orderData.netIncome),
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(fontSize: 20),
                                 ),
