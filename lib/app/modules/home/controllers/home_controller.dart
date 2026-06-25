@@ -2153,7 +2153,6 @@ class HomeController extends GetxController
       actionController.reset();
       DialogHelper.dismiss<bool>(
         DialogTags.orderConfirmation(socketOrderStatusData.orderId.toString()),
-        DialogTags.orderConfirmation(socketOrderStatusData.orderId.toString()),
         result: true,
       );
       Get.until((route) => route.settings.name == Routes.HOME);

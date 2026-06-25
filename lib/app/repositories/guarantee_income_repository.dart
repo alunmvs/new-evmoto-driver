@@ -219,7 +219,7 @@ class GuaranteeIncomeRepository {
     required double? lon,
   }) async {
     try {
-      var url = "$baseUrl/app/ensureIncomeRule/queryEnsureIncomeRule";
+      var url = "$baseUrl/app/ensureIncomeRule/active";
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
