@@ -82,6 +82,7 @@ class MyOrderAllSubView extends GetView<MyOrderController> {
                               "order_type": allOrder.type,
                             },
                           );
+                          return;
                         }
                       }
 
@@ -91,6 +92,7 @@ class MyOrderAllSubView extends GetView<MyOrderController> {
                               .showDialogAdvancedBookingConfirmation(
                                 selectedOrder: allOrder,
                               );
+                          return;
                         }
                         if ([3, 4].contains(allOrder.state)) {
                           Get.toNamed(
@@ -102,8 +104,19 @@ class MyOrderAllSubView extends GetView<MyOrderController> {
                           );
                           return;
                         }
+
                         if ([5].contains(allOrder.state)) {
                           return;
+                        }
+
+                        if ([10, 11, 12].contains(allOrder.state) == false) {
+                          Get.toNamed(
+                            Routes.ORDER_DETAIL,
+                            arguments: {
+                              "order_id": allOrder.id,
+                              "order_type": allOrder.type,
+                            },
+                          );
                         }
                       }
                     },

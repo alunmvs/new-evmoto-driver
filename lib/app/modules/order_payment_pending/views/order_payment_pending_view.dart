@@ -249,7 +249,7 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Pendapatan",
+                            "Pembayaran yang didapatkan oleh driver",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular
@@ -262,7 +262,16 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                               symbol: 'Rp ',
                               decimalDigits: 0,
                             ).format(
-                              controller.orderDetail.value.orderMoney ?? 0.0,
+                              (controller.orderDetail.value.orderMoney ?? 0.0) -
+                                  (controller.orderDetail.value.platformFee ??
+                                      0.0) +
+                                  (controller.orderDetail.value.waitMoney ??
+                                      0.0) +
+                                  (controller
+                                          .orderDetail
+                                          .value
+                                          .additionalCharge ??
+                                      0.0),
                             ),
                             style: controller
                                 .typographyServices
@@ -329,12 +338,27 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Yang dibayar oleh penumpang",
+                            "Yang dibayarkan oleh penumpang",
                             style: controller
                                 .typographyServices
                                 .bodySmallRegular
                                 .value,
                           ),
+                          if ((controller.orderDetail.value.couponMoney ?? 0) >
+                              0) ...[
+                            SizedBox(height: 4),
+                            Text(
+                              "*Sudah menggunakan kupon",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: Color(0XFF7D7D7D),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                            ),
+                          ],
                           SizedBox(height: 4),
                           Text(
                             NumberFormat.currency(
@@ -349,6 +373,30 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                                 .headingLargeBold
                                 .value
                                 .copyWith(color: Color(0XFF34A853)),
+                          ),
+                          SizedBox(height: 12),
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed(
+                                Routes.ORDER_PAYMENT_PENDING_FEE_USER_DETAIL,
+                                arguments: {
+                                  "order_id": controller.orderId.value,
+                                  "order_type": controller.orderType.value,
+                                },
+                              );
+                            },
+                            child: Text(
+                              "Lihat detail pembayaran",
+                              style: controller
+                                  .typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: Color(0XFF7D7D7D),
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Color(0XFF7D7D7D),
+                                  ),
+                            ),
                           ),
                         ],
                       ),

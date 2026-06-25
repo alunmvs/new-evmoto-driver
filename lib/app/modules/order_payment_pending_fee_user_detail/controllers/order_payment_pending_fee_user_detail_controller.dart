@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/data/models/order_detail_model.dart';
@@ -8,10 +6,10 @@ import 'package:new_evmoto_driver/app/services/language_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 
-class OrderPaymentPendingFeeDetailController extends GetxController {
+class OrderPaymentPendingFeeUserDetailController extends GetxController {
   final OrderRepository orderRepository;
 
-  OrderPaymentPendingFeeDetailController({required this.orderRepository});
+  OrderPaymentPendingFeeUserDetailController({required this.orderRepository});
 
   final themeColorServices = Get.find<ThemeColorServices>();
   final typographyServices = Get.find<TypographyServices>();

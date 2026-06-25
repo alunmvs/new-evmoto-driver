@@ -32,6 +32,7 @@ import 'package:new_evmoto_driver/app/repositories/vehicle_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/versioning_server_repository.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
+import 'package:new_evmoto_driver/app/services/chat_room_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_remote_config_services.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
@@ -49,6 +50,7 @@ import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_start_dial
 // import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_in_dialog.dart';
 // import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_out_dialog.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
+import 'package:new_evmoto_driver/app/widgets/order_payment_method_row.dart';
 import 'package:new_evmoto_driver/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -88,6 +90,7 @@ class HomeController extends GetxController
   final voiceServices = Get.find<VoiceServices>();
   final locationServices = Get.find<LocationServices>();
   final backgroundServices = Get.find<BackgroundServices>();
+  final chatRoomServices = Get.find<ChatRoomServices>();
 
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
@@ -300,7 +303,7 @@ class HomeController extends GetxController
                                   style: typographyServices
                                       .bodySmallRegular
                                       .value
-                                      .copyWith(color: Color(0XFFB3B3B3)),
+                                      .copyWith(),
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(height: 16),
@@ -1046,6 +1049,7 @@ class HomeController extends GetxController
                                                   .textColor
                                                   .value,
                                             ),
+                                        maxLines: 2,
                                       ),
                                     ],
                                   ),
@@ -1092,6 +1096,7 @@ class HomeController extends GetxController
                                                   .textColor
                                                   .value,
                                             ),
+                                        maxLines: 2,
                                       ),
                                     ],
                                   ),
@@ -1100,6 +1105,23 @@ class HomeController extends GetxController
                             ),
                             SizedBox(height: 8),
                             Divider(height: 0, color: Color(0XFFE7E7E7)),
+                            SizedBox(height: 8),
+                            OrderPaymentMethodRow(
+                              payType:
+                                  orderData.payType ??
+                                  socketOrderStatusData.payType,
+                              labelStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(),
+                              valueStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: themeColorServices.textColor.value,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
                             SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1116,7 +1138,7 @@ class HomeController extends GetxController
                                     locale: 'id_ID',
                                     symbol: 'Rp ',
                                     decimalDigits: 0,
-                                  ).format(orderData.orderMoney),
+                                  ).format(orderData.netIncome),
                                   style: typographyServices.bodyLargeBold.value
                                       .copyWith(fontSize: 20),
                                 ),
@@ -1645,6 +1667,7 @@ class HomeController extends GetxController
                                                   .textColor
                                                   .value,
                                             ),
+                                        maxLines: 2,
                                       ),
                                     ],
                                   ),
@@ -1691,6 +1714,7 @@ class HomeController extends GetxController
                                                   .textColor
                                                   .value,
                                             ),
+                                        maxLines: 2,
                                       ),
                                     ],
                                   ),
@@ -1698,6 +1722,47 @@ class HomeController extends GetxController
                               ],
                             ),
                             SizedBox(height: 8),
+                            Divider(height: 0, color: Color(0XFFE7E7E7)),
+                            SizedBox(height: 8),
+                            OrderPaymentMethodRow(
+                              payType:
+                                  orderData.payType ??
+                                  socketOrderStatusData.payType,
+                              labelStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(),
+                              valueStyle: typographyServices
+                                  .bodySmallRegular
+                                  .value
+                                  .copyWith(
+                                    color: themeColorServices.textColor.value,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Total Biaya",
+                                  style: typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(),
+                                ),
+                                Text(
+                                  NumberFormat.currency(
+                                    locale: 'id_ID',
+                                    symbol: 'Rp ',
+                                    decimalDigits: 0,
+                                  ).format(orderData.netIncome),
+                                  style: typographyServices.bodyLargeBold.value
+                                      .copyWith(fontSize: 20),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 16),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: AspectRatio(
@@ -1934,6 +1999,22 @@ class HomeController extends GetxController
     }
   }
 
+  Future<void> ensureAdvanceBookingChatRoom({
+    required SocketOrderStatusData socketOrderStatusData,
+  }) async {
+    var orderData = await orderRepository.getOrderDetail(
+      orderType: socketOrderStatusData.orderType!,
+      orderId: socketOrderStatusData.orderId.toString(),
+      language: languageServices.languageCodeSystem.value,
+    );
+
+    await chatRoomServices.ensureChatRoomFromOrderDetail(
+      orderDetail: orderData,
+      driverName: userServices.userInfo.value.name ?? '',
+      driverProfileUrl: userServices.userInfo.value.avatar,
+    );
+  }
+
   Future<void> onSlideAdvanceBookingConfirmation({
     required ActionSliderController actionController,
     required SocketOrderStatusData socketOrderStatusData,
@@ -1956,6 +2037,9 @@ class HomeController extends GetxController
         );
         await advanceBookingRepository.advanceBookingSecondConfirm(
           orderId: socketOrderStatusData.orderId.toString(),
+        );
+        await ensureAdvanceBookingChatRoom(
+          socketOrderStatusData: socketOrderStatusData,
         );
 
         actionController.success();
@@ -1980,6 +2064,9 @@ class HomeController extends GetxController
       } else {
         await advanceBookingRepository.advanceBookingConfirm(
           orderId: socketOrderStatusData.orderId.toString(),
+        );
+        await ensureAdvanceBookingChatRoom(
+          socketOrderStatusData: socketOrderStatusData,
         );
 
         actionController.success();
@@ -2065,6 +2152,7 @@ class HomeController extends GetxController
       actionController.success();
       actionController.reset();
       DialogHelper.dismiss<bool>(
+        DialogTags.orderConfirmation(socketOrderStatusData.orderId.toString()),
         DialogTags.orderConfirmation(socketOrderStatusData.orderId.toString()),
         result: true,
       );
@@ -2450,6 +2538,9 @@ class HomeController extends GetxController
                                 DialogHelper.dismiss(
                                   DialogTags.appVersionNewest,
                                 );
+                                DialogHelper.dismiss(
+                                  DialogTags.appVersionNewest,
+                                );
                               },
                             ),
                             SizedBox(height: 16),
@@ -2665,6 +2756,9 @@ class HomeController extends GetxController
                                       .copyWith(color: Colors.white),
                                 ),
                                 onPressed: () async {
+                                  DialogHelper.dismiss(
+                                    DialogTags.appVersionNewest,
+                                  );
                                   DialogHelper.dismiss(
                                     DialogTags.appVersionNewest,
                                   );

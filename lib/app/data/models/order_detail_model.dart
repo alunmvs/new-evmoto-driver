@@ -45,6 +45,7 @@ class OrderDetail {
   double? fastigiumMoney;
   double? nightMoney;
   double? additionalCharge;
+  String? surchargeFeeDescription;
   double? collectionFees;
   double? collectionFeesAll;
   double? redPacketMoney;
@@ -77,6 +78,8 @@ class OrderDetail {
   String? userHeadImg;
   int? payType;
   double? platformFee;
+  double? netIncome;
+  double? platformFeePercentage;
   double? freeWaitTime;
 
   OrderDetail({
@@ -127,6 +130,7 @@ class OrderDetail {
     this.fastigiumMoney,
     this.nightMoney,
     this.additionalCharge,
+    this.surchargeFeeDescription,
     this.collectionFees,
     this.collectionFeesAll,
     this.redPacketMoney,
@@ -159,6 +163,8 @@ class OrderDetail {
     this.userHeadImg,
     this.payType,
     this.platformFee,
+    this.netIncome,
+    this.platformFeePercentage,
   });
 
   OrderDetail.fromJson(Map<String, dynamic> json) {
@@ -209,6 +215,8 @@ class OrderDetail {
     fastigiumMoney = json['fastigiumMoney'];
     nightMoney = json['nightMoney'];
     additionalCharge = json['additionalCharge'];
+    surchargeFeeDescription =
+        json['surchargeFeeDescription'] ?? json['surchargeDescription'];
     collectionFees = json['collectionFees'];
     collectionFeesAll = json['collectionFeesAll'];
     redPacketMoney = json['redPacketMoney'];
@@ -238,8 +246,10 @@ class OrderDetail {
     driverConfirm = json['driverConfirm'];
     userId = json['userId'];
     userHeadImg = json['userHeadImg'];
-    payType = json['payType'];
+    payType = int.tryParse(json['payType']?.toString() ?? '');
     platformFee = json['platformFee'];
+    netIncome = json['netIncome'];
+    platformFeePercentage = json['platformFeePercentage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -290,6 +300,7 @@ class OrderDetail {
     data['fastigiumMoney'] = this.fastigiumMoney;
     data['nightMoney'] = this.nightMoney;
     data['additionalCharge'] = this.additionalCharge;
+    data['surchargeFeeDescription'] = this.surchargeFeeDescription;
     data['collectionFees'] = this.collectionFees;
     data['collectionFeesAll'] = this.collectionFeesAll;
     data['redPacketMoney'] = this.redPacketMoney;
@@ -321,6 +332,8 @@ class OrderDetail {
     data['userHeadImg'] = this.userHeadImg;
     data['payType'] = this.payType;
     data['platformFee'] = this.platformFee;
+    data['netIncome'] = this.netIncome;
+    data['platformFeePercentage'] = this.platformFeePercentage;
     return data;
   }
 }

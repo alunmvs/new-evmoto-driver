@@ -70,6 +70,8 @@ import '../modules/order_payment_pending/bindings/order_payment_pending_binding.
 import '../modules/order_payment_pending/views/order_payment_pending_view.dart';
 import '../modules/order_payment_pending_fee_detail/bindings/order_payment_pending_fee_detail_binding.dart';
 import '../modules/order_payment_pending_fee_detail/views/order_payment_pending_fee_detail_view.dart';
+import '../modules/order_payment_pending_fee_user_detail/bindings/order_payment_pending_fee_user_detail_binding.dart';
+import '../modules/order_payment_pending_fee_user_detail/views/order_payment_pending_fee_user_detail_view.dart';
 import '../modules/photo_viewer/bindings/photo_viewer_binding.dart';
 import '../modules/photo_viewer/views/photo_viewer_view.dart';
 import '../modules/privacy_policy/bindings/privacy_policy_binding.dart';
@@ -337,6 +339,11 @@ class AppPages {
       name: _Paths.MY_ORDER_V2,
       page: () => const MyOrderV2View(),
       binding: MyOrderV2Binding(),
+    ),
+    GetPage(
+      name: _Paths.ORDER_PAYMENT_PENDING_FEE_USER_DETAIL,
+      page: () => const OrderPaymentPendingFeeUserDetailView(),
+      binding: OrderPaymentPendingFeeUserDetailBinding(),
     ),
   ];
 }

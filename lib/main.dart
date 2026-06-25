@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/services/api_services.dart';
 import 'package:new_evmoto_driver/app/services/auth_service.dart';
+import 'package:new_evmoto_driver/app/services/chat_room_services.dart';
 import 'package:new_evmoto_driver/app/services/app_lifecycle_services.dart';
 import 'package:new_evmoto_driver/app/services/background_services.dart';
 import 'package:new_evmoto_driver/app/services/firebase_push_notification_services.dart';
@@ -94,6 +95,7 @@ Future<void> main() async {
   await Get.find<FirebaseRemoteConfigServices>().manualOnInit();
   Get.put(FirebasePushNotificationServices(), permanent: true);
   Get.put(UserServices(), permanent: true);
+  Get.put(ChatRoomServices(), permanent: true);
   Get.put(VoiceServices(), permanent: true);
   Get.put(BackgroundServices(), permanent: true);
   Get.put(AppLifecycleController(), permanent: true);

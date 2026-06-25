@@ -280,6 +280,10 @@ class FirebasePushNotificationServices extends GetxService {
                     state: int.tryParse(message.data['state'].toString()),
                     time: int.tryParse(message.data['time'].toString()),
                     travelTime: message.data['travel_time'],
+                    payType: int.tryParse(
+                      (message.data['pay_type'] ?? message.data['payType'])
+                          .toString(),
+                    ),
                   ),
                 ),
               ]);
@@ -297,6 +301,10 @@ class FirebasePushNotificationServices extends GetxService {
                     state: int.tryParse(message.data['state'].toString()),
                     time: int.tryParse(message.data['time'].toString()),
                     travelTime: message.data['travel_time'],
+                    payType: int.tryParse(
+                      (message.data['pay_type'] ?? message.data['payType'])
+                          .toString(),
+                    ),
                   ),
                 ),
               ]);
@@ -464,6 +472,10 @@ class FirebasePushNotificationServices extends GetxService {
                     state: int.tryParse(message.data['state'].toString()),
                     time: int.tryParse(message.data['time'].toString()),
                     travelTime: message.data['travel_time'],
+                    payType: int.tryParse(
+                      (message.data['pay_type'] ?? message.data['payType'])
+                          .toString(),
+                    ),
                   ),
                 ),
               ]);
@@ -481,6 +493,10 @@ class FirebasePushNotificationServices extends GetxService {
                     state: int.tryParse(message.data['state'].toString()),
                     time: int.tryParse(message.data['time'].toString()),
                     travelTime: message.data['travel_time'],
+                    payType: int.tryParse(
+                      (message.data['pay_type'] ?? message.data['payType'])
+                          .toString(),
+                    ),
                   ),
                 ),
               ]);

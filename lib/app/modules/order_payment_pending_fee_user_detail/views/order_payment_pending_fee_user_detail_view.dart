@@ -5,11 +5,11 @@ import 'package:get/get.dart';
 
 import 'package:new_evmoto_driver/app/widgets/dashed_line.dart';
 
-import '../controllers/order_payment_pending_fee_detail_controller.dart';
+import '../controllers/order_payment_pending_fee_user_detail_controller.dart';
 
-class OrderPaymentPendingFeeDetailView
-    extends GetView<OrderPaymentPendingFeeDetailController> {
-  const OrderPaymentPendingFeeDetailView({super.key});
+class OrderPaymentPendingFeeUserDetailView
+    extends GetView<OrderPaymentPendingFeeUserDetailController> {
+  const OrderPaymentPendingFeeUserDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,16 +68,7 @@ class OrderPaymentPendingFeeDetailView
                             ),
                           ],
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildDriverSection(context),
-                            SizedBox(height: 16),
-                            Divider(height: 0, color: Color(0XFFD7D7D7)),
-                            SizedBox(height: 16),
-                            _buildPassengerSection(context),
-                          ],
-                        ),
+                        child: _buildPassengerSection(context),
                       ),
                       SizedBox(height: 32),
                     ],
@@ -88,25 +79,21 @@ class OrderPaymentPendingFeeDetailView
     );
   }
 
-  Widget _buildDriverSection(BuildContext context) {
+  Widget _buildPassengerSection(BuildContext context) {
     final detail = controller.orderDetail.value;
+    final couponMoney = detail.couponMoney ?? 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Yang didapatkan driver",
+          "Yang dibayarkan penumpang",
           style: controller.typographyServices.bodySmallRegular.value,
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 4),
         Text(
-          controller.formatCurrency(
-            (controller.orderDetail.value.orderMoney ?? 0.0) -
-                (controller.orderDetail.value.platformFee ?? 0.0) +
-                (controller.orderDetail.value.waitMoney ?? 0.0) +
-                (controller.orderDetail.value.additionalCharge ?? 0.0),
-          ),
+          controller.formatCurrency(detail.payMoney),
           style: controller.typographyServices.headingLargeBold.value.copyWith(
             color: Color(0XFF34A853),
           ),
@@ -118,62 +105,6 @@ class OrderPaymentPendingFeeDetailView
               "Expense Detail",
         ),
         SizedBox(height: 16),
-        _buildFeeRow(
-          label: "Pendapatan driver",
-          subLabel:
-              "(${controller.driverSharePercentage}% dari total biaya jarak tempuh)",
-          value: controller.formatCurrency(detail.netIncome),
-        ),
-        SizedBox(height: 12),
-        _buildFeeRow(
-          label:
-              controller.languageServices.language.value.surcharge ??
-              "Biaya tambahan",
-          subLabel: controller.surchargeSubLabel,
-          value: controller.formatCurrency(detail.additionalCharge),
-        ),
-        SizedBox(height: 12),
-        _buildFeeRow(
-          label:
-              controller.languageServices.language.value.waitFee ??
-              "Biaya tunggu",
-          value: controller.formatCurrency(detail.waitMoney),
-        ),
-        SizedBox(height: 16),
-        DashedLine(color: Color(0XFFD5D5D5)),
-        SizedBox(height: 8),
-        _buildTotalRow(
-          label: "Total pendapatan driver",
-          value: controller.formatCurrency(
-            (controller.orderDetail.value.orderMoney ?? 0.0) -
-                (controller.orderDetail.value.platformFee ?? 0.0) +
-                (controller.orderDetail.value.waitMoney ?? 0.0) +
-                (controller.orderDetail.value.additionalCharge ?? 0.0),
-          ),
-          valueStyle: controller.typographyServices.bodySmallBold.value
-              .copyWith(color: controller.themeColorServices.textColor.value),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPassengerSection(BuildContext context) {
-    final detail = controller.orderDetail.value;
-    final startMileage = detail.startMileage ?? 0;
-    final mileageKm = detail.driverMileageKilometers ?? detail.mileage ?? 0;
-    final totalMileage = detail.mileage ?? 0;
-    final couponMoney = detail.couponMoney ?? 0;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Dibayarkan penumpang",
-          style: controller.typographyServices.bodySmallBold.value.copyWith(
-            color: controller.themeColorServices.textColor.value,
-          ),
-        ),
-        SizedBox(height: 12),
         _buildFeeRow(
           label:
               "Total biaya jarak tempuh (${controller.orderDetail.value.mileage} ${controller.languageServices.language.value.km})",
