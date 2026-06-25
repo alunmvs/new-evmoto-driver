@@ -8,6 +8,7 @@ import 'package:new_evmoto_driver/app/data/models/guarantee_income_model.dart';
 import 'package:new_evmoto_driver/app/repositories/activity_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/guarantee_income_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
+import 'package:new_evmoto_driver/app/services/location_services.dart';
 import 'package:new_evmoto_driver/app/services/theme_color_services.dart';
 import 'package:new_evmoto_driver/app/services/typography_services.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
@@ -26,6 +27,7 @@ class MyActivityController extends GetxController
   final typographyServices = Get.find<TypographyServices>();
   final languageServices = Get.find<LanguageServices>();
   final userServices = Get.find<UserServices>();
+  final locationServices = Get.find<LocationServices>();
 
   TabController? tabController;
   final indexTabBar = 0.obs;
@@ -125,7 +127,10 @@ class MyActivityController extends GetxController
 
   Future<void> getEnsureIncomeRuleId() async {
     ensureIncomeRuleId.value = await guaranteeIncomeRepository
-        .getActiveEnsureIncomeRuleId();
+        .getActiveEnsureIncomeRuleId(
+          lat: locationServices.currentLatitude.value,
+          lon: locationServices.currentLongitude.value,
+        );
   }
 
   Future<void> onTapSelectDateRangeGuaranteeIncome({

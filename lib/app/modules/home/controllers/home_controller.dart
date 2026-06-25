@@ -45,6 +45,7 @@ import 'package:new_evmoto_driver/app/utils/common_helper.dart';
 import 'package:new_evmoto_driver/app/utils/dialog_helper.dart';
 import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
+import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_start_dialog.dart';
 // import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_in_dialog.dart';
 // import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_out_dialog.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
@@ -424,7 +425,7 @@ class HomeController extends GetxController
       voiceServices.manualOnInit(),
       getServiceOrderList(),
       getWorking(),
-      // getEnsureIncomeRuleId(),
+      getEnsureIncomeRuleId(),
     ]);
 
     await Future.wait([
@@ -613,7 +614,6 @@ class HomeController extends GetxController
     }
 
     try {
-      print("[DEBUG SERVICE AREA] oke-1");
       final areaId = await userRepository.getServiceAreaIdWithin(
         lat: lat,
         lng: lng,
@@ -636,7 +636,6 @@ class HomeController extends GetxController
         return;
       }
 
-      print("[DEBUG SERVICE AREA] oke-2");
       final isWithin = await guaranteeIncomeRepository
           .isWithinGuaranteeIncomeArea(
             serviceAreaId: areaId,
@@ -644,15 +643,10 @@ class HomeController extends GetxController
             lng: lng,
           );
       isWithinGuaranteeIncomeArea.value = isWithin;
-      print("[DEBUG SERVICE AREA] oke-3");
 
       if (isWithin) {
-        print("[DEBUG SERVICE AREA] oke-4");
         await getEnsureIncomeRuleId();
-        print("[DEBUG SERVICE AREA] oke-4 ${ensureIncomeRuleId.value}");
         await getGuaranteeIncomeProgressBarList();
-
-        print("[DEBUG SERVICE AREA] oke-8");
       } else {
         clearGuaranteeIncomeData();
       }
@@ -2729,7 +2723,10 @@ class HomeController extends GetxController
 
   Future<void> getEnsureIncomeRuleId() async {
     ensureIncomeRuleId.value = await guaranteeIncomeRepository
-        .getActiveEnsureIncomeRuleId();
+        .getActiveEnsureIncomeRuleId(
+          lat: locationServices.currentLatitude.value,
+          lon: locationServices.currentLongitude.value,
+        );
   }
 
   bool isWithinGuaranteeIncomeTimeRange(String startTime, String endTime) {
@@ -2741,7 +2738,6 @@ class HomeController extends GetxController
 
   Future<void> getGuaranteeIncomeProgressBarList() async {
     if (ensureIncomeRuleId.value != null) {
-      print("[DEBUG SERVICE AREA] ${ensureIncomeRuleId.value}");
       guaranteeIncomeProgressBarList.value = await guaranteeIncomeRepository
           .getGuaranteeIncomeProgressBarList(
             ensureIncomeRuleId: ensureIncomeRuleId.value,
@@ -2754,9 +2750,6 @@ class HomeController extends GetxController
           var isInRange = isWithinGuaranteeIncomeTimeRange(
             guaranteeIncomeProgressBar.startTime!,
             guaranteeIncomeProgressBar.endTime!,
-          );
-          print(
-            "[DEBUG SERVICE AREA] ${guaranteeIncomeProgressBar.startTime} ${guaranteeIncomeProgressBar.endTime} $isInRange",
           );
 
           if (isInRange) {
@@ -2788,17 +2781,34 @@ class HomeController extends GetxController
         }
       }
 
-      print("[DEBUG SERVICE AREA] oke-5");
       if (isInRangeExist) {
-        print("[DEBUG SERVICE AREA] oke-6");
         updateGuaranteeIncomeProgressBarVisibility();
-        print("[DEBUG SERVICE AREA] oke-7");
+        await showGuaranteeIncomeDialog();
       } else {
         clearGuaranteeIncomeProgressBarUi();
       }
     } else {
       clearGuaranteeIncomeData();
     }
+  }
+
+  Future<void> showGuaranteeIncomeDialog() async {
+    var prefs = await SharedPreferences.getInstance();
+    var dialogGuaranteeIncomeLatestShowAt = prefs.getInt(
+      'dialog_guarantee_income_latest_show_at',
+    );
+    var now = DateTime.now();
+    var today = DateTime(now.year, now.month, now.day);
+    if (dialogGuaranteeIncomeLatestShowAt != null) {
+      if (today.millisecondsSinceEpoch == dialogGuaranteeIncomeLatestShowAt) {
+        return;
+      }
+    }
+    await Get.dialog(GuaranteeIncomeStartDialog());
+    await prefs.setInt(
+      'dialog_guarantee_income_latest_show_at',
+      today.millisecondsSinceEpoch,
+    );
   }
 
   void updateGuaranteeIncomeProgressBarVisibility() {
