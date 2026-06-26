@@ -80,8 +80,8 @@ class HomeView extends GetView<HomeController> {
                                                   ).size.width,
                                                   height:
                                                       controller
-                                                              .isGuaranteeIncomeProgressBarVisible
-                                                              .value
+                                                          .isGuaranteeIncomeProgressBarVisible
+                                                          .value
                                                       ? 200
                                                       : 140,
                                                   decoration: BoxDecoration(
@@ -1856,6 +1856,11 @@ class HomeView extends GetView<HomeController> {
                                                   onChanged: (value) async {
                                                     await controller
                                                         .onSwitchStatusWork();
+
+                                                    await controller
+                                                        .getEnsureIncomeRuleId();
+                                                    await controller
+                                                        .getGuaranteeIncomeProgressBarList();
                                                   },
                                                   customTextBuilder: (context, local, global) {
                                                     return Text(
@@ -2610,6 +2615,11 @@ class HomeView extends GetView<HomeController> {
                                           },
                                       onChanged: (value) async {
                                         await controller.onSwitchStatusWork();
+
+                                        await controller
+                                            .getEnsureIncomeRuleId();
+                                        await controller
+                                            .getGuaranteeIncomeProgressBarList();
                                       },
                                       customTextBuilder:
                                           (context, local, global) {

@@ -30,6 +30,7 @@ class DialogTags {
 
   static const guaranteeIncomeAreaIn = 'dialog.guarantee_income_area_in';
   static const guaranteeIncomeAreaOut = 'dialog.guarantee_income_area_out';
+  static const guaranteeIncomeStart = 'dialog.guarantee_income_start';
 
   static String advanceBookingConfirmation(String orderId) =>
       'dialog.advance_booking_confirmation.$orderId';
