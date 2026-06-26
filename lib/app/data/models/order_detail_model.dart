@@ -81,6 +81,7 @@ class OrderDetail {
   double? netIncome;
   double? platformFeePercentage;
   double? freeWaitTime;
+  String? pickupNote;
 
   OrderDetail({
     this.freeWaitTime,
@@ -165,6 +166,7 @@ class OrderDetail {
     this.platformFee,
     this.netIncome,
     this.platformFeePercentage,
+    this.pickupNote,
   });
 
   OrderDetail.fromJson(Map<String, dynamic> json) {
@@ -250,6 +252,7 @@ class OrderDetail {
     platformFee = json['platformFee'];
     netIncome = json['netIncome'];
     platformFeePercentage = json['platformFeePercentage'];
+    pickupNote = json['pickupNote'];
   }
 
   Map<String, dynamic> toJson() {

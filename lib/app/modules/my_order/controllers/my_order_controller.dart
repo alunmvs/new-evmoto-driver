@@ -478,6 +478,39 @@ class MyOrderController extends GetxController
                                 ),
                               ],
                             ),
+                            if (orderData.pickupNote != null) ...[
+                              SizedBox(height: 8),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Color(0XFFF0F0F0),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Catatan Tambahan",
+                                      style: typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFFB3B3B3)),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      orderData.pickupNote ?? "-",
+                                      style: typographyServices
+                                          .captionLargeRegular
+                                          .value
+                                          .copyWith(color: Color(0XFF272727)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                             SizedBox(height: 8),
                             Divider(height: 0, color: Color(0XFFE7E7E7)),
                             SizedBox(height: 8),
