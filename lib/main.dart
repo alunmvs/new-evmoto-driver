@@ -28,6 +28,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:native_flutter_proxy/native_flutter_proxy.dart';
 import 'package:new_evmoto_driver/app/services/user_services.dart';
 import 'package:new_evmoto_driver/app/services/voice_services.dart';
+import 'package:new_evmoto_driver/app/services/wake_lock_services.dart';
 import 'package:new_evmoto_driver/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app/routes/app_pages.dart';
@@ -101,6 +102,7 @@ Future<void> main() async {
   Get.put(AppLifecycleController(), permanent: true);
   Get.put(LocationServices(), permanent: true);
   Get.put(SocketServices(), permanent: true);
+  Get.put(WakeLockServices(), permanent: true);
 
   runApp(
     GetMaterialApp(
@@ -148,67 +150,72 @@ Future<void> main() async {
       builder: FlutterSmartDialog.init(
         builder: (context, child) {
           return env == "dev"
-            ? Banner(
-                message: "Dev",
-                location: BannerLocation.topEnd,
-                color: Color(0XFF0060C6),
-                shadow: BoxShadow(
-                  color: Colors.transparent,
-                  blurRadius: 0,
-                  spreadRadius: 0,
-                  offset: Offset(0, 0),
-                ),
-                textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                child: SafeArea(
+              ? Banner(
+                  message: "Dev",
+                  location: BannerLocation.topEnd,
+                  color: Color(0XFF0060C6),
+                  shadow: BoxShadow(
+                    color: Colors.transparent,
+                    blurRadius: 0,
+                    spreadRadius: 0,
+                    offset: Offset(0, 0),
+                  ),
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                  child: SafeArea(
+                    top: false,
+                    left: false,
+                    right: false,
+                    bottom: true,
+                    child: GestureDetector(
+                      onTap: () => FocusScope.of(context).unfocus(),
+                      child: Stack(
+                        children: [
+                          child!,
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                margin: EdgeInsets.only(right: 16),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Obx(
+                                  () => Text(
+                                    Get.find<SocketServices>()
+                                            .isSocketClose
+                                            .value
+                                        ? "Ping : Disconnected"
+                                        : "Ping : Connected",
+                                    style: Get.find<TypographyServices>()
+                                        .captionSmallRegular
+                                        .value
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : SafeArea(
                   top: false,
                   left: false,
                   right: false,
                   bottom: true,
                   child: GestureDetector(
                     onTap: () => FocusScope.of(context).unfocus(),
-                    child: Stack(
-                      children: [
-                        child!,
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              margin: EdgeInsets.only(right: 16),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.3),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Obx(
-                                () => Text(
-                                  Get.find<SocketServices>().isSocketClose.value
-                                      ? "Ping : Disconnected"
-                                      : "Ping : Connected",
-                                  style: Get.find<TypographyServices>()
-                                      .captionSmallRegular
-                                      .value
-                                      .copyWith(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: child!,
                   ),
-                ),
-              )
-            : SafeArea(
-                top: false,
-                left: false,
-                right: false,
-                bottom: true,
-                child: GestureDetector(
-                  onTap: () => FocusScope.of(context).unfocus(),
-                  child: child!,
-                ),
-              );
+                );
         },
       ),
     ),
