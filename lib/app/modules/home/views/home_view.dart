@@ -80,10 +80,10 @@ class HomeView extends GetView<HomeController> {
                                                   ).size.width,
                                                   height:
                                                       controller
-                                                              .isGuaranteeIncomeProgressBarVisible
-                                                              .value
-                                                          ? 200
-                                                          : 140,
+                                                          .isGuaranteeIncomeProgressBarVisible
+                                                          .value
+                                                      ? 200
+                                                      : 140,
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
@@ -1856,6 +1856,8 @@ class HomeView extends GetView<HomeController> {
                                                   onChanged: (value) async {
                                                     await controller
                                                         .onSwitchStatusWork();
+                                                    await controller
+                                                        .refreshServiceArea();
                                                   },
                                                   customTextBuilder: (context, local, global) {
                                                     return Text(
