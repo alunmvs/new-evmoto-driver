@@ -366,7 +366,16 @@ class OrderPaymentPendingView extends GetView<OrderPaymentPendingController> {
                               symbol: 'Rp ',
                               decimalDigits: 0,
                             ).format(
-                              controller.orderDetail.value.payMoney ?? 0.0,
+                              (controller.orderDetail.value.orderMoney ?? 0.0) +
+                                  (controller
+                                          .orderDetail
+                                          .value
+                                          .additionalCharge ??
+                                      0.0) +
+                                  (controller.orderDetail.value.waitMoney ??
+                                      0.0) -
+                                  (controller.orderDetail.value.couponMoney ??
+                                      0.0),
                             ),
                             style: controller
                                 .typographyServices

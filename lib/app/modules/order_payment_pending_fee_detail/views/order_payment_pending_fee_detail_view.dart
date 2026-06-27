@@ -182,15 +182,22 @@ class OrderPaymentPendingFeeDetailView
                 (controller.orderDetail.value.waitMoney ?? 0),
           ),
         ),
+        SizedBox(height: 12),
+        _buildFeeRow(
+          label:
+              controller.languageServices.language.value.surcharge ??
+              "Biaya tambahan",
+          subLabel: controller.surchargeSubLabel,
+          value: controller.formatCurrency(detail.additionalCharge),
+        ),
+        SizedBox(height: 12),
+        _buildFeeRow(
+          label:
+              controller.languageServices.language.value.waitFee ??
+              "Biaya Tunggu",
+          value: controller.formatCurrency(detail.waitMoney),
+        ),
         if ((controller.orderDetail.value.couponMoney ?? 0) > 0) ...[
-          SizedBox(height: 12),
-          _buildFeeRow(
-            label:
-                controller.languageServices.language.value.surcharge ??
-                "Biaya tambahan",
-            subLabel: controller.surchargeSubLabel,
-            value: controller.formatCurrency(detail.additionalCharge),
-          ),
           SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -236,7 +243,12 @@ class OrderPaymentPendingFeeDetailView
         SizedBox(height: 16),
         _buildTotalRow(
           label: "Total yang dibayarkan",
-          value: controller.formatCurrency(detail.payMoney),
+          value: controller.formatCurrency(
+            (detail.orderMoney ?? 0.0) +
+                (detail.additionalCharge ?? 0.0) +
+                (detail.waitMoney ?? 0.0) -
+                (detail.couponMoney ?? 0.0),
+          ),
           valueStyle: controller.typographyServices.bodyLargeBold.value
               .copyWith(color: controller.themeColorServices.textColor.value),
         ),
