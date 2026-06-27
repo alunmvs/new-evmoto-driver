@@ -387,27 +387,38 @@ class MyOrderAllSubView extends GetView<MyOrderController> {
                                           snapshot.data!.docs.first.data()
                                               as Map<String, dynamic>;
                                       unreadCount =
-                                          (data['totalUnreadChatDriver']
+                                          (data['totalUnreadChatUser']
                                               as int?) ??
                                           0;
                                     }
-                                    return Badge(
-                                      isLabelVisible: unreadCount > 0,
-                                      label: Text(
-                                        unreadCount > 99
-                                            ? "99+"
-                                            : unreadCount.toString(),
-                                        style: controller
-                                            .typographyServices
-                                            .captionSmallRegular
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        await Get.toNamed(
+                                          Routes.CHAT_DETAIL,
+                                          arguments: {
+                                            "doc_id":
+                                                snapshot.data!.docs.first.id,
+                                          },
+                                        );
+                                      },
+                                      child: Badge(
+                                        isLabelVisible: unreadCount > 0,
+                                        label: Text(
+                                          unreadCount > 99
+                                              ? "99+"
+                                              : unreadCount.toString(),
+                                          style: controller
+                                              .typographyServices
+                                              .captionSmallRegular
+                                              .value,
+                                        ),
+                                        backgroundColor: controller
+                                            .themeColorServices
+                                            .primaryBlue
                                             .value,
-                                      ),
-                                      backgroundColor: controller
-                                          .themeColorServices
-                                          .primaryBlue
-                                          .value,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/icon_chat_filled.svg",
+                                        child: SvgPicture.asset(
+                                          "assets/icons/icon_chat_filled.svg",
+                                        ),
                                       ),
                                     );
                                   },
