@@ -178,8 +178,7 @@ class OrderPaymentPendingFeeDetailView
           label:
               "Total biaya jarak tempuh (${controller.orderDetail.value.mileage} ${controller.languageServices.language.value.km})",
           value: controller.formatCurrency(
-            controller.orderDetail.value.orderMoney! +
-                (controller.orderDetail.value.waitMoney ?? 0),
+            controller.orderDetail.value.orderMoney ?? 0.0,
           ),
         ),
         SizedBox(height: 12),
