@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -359,6 +360,58 @@ class MyOrderAllSubView extends GetView<MyOrderController> {
                                     ),
                                   ),
                                 ],
+                              ],
+                              // Chat
+                              if (allOrder.reservation == 2 &&
+                                  [
+                                    2,
+                                    3,
+                                  ].contains(allOrder.advanceBookingState)) ...[
+                                Spacer(),
+                                StreamBuilder<QuerySnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection(
+                                        'evmoto_order_chat_participants',
+                                      )
+                                      .where(
+                                        'orderId',
+                                        isEqualTo:
+                                            allOrder.id?.toString() ?? '',
+                                      )
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    int unreadCount = 0;
+                                    if (snapshot.hasData &&
+                                        snapshot.data!.docs.isNotEmpty) {
+                                      final data =
+                                          snapshot.data!.docs.first.data()
+                                              as Map<String, dynamic>;
+                                      unreadCount =
+                                          (data['totalUnreadChatDriver']
+                                              as int?) ??
+                                          0;
+                                    }
+                                    return Badge(
+                                      isLabelVisible: unreadCount > 0,
+                                      label: Text(
+                                        unreadCount > 99
+                                            ? "99+"
+                                            : unreadCount.toString(),
+                                        style: controller
+                                            .typographyServices
+                                            .captionSmallRegular
+                                            .value,
+                                      ),
+                                      backgroundColor: controller
+                                          .themeColorServices
+                                          .primaryBlue
+                                          .value,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/icon_chat_filled.svg",
+                                      ),
+                                    );
+                                  },
+                                ),
                               ],
                             ],
                           ),
