@@ -51,12 +51,29 @@ class GuaranteeIncomeStartDialog extends StatelessWidget {
                           width: MediaQuery.of(context).size.width,
                           fit: BoxFit.cover,
                         ),
-                        placeholder: (context, url) => const Center(
-                          child: SizedBox(
-                            width: 25,
-                            height: 25,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
+                        placeholder: (context, url) => Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 200,
+                          color: Colors.transparent,
+                          child: const Center(
+                            child: SizedBox(
+                              width: 25,
+                              height: 25,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 200,
+                          color: Colors.transparent,
+                          child: const Center(
+                            child: Icon(
+                              Icons.image_not_supported_outlined,
+                              color: Colors.white54,
+                              size: 40,
                             ),
                           ),
                         ),
