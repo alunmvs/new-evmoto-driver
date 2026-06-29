@@ -310,9 +310,9 @@ class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
                                           ),
                                         ),
                                         if (controller
-                                                .isDropdownWorkingTimeRushHourShow
-                                                .value ==
-                                            true &&
+                                                    .isDropdownWorkingTimeRushHourShow
+                                                    .value ==
+                                                true &&
                                             controller
                                                 .workingTimeRushHourDropdown
                                                 .isNotEmpty) ...[
@@ -406,9 +406,9 @@ class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
                                           ),
                                         ),
                                         if (controller
-                                                .isDropdownWorkingTimeNormalHourShow
-                                                .value ==
-                                            true &&
+                                                    .isDropdownWorkingTimeNormalHourShow
+                                                    .value ==
+                                                true &&
                                             controller
                                                 .workingTimeNormalHourDropdown
                                                 .isNotEmpty) ...[
@@ -490,11 +490,11 @@ class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            controller
-                                                .isDropdownGuaranteeIncomeHourRushHourShow
-                                                .value = !controller
-                                                .isDropdownGuaranteeIncomeHourRushHourShow
-                                                .value;
+                                            // controller
+                                            //     .isDropdownGuaranteeIncomeHourRushHourShow
+                                            //     .value = !controller
+                                            //     .isDropdownGuaranteeIncomeHourRushHourShow
+                                            //     .value;
                                           },
                                           child: Container(
                                             color: Colors.transparent,
@@ -517,66 +517,66 @@ class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
                                                         .value,
                                                   ),
                                                 ),
-                                                if (controller
-                                                    .guaranteeIncomeHourRushHourDropdown
-                                                    .isNotEmpty) ...[
-                                                  SvgPicture.asset(
-                                                    controller
-                                                                .isDropdownGuaranteeIncomeHourRushHourShow
-                                                                .value ==
-                                                            true
-                                                        ? 'assets/icons/icon_arrow_up.svg'
-                                                        : 'assets/icons/icon_arrow_down.svg',
-                                                    width: 15,
-                                                    height: 15,
-                                                  ),
-                                                ],
+                                                // if (controller
+                                                //     .guaranteeIncomeHourRushHourDropdown
+                                                //     .isNotEmpty) ...[
+                                                //   SvgPicture.asset(
+                                                //     controller
+                                                //                 .isDropdownGuaranteeIncomeHourRushHourShow
+                                                //                 .value ==
+                                                //             true
+                                                //         ? 'assets/icons/icon_arrow_up.svg'
+                                                //         : 'assets/icons/icon_arrow_down.svg',
+                                                //     width: 15,
+                                                //     height: 15,
+                                                //   ),
+                                                // ],
                                               ],
                                             ),
                                           ),
                                         ),
-                                        if (controller
-                                                .isDropdownGuaranteeIncomeHourRushHourShow
-                                                .value ==
-                                            true) ...[
-                                          SizedBox(height: 8),
-                                          Container(
-                                            padding: EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: Color(0XFFD8FFE2),
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                for (var detail
-                                                    in controller
-                                                        .guaranteeIncomeHourRushHourDropdown) ...[
-                                                  Text(
-                                                    detail,
-                                                    style: controller
-                                                        .typographyServices
-                                                        .captionSmallBold
-                                                        .value
-                                                        .copyWith(
-                                                          color: Color(
-                                                            0XFF0D6B26,
-                                                          ),
-                                                        ),
-                                                  ),
-                                                  if (controller
-                                                          .guaranteeIncomeHourRushHourDropdown
-                                                          .last !=
-                                                      detail) ...[
-                                                    SizedBox(height: 8),
-                                                  ],
-                                                ],
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                        // if (controller
+                                        //         .isDropdownGuaranteeIncomeHourRushHourShow
+                                        //         .value ==
+                                        //     true) ...[
+                                        //   SizedBox(height: 8),
+                                        //   Container(
+                                        //     padding: EdgeInsets.all(8),
+                                        //     decoration: BoxDecoration(
+                                        //       color: Color(0XFFD8FFE2),
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(4),
+                                        //     ),
+                                        //     child: Column(
+                                        //       crossAxisAlignment:
+                                        //           CrossAxisAlignment.start,
+                                        //       children: [
+                                        //         for (var detail
+                                        //             in controller
+                                        //                 .guaranteeIncomeHourRushHourDropdown) ...[
+                                        //           Text(
+                                        //             detail,
+                                        //             style: controller
+                                        //                 .typographyServices
+                                        //                 .captionSmallBold
+                                        //                 .value
+                                        //                 .copyWith(
+                                        //                   color: Color(
+                                        //                     0XFF0D6B26,
+                                        //                   ),
+                                        //                 ),
+                                        //           ),
+                                        //           if (controller
+                                        //                   .guaranteeIncomeHourRushHourDropdown
+                                        //                   .last !=
+                                        //               detail) ...[
+                                        //             SizedBox(height: 8),
+                                        //           ],
+                                        //         ],
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // ],
                                       ],
                                     ),
                                   ),
@@ -591,11 +591,11 @@ class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            controller
-                                                .isDropdownGuaranteeIncomeHourNormalHourShow
-                                                .value = !controller
-                                                .isDropdownGuaranteeIncomeHourNormalHourShow
-                                                .value;
+                                            // controller
+                                            //     .isDropdownGuaranteeIncomeHourNormalHourShow
+                                            //     .value = !controller
+                                            //     .isDropdownGuaranteeIncomeHourNormalHourShow
+                                            //     .value;
                                           },
                                           child: Container(
                                             color: Colors.transparent,
@@ -618,66 +618,66 @@ class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
                                                         .value,
                                                   ),
                                                 ),
-                                                if (controller
-                                                    .guaranteeIncomeHourNormalHourDropdown
-                                                    .isNotEmpty) ...[
-                                                  SvgPicture.asset(
-                                                    controller
-                                                                .isDropdownGuaranteeIncomeHourNormalHourShow
-                                                                .value ==
-                                                            true
-                                                        ? 'assets/icons/icon_arrow_up.svg'
-                                                        : 'assets/icons/icon_arrow_down.svg',
-                                                    width: 15,
-                                                    height: 15,
-                                                  ),
-                                                ],
+                                                // if (controller
+                                                //     .guaranteeIncomeHourNormalHourDropdown
+                                                //     .isNotEmpty) ...[
+                                                //   SvgPicture.asset(
+                                                //     controller
+                                                //                 .isDropdownGuaranteeIncomeHourNormalHourShow
+                                                //                 .value ==
+                                                //             true
+                                                //         ? 'assets/icons/icon_arrow_up.svg'
+                                                //         : 'assets/icons/icon_arrow_down.svg',
+                                                //     width: 15,
+                                                //     height: 15,
+                                                //   ),
+                                                // ],
                                               ],
                                             ),
                                           ),
                                         ),
-                                        if (controller
-                                                .isDropdownGuaranteeIncomeHourNormalHourShow
-                                                .value ==
-                                            true) ...[
-                                          SizedBox(height: 8),
-                                          Container(
-                                            padding: EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: Color(0XFFD8FFE2),
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                for (var detail
-                                                    in controller
-                                                        .guaranteeIncomeHourNormalHourDropdown) ...[
-                                                  Text(
-                                                    detail,
-                                                    style: controller
-                                                        .typographyServices
-                                                        .captionSmallBold
-                                                        .value
-                                                        .copyWith(
-                                                          color: Color(
-                                                            0XFF0D6B26,
-                                                          ),
-                                                        ),
-                                                  ),
-                                                  if (controller
-                                                          .guaranteeIncomeHourNormalHourDropdown
-                                                          .last !=
-                                                      detail) ...[
-                                                    SizedBox(height: 8),
-                                                  ],
-                                                ],
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                        // if (controller
+                                        //         .isDropdownGuaranteeIncomeHourNormalHourShow
+                                        //         .value ==
+                                        //     true) ...[
+                                        //   SizedBox(height: 8),
+                                        //   Container(
+                                        //     padding: EdgeInsets.all(8),
+                                        //     decoration: BoxDecoration(
+                                        //       color: Color(0XFFD8FFE2),
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(4),
+                                        //     ),
+                                        //     child: Column(
+                                        //       crossAxisAlignment:
+                                        //           CrossAxisAlignment.start,
+                                        //       children: [
+                                        //         for (var detail
+                                        //             in controller
+                                        //                 .guaranteeIncomeHourNormalHourDropdown) ...[
+                                        //           Text(
+                                        //             detail,
+                                        //             style: controller
+                                        //                 .typographyServices
+                                        //                 .captionSmallBold
+                                        //                 .value
+                                        //                 .copyWith(
+                                        //                   color: Color(
+                                        //                     0XFF0D6B26,
+                                        //                   ),
+                                        //                 ),
+                                        //           ),
+                                        //           if (controller
+                                        //                   .guaranteeIncomeHourNormalHourDropdown
+                                        //                   .last !=
+                                        //               detail) ...[
+                                        //             SizedBox(height: 8),
+                                        //           ],
+                                        //         ],
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // ],
                                       ],
                                     ),
                                   ),
@@ -692,7 +692,12 @@ class MyActivityGuaranteeIncomeSubView extends GetView<MyActivityController> {
                                         symbol: 'Rp',
                                         decimalDigits: 0,
                                       ).format(
-                                        controller.guaranteeIncomeTotal.value,
+                                        controller
+                                                .guaranteeIncomeHourRushHour
+                                                .value +
+                                            controller
+                                                .guaranteeIncomeHourNormalHour
+                                                .value,
                                       ),
                                       style: controller
                                           .typographyServices

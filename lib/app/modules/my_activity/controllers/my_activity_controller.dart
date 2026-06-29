@@ -66,8 +66,8 @@ class MyActivityController extends GetxController
 
   final isDropdownWorkingTimeRushHourShow = false.obs;
   final isDropdownWorkingTimeNormalHourShow = false.obs;
-  final isDropdownGuaranteeIncomeHourRushHourShow = false.obs;
-  final isDropdownGuaranteeIncomeHourNormalHourShow = false.obs;
+  // final isDropdownGuaranteeIncomeHourRushHourShow = false.obs;
+  // final isDropdownGuaranteeIncomeHourNormalHourShow = false.obs;
 
   // Coupon Income
   final orderIncomeCouponIncome = 0.0.obs;
@@ -267,8 +267,8 @@ class MyActivityController extends GetxController
 
     isDropdownWorkingTimeRushHourShow.value = false;
     isDropdownWorkingTimeNormalHourShow.value = false;
-    isDropdownGuaranteeIncomeHourRushHourShow.value = false;
-    isDropdownGuaranteeIncomeHourNormalHourShow.value = false;
+    // isDropdownGuaranteeIncomeHourRushHourShow.value = false;
+    // isDropdownGuaranteeIncomeHourNormalHourShow.value = false;
   }
 
   Future<void> getCouponIncome() async {
