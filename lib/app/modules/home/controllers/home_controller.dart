@@ -692,7 +692,10 @@ class HomeController extends GetxController
   // }
 
   Future<void> setupGuaranteeIncomeProgressBarTimer() async {
-    guaranteeIncomeProgressBarTimer = Timer.periodic(Duration(minutes: 1), (
+    await getEnsureIncomeRuleId();
+    await getGuaranteeIncomeProgressBarList();
+
+    guaranteeIncomeProgressBarTimer = Timer.periodic(Duration(seconds: 30), (
       timer,
     ) async {
       await getEnsureIncomeRuleId();
