@@ -176,11 +176,14 @@ class GuaranteeIncomeRepository {
     }
   }
 
-  Future<int?> getActiveEnsureIncomeRuleId() async {
+  Future<int?> getActiveEnsureIncomeRuleId({
+    required double? lat,
+    required double? lon,
+  }) async {
     try {
-      var url = "$baseUrl/app/ensureIncomeRule/getActiveEnsureIncomeRuleId";
+      var url = "$baseUrl/app/ensureIncomeRule/active";
 
-      var data = 1;
+      var data = {"lat": lat, "lon": lon};
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');

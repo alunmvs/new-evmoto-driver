@@ -48,6 +48,7 @@ import 'package:new_evmoto_driver/app/utils/dialog_tags.dart';
 import 'package:new_evmoto_driver/app/utils/snackbar_helper.dart';
 import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_in_dialog.dart';
 import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_area_out_dialog.dart';
+import 'package:new_evmoto_driver/app/widgets/dialog/guarantee_income_start_dialog.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:new_evmoto_driver/app/widgets/order_payment_method_row.dart';
 import 'package:new_evmoto_driver/main.dart';
@@ -2202,6 +2203,29 @@ class HomeController extends GetxController
     }
   }
 
+  Future<void> showGuaranteeIncomeDialog() async {
+    var prefs = await SharedPreferences.getInstance();
+    var dialogGuaranteeIncomeLatestShowAt = prefs.getInt(
+      'dialog_guarantee_income_latest_show_at',
+    );
+    var now = DateTime.now();
+    var today = DateTime(now.year, now.month, now.day);
+    if (dialogGuaranteeIncomeLatestShowAt != null) {
+      if (today.millisecondsSinceEpoch == dialogGuaranteeIncomeLatestShowAt) {
+        return;
+      }
+    }
+
+    await prefs.setInt(
+      'dialog_guarantee_income_latest_show_at',
+      today.millisecondsSinceEpoch,
+    );
+    await DialogHelper.show(
+      tag: DialogTags.guaranteeIncomeStart,
+      widget: GuaranteeIncomeStartDialog(),
+    );
+  }
+
   Future<void> onSlideOrderConfirmation({
     required ActionSliderController actionController,
     required SocketOrderStatusData socketOrderStatusData,
@@ -2907,7 +2931,10 @@ class HomeController extends GetxController
 
   Future<void> getEnsureIncomeRuleId() async {
     ensureIncomeRuleId.value = await guaranteeIncomeRepository
-        .getActiveEnsureIncomeRuleId();
+        .getActiveEnsureIncomeRuleId(
+          lat: locationServices.currentLatitude.value,
+          lon: locationServices.currentLongitude.value,
+        );
   }
 
   bool isWithinGuaranteeIncomeTimeRange(String startTime, String endTime) {
@@ -2985,6 +3012,7 @@ class HomeController extends GetxController
 
       if (isInRangeExist) {
         updateGuaranteeIncomeProgressBarVisibility();
+        await showGuaranteeIncomeDialog();
       } else {
         activeGuaranteeIncomeProgressBar.value = GuaranteeIncomeProgressBar();
         guaranteeIncomeProgress.value = 0.0;
