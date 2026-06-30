@@ -79,7 +79,7 @@ class OrderPaymentPendingFeeDetailView
                           ],
                         ),
                       ),
-                      SizedBox(height: 32),
+                      SizedBox(height: 32 * 2),
                     ],
                   ),
                 ),
