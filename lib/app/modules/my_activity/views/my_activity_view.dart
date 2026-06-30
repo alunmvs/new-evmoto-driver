@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/modules/my_activity/views/my_activity_view/my_activity_coupon_income_sub_view.dart';
 import 'package:new_evmoto_driver/app/modules/my_activity/views/my_activity_view/my_activity_guarantee_income_sub_view.dart';
+import 'package:new_evmoto_driver/app/modules/my_activity/views/my_activity_view/my_activity_referral_program_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 
 import '../controllers/my_activity_controller.dart';
@@ -128,6 +129,37 @@ class MyActivityView extends GetView<MyActivityController> {
                             ],
                           ),
                         ),
+                        Tab(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "Referral Program",
+                                style: controller
+                                    .typographyServices
+                                    .bodySmallBold
+                                    .value
+                                    .copyWith(
+                                      color: controller.indexTabBar.value == 2
+                                          ? Color(0XFF272727)
+                                          : Color(0XFFB3B3B3),
+                                    ),
+                              ),
+                              SizedBox(width: 8),
+                              GestureDetector(
+                                onTap: () {
+                                  // Get.toNamed(Routes.AGREEMENT_COUPON_INCOME);
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/icons/icon_question_fill.svg",
+                                  color: controller.indexTabBar.value == 2
+                                      ? Color(0XFF272727)
+                                      : Color(0XFFB3B3B3),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -137,6 +169,7 @@ class MyActivityView extends GetView<MyActivityController> {
                       children: [
                         MyActivityGuaranteeIncomeSubView(),
                         MyActivityCouponIncomeSubView(),
+                        MyActivityReferralProgramSubView(),
                       ],
                     ),
                   ),

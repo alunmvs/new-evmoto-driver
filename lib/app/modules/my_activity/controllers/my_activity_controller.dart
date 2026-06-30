@@ -5,6 +5,7 @@ import 'package:new_evmoto_driver/app/data/models/activity_model.dart';
 import 'package:new_evmoto_driver/app/data/models/coupon_income_model.dart'
     hide Daily;
 import 'package:new_evmoto_driver/app/data/models/guarantee_income_model.dart';
+import 'package:new_evmoto_driver/app/data/models/referral_program_weekly_income_model.dart';
 import 'package:new_evmoto_driver/app/repositories/activity_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/guarantee_income_repository.dart';
 import 'package:new_evmoto_driver/app/services/language_services.dart';
@@ -82,6 +83,11 @@ class MyActivityController extends GetxController
   final Rx<DateTimeRange?> couponIncomeSelectedDateRange = Rx<DateTimeRange?>(
     null,
   );
+  final Rx<DateTimeRange?> referralProgramSelectedDateRange =
+      Rx<DateTimeRange?>(null);
+
+  // Referral Program
+  final referralProgramWeeklyIncome = <ReferralProgramWeeklyIncome>[].obs;
 
   final ensureIncomeRuleId = Rx<int?>(null);
 
@@ -91,7 +97,7 @@ class MyActivityController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     isFetch.value = true;
-    tabController ??= TabController(length: 2, vsync: this);
+    tabController ??= TabController(length: 3, vsync: this);
 
     guaranteeIncomeSelectedDateRange.value = DateTimeRange(
       start: DateTime.now(),
@@ -101,6 +107,11 @@ class MyActivityController extends GetxController
       start: DateTime.now(),
       end: DateTime.now(),
     );
+    referralProgramSelectedDateRange.value = DateTimeRange(
+      start: DateTime.now(),
+      end: DateTime.now(),
+    );
+    initReferralProgramWeeklyIncome();
 
     await Future.wait([getEnsureIncomeRuleId()]);
     await Future.wait([getGuaranteeIncome(), getCouponIncome()]);
@@ -221,6 +232,33 @@ class MyActivityController extends GetxController
       await getCouponIncome();
       await generateCouponIncomeTableData();
     }
+  }
+
+  Future<void> onTapSelectDateRangeReferralProgram({
+    required BuildContext context,
+  }) async {}
+
+  void initReferralProgramWeeklyIncome() {
+    final now = DateTime.now();
+    final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
+
+    const periodStarts = [1, 8, 16, 24];
+    const periodEnds = [7, 15, 23, 31];
+    // Sample data — replace with API response when available
+    const sampleAmounts = [420000.0, 150000.0, 1110000.0, 830000.0];
+
+    referralProgramWeeklyIncome.assignAll(
+      List.generate(periodStarts.length, (index) {
+        final end =
+            periodEnds[index] > daysInMonth ? daysInMonth : periodEnds[index];
+        return ReferralProgramWeeklyIncome(
+          label: '${periodStarts[index]} - $end',
+          startDay: periodStarts[index],
+          endDay: end,
+          amount: sampleAmounts[index],
+        );
+      }),
+    );
   }
 
   Future<void> getGuaranteeIncome() async {
