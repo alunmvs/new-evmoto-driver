@@ -180,10 +180,14 @@ class HomeController extends GetxController
     isFetch.value = true;
     tabController ??= TabController(length: 3, vsync: this);
 
-    await refreshAll();
-
-    isSendbirdInit.value = true;
-    isFetch.value = false;
+    DialogHelper.beginDeferDuringInitialLoad();
+    try {
+      await refreshAll();
+    } finally {
+      isSendbirdInit.value = true;
+      isFetch.value = false;
+      await DialogHelper.endDeferAndShowQueued();
+    }
 
     ShowcaseView.register();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -888,6 +892,7 @@ class HomeController extends GetxController
 
       var result = await DialogHelper.show<bool>(
         tag: advanceBookingTag,
+        deferDuringInitialLoad: false,
         widget: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -1539,6 +1544,7 @@ class HomeController extends GetxController
 
       await DialogHelper.show(
         tag: orderConfirmationTag,
+        deferDuringInitialLoad: false,
         widget: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

@@ -10,7 +10,58 @@ import 'package:new_evmoto_driver/app/widgets/loading_dialog.dart';
 class DialogHelper {
   DialogHelper._();
 
+  static bool _deferDuringInitialLoad = false;
+  static final List<Future<void> Function()> _deferredQueue = [];
+
+  /// Queues [show] calls until [endDeferAndShowQueued] runs.
+  ///
+  /// Used during the home screen initial load so overlays do not block
+  /// [HomeController.isFetch]. Dialogs are shown sequentially in the order
+  /// they were requested once loading finishes.
+  static void beginDeferDuringInitialLoad() {
+    _deferDuringInitialLoad = true;
+  }
+
+  static Future<void> endDeferAndShowQueued() async {
+    _deferDuringInitialLoad = false;
+    final queue = List<Future<void> Function()>.from(_deferredQueue);
+    _deferredQueue.clear();
+    for (final showTask in queue) {
+      await showTask();
+    }
+  }
+
   static Future<T?> show<T>({
+    required String tag,
+    required Widget widget,
+    bool barrierDismissible = true,
+    bool backDismiss = true,
+    bool keepSingle = true,
+    bool deferDuringInitialLoad = true,
+  }) {
+    if (_deferDuringInitialLoad && deferDuringInitialLoad) {
+      _deferredQueue.add(
+        () => _show<T>(
+          tag: tag,
+          widget: widget,
+          barrierDismissible: barrierDismissible,
+          backDismiss: backDismiss,
+          keepSingle: keepSingle,
+        ),
+      );
+      return Future<T?>.value(null);
+    }
+
+    return _show<T>(
+      tag: tag,
+      widget: widget,
+      barrierDismissible: barrierDismissible,
+      backDismiss: backDismiss,
+      keepSingle: keepSingle,
+    );
+  }
+
+  static Future<T?> _show<T>({
     required String tag,
     required Widget widget,
     bool barrierDismissible = true,
