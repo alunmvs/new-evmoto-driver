@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -36,7 +37,7 @@ import 'package:timezone/data/latest.dart' as tz;
 
 final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = ChuckerFlutter.navigatorKey;
 
 Future<void> applyProxy(ProxySetting settings) async {
   if (!settings.enabled || settings.host == null) {
@@ -49,6 +50,8 @@ Future<void> applyProxy(ProxySetting settings) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  ChuckerFlutter.showOnRelease = isChuckerEnabled;
 
   try {
     final settings = await NativeProxyReader.proxySetting;

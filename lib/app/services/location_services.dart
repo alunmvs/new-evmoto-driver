@@ -40,6 +40,15 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
 
   StreamSubscription<Position>? positionStream;
 
+  bool _hasLocationAccess(
+    LocationPermission permission,
+    bool isLocationServiceEnabled,
+  ) {
+    return isLocationServiceEnabled &&
+        (permission == LocationPermission.whileInUse ||
+            permission == LocationPermission.always);
+  }
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -75,17 +84,12 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
       var isLocationServiceEnabled =
           await Geolocator.isLocationServiceEnabled();
 
-      if (isLocationServiceEnabled == false ||
-          checkPermission == LocationPermission.denied ||
-          checkPermission == LocationPermission.deniedForever) {
-        var isLocationServiceEnabled =
-            await Geolocator.isLocationServiceEnabled();
+      if (!_hasLocationAccess(checkPermission, isLocationServiceEnabled)) {
         var permission = await Geolocator.requestPermission();
         requestPermissionCount.value += 1;
+        isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
 
-        if (isLocationServiceEnabled == false ||
-            (permission == LocationPermission.denied ||
-                permission == LocationPermission.deniedForever)) {
+        if (!_hasLocationAccess(permission, isLocationServiceEnabled)) {
           isPermissionLocationAllow.value = false;
           isRequestingPermission.value = false;
 
@@ -98,9 +102,9 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
           }
           return;
         }
-      } else {
-        isPermissionLocationAllow.value = true;
       }
+
+      isPermissionLocationAllow.value = true;
 
       if (positionStream == null) {
         var locationSettings = LocationSettings(
@@ -140,9 +144,7 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
       var checkPermission = await Geolocator.checkPermission();
       var isLocationServiceEnabled =
           await Geolocator.isLocationServiceEnabled();
-      if (isLocationServiceEnabled == false ||
-          checkPermission == LocationPermission.denied ||
-          checkPermission == LocationPermission.deniedForever) {
+      if (!_hasLocationAccess(checkPermission, isLocationServiceEnabled)) {
         isPermissionLocationAllow.value = false;
         isRequestingPermission.value = false;
 
@@ -150,9 +152,9 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
         currentLatitude.value = null;
         currentLongitude.value = null;
         return;
-      } else {
-        isPermissionLocationAllow.value = true;
       }
+
+      isPermissionLocationAllow.value = true;
 
       var locationSettings = LocationSettings(
         accuracy: LocationAccuracy.bestForNavigation,
@@ -254,7 +256,9 @@ class LocationServices extends GetxService with WidgetsBindingObserver {
                             ),
                             GestureDetector(
                               onTap: () {
-                                DialogHelper.dismiss(DialogTags.locationPermission);
+                                DialogHelper.dismiss(
+                                  DialogTags.locationPermission,
+                                );
                               },
                               child: Container(
                                 width: 24,

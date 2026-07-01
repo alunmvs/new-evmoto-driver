@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/environment.dart';
 
 import '../controllers/account_controller.dart';
 
@@ -846,6 +848,78 @@ class AccountView extends GetView<AccountController> {
                                           color: Color(0XFFE8E8E8),
                                         ),
                                       ),
+                                      if (isChuckerEnabled) ...[
+                                        GestureDetector(
+                                          onTap: () async {
+                                            ChuckerFlutter.showChuckerScreen();
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(16),
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: 22,
+                                                  height: 22,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                        "assets/icons/icon_account_document.svg",
+                                                        width: 16.5,
+                                                        height: 18.33,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(width: 16),
+                                                Expanded(
+                                                  child: Text(
+                                                    "Chucker Debug",
+                                                    style: controller
+                                                        .typographyServices
+                                                        .bodySmallBold
+                                                        .value,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 16),
+                                                SizedBox(
+                                                  width: 19,
+                                                  height: 19,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                        "assets/icons/icon_arrow_right.svg",
+                                                        width: 4.75,
+                                                        height: 9.5,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: Divider(
+                                            height: 0,
+                                            color: Color(0XFFE8E8E8),
+                                          ),
+                                        ),
+                                      ],
                                       GestureDetector(
                                         onTap: () {
                                           Get.toNamed(

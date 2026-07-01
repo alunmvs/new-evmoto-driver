@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_curl_logger/dio_curl_logger.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/services/auth_service.dart';
+import 'package:new_evmoto_driver/environment.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:uuid/uuid.dart';
 
@@ -45,8 +47,13 @@ class ApiServices extends GetxService {
     //       return client;
     //     };
 
+    dio.interceptors.add(ChuckerDioInterceptor());
+
     dio.interceptors.add(
-      CurlLoggingInterceptor(showRequestLog: false, showResponseLog: false),
+      CurlLoggingInterceptor(
+        showRequestLog: isCurlLoggingEnabled,
+        showResponseLog: isCurlLoggingEnabled,
+      ),
     );
 
     dio.interceptors.add(
