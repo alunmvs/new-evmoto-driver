@@ -516,7 +516,9 @@ class HistoryBalanceRevenueView
                                                   locale: 'id_ID',
                                                   symbol: 'Rp',
                                                   decimalDigits: 0,
-                                                ).format(revenue.payMoney),
+                                                ).format(
+                                                  revenue.netIncome ?? 0.0,
+                                                ),
                                                 style: controller
                                                     .typographyServices
                                                     .bodySmallBold

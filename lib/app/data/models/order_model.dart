@@ -28,6 +28,7 @@ class Order {
   int? advanceBookingState;
   int? payType;
   String? pickupNote;
+  double? netIncome;
 
   Order({
     this.id,
@@ -57,6 +58,7 @@ class Order {
     this.advanceBookingState,
     this.payType,
     this.pickupNote,
+    this.netIncome,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -87,6 +89,7 @@ class Order {
     advanceBookingTravelTime = json['advanceBookingTravelTime'];
     payType = int.tryParse(json['payType']?.toString() ?? '');
     pickupNote = json['pickupNote'];
+    netIncome = json['netIncome'];
   }
 
   Map<String, dynamic> toJson() {
@@ -117,6 +120,8 @@ class Order {
     data['advanceBookingState'] = this.advanceBookingState;
     data['advanceBookingTravelTime'] = this.advanceBookingTravelTime;
     data['payType'] = this.payType;
+    data['pickupNote'] = this.pickupNote;
+    data['netIncome'] = this.netIncome;
     return data;
   }
 }

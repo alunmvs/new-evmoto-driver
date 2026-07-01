@@ -49,6 +49,7 @@ class Revenue {
   double? additionalCharge;
   double? collectionFees;
   dynamic subsidy;
+  double? netIncome;
 
   Revenue({
     this.orderId,
@@ -72,6 +73,7 @@ class Revenue {
     this.additionalCharge,
     this.collectionFees,
     this.subsidy,
+    this.netIncome,
   });
 
   Revenue.fromJson(Map<String, dynamic> json) {
@@ -96,6 +98,7 @@ class Revenue {
     additionalCharge = json['additionalCharge'];
     collectionFees = json['collectionFees'];
     subsidy = json['subsidy'];
+    netIncome = json['netIncome'];
   }
 
   Map<String, dynamic> toJson() {
@@ -121,6 +124,7 @@ class Revenue {
     data['additionalCharge'] = this.additionalCharge;
     data['collectionFees'] = this.collectionFees;
     data['subsidy'] = this.subsidy;
+    data['netIncome'] = this.netIncome;
     return data;
   }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:action_slider/action_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -223,6 +224,18 @@ class HomeController extends GetxController
     guaranteeIncomeVisibilityTimer?.cancel();
   }
 
+  Future<void> precacheImageAll() async {
+    var driverGuaranteeIncomeBanner = firebaseRemoteConfigServices.remoteConfig
+        .getString("driver_guarantee_income_banner");
+
+    if (driverGuaranteeIncomeBanner != '') {
+      await precacheImage(
+        CachedNetworkImageProvider(driverGuaranteeIncomeBanner),
+        navigatorKey.currentContext!,
+      );
+    }
+  }
+
   // Working Time Schedule
   Future<void> getServiceTimeScheduleList() async {
     var serviceTimeScheduleList = <ServiceTimeSchedule>[];
@@ -437,6 +450,7 @@ class HomeController extends GetxController
       getServiceOrderList(),
       getWorking(),
       getEnsureIncomeRuleId(),
+      precacheImageAll(),
     ]);
 
     await Future.wait([
