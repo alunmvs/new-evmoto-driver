@@ -57,7 +57,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends GetxController
@@ -190,7 +189,6 @@ class HomeController extends GetxController
       await DialogHelper.endDeferAndShowQueued();
     }
 
-    ShowcaseView.register();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await checkAppVersioning(isShowVersionNewestConfirmationDialog: false);
 
@@ -2393,17 +2391,6 @@ class HomeController extends GetxController
                                   DialogHelper.dismiss(DialogTags.coachmark);
 
                                   isCoachmarkActive.value = true;
-
-                                  ShowcaseView.get().startShowCase([
-                                    activityStatisticsGlobalKey,
-                                    buttonSeeAllMyActivityGlobalKey,
-                                    buttonOfflineOnlineGlobalKey,
-                                    balanceGlobalKey,
-                                    topUpGlobalKey,
-                                    withdrawGlobalKey,
-                                    historyGlobalKey,
-                                    menuGlobalKey,
-                                  ]);
                                 },
                                 child: Text(
                                   languageServices

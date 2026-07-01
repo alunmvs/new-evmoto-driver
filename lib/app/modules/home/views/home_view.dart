@@ -16,7 +16,6 @@ import 'package:new_evmoto_driver/app/routes/app_pages.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../controllers/home_controller.dart';
 import 'package:intl/intl.dart';
@@ -154,155 +153,7 @@ class HomeView extends GetView<HomeController> {
                                                           ),
                                                           Column(
                                                             children: [
-                                                              Showcase.withWidget(
-                                                                disableBarrierInteraction:
-                                                                    true,
-                                                                key: controller
-                                                                    .activityStatisticsGlobalKey,
-                                                                onTargetClick:
-                                                                    () {},
-                                                                disposeOnTap:
-                                                                    false,
-                                                                targetBorderRadius:
-                                                                    BorderRadius.circular(
-                                                                      16,
-                                                                    ),
-                                                                targetShapeBorder:
-                                                                    RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                            16,
-                                                                          ),
-                                                                    ),
-                                                                container: Stack(
-                                                                  children: [
-                                                                    Positioned(
-                                                                      left: 0,
-                                                                      right: 0,
-                                                                      child: Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                        children: [
-                                                                          Transform.rotate(
-                                                                            angle:
-                                                                                45 *
-                                                                                3.1415926535 /
-                                                                                180,
-                                                                            child: Container(
-                                                                              width: 16,
-                                                                              height: 16,
-                                                                              decoration: BoxDecoration(
-                                                                                color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                borderRadius: BorderRadius.only(
-                                                                                  topLeft: Radius.circular(
-                                                                                    4,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    Column(
-                                                                      children: [
-                                                                        SizedBox(
-                                                                          height:
-                                                                              8,
-                                                                        ),
-                                                                        Container(
-                                                                          padding: EdgeInsets.all(
-                                                                            16,
-                                                                          ),
-                                                                          width: MediaQuery.of(
-                                                                            context,
-                                                                          ).size.width,
-                                                                          decoration: BoxDecoration(
-                                                                            color:
-                                                                                controller.themeColorServices.neutralsColorGrey0.value,
-                                                                            borderRadius: BorderRadius.circular(
-                                                                              16,
-                                                                            ),
-                                                                          ),
-                                                                          child: Column(
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.start,
-                                                                            children:
-                                                                                <
-                                                                                  Widget
-                                                                                >[
-                                                                                  Text(
-                                                                                    controller.languageServices.language.value.coachmarkTitle1 ??
-                                                                                        "-",
-                                                                                    style: controller.typographyServices.bodyLargeBold.value.copyWith(
-                                                                                      color: controller.themeColorServices.textColor.value,
-                                                                                    ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 4,
-                                                                                  ),
-                                                                                  Text(
-                                                                                    controller.languageServices.language.value.coachmarkDescription1 ??
-                                                                                        "-",
-                                                                                    style: controller.typographyServices.bodySmallRegular.value.copyWith(
-                                                                                      color: controller.themeColorServices.textColor.value,
-                                                                                    ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 16,
-                                                                                  ),
-                                                                                  Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                    children: [
-                                                                                      Text(
-                                                                                        "1/8",
-                                                                                        style: controller.typographyServices.captionLargeBold.value.copyWith(
-                                                                                          color: controller.themeColorServices.neutralsColorGrey500.value,
-                                                                                        ),
-                                                                                      ),
-                                                                                      SizedBox(
-                                                                                        height: 30,
-                                                                                        child: ElevatedButton(
-                                                                                          onPressed: () {
-                                                                                            ShowcaseView.get().next();
-                                                                                          },
-                                                                                          style: ElevatedButton.styleFrom(
-                                                                                            backgroundColor: controller.themeColorServices.primaryBlue.value,
-                                                                                            shape: RoundedRectangleBorder(
-                                                                                              borderRadius: BorderRadius.circular(
-                                                                                                8,
-                                                                                              ),
-                                                                                            ),
-                                                                                            padding: EdgeInsets.symmetric(
-                                                                                              horizontal: 16,
-                                                                                              vertical: 0,
-                                                                                            ),
-                                                                                          ),
-                                                                                          child: Center(
-                                                                                            child: Text(
-                                                                                              controller.languageServices.language.value.buttonNext1 ??
-                                                                                                  "-",
-                                                                                              style: controller.typographyServices.bodySmallBold.value.copyWith(
-                                                                                                color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                              ),
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ],
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                child:
-                                                                    HomeStatisticsCardSubView(),
-                                                              ),
+                                                              HomeStatisticsCardSubView(),
                                                             ],
                                                           ),
                                                         ],
@@ -330,303 +181,133 @@ class HomeView extends GetView<HomeController> {
                                                           const EdgeInsets.symmetric(
                                                             horizontal: 16,
                                                           ),
-                                                      child: Showcase.withWidget(
-                                                        disableBarrierInteraction:
-                                                            true,
-                                                        key: controller
-                                                            .buttonSeeAllMyActivityGlobalKey,
-                                                        onTargetClick: () {},
-                                                        disposeOnTap: false,
-                                                        targetBorderRadius:
-                                                            BorderRadius.circular(
-                                                              16,
-                                                            ),
-                                                        targetShapeBorder:
-                                                            RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    16,
-                                                                  ),
-                                                            ),
-                                                        container: Stack(
-                                                          children: [
-                                                            Positioned(
-                                                              left: 0,
-                                                              right: 0,
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Transform.rotate(
-                                                                    angle:
-                                                                        45 *
-                                                                        3.1415926535 /
-                                                                        180,
-                                                                    child: Container(
-                                                                      width: 16,
-                                                                      height:
-                                                                          16,
-                                                                      decoration: BoxDecoration(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .neutralsColorGrey0
-                                                                            .value,
-                                                                        borderRadius: BorderRadius.only(
-                                                                          topLeft:
-                                                                              Radius.circular(
-                                                                                4,
-                                                                              ),
-                                                                        ),
-                                                                      ),
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: GestureDetector(
+                                                              onTap: () async {
+                                                                await Get.toNamed(
+                                                                  Routes
+                                                                      .MY_ORDER,
+                                                                );
+                                                                await controller
+                                                                    .refreshAll();
+                                                                // await controller
+                                                                //     .showDialogAndSnackbarGuaranteeIncomeAreaOut();
+                                                              },
+                                                              child: Container(
+                                                                padding:
+                                                                    EdgeInsets.all(
+                                                                      16,
                                                                     ),
+                                                                width:
+                                                                    MediaQuery.of(
+                                                                      context,
+                                                                    ).size.width,
+                                                                decoration: BoxDecoration(
+                                                                  color: Color(
+                                                                    0XFF0052AA,
                                                                   ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: 8,
-                                                                ),
-                                                                Container(
-                                                                  padding:
-                                                                      EdgeInsets.all(
-                                                                        16,
-                                                                      ),
-                                                                  width: MediaQuery.of(
-                                                                    context,
-                                                                  ).size.width,
-                                                                  decoration: BoxDecoration(
-                                                                    color: controller
-                                                                        .themeColorServices
-                                                                        .neutralsColorGrey0
-                                                                        .value,
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
+                                                                  borderRadius: BorderRadius.only(
+                                                                    bottomLeft:
+                                                                        Radius.circular(
                                                                           16,
                                                                         ),
-                                                                  ),
-                                                                  child: Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: <Widget>[
-                                                                      Text(
-                                                                        controller.languageServices.language.value.coachmarkTitle2 ??
-                                                                            "-",
-                                                                        style: controller
-                                                                            .typographyServices
-                                                                            .bodyLargeBold
-                                                                            .value
-                                                                            .copyWith(
-                                                                              color: controller.themeColorServices.textColor.value,
-                                                                            ),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            4,
-                                                                      ),
-                                                                      Text(
-                                                                        controller.languageServices.language.value.coachmarkDescription2 ??
-                                                                            "-",
-                                                                        style: controller
-                                                                            .typographyServices
-                                                                            .bodySmallRegular
-                                                                            .value
-                                                                            .copyWith(
-                                                                              color: controller.themeColorServices.textColor.value,
-                                                                            ),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            16,
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        children: [
-                                                                          Text(
-                                                                            "2/8",
-                                                                            style: controller.typographyServices.captionLargeBold.value.copyWith(
-                                                                              color: controller.themeColorServices.neutralsColorGrey500.value,
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                30,
-                                                                            child: ElevatedButton(
-                                                                              onPressed: () {
-                                                                                ShowcaseView.get().next();
-                                                                                Future.delayed(
-                                                                                  Duration(
-                                                                                    milliseconds: 500,
-                                                                                  ),
-                                                                                ).whenComplete(
-                                                                                  () {
-                                                                                    controller.coachmarkWorkStatus.value = 1;
-                                                                                  },
-                                                                                );
-                                                                              },
-                                                                              style: ElevatedButton.styleFrom(
-                                                                                backgroundColor: controller.themeColorServices.primaryBlue.value,
-                                                                                shape: RoundedRectangleBorder(
-                                                                                  borderRadius: BorderRadius.circular(
-                                                                                    8,
-                                                                                  ),
-                                                                                ),
-                                                                                padding: EdgeInsets.symmetric(
-                                                                                  horizontal: 16,
-                                                                                  vertical: 0,
-                                                                                ),
-                                                                              ),
-                                                                              child: Center(
-                                                                                child: Text(
-                                                                                  controller.languageServices.language.value.buttonNext1 ??
-                                                                                      "-",
-                                                                                  style: controller.typographyServices.bodySmallBold.value.copyWith(
-                                                                                    color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
+                                                                    bottomRight:
+                                                                        Radius.circular(
+                                                                          0,
+                                                                        ),
                                                                   ),
                                                                 ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child: GestureDetector(
-                                                                onTap: () async {
-                                                                  await Get.toNamed(
-                                                                    Routes
-                                                                        .MY_ORDER,
-                                                                  );
-                                                                  await controller
-                                                                      .refreshAll();
-                                                                  // await controller
-                                                                  //     .showDialogAndSnackbarGuaranteeIncomeAreaOut();
-                                                                },
-                                                                child: Container(
-                                                                  padding:
-                                                                      EdgeInsets.all(
-                                                                        16,
-                                                                      ),
-                                                                  width: MediaQuery.of(
-                                                                    context,
-                                                                  ).size.width,
-                                                                  decoration: BoxDecoration(
-                                                                    color: Color(
-                                                                      0XFF0052AA,
-                                                                    ),
-                                                                    borderRadius: BorderRadius.only(
-                                                                      bottomLeft:
-                                                                          Radius.circular(
-                                                                            16,
-                                                                          ),
-                                                                      bottomRight:
-                                                                          Radius.circular(
-                                                                            0,
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .end,
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Order Saya",
+                                                                      style: controller
+                                                                          .typographyServices
+                                                                          .bodySmallBold
+                                                                          .value
+                                                                          .copyWith(
+                                                                            color:
+                                                                                controller.themeColorServices.neutralsColorGrey0.value,
                                                                           ),
                                                                     ),
-                                                                  ),
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .end,
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .min,
-                                                                    children: [
-                                                                      Text(
-                                                                        "Order Saya",
-                                                                        style: controller
-                                                                            .typographyServices
-                                                                            .bodySmallBold
-                                                                            .value
-                                                                            .copyWith(
-                                                                              color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                            ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
+                                                                  ],
                                                                 ),
                                                               ),
                                                             ),
-                                                            Expanded(
-                                                              child: GestureDetector(
-                                                                onTap: () async {
-                                                                  await Get.toNamed(
-                                                                    Routes
-                                                                        .MY_ACTIVITY,
-                                                                  );
-                                                                  await controller
-                                                                      .refreshAll();
-                                                                },
-                                                                child: Container(
-                                                                  padding:
-                                                                      EdgeInsets.all(
-                                                                        16,
-                                                                      ),
-                                                                  width: MediaQuery.of(
-                                                                    context,
-                                                                  ).size.width,
-                                                                  decoration: BoxDecoration(
-                                                                    color: Color(
-                                                                      0XFF0052AA,
+                                                          ),
+                                                          Expanded(
+                                                            child: GestureDetector(
+                                                              onTap: () async {
+                                                                await Get.toNamed(
+                                                                  Routes
+                                                                      .MY_ACTIVITY,
+                                                                );
+                                                                await controller
+                                                                    .refreshAll();
+                                                              },
+                                                              child: Container(
+                                                                padding:
+                                                                    EdgeInsets.all(
+                                                                      16,
                                                                     ),
-                                                                    borderRadius: BorderRadius.only(
-                                                                      bottomLeft:
-                                                                          Radius.circular(
-                                                                            0,
-                                                                          ),
-                                                                      bottomRight:
-                                                                          Radius.circular(
-                                                                            16,
+                                                                width:
+                                                                    MediaQuery.of(
+                                                                      context,
+                                                                    ).size.width,
+                                                                decoration: BoxDecoration(
+                                                                  color: Color(
+                                                                    0XFF0052AA,
+                                                                  ),
+                                                                  borderRadius: BorderRadius.only(
+                                                                    bottomLeft:
+                                                                        Radius.circular(
+                                                                          0,
+                                                                        ),
+                                                                    bottomRight:
+                                                                        Radius.circular(
+                                                                          16,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .end,
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Aktivitas Saya",
+                                                                      style: controller
+                                                                          .typographyServices
+                                                                          .bodySmallBold
+                                                                          .value
+                                                                          .copyWith(
+                                                                            color:
+                                                                                controller.themeColorServices.neutralsColorGrey0.value,
                                                                           ),
                                                                     ),
-                                                                  ),
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .end,
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .min,
-                                                                    children: [
-                                                                      Text(
-                                                                        "Aktivitas Saya",
-                                                                        style: controller
-                                                                            .typographyServices
-                                                                            .bodySmallBold
-                                                                            .value
-                                                                            .copyWith(
-                                                                              color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                            ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
+                                                                  ],
                                                                 ),
                                                               ),
                                                             ),
-                                                          ],
-                                                        ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ],
@@ -686,746 +367,129 @@ class HomeView extends GetView<HomeController> {
                                                         child: Row(
                                                           children: [
                                                             Expanded(
-                                                              child: Showcase.withWidget(
-                                                                targetPadding:
-                                                                    EdgeInsets.only(
-                                                                      top: 16,
-                                                                      right: 16,
-                                                                      left: 16,
-                                                                      bottom:
-                                                                          16,
-                                                                    ),
-                                                                disableBarrierInteraction:
-                                                                    true,
-                                                                key: controller
-                                                                    .balanceGlobalKey,
-                                                                onTargetClick:
-                                                                    () {},
-                                                                disposeOnTap:
-                                                                    false,
-                                                                targetBorderRadius:
-                                                                    BorderRadius.circular(
-                                                                      16,
-                                                                    ),
-                                                                targetShapeBorder:
-                                                                    RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                            16,
-                                                                          ),
-                                                                    ),
-                                                                container: Stack(
-                                                                  children: [
-                                                                    Positioned(
-                                                                      left:
-                                                                          16 *
-                                                                          5,
-                                                                      child: Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                        children: [
-                                                                          Transform.rotate(
-                                                                            angle:
-                                                                                45 *
-                                                                                3.1415926535 /
-                                                                                180,
-                                                                            child: Container(
-                                                                              width: 16,
-                                                                              height: 16,
-                                                                              decoration: BoxDecoration(
-                                                                                color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                borderRadius: BorderRadius.only(
-                                                                                  topLeft: Radius.circular(
-                                                                                    4,
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    Column(
-                                                                      children: [
-                                                                        SizedBox(
-                                                                          height:
-                                                                              8,
-                                                                        ),
-                                                                        Container(
-                                                                          padding: EdgeInsets.all(
-                                                                            16,
-                                                                          ),
-                                                                          width: MediaQuery.of(
-                                                                            context,
-                                                                          ).size.width,
-                                                                          decoration: BoxDecoration(
-                                                                            color:
-                                                                                controller.themeColorServices.neutralsColorGrey0.value,
-                                                                            borderRadius: BorderRadius.circular(
-                                                                              16,
-                                                                            ),
-                                                                          ),
-                                                                          child: Column(
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.start,
-                                                                            children:
-                                                                                <
-                                                                                  Widget
-                                                                                >[
-                                                                                  Text(
-                                                                                    controller.languageServices.language.value.coachmarkTitle4 ??
-                                                                                        "-",
-                                                                                    style: controller.typographyServices.bodyLargeBold.value.copyWith(
-                                                                                      color: controller.themeColorServices.textColor.value,
-                                                                                    ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 4,
-                                                                                  ),
-                                                                                  Text(
-                                                                                    controller.languageServices.language.value.coachmarkDescription4 ??
-                                                                                        "-",
-                                                                                    style: controller.typographyServices.bodySmallRegular.value.copyWith(
-                                                                                      color: controller.themeColorServices.textColor.value,
-                                                                                    ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 16,
-                                                                                  ),
-                                                                                  Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                    children: [
-                                                                                      Text(
-                                                                                        "4/8",
-                                                                                        style: controller.typographyServices.captionLargeBold.value.copyWith(
-                                                                                          color: controller.themeColorServices.neutralsColorGrey500.value,
-                                                                                        ),
-                                                                                      ),
-                                                                                      SizedBox(
-                                                                                        height: 30,
-                                                                                        child: ElevatedButton(
-                                                                                          onPressed: () {
-                                                                                            ShowcaseView.get().next();
-                                                                                          },
-                                                                                          style: ElevatedButton.styleFrom(
-                                                                                            backgroundColor: controller.themeColorServices.primaryBlue.value,
-                                                                                            shape: RoundedRectangleBorder(
-                                                                                              borderRadius: BorderRadius.circular(
-                                                                                                8,
-                                                                                              ),
-                                                                                            ),
-                                                                                            padding: EdgeInsets.symmetric(
-                                                                                              horizontal: 16,
-                                                                                              vertical: 0,
-                                                                                            ),
-                                                                                          ),
-                                                                                          child: Center(
-                                                                                            child: Text(
-                                                                                              controller.languageServices.language.value.buttonNext1 ??
-                                                                                                  "-",
-                                                                                              style: controller.typographyServices.bodySmallBold.value.copyWith(
-                                                                                                color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                              ),
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ],
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                child:
-                                                                    HomeBalanceSubView(),
-                                                              ),
+                                                              child:
+                                                                  HomeBalanceSubView(),
                                                             ),
                                                             SizedBox(width: 8),
                                                             Row(
                                                               children: [
-                                                                Showcase.withWidget(
-                                                                  targetPadding:
-                                                                      EdgeInsets.only(
-                                                                        top: 16,
-                                                                        right:
-                                                                            16,
-                                                                        left:
-                                                                            16,
-                                                                        bottom:
-                                                                            16,
-                                                                      ),
-                                                                  disableBarrierInteraction:
-                                                                      true,
-                                                                  key: controller
-                                                                      .topUpGlobalKey,
-                                                                  onTargetClick:
-                                                                      () {},
-                                                                  disposeOnTap:
-                                                                      false,
-                                                                  targetBorderRadius:
-                                                                      BorderRadius.circular(
-                                                                        16,
-                                                                      ),
-                                                                  targetShapeBorder:
-                                                                      RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                              16,
-                                                                            ),
-                                                                      ),
-                                                                  container: Stack(
-                                                                    children: [
-                                                                      Positioned(
-                                                                        right:
-                                                                            16 *
-                                                                            10.25,
-                                                                        child: Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            Transform.rotate(
-                                                                              angle:
-                                                                                  45 *
-                                                                                  3.1415926535 /
-                                                                                  180,
-                                                                              child: Container(
-                                                                                width: 16,
-                                                                                height: 16,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                  borderRadius: BorderRadius.only(
-                                                                                    topLeft: Radius.circular(
-                                                                                      4,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                      Column(
-                                                                        children: [
-                                                                          SizedBox(
-                                                                            height:
-                                                                                8,
-                                                                          ),
-                                                                          Container(
-                                                                            padding: EdgeInsets.all(
-                                                                              16,
-                                                                            ),
-                                                                            width: MediaQuery.of(
-                                                                              context,
-                                                                            ).size.width,
-                                                                            decoration: BoxDecoration(
-                                                                              color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                16,
-                                                                              ),
-                                                                            ),
-                                                                            child: Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children:
-                                                                                  <
-                                                                                    Widget
-                                                                                  >[
-                                                                                    Text(
-                                                                                      controller.languageServices.language.value.coachmarkTitle5 ??
-                                                                                          "-",
-                                                                                      style: controller.typographyServices.bodyLargeBold.value.copyWith(
-                                                                                        color: controller.themeColorServices.textColor.value,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      height: 4,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      controller.languageServices.language.value.coachmarkDescription5 ??
-                                                                                          "-",
-                                                                                      style: controller.typographyServices.bodySmallRegular.value.copyWith(
-                                                                                        color: controller.themeColorServices.textColor.value,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      height: 16,
-                                                                                    ),
-                                                                                    Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                      children: [
-                                                                                        Text(
-                                                                                          "5/8",
-                                                                                          style: controller.typographyServices.captionLargeBold.value.copyWith(
-                                                                                            color: controller.themeColorServices.neutralsColorGrey500.value,
-                                                                                          ),
-                                                                                        ),
-                                                                                        SizedBox(
-                                                                                          height: 30,
-                                                                                          child: ElevatedButton(
-                                                                                            onPressed: () {
-                                                                                              ShowcaseView.get().next();
-                                                                                            },
-                                                                                            style: ElevatedButton.styleFrom(
-                                                                                              backgroundColor: controller.themeColorServices.primaryBlue.value,
-                                                                                              shape: RoundedRectangleBorder(
-                                                                                                borderRadius: BorderRadius.circular(
-                                                                                                  8,
-                                                                                                ),
-                                                                                              ),
-                                                                                              padding: EdgeInsets.symmetric(
-                                                                                                horizontal: 16,
-                                                                                                vertical: 0,
-                                                                                              ),
-                                                                                            ),
-                                                                                            child: Center(
-                                                                                              child: Text(
-                                                                                                controller.languageServices.language.value.buttonNext1 ??
-                                                                                                    "-",
-                                                                                                style: controller.typographyServices.bodySmallBold.value.copyWith(
-                                                                                                  color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                                ),
-                                                                                              ),
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ],
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  child: GestureDetector(
-                                                                    onTap: () async {
-                                                                      await Get.toNamed(
-                                                                        Routes
-                                                                            .DEPOSIT_BALANCE,
-                                                                      );
+                                                                GestureDetector(
+                                                                  onTap: () async {
+                                                                    await Get.toNamed(
+                                                                      Routes
+                                                                          .DEPOSIT_BALANCE,
+                                                                    );
 
-                                                                      await controller
-                                                                          .refreshAll();
-                                                                    },
-                                                                    child: Container(
-                                                                      color: Colors
-                                                                          .transparent,
-                                                                      child: Column(
-                                                                        children: [
-                                                                          SvgPicture.asset(
-                                                                            "assets/icons/icon_add_circle.svg",
-                                                                            width:
-                                                                                18,
-                                                                            height:
-                                                                                18,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                4,
-                                                                          ),
-                                                                          Text(
-                                                                            controller.languageServices.language.value.recharge ??
-                                                                                "-",
-                                                                            style:
-                                                                                controller.typographyServices.captionLargeRegular.value,
-                                                                          ),
-                                                                        ],
-                                                                      ),
+                                                                    await controller
+                                                                        .refreshAll();
+                                                                  },
+                                                                  child: Container(
+                                                                    color: Colors
+                                                                        .transparent,
+                                                                    child: Column(
+                                                                      children: [
+                                                                        SvgPicture.asset(
+                                                                          "assets/icons/icon_add_circle.svg",
+                                                                          width:
+                                                                              18,
+                                                                          height:
+                                                                              18,
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              4,
+                                                                        ),
+                                                                        Text(
+                                                                          controller.languageServices.language.value.recharge ??
+                                                                              "-",
+                                                                          style: controller
+                                                                              .typographyServices
+                                                                              .captionLargeRegular
+                                                                              .value,
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                   ),
                                                                 ),
                                                                 SizedBox(
                                                                   width: 6,
                                                                 ),
-                                                                Showcase.withWidget(
-                                                                  targetPadding:
-                                                                      EdgeInsets.only(
-                                                                        top: 16,
-                                                                        right:
-                                                                            16,
-                                                                        left:
-                                                                            16,
-                                                                        bottom:
-                                                                            16,
-                                                                      ),
-                                                                  disableBarrierInteraction:
-                                                                      true,
-                                                                  key: controller
-                                                                      .withdrawGlobalKey,
-                                                                  onTargetClick:
-                                                                      () {},
-                                                                  disposeOnTap:
-                                                                      false,
-                                                                  targetBorderRadius:
-                                                                      BorderRadius.circular(
-                                                                        16,
-                                                                      ),
-                                                                  targetShapeBorder:
-                                                                      RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                              16,
-                                                                            ),
-                                                                      ),
-                                                                  container: Stack(
-                                                                    children: [
-                                                                      Positioned(
-                                                                        right:
-                                                                            16 *
-                                                                            6,
-                                                                        child: Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            Transform.rotate(
-                                                                              angle:
-                                                                                  45 *
-                                                                                  3.1415926535 /
-                                                                                  180,
-                                                                              child: Container(
-                                                                                width: 16,
-                                                                                height: 16,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                  borderRadius: BorderRadius.only(
-                                                                                    topLeft: Radius.circular(
-                                                                                      4,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                      Column(
-                                                                        children: [
-                                                                          SizedBox(
-                                                                            height:
-                                                                                8,
-                                                                          ),
-                                                                          Container(
-                                                                            padding: EdgeInsets.all(
-                                                                              16,
-                                                                            ),
-                                                                            width: MediaQuery.of(
-                                                                              context,
-                                                                            ).size.width,
-                                                                            decoration: BoxDecoration(
-                                                                              color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                16,
-                                                                              ),
-                                                                            ),
-                                                                            child: Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children:
-                                                                                  <
-                                                                                    Widget
-                                                                                  >[
-                                                                                    Text(
-                                                                                      controller.languageServices.language.value.coachmarkTitle6 ??
-                                                                                          "-",
-                                                                                      style: controller.typographyServices.bodyLargeBold.value.copyWith(
-                                                                                        color: controller.themeColorServices.textColor.value,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      height: 4,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      controller.languageServices.language.value.coachmarkDescription6 ??
-                                                                                          "-",
-                                                                                      style: controller.typographyServices.bodySmallRegular.value.copyWith(
-                                                                                        color: controller.themeColorServices.textColor.value,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      height: 16,
-                                                                                    ),
-                                                                                    Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                      children: [
-                                                                                        Text(
-                                                                                          "6/8",
-                                                                                          style: controller.typographyServices.captionLargeBold.value.copyWith(
-                                                                                            color: controller.themeColorServices.neutralsColorGrey500.value,
-                                                                                          ),
-                                                                                        ),
-                                                                                        SizedBox(
-                                                                                          height: 30,
-                                                                                          child: ElevatedButton(
-                                                                                            onPressed: () {
-                                                                                              ShowcaseView.get().next();
-                                                                                            },
-                                                                                            style: ElevatedButton.styleFrom(
-                                                                                              backgroundColor: controller.themeColorServices.primaryBlue.value,
-                                                                                              shape: RoundedRectangleBorder(
-                                                                                                borderRadius: BorderRadius.circular(
-                                                                                                  8,
-                                                                                                ),
-                                                                                              ),
-                                                                                              padding: EdgeInsets.symmetric(
-                                                                                                horizontal: 16,
-                                                                                                vertical: 0,
-                                                                                              ),
-                                                                                            ),
-                                                                                            child: Center(
-                                                                                              child: Text(
-                                                                                                "Lanjut",
-                                                                                                style: controller.typographyServices.bodySmallBold.value.copyWith(
-                                                                                                  color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                                ),
-                                                                                              ),
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ],
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  child: GestureDetector(
-                                                                    onTap: () async {
-                                                                      await Get.toNamed(
-                                                                        Routes
-                                                                            .WITHDRAW,
-                                                                      );
+                                                                GestureDetector(
+                                                                  onTap: () async {
+                                                                    await Get.toNamed(
+                                                                      Routes
+                                                                          .WITHDRAW,
+                                                                    );
 
-                                                                      await controller
-                                                                          .refreshAll();
-                                                                    },
-                                                                    child: Container(
-                                                                      color: Colors
-                                                                          .transparent,
-                                                                      child: Column(
-                                                                        children: [
-                                                                          SvgPicture.asset(
-                                                                            "assets/icons/icon_withdraw.svg",
-                                                                            width:
-                                                                                19,
-                                                                            height:
-                                                                                19,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                4,
-                                                                          ),
-                                                                          Text(
-                                                                            controller.languageServices.language.value.withdraw ??
-                                                                                "-",
-                                                                            style:
-                                                                                controller.typographyServices.captionLargeRegular.value,
-                                                                          ),
-                                                                        ],
-                                                                      ),
+                                                                    await controller
+                                                                        .refreshAll();
+                                                                  },
+                                                                  child: Container(
+                                                                    color: Colors
+                                                                        .transparent,
+                                                                    child: Column(
+                                                                      children: [
+                                                                        SvgPicture.asset(
+                                                                          "assets/icons/icon_withdraw.svg",
+                                                                          width:
+                                                                              19,
+                                                                          height:
+                                                                              19,
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              4,
+                                                                        ),
+                                                                        Text(
+                                                                          controller.languageServices.language.value.withdraw ??
+                                                                              "-",
+                                                                          style: controller
+                                                                              .typographyServices
+                                                                              .captionLargeRegular
+                                                                              .value,
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                   ),
                                                                 ),
+
                                                                 SizedBox(
                                                                   width: 6,
                                                                 ),
-                                                                Showcase.withWidget(
-                                                                  targetPadding:
-                                                                      EdgeInsets.only(
-                                                                        top: 16,
-                                                                        right:
-                                                                            16,
-                                                                        left:
-                                                                            16,
-                                                                        bottom:
-                                                                            16,
-                                                                      ),
-                                                                  disableBarrierInteraction:
-                                                                      true,
-                                                                  key: controller
-                                                                      .historyGlobalKey,
-                                                                  onTargetClick:
-                                                                      () {},
-                                                                  disposeOnTap:
-                                                                      false,
-                                                                  targetBorderRadius:
-                                                                      BorderRadius.circular(
-                                                                        16,
-                                                                      ),
-                                                                  targetShapeBorder:
-                                                                      RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(
-                                                                              16,
-                                                                            ),
-                                                                      ),
-                                                                  container: Stack(
-                                                                    children: [
-                                                                      Positioned(
-                                                                        right:
-                                                                            16 *
-                                                                            2,
-                                                                        child: Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            Transform.rotate(
-                                                                              angle:
-                                                                                  45 *
-                                                                                  3.1415926535 /
-                                                                                  180,
-                                                                              child: Container(
-                                                                                width: 16,
-                                                                                height: 16,
-                                                                                decoration: BoxDecoration(
-                                                                                  color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                  borderRadius: BorderRadius.only(
-                                                                                    topLeft: Radius.circular(
-                                                                                      4,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
+                                                                GestureDetector(
+                                                                  onTap: () async {
+                                                                    await Get.toNamed(
+                                                                      Routes
+                                                                          .HISTORY_BALANCE_ALL,
+                                                                    );
+                                                                    await controller
+                                                                        .refreshAll();
+                                                                  },
+                                                                  child: Container(
+                                                                    color: Colors
+                                                                        .transparent,
+                                                                    child: Column(
+                                                                      children: [
+                                                                        SvgPicture.asset(
+                                                                          "assets/icons/icon_others.svg",
+                                                                          width:
+                                                                              18,
+                                                                          height:
+                                                                              18,
                                                                         ),
-                                                                      ),
-                                                                      Column(
-                                                                        children: [
-                                                                          SizedBox(
-                                                                            height:
-                                                                                8,
-                                                                          ),
-                                                                          Container(
-                                                                            padding: EdgeInsets.all(
-                                                                              16,
-                                                                            ),
-                                                                            width: MediaQuery.of(
-                                                                              context,
-                                                                            ).size.width,
-                                                                            decoration: BoxDecoration(
-                                                                              color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                16,
-                                                                              ),
-                                                                            ),
-                                                                            child: Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children:
-                                                                                  <
-                                                                                    Widget
-                                                                                  >[
-                                                                                    Text(
-                                                                                      controller.languageServices.language.value.coachmarkTitle7 ??
-                                                                                          "-",
-                                                                                      style: controller.typographyServices.bodyLargeBold.value.copyWith(
-                                                                                        color: controller.themeColorServices.textColor.value,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      height: 4,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      controller.languageServices.language.value.coachmarkDescription7 ??
-                                                                                          "-",
-                                                                                      style: controller.typographyServices.bodySmallRegular.value.copyWith(
-                                                                                        color: controller.themeColorServices.textColor.value,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      height: 16,
-                                                                                    ),
-                                                                                    Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                      children: [
-                                                                                        Text(
-                                                                                          "7/8",
-                                                                                          style: controller.typographyServices.captionLargeBold.value.copyWith(
-                                                                                            color: controller.themeColorServices.neutralsColorGrey500.value,
-                                                                                          ),
-                                                                                        ),
-                                                                                        SizedBox(
-                                                                                          height: 30,
-                                                                                          child: ElevatedButton(
-                                                                                            onPressed: () {
-                                                                                              ShowcaseView.get().next();
-                                                                                              controller.selectedIndex.value = 1;
-                                                                                            },
-                                                                                            style: ElevatedButton.styleFrom(
-                                                                                              backgroundColor: controller.themeColorServices.primaryBlue.value,
-                                                                                              shape: RoundedRectangleBorder(
-                                                                                                borderRadius: BorderRadius.circular(
-                                                                                                  8,
-                                                                                                ),
-                                                                                              ),
-                                                                                              padding: EdgeInsets.symmetric(
-                                                                                                horizontal: 16,
-                                                                                                vertical: 0,
-                                                                                              ),
-                                                                                            ),
-                                                                                            child: Center(
-                                                                                              child: Text(
-                                                                                                controller.languageServices.language.value.buttonNext1 ??
-                                                                                                    "-",
-                                                                                                style: controller.typographyServices.bodySmallBold.value.copyWith(
-                                                                                                  color: controller.themeColorServices.neutralsColorGrey0.value,
-                                                                                                ),
-                                                                                              ),
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ],
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  child: GestureDetector(
-                                                                    onTap: () async {
-                                                                      await Get.toNamed(
-                                                                        Routes
-                                                                            .HISTORY_BALANCE_ALL,
-                                                                      );
-                                                                      await controller
-                                                                          .refreshAll();
-                                                                    },
-                                                                    child: Container(
-                                                                      color: Colors
-                                                                          .transparent,
-                                                                      child: Column(
-                                                                        children: [
-                                                                          SvgPicture.asset(
-                                                                            "assets/icons/icon_others.svg",
-                                                                            width:
-                                                                                18,
-                                                                            height:
-                                                                                18,
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height:
-                                                                                4,
-                                                                          ),
-                                                                          Text(
-                                                                            controller.languageServices.language.value.history ??
-                                                                                "-",
-                                                                            style:
-                                                                                controller.typographyServices.captionLargeRegular.value,
-                                                                          ),
-                                                                        ],
-                                                                      ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              4,
+                                                                        ),
+                                                                        Text(
+                                                                          controller.languageServices.language.value.history ??
+                                                                              "-",
+                                                                          style: controller
+                                                                              .typographyServices
+                                                                              .captionLargeRegular
+                                                                              .value,
+                                                                        ),
+                                                                      ],
                                                                     ),
                                                                   ),
                                                                 ),
@@ -2367,288 +1431,96 @@ class HomeView extends GetView<HomeController> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Showcase.withWidget(
-                                    targetPadding: EdgeInsets.only(
-                                      top: 16 * 2,
-                                      right: 16,
-                                      left: 16,
-                                      bottom: 16,
-                                    ),
-                                    disableBarrierInteraction: true,
-                                    key:
-                                        controller.buttonOfflineOnlineGlobalKey,
-                                    onTargetClick: () {},
-                                    disposeOnTap: false,
-                                    targetBorderRadius: BorderRadius.circular(
-                                      16,
-                                    ),
-                                    targetShapeBorder: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    container: Stack(
-                                      children: [
-                                        Positioned(
-                                          left: 0,
-                                          right: 0,
-                                          bottom: 0,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Transform.rotate(
-                                                angle: 45 * 3.1415926535 / 180,
-                                                child: Container(
-                                                  width: 16,
-                                                  height: 16,
-                                                  decoration: BoxDecoration(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey0
-                                                        .value,
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                4,
-                                                              ),
-                                                        ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Column(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(16),
-                                              width: MediaQuery.of(
-                                                context,
-                                              ).size.width,
-                                              decoration: BoxDecoration(
-                                                color: controller
-                                                    .themeColorServices
-                                                    .neutralsColorGrey0
-                                                    .value,
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
-                                              ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .coachmarkTitle3 ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodyLargeBold
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .textColor
-                                                              .value,
-                                                        ),
-                                                  ),
-                                                  SizedBox(height: 4),
-                                                  Text(
-                                                    controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .coachmarkDescription3 ??
-                                                        "-",
-                                                    style: controller
-                                                        .typographyServices
-                                                        .bodySmallRegular
-                                                        .value
-                                                        .copyWith(
-                                                          color: controller
-                                                              .themeColorServices
-                                                              .textColor
-                                                              .value,
-                                                        ),
-                                                  ),
-                                                  SizedBox(height: 16),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        "3/8",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .captionLargeBold
-                                                            .value
-                                                            .copyWith(
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .neutralsColorGrey500
-                                                                  .value,
-                                                            ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 30,
-                                                        child: ElevatedButton(
-                                                          onPressed: () {
-                                                            ShowcaseView.get()
-                                                                .next();
-                                                          },
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor:
-                                                                controller
-                                                                    .themeColorServices
-                                                                    .primaryBlue
-                                                                    .value,
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    8,
-                                                                  ),
-                                                            ),
-                                                            padding:
-                                                                EdgeInsets.symmetric(
-                                                                  horizontal:
-                                                                      16,
-                                                                  vertical: 0,
-                                                                ),
-                                                          ),
-                                                          child: Center(
-                                                            child: Text(
-                                                              controller
-                                                                      .languageServices
-                                                                      .language
-                                                                      .value
-                                                                      .buttonNext1 ??
-                                                                  "-",
-                                                              style: controller
-                                                                  .typographyServices
-                                                                  .bodySmallBold
-                                                                  .value
-                                                                  .copyWith(
-                                                                    color: controller
-                                                                        .themeColorServices
-                                                                        .neutralsColorGrey0
-                                                                        .value,
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(height: 8),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    child: AnimatedToggleSwitch<int>.dual(
-                                      current:
-                                          controller.isCoachmarkActive.value ==
-                                              true
-                                          ? controller.coachmarkWorkStatus.value
-                                          : controller.workStatus.value,
-                                      first: 2,
-                                      second: 1,
-                                      height: 50,
-                                      borderWidth: 0,
-                                      customIconBuilder:
-                                          (context, local, global) {
-                                            if (local.value == 2) {
-                                              return CircleAvatar(
-                                                backgroundColor: Color(
-                                                  0XFF999898,
-                                                ),
-                                                child: SvgPicture.asset(
-                                                  "assets/icons/icon_scooter.svg",
-                                                  width: 28.57,
-                                                  height: 28.57,
-                                                  color: Color(0XFF696969),
-                                                ),
-                                              );
-                                            }
+                                  AnimatedToggleSwitch<int>.dual(
+                                    current:
+                                        controller.isCoachmarkActive.value ==
+                                            true
+                                        ? controller.coachmarkWorkStatus.value
+                                        : controller.workStatus.value,
+                                    first: 2,
+                                    second: 1,
+                                    height: 50,
+                                    borderWidth: 0,
+                                    customIconBuilder:
+                                        (context, local, global) {
+                                          if (local.value == 2) {
                                             return CircleAvatar(
                                               backgroundColor: Color(
-                                                0XFF37C086,
+                                                0XFF999898,
                                               ),
                                               child: SvgPicture.asset(
                                                 "assets/icons/icon_scooter.svg",
                                                 width: 28.57,
                                                 height: 28.57,
-                                                color: Color(0XFFFFFFFF),
+                                                color: Color(0XFF696969),
                                               ),
                                             );
-                                          },
-                                      customStyleBuilder:
-                                          (context, local, global) {
-                                            if (local.value == 2) {
-                                              return ToggleStyle(
-                                                backgroundColor: Color(
-                                                  0XFFCECECE,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(9999),
-                                                indicatorColor:
-                                                    Colors.transparent,
-                                              );
-                                            }
+                                          }
+                                          return CircleAvatar(
+                                            backgroundColor: Color(0XFF37C086),
+                                            child: SvgPicture.asset(
+                                              "assets/icons/icon_scooter.svg",
+                                              width: 28.57,
+                                              height: 28.57,
+                                              color: Color(0XFFFFFFFF),
+                                            ),
+                                          );
+                                        },
+                                    customStyleBuilder:
+                                        (context, local, global) {
+                                          if (local.value == 2) {
                                             return ToggleStyle(
                                               backgroundColor: Color(
-                                                0XFF1FF79B,
+                                                0XFFCECECE,
                                               ),
                                               borderRadius:
                                                   BorderRadius.circular(9999),
                                               indicatorColor:
                                                   Colors.transparent,
                                             );
-                                          },
-                                      onChanged: (value) async {
-                                        await controller.onSwitchStatusWork();
+                                          }
+                                          return ToggleStyle(
+                                            backgroundColor: Color(0XFF1FF79B),
+                                            borderRadius: BorderRadius.circular(
+                                              9999,
+                                            ),
+                                            indicatorColor: Colors.transparent,
+                                          );
+                                        },
+                                    onChanged: (value) async {
+                                      await controller.onSwitchStatusWork();
 
-                                        await controller
-                                            .getEnsureIncomeRuleId();
-                                        await controller
-                                            .getGuaranteeIncomeProgressBarList();
-                                      },
-                                      customTextBuilder:
-                                          (context, local, global) {
-                                            return Text(
-                                              local.value == 2
-                                                  ? controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .offline ??
-                                                        "-"
-                                                  : controller
-                                                            .languageServices
-                                                            .language
-                                                            .value
-                                                            .online ??
-                                                        "-",
-                                              style: controller
-                                                  .typographyServices
-                                                  .bodyLargeBold
-                                                  .value
-                                                  .copyWith(
-                                                    color: local.value == 2
-                                                        ? Color(0XFF747474)
-                                                        : Color(0XFF07824D),
-                                                  ),
-                                            );
-                                          },
-                                    ),
+                                      await controller.getEnsureIncomeRuleId();
+                                      await controller
+                                          .getGuaranteeIncomeProgressBarList();
+                                    },
+                                    customTextBuilder:
+                                        (context, local, global) {
+                                          return Text(
+                                            local.value == 2
+                                                ? controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .offline ??
+                                                      "-"
+                                                : controller
+                                                          .languageServices
+                                                          .language
+                                                          .value
+                                                          .online ??
+                                                      "-",
+                                            style: controller
+                                                .typographyServices
+                                                .bodyLargeBold
+                                                .value
+                                                .copyWith(
+                                                  color: local.value == 2
+                                                      ? Color(0XFF747474)
+                                                      : Color(0XFF07824D),
+                                                ),
+                                          );
+                                        },
                                   ),
                                 ],
                               ),
@@ -2667,270 +1539,60 @@ class HomeView extends GetView<HomeController> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Showcase.withWidget(
-                                        targetPadding: EdgeInsets.only(
-                                          top: 0,
-                                          right: 16,
-                                          left: 16,
-                                          bottom: 0,
-                                        ),
-                                        disableBarrierInteraction: true,
-                                        key: controller.menuGlobalKey,
-                                        onTargetClick: () {},
-                                        disposeOnTap: false,
-                                        targetBorderRadius:
-                                            BorderRadius.circular(16),
-                                        targetShapeBorder:
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                            ),
-                                        container: Stack(
-                                          children: [
-                                            Positioned(
-                                              right: 16 * 2.5,
-                                              bottom: 0,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Transform.rotate(
-                                                    angle:
-                                                        45 * 3.1415926535 / 180,
-                                                    child: Container(
-                                                      width: 16,
-                                                      height: 16,
-                                                      decoration: BoxDecoration(
-                                                        color: controller
-                                                            .themeColorServices
-                                                            .neutralsColorGrey0
-                                                            .value,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                              bottomRight:
-                                                                  Radius.circular(
-                                                                    4,
-                                                                  ),
-                                                            ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Column(
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width: 27,
+                                            height: 22,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
                                               children: [
-                                                Container(
-                                                  padding: EdgeInsets.all(16),
-                                                  width: MediaQuery.of(
-                                                    context,
-                                                  ).size.width,
-                                                  decoration: BoxDecoration(
-                                                    color: controller
-                                                        .themeColorServices
-                                                        .neutralsColorGrey0
-                                                        .value,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          16,
-                                                        ),
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        controller
-                                                                .languageServices
-                                                                .language
-                                                                .value
-                                                                .coachmarkTitle8 ??
-                                                            "-",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .bodyLargeBold
-                                                            .value
-                                                            .copyWith(
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .textColor
-                                                                  .value,
-                                                            ),
-                                                      ),
-                                                      SizedBox(height: 4),
-                                                      Text(
-                                                        controller
-                                                                .languageServices
-                                                                .language
-                                                                .value
-                                                                .coachmarkDescription8 ??
-                                                            "-",
-                                                        style: controller
-                                                            .typographyServices
-                                                            .bodySmallRegular
-                                                            .value
-                                                            .copyWith(
-                                                              color: controller
-                                                                  .themeColorServices
-                                                                  .textColor
-                                                                  .value,
-                                                            ),
-                                                      ),
-                                                      SizedBox(height: 16),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            "8/8",
-                                                            style: controller
-                                                                .typographyServices
-                                                                .captionLargeBold
-                                                                .value
-                                                                .copyWith(
-                                                                  color: controller
-                                                                      .themeColorServices
-                                                                      .neutralsColorGrey500
-                                                                      .value,
-                                                                ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 30,
-                                                            child: ElevatedButton(
-                                                              onPressed: () async {
-                                                                ShowcaseView.get()
-                                                                    .next();
-                                                                controller
-                                                                        .isCoachmarkActive
-                                                                        .value =
-                                                                    false;
-                                                                controller
-                                                                        .coachmarkWorkStatus
-                                                                        .value =
-                                                                    2;
-                                                                controller
-                                                                        .selectedIndex
-                                                                        .value =
-                                                                    0;
-
-                                                                var prefs =
-                                                                    await SharedPreferences.getInstance();
-                                                                await prefs.setBool(
-                                                                  'is_coachmark_displayed',
-                                                                  true,
-                                                                );
-                                                              },
-                                                              style: ElevatedButton.styleFrom(
-                                                                backgroundColor:
-                                                                    controller
-                                                                        .themeColorServices
-                                                                        .primaryBlue
-                                                                        .value,
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius.circular(
-                                                                        8,
-                                                                      ),
-                                                                ),
-                                                                padding:
-                                                                    EdgeInsets.symmetric(
-                                                                      horizontal:
-                                                                          16,
-                                                                      vertical:
-                                                                          0,
-                                                                    ),
-                                                              ),
-                                                              child: Center(
-                                                                child: Text(
-                                                                  controller
-                                                                          .languageServices
-                                                                          .language
-                                                                          .value
-                                                                          .coachmarkButton8 ??
-                                                                      "-",
-                                                                  style: controller
-                                                                      .typographyServices
-                                                                      .bodySmallBold
-                                                                      .value
-                                                                      .copyWith(
-                                                                        color: controller
-                                                                            .themeColorServices
-                                                                            .neutralsColorGrey0
-                                                                            .value,
-                                                                      ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
+                                                SvgPicture.asset(
+                                                  controller
+                                                              .selectedIndex
+                                                              .value ==
+                                                          1
+                                                      ? "assets/icons/icon_more_horizontal_selected.svg"
+                                                      : "assets/icons/icon_more_horizontal.svg",
+                                                  width: 27,
+                                                  height: 22,
                                                 ),
-                                                SizedBox(height: 8),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: 27,
-                                              height: 22,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    controller
-                                                                .selectedIndex
-                                                                .value ==
-                                                            1
-                                                        ? "assets/icons/icon_more_horizontal_selected.svg"
-                                                        : "assets/icons/icon_more_horizontal.svg",
-                                                    width: 27,
-                                                    height: 22,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(height: 5),
-                                            Text(
-                                              controller
-                                                      .languageServices
-                                                      .language
-                                                      .value
-                                                      .menu ??
-                                                  "-",
-                                              style: controller
-                                                  .typographyServices
-                                                  .bodySmallRegular
-                                                  .value
-                                                  .copyWith(
-                                                    color:
-                                                        controller
-                                                                .selectedIndex
-                                                                .value ==
-                                                            1
-                                                        ? controller
-                                                              .themeColorServices
-                                                              .textColor
-                                                              .value
-                                                        : Color(0XFFB3B3B3),
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            controller
+                                                    .languageServices
+                                                    .language
+                                                    .value
+                                                    .menu ??
+                                                "-",
+                                            style: controller
+                                                .typographyServices
+                                                .bodySmallRegular
+                                                .value
+                                                .copyWith(
+                                                  color:
+                                                      controller
+                                                              .selectedIndex
+                                                              .value ==
+                                                          1
+                                                      ? controller
+                                                            .themeColorServices
+                                                            .textColor
+                                                            .value
+                                                      : Color(0XFFB3B3B3),
+                                                ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
