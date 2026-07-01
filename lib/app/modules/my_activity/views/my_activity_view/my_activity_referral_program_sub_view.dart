@@ -172,6 +172,18 @@ class MyActivityReferralProgramSubView extends GetView<MyActivityController> {
             SizedBox(height: 16 + 8),
             const MyActivityReferralProgramIncomeSummaryChartSubView(),
             SizedBox(height: 16),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Riwayat Referral",
+                    style: controller.typographyServices.bodyLargeBold.value,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16 * 2),
           ],
         ),
       ),
