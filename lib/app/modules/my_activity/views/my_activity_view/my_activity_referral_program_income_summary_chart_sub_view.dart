@@ -38,8 +38,8 @@ class MyActivityReferralProgramIncomeSummaryChartSubView
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               decoration: const BoxDecoration(
-                color: Color(0XFFF5F9FE),
-                border: Border(bottom: BorderSide(color: Color(0XFFE1ECFA))),
+                color: Color(0XFFF1F4F9),
+                border: Border(bottom: BorderSide(color: Color(0XFFE5E5E7))),
               ),
               child: Text(
                 'Ringkasan Pendapatan',

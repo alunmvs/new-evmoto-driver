@@ -173,13 +173,68 @@ class MyActivityReferralProgramSubView extends GetView<MyActivityController> {
             const MyActivityReferralProgramIncomeSummaryChartSubView(),
             SizedBox(height: 16),
             Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Color(0XFFE5E5E7)),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Riwayat Referral",
-                    style: controller.typographyServices.bodyLargeBold.value,
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    decoration: BoxDecoration(color: Color(0XFFF1F4F9)),
+                    child: Text(
+                      "Riwayat Referral",
+                      style: controller.typographyServices.bodyLargeBold.value
+                          .copyWith(color: const Color(0XFF272727)),
+                    ),
                   ),
+                  for (var i = 0; i < 10; i++) ...[
+                    Container(
+                      padding: EdgeInsets.all(12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Rider_dewi91",
+                                  style: controller
+                                      .typographyServices
+                                      .bodyLargeBold
+                                      .value
+                                      .copyWith(color: const Color(0XFF272727)),
+                                ),
+                                Text(
+                                  "12 May 2026 ‧ 09:14",
+                                  style: controller
+                                      .typographyServices
+                                      .bodySmallRegular
+                                      .value
+                                      .copyWith(color: const Color(0XFFD7D7D7)),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            "Rp25.000",
+                            style: controller
+                                .typographyServices
+                                .bodyLargeBold
+                                .value
+                                .copyWith(color: const Color(0XFF47A056)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (i < 9) ...[
+                      Divider(height: 0, color: Color(0XFFEDEDED)),
+                    ],
+                  ],
                 ],
               ),
             ),
