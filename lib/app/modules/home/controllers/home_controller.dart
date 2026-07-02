@@ -95,6 +95,9 @@ class HomeController extends GetxController
   final userInfo = UserInfo().obs;
   final vehicleStatistics = VehicleStatistics().obs;
 
+  final draggableScrollableController = DraggableScrollableController();
+  final draggableScrollableSize = 0.0.obs;
+
   TabController? tabController;
 
   final orderGrabbingHallRefreshController = RefreshController();
@@ -205,6 +208,10 @@ class HomeController extends GetxController
 
       await getServiceTimeScheduleList();
       await checkServiceTimeSchedule();
+    });
+
+    draggableScrollableController.addListener(() {
+      draggableScrollableSize.value = draggableScrollableController.size;
     });
   }
 

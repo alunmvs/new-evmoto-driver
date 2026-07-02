@@ -13,9 +13,13 @@ import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_guarante
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_statistics_card_sub_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/order_card_home_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
+import 'package:new_evmoto_driver/app/widgets/draggable_scrollable_sheet/home_guarantee_income_area_in_draggable_scrollable_sheet.dart';
+import 'package:new_evmoto_driver/app/widgets/draggable_scrollable_sheet/home_guarantee_income_area_out_after_order_draggable_scrollable_sheet.dart';
+import 'package:new_evmoto_driver/app/widgets/draggable_scrollable_sheet/home_guarantee_income_area_out_no_order_draggable_scrollable_sheet.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../controllers/home_controller.dart';
 import 'package:intl/intl.dart';
@@ -77,12 +81,13 @@ class HomeView extends GetView<HomeController> {
                                                   width: MediaQuery.of(
                                                     context,
                                                   ).size.width,
-                                                  height:
-                                                      controller
-                                                          .isGuaranteeIncomeProgressBarVisible
-                                                          .value
-                                                      ? 200
-                                                      : 140,
+                                                  // height:
+                                                  //     controller
+                                                  //         .isGuaranteeIncomeProgressBarVisible
+                                                  //         .value
+                                                  //     ? 200
+                                                  //     : 140,
+                                                  height: 140,
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
                                                       image: AssetImage(
@@ -107,12 +112,12 @@ class HomeView extends GetView<HomeController> {
                                                   children: [
                                                     SizedBox(height: 40),
                                                     SizedBox(height: 16),
-                                                    if (controller
-                                                        .isGuaranteeIncomeProgressBarVisible
-                                                        .value) ...[
-                                                      HomeGuaranteeIncomeProgressBarCardSubView(),
-                                                      SizedBox(height: 16),
-                                                    ],
+                                                    // if (controller
+                                                    //     .isGuaranteeIncomeProgressBarVisible
+                                                    //     .value) ...[
+                                                    //   HomeGuaranteeIncomeProgressBarCardSubView(),
+                                                    //   SizedBox(height: 16),
+                                                    // ],
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.symmetric(
@@ -729,20 +734,27 @@ class HomeView extends GetView<HomeController> {
                                 ),
                               ),
                             ),
-                            if (controller
-                                    .isActiveGuaranteeIncomeProgressBarOpen
-                                    .value &&
-                                controller
-                                    .isGuaranteeIncomeProgressBarVisible
-                                    .value) ...[
-                              Positioned(
-                                top: 40 + 16,
-                                left: 16,
-                                right: 16,
-                                child:
-                                    HomeGuaranteeIncomeProgressBarCardFullScreenSubView(),
-                              ),
-                            ],
+                            // if (controller
+                            //         .isActiveGuaranteeIncomeProgressBarOpen
+                            //         .value &&
+                            //     controller
+                            //         .isGuaranteeIncomeProgressBarVisible
+                            //         .value) ...[
+                            //   Positioned(
+                            //     top: 40 + 16,
+                            //     left: 16,
+                            //     right: 16,
+                            //     child:
+                            //         HomeGuaranteeIncomeProgressBarCardFullScreenSubView(),
+                            //   ),
+                            // ],
+
+                            // Guarantee Income New - Inside
+                            // HomeGuaranteeIncomeAreaInDraggableScrollableSheet(),
+                            // Guarantee Income New - Outside No Order
+                            // HomeGuaranteeIncomeAreaOutNoOrderDraggableScrollableSheet(),
+                            // Guarantee Income New - Outside After Order
+                            HomeGuaranteeIncomeAreaOutAfterOrderDraggableScrollableSheet(),
                           ],
                         ),
                       ),

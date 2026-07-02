@@ -46,8 +46,9 @@ class ApiServices extends GetxService {
 
     //       return client;
     //     };
-
-    dio.interceptors.add(ChuckerDioInterceptor());
+    if (isChuckerEnabled) {
+      dio.interceptors.add(ChuckerDioInterceptor());
+    }
 
     dio.interceptors.add(
       CurlLoggingInterceptor(
