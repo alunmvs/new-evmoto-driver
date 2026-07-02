@@ -8,18 +8,11 @@ import 'package:get/get.dart';
 import 'package:new_evmoto_driver/app/data/models/order_model.dart';
 import 'package:new_evmoto_driver/app/modules/account/views/account_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_balance_sub_view.dart';
-import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_guarantee_income_progress_bar_card_full_screen_sub_view.dart';
-import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_guarantee_income_progress_bar_card_sub_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/home_statistics_card_sub_view.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view/order_card_home_sub_view.dart';
 import 'package:new_evmoto_driver/app/routes/app_pages.dart';
-import 'package:new_evmoto_driver/app/widgets/draggable_scrollable_sheet/home_guarantee_income_area_in_draggable_scrollable_sheet.dart';
-import 'package:new_evmoto_driver/app/widgets/draggable_scrollable_sheet/home_guarantee_income_area_out_after_order_draggable_scrollable_sheet.dart';
-import 'package:new_evmoto_driver/app/widgets/draggable_scrollable_sheet/home_guarantee_income_area_out_no_order_draggable_scrollable_sheet.dart';
 import 'package:new_evmoto_driver/app/widgets/loader_elevated_button_widget.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:slide_countdown/slide_countdown.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../controllers/home_controller.dart';
 import 'package:intl/intl.dart';
@@ -734,6 +727,7 @@ class HomeView extends GetView<HomeController> {
                                 ),
                               ),
                             ),
+
                             // if (controller
                             //         .isActiveGuaranteeIncomeProgressBarOpen
                             //         .value &&
@@ -748,13 +742,8 @@ class HomeView extends GetView<HomeController> {
                             //         HomeGuaranteeIncomeProgressBarCardFullScreenSubView(),
                             //   ),
                             // ],
-
-                            // Guarantee Income New - Inside
                             // HomeGuaranteeIncomeAreaInDraggableScrollableSheet(),
-                            // Guarantee Income New - Outside No Order
-                            // HomeGuaranteeIncomeAreaOutNoOrderDraggableScrollableSheet(),
-                            // Guarantee Income New - Outside After Order
-                            HomeGuaranteeIncomeAreaOutAfterOrderDraggableScrollableSheet(),
+                            // HomeGuaranteeIncomeV1SubView(),
                           ],
                         ),
                       ),

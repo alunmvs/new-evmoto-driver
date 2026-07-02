@@ -200,7 +200,44 @@ class GuaranteeIncomeRepository {
         options: Options(headers: headers),
       );
 
-      print(response.data);
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      if (response.data['data'] != null) {
+        if (response.data['data'].length > 0) {
+          return response.data['data'][0];
+        }
+      }
+      return null;
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
+
+  Future<int?> getActiveEnsureIncomeRuleIdV1({
+    required double? lat,
+    required double? lon,
+  }) async {
+    try {
+      var url = "$baseUrl/app/api/v1/rule/active";
+
+      var data = {"companyId": 1, "lat": lat, "lon": lon};
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: data,
+        options: Options(headers: headers),
+      );
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
@@ -212,6 +249,47 @@ class GuaranteeIncomeRepository {
         }
       }
       return null;
+    } on DioException catch (e) {
+      throw e.message.toString();
+    }
+  }
+
+  Future<List<GuaranteeIncomeProgressBar>> getGuaranteeIncomeProgressBarListV1({
+    required int? ensureIncomeRuleId,
+  }) async {
+    try {
+      var url = "$baseUrl/app/api/v1/foundation/list";
+
+      var data = {"ensureIncomeRuleId": ensureIncomeRuleId};
+
+      var storage = FlutterSecureStorage();
+      var token = await storage.read(key: 'token');
+
+      var headers = {
+        "Content-Type": "application/json",
+        'Authorization': "Bearer $token",
+      };
+
+      var dio = apiServices.dio;
+      var response = await dio.post(
+        url,
+        data: data,
+        options: Options(headers: headers),
+      );
+
+      if (response.data['code'] != 200) {
+        throw response.data['msg'];
+      }
+
+      var guaranteeIncomeProgressBarList = <GuaranteeIncomeProgressBar>[];
+
+      for (var guaranteeIncomeProgressBar in response.data['data']) {
+        guaranteeIncomeProgressBarList.add(
+          GuaranteeIncomeProgressBar.fromJson(guaranteeIncomeProgressBar),
+        );
+      }
+
+      return guaranteeIncomeProgressBarList;
     } on DioException catch (e) {
       throw e.message.toString();
     }

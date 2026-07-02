@@ -6,7 +6,6 @@ import 'package:new_evmoto_driver/app/data/models/language_model.dart';
 import 'package:new_evmoto_driver/app/data/models/vehicle_statistics_model.dart';
 import 'package:new_evmoto_driver/app/modules/home/controllers/home_controller.dart';
 import 'package:new_evmoto_driver/app/modules/home/views/home_view.dart';
-import 'package:showcaseview/showcaseview.dart';
 import '../../../../helpers/module_test_helpers.dart';
 
 class TestableHomeController extends HomeController {
@@ -23,7 +22,6 @@ class TestableHomeController extends HomeController {
   @override
   // ignore: must_call_super
   Future<void> onInit() async {
-    ShowcaseView.register();
     isFetch.value = false;
   }
 }
@@ -67,10 +65,10 @@ void main() {
       );
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(geolocatorChannel, (
-        MethodCall methodCall,
-      ) async {
-        return 0;
-      });
+            MethodCall methodCall,
+          ) async {
+            return 0;
+          });
 
       controller = TestableHomeController(
         vehicleRepository: MockVehicleRepository(),

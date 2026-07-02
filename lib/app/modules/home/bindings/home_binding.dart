@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:new_evmoto_driver/app/modules/home/controllers/home_guarantee_income_area_controller.dart';
 import 'package:new_evmoto_driver/app/repositories/account_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/advance_booking_repository.dart';
 import 'package:new_evmoto_driver/app/repositories/guarantee_income_repository.dart';
@@ -22,6 +23,10 @@ class HomeBinding extends Bindings {
         guaranteeIncomeRepository: GuaranteeIncomeRepository(),
         advanceBookingRepository: AdvanceBookingRepository(),
       ),
+    );
+
+    Get.lazyPut<HomeGuaranteeIncomeAreaController>(
+      () => HomeGuaranteeIncomeAreaController(),
     );
   }
 }

@@ -96,6 +96,8 @@ dependencies:
   wakelock_plus: ^1.3.3
   chucker_flutter: ^1.9.2
 
+  flutter_animarker: ^3.4.0-beta.1
+
 dev_dependencies:
   get_cli: ^1.9.1
   flutter_launcher_icons: ^0.14.4

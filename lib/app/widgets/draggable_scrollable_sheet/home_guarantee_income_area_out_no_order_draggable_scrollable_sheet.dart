@@ -330,7 +330,9 @@ class _HomeGuaranteeIncomeAreaOutNoOrderDraggableScrollableSheetState
                                               ),
                                               if (activeGuaranteeIncomeProgressBar
                                                           .value
-                                                          ?.onLineTime !=
+                                                          ?.foundations
+                                                          ?.first
+                                                          .onLineTime !=
                                                       null &&
                                                   endTimeLocal.value != null &&
                                                   startTimeLocal.value !=
@@ -345,6 +347,8 @@ class _HomeGuaranteeIncomeAreaOutNoOrderDraggableScrollableSheetState
                                                           (4 * 2)) *
                                                       (activeGuaranteeIncomeProgressBar
                                                               .value!
+                                                              .foundations!
+                                                              .first
                                                               .onLineTime! /
                                                           (endTimeLocal.value!
                                                               .difference(
@@ -373,17 +377,25 @@ class _HomeGuaranteeIncomeAreaOutNoOrderDraggableScrollableSheetState
                                                 child: SvgPicture.asset(
                                                   (activeGuaranteeIncomeProgressBar
                                                                       .value
-                                                                      ?.onlineDurationMinutes ==
+                                                                      ?.foundations
+                                                                      ?.first
+                                                                      .onlineDurationMinutes ==
                                                                   null &&
                                                               activeGuaranteeIncomeProgressBar
                                                                       .value
-                                                                      ?.onLineTime ==
+                                                                      ?.foundations
+                                                                      ?.first
+                                                                      .onLineTime ==
                                                                   null) ||
                                                           (activeGuaranteeIncomeProgressBar
                                                                   .value!
+                                                                  .foundations!
+                                                                  .first
                                                                   .onlineDurationMinutes! <
                                                               activeGuaranteeIncomeProgressBar
                                                                   .value!
+                                                                  .foundations!
+                                                                  .first
                                                                   .onLineTime!)
                                                       ? 'assets/icons/icon_progress_bar_finish_grey.svg'
                                                       : 'assets/icons/icon_progress_bar_finish_brown.svg',
