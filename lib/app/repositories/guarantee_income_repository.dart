@@ -181,9 +181,9 @@ class GuaranteeIncomeRepository {
     required double? lon,
   }) async {
     try {
-      var url = "$baseUrl/app/ensureIncomeRule/active";
+      var url = "$baseUrl/app/ensureIncomeRule/getActiveEnsureIncomeRuleId";
 
-      var data = {"lat": lat, "lon": lon};
+      // var data = {"lat": lat, "lon": lon};
 
       var storage = FlutterSecureStorage();
       var token = await storage.read(key: 'token');
@@ -196,9 +196,11 @@ class GuaranteeIncomeRepository {
       var dio = apiServices.dio;
       var response = await dio.post(
         url,
-        data: data,
+        data: 1,
         options: Options(headers: headers),
       );
+
+      print(response.data);
 
       if (response.data['code'] != 200) {
         throw response.data['msg'];
